@@ -1,0 +1,19 @@
+{{- if .Values.fhirPseudonymizer.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: fhir-pseudonymizer
+spec:
+  type: {{ .Values.fhirPseudonymizer.service.type }}
+  ports:
+    - port: {{ .Values.fhirPseudonymizer.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: fhir-pseudonymizer
+    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+{{- end -}}

@@ -1,0 +1,89 @@
+{{- if .Values.loincConverter.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loinc-converter
+    app.kubernetes.io/version: {{ .Values.loincConverter.image.tag }}
+    app.kubernetes.io/name: loinc-converter
+    app.kubernetes.io/instance: {{ .Release.Name }}-loinc-converter
+  {{- with .Values.common.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.loincConverter.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loinc-converter
+      app.kubernetes.io/instance: {{ .Release.Name }}-loinc-converter
+  template:
+    metadata:
+    {{- with .Values.loincConverter.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: loinc-converter
+        app.kubernetes.io/instance: {{ .Release.Name }}-loinc-converter
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.loincConverter.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.loincConverter.podSecurityContext | nindent 8 }}
+      containers:
+        - name: loinc-converter
+          securityContext:
+            {{- toYaml .Values.loincConverter.securityContext | nindent 12 }}
+          image: "{{ .Values.loincConverter.image.registry }}/{{ .Values.loincConverter.image.repository }}:{{ .Values.loincConverter.image.tag }}"
+          imagePullPolicy: {{ .Values.loincConverter.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: {{ .Values.loincConverter.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.loincConverter.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.loincConverter.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.loincConverter.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.loincConverter.readinessProbe.failureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            initialDelaySeconds: {{ .Values.loincConverter.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.loincConverter.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.loincConverter.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.loincConverter.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.loincConverter.livenessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.loincConverter.resources | nindent 12 }}
+          env:
+            {{- if .Values.tracing.enabled }}
+            - name: TRACING_ENABLED
+              value: "true"
+            {{- end }}
+            {{- if .Values.loincConverter.extraEnv }}
+              {{ toYaml .Values.loincConverter.extraEnv | nindent 12 }}
+            {{- end }}
+      {{- with .Values.loincConverter.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.loincConverter.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.loincConverter.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

@@ -1,0 +1,19 @@
+{{- if .Values.loincConverter.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loinc-converter
+spec:
+  type: {{ .Values.loincConverter.service.type }}
+  ports:
+    - port: {{ .Values.loincConverter.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: loinc-converter
+    app.kubernetes.io/instance: {{ .Release.Name }}-loinc-converter
+{{- end -}}

@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ohdsi
+  webapi:
+    image: ohdsi/webapi:2.8.1
+    ports:
+      - 9999:8080
+    environment:
+      DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      DATASOURCE_OHDSI_SCHEMA: ohdsi
+      DATASOURCE_PASSWORD: postgres
+      DATASOURCE_URL: jdbc:postgresql://db:5432/ohdsi
+      DATASOURCE_USERNAME: postgres
+      FLYWAY_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      FLYWAY_DATASOURCE_PASSWORD: postgres
+      FLYWAY_DATASOURCE_URL: jdbc:postgresql://db:5432/ohdsi
+      FLYWAY_DATASOURCE_USERNAME: postgres
+      FLYWAY_PLACEHOLDERS_OHDSISCHEMA: ohdsi
+      FLYWAY_SCHEMAS: ohdsi
+      SECURITY_CORS_ENABLED: "false"
+      SPRING_BATCH_REPOSITORY_TABLEPREFIX: ohdsi.BATCH_
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ohdsi
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect

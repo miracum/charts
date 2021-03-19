@@ -1,0 +1,181 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/version: {{ .Values.image.tag }}
+    app.kubernetes.io/name: fhir-gateway
+    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+  {{- with .Values.common.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fhir-gateway
+      app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: fhir-gateway
+        app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SERVICES_PSQL_ENABLED
+              value: {{ .Values.sinks.postgres.enabled | quote }}
+            - name: SPRING_DATASOURCE_URL
+              value: {{ template "fhir-gateway.sinks.postgres.jdbcUrl" . }}
+            - name: SPRING_DATASOURCE_USERNAME
+            {{- if index .Values "postgresql" "enabled" }}
+              value: {{ index .Values "postgresql" "postgresqlUsername" }}
+            {{- else }}
+              value: {{ .Values.sinks.postgres.external.username }}
+            {{- end }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fhir-gateway.postgresSecretName" . }}
+                  key: postgresql-password
+            - name: SERVICES_PSEUDONYMIZER_ENABLED
+              value: {{ .Values.fhirPseudonymizer.enabled | quote }}
+            - name: SERVICES_PSEUDONYMIZER_URL
+              value: "http://{{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer:{{ .Values.fhirPseudonymizer.service.port }}/fhir"
+            - name: SERVICES_LOINC_CONVERSIONS_ENABLED
+              value: {{ .Values.loincConverter.enabled | quote }}
+            - name: SERVICES_LOINC_CONVERSIONS_URL
+              value: http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1
+            - name: SERVICES_FHIRSERVER_ENABLED
+              value: {{ .Values.sinks.fhirServer.enabled | quote }}
+            {{- if .Values.sinks.fhirServer.enabled -}}
+            - name: SERVICES_FHIRSERVER_URL
+              value: {{ .Values.sinks.fhirServer.url }}
+            {{- end }}
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: {{ .Values.tracing.enabled | quote }}
+{{- if not .Values.tracing.enabled }}
+            - name: JAEGER_SERVICE_NAME
+              value: "fhir-gateway"
+{{- end }}
+{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+            - name: SERVICES_KAFKA_ENABLED
+              value: {{ .Values.kafka.enabled | quote }}
+            - name: INPUT_TOPIC
+              value: {{ .Values.kafka.inputTopic | quote }}
+            - name: OUTPUT_TOPIC
+              value: {{ .Values.kafka.outputTopic | quote }}
+            - name: BOOTSTRAP_SERVERS
+              value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
+            - name: SECURITY_PROTOCOL
+              value: {{ .Values.kafka.securityProtocol }}
+            - name: SSL_KEY_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-kafka-user
+                  key: user.password
+            - name: SSL_TRUST_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
+                  key: ca.password
+{{- end }}
+{{- if .Values.extraEnv }}
+{{ toYaml .Values.extraEnv | indent 12 }}
+{{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          startupProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+            - name: kafka-certs
+              mountPath: "/opt/kafka-certs"
+              readOnly: true
+{{- end }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+        - name: kafka-certs
+          projected:
+            sources:
+            - secret:
+                name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
+                items:
+                  - key: ca.crt
+                    path: ca.crt
+                  - key: ca.p12
+                    path: ca.p12
+            - secret:
+                name: {{ include "fhir-gateway.fullname" . }}-kafka-user
+                items:
+                  - key: user.crt
+                    path: user.crt
+                  - key: user.p12
+                    path: user.p12
+                  - key: user.key
+                    path: user.key
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

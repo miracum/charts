@@ -1,0 +1,429 @@
+# Default values for fhir-gateway.
+common:
+  # metadata.annotations to apply to all deployments
+  deploymentAnnotations: {}
+
+tracing:
+  # enables tracing for all supported components
+  # by default, the components export traces in Jaeger format to `localhost:16686`
+  enabled: false
+
+# number of replicas. The application is well-suited to scale horizontally if required.
+replicaCount: 1
+
+# the container image for the fhir-gateway
+image: # +doc-gen:ignore
+  registry: harbor.miracum.org
+  repository: miracum-etl/fhir-gateway
+  tag: v3.5.0
+  pullPolicy: IfNotPresent
+
+# image pull secrets for the pod
+imagePullSecrets: []
+
+# String to partially override fullname template (will maintain the release name)
+nameOverride: ""
+
+# String to fully override fullname template
+fullnameOverride: ""
+
+# annotations to apply to the pod
+podAnnotations: {}
+
+# pod security context
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+# container security context
+securityContext: # +doc-gen:ignore
+  allowPrivilegeEscalation: false
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 11111
+  runAsGroup: 11111
+  readOnlyRootFilesystem: true
+
+# the service used to expose the FHIR GW REST endpoint
+service: # +doc-gen:break
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  # if enabled, create an Ingress to expose the FHIR Gateway outside the cluster
+  enabled: false
+  # ingress annotations
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # configure the hostname
+  hosts:
+    - host: chart-example.local
+      paths: []
+  # TLS config
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# node labels for pods assignment
+# see: <https://kubernetes.io/docs/user-guide/node-selection/>
+nodeSelector: {}
+
+# tolerations for pods assignment
+# see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+tolerations: []
+
+# affinity for pods assignment
+# see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
+affinity: {}
+
+# extra environment vars to set on the FHIR gateway container
+extraEnv: []
+
+# readiness probe
+readinessProbe: # +doc-gen:ignore
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+# liveness probe
+livenessProbe: # +doc-gen:ignore
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+# startup probe
+startupProbe: # +doc-gen:ignore
+  failureThreshold: 10
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  successThreshold: 1
+  timeoutSeconds: 30
+
+metrics:
+  serviceMonitor:
+    # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+    enabled: false
+    # additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
+    additionalLabels: {}
+    # namespace: monitoring
+    # interval: 30s
+    # scrapeTimeout: 10s
+
+sinks:
+  postgres:
+    # if enabled, writes all received FHIR resources to a Postgres DB
+    # if `postgresql.enabled=true`, then a Postgres DB is started as part of this
+    # installation. If `postgresql.enabled=false`, then `sinks.postgres.external.*` is used.
+    enabled: true
+    external:
+      # host or server name
+      host: ""
+      # port
+      port: "5432"
+      # name of the database to connect to
+      database: ""
+      # username to authenticate as
+      username: ""
+      # password for the user
+      password: ""
+      # can be used to specify the name of an existing secret with
+      # a `postgresql-password` key containing the password. An alternative to setting the password above.
+      existingSecret: ""
+  fhirServer:
+    # if enabled, sends all received resources to the specified FHIR server
+    enabled: false
+    # URL of the FHIR server. Support for authentication is not implemented.
+    url: ""
+
+kafka:
+  # if enabled, the FHIR Gateway will read resources from the specified Kafka topic `inputTopic`
+  # and write them to `outputTopic`. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
+  enabled: false
+  # name of the Kafka topic to read resources from
+  inputTopic: fhir-raw
+  # name of the topic to write processed resources to
+  outputTopic: fhir.post-gatway
+  # either PLAINTEXT or SSL
+  securityProtocol: PLAINTEXT
+  # name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
+  strimziClusterName: ""
+
+postgresql:
+  # enabled the included Postgres DB
+  # see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for configuration options
+  enabled: true
+  # name of the database used by the FHIR gateway to store the resources
+  postgresqlDatabase: "fhir_gateway"
+  replication:
+    # enable replication for data resilience
+    enabled: true
+    # number of read (slave) replicas
+    readReplicas: 2
+    # enable synchronous commit - this may degrade performance in favor of resiliency
+    synchronousCommit: "on"
+    # from the number of `readReplicas` defined above, set the number of those that will have synchronous replication
+    # NOTE: It cannot be > readReplicas
+    numSynchronousReplicas: 1
+  image:
+    # use a more recent Postgres version than the default
+    tag: 13.1.0
+    pullPolicy: IfNotPresent
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+gpas:
+  # the gPAS TTP FHIR Gateway base URL used to be used by the pseudonymization service.
+  # it should look similar to this: `http://gpas:8080/ttp-fhir/fhir/`
+  fhirUrl: ""
+  # Version of gPAS used.
+  # There were breaking changes to the FHIR API starting in 1.10.2,
+  # so explicitely set this value to 1.10.2 if `gpas.fhirUrl` points to gPAS 1.10.2.
+  version: "1.10.1"
+  auth:
+    basic:
+      # whether the fhir-pseudonymizer needs to provide basic auth credentials to access
+      # the gPAS FHIR API
+      enabled: false
+      # HTTP basic auth username
+      username: ""
+      # HTTP basic auth password
+      password: ""
+      # read the password from an existing secret from the `GPAS__AUTH__BASIC__PASSWORD` key
+      existingSecret: ""
+
+loincConverter:
+  # whether to enable the LOINC conversion and harmonization service
+  enabled: true
+
+  image: # +doc-gen:ignore
+    registry: harbor.miracum.org
+    repository: miracum-etl/loinc-conversion
+    tag: v1.12.0
+    pullPolicy: IfNotPresent
+
+  metrics:
+    serviceMonitor:
+      # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+      enabled: false
+      # additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
+      additionalLabels: {}
+      # namespace: monitoring
+      # interval: 30s
+      # scrapeTimeout: 10s
+
+  # if necessary, the service can easily scale horizontally
+  replicaCount: 1
+
+  # credentials to use when pulling the image
+  imagePullSecrets: []
+
+  # annotations for the pod
+  podAnnotations: {}
+
+  # the pod security context
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # the container security context
+  securityContext: # +doc-gen:ignore
+    allowPrivilegeEscalation: false
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 11111
+    runAsGroup: 11111
+
+  # service to expose the application
+  service: # +doc-gen:break
+    type: ClusterIP
+    port: 8080
+
+  # resource limits and requests
+  resources:
+    {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  # node labels for pods assignment
+  # see: <https://kubernetes.io/docs/user-guide/node-selection/>
+  nodeSelector: {}
+
+  # tolerations for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+  tolerations: []
+
+  # affinity for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
+  affinity: {}
+
+  # readiness probe
+  readinessProbe: # +doc-gen:ignore
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+
+  # liveness probe
+  livenessProbe: # +doc-gen:ignore
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+
+  # extra environment variables to set on the
+  extraEnv: []
+
+fhirPseudonymizer:
+  # whether to enable the FHIR Pseudonymizer - a thin, FHIR-native wrapper on top of gPAS
+  # with additional options for anonymization.
+  # if this is set to false, then the FHIR gateway will not attempt to pseudonymize/anonymize
+  # the resources.
+  enabled: true
+
+  # container image
+  image: # +doc-gen:ignore
+    registry: harbor.miracum.org
+    repository: miracum-etl/fhir-pseudonymizer
+    tag: v2.4.1
+    pullPolicy: IfNotPresent
+
+  metrics:
+    serviceMonitor:
+      # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+      enabled: false
+      # additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
+      additionalLabels: {}
+      # namespace: monitoring
+      # interval: 30s
+      # scrapeTimeout: 10s
+
+  auth:
+    apiKey:
+      # enable requiring an API key placed in the `x-api-key` header to
+      # authenticate against the fhir-pseudonymizer's `/fhir/$de-pseudonymize`
+      # endpoint.
+      enabled: false
+      # expected value for the key, aka "password"
+      key: ""
+      # name of an existing secret with an `APIKEY` key containing the expected password
+      existingSecret: ""
+
+  # number of replicas. This components can also be easily scaled horizontally if necessary.
+  replicaCount: 1
+
+  # image pull secrets
+  imagePullSecrets: []
+
+  # pod annotations
+  podAnnotations: {}
+
+  # the pod security context
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # the container security context
+  securityContext: # +doc-gen:ignore
+    allowPrivilegeEscalation: false
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 11111
+    runAsGroup: 11111
+
+  # service to expose the fhir-pseudonymizer
+  service: # +doc-gen:break
+    type: ClusterIP
+    port: 8080
+
+  # configure the anonymization rules, see <https://gitlab.miracum.org/miracum/etl/deployment/-/blob/master/fhir-gw/anonymization.yaml> for an example.
+  # this is evaluated as a template. Also see [README.md](README.md#pseudonymization) for configuring it within this values.yaml
+  anonymizationConfig: {}
+
+  # resource requests and limits
+  resources:
+    {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  # node labels for pods assignment
+  # see: <https://kubernetes.io/docs/user-guide/node-selection/>
+  nodeSelector: {}
+
+  # tolerations for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+  tolerations: []
+
+  # affinity for pods assignment
+  # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
+  affinity: {}
+
+  # readiness probe
+  readinessProbe: # +doc-gen:ignore
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+
+  # liveness probe
+  livenessProbe: # +doc-gen:ignore
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+
+  # extra environment variables to apply to the container
+  extraEnv: []
+  # - name: EXAMPLE
+  #   value: "example"

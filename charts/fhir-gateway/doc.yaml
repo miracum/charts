@@ -1,0 +1,19 @@
+project:
+  name: FHIR Gateway
+  shortName: fhir-gateway
+  url: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+  description: Helm chart for deploying the MIRACUM FHIR Gateway on Kubernetes.
+  app: the MIRACUM FHIR Gateway
+repository:
+  url: https://miracum.github.io/charts
+  name: miracum
+chart:
+  name: fhir-gateway
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+  - "Kubernetes v1.16+"
+  - "Helm v3"
+release:
+  name: fhir-gateway
+  namespace: fhir-gateway
