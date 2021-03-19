@@ -9,11 +9,63 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-    - name: wget
+    - name: test-fhir-gateway
       image: busybox:1
       imagePullPolicy: IfNotPresent
       command: ['wget', '-O', '-']
       args: ['{{ include "fhir-gateway.fullname" . }}:{{ .Values.service.port }}/actuator/health']
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 1111
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      livenessProbe:
+        exec:
+          command: ["true"]
+      readinessProbe:
+        exec:
+          command: ["true"]
+    - name: test-loinc-conversion
+      image: busybox:1
+      imagePullPolicy: IfNotPresent
+      command: ['wget', '-O', '-']
+      args: ['{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/ready']
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 1111
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      livenessProbe:
+        exec:
+          command: ["true"]
+      readinessProbe:
+        exec:
+          command: ["true"]
+    - name: test-fhir-pseudonymizer
+      image: busybox:1
+      imagePullPolicy: IfNotPresent
+      command: ['wget', '-O', '-']
+      args: ['{{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer:{{ .Values.fhirPseudonymizer.service.port }}/ready']
       securityContext:
         allowPrivilegeEscalation: false
         readOnlyRootFilesystem: true

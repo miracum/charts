@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: harbor.miracum.org
   repository: miracum-etl/fhir-gateway
-  tag: v3.5.1
+  tag: v3.4.0
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -167,7 +167,7 @@ kafka:
   # either PLAINTEXT or SSL
   securityProtocol: PLAINTEXT
   # name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
-  strimziClusterName: ""
+  strimziClusterName: "my-cluster"
 
 postgresql:
   # enabled the included Postgres DB
