@@ -5,7 +5,7 @@
 ## TL;DR;
 
 ```console
-$ helm repo add miracum https://harbor.miracum.org/chartrepo/charts
+$ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
 $ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway
 ```
