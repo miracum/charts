@@ -1,4 +1,4 @@
-{{- if .Values.kafka.strimziClusterName }}
+{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaUser
 metadata:
