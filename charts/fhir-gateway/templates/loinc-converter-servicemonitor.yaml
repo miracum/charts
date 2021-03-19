@@ -1,0 +1,32 @@
+{{- if .Values.loincConverter.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  {{- if .Values.loincConverter.metrics.serviceMonitor.namespace }}
+  namespace: {{ .Values.loincConverter.metrics.serviceMonitor.namespace }}
+  {{- end }}
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loinc-converter
+    {{- if .Values.loincConverter.metrics.serviceMonitor.additionalLabels }}
+    {{- toYaml .Values.loincConverter.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+    - port: http
+      path: /metrics
+      {{- if .Values.loincConverter.metrics.serviceMonitor.interval }}
+      interval: {{ .Values.loincConverter.metrics.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .Values.loincConverter.metrics.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.loincConverter.metrics.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "fhir-gateway.labels" . | nindent 6 }}
+      app.kubernetes.io/component: loinc-converter
+{{- end }}

@@ -1,0 +1,16 @@
+{{- if or (.Files.Glob "files/anonymization.yaml") .Values.fhirPseudonymizer.anonymizationConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-anonymization
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: fhir-pseudonymizer
+data:
+{{- if (.Files.Glob "files/anonymization.yaml") }}
+{{- (.Files.Glob "files/anonymization.yaml").AsConfig | nindent 2 }}
+{{- else if .Values.fhirPseudonymizer.anonymizationConfig }}
+  anonymization.yaml: |
+{{ .Values.fhirPseudonymizer.anonymizationConfig | indent 4 }}
+{{- end }}
+{{ end }}

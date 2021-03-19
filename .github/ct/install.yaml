@@ -1,0 +1,7 @@
+chart-dirs:
+  - charts
+chart-repos:
+  - bitnami=https://charts.bitnami.com/bitnami
+  - miracum=https://miracum.github.io/charts
+debug: true
+remote: origin

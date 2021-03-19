@@ -1,0 +1,132 @@
+{{- if .Values.fhirPseudonymizer.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: pseudonymizer
+    app.kubernetes.io/version: {{ .Values.fhirPseudonymizer.image.tag }}
+    app.kubernetes.io/name: fhir-pseudonymizer
+    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+  {{- with .Values.common.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.fhirPseudonymizer.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fhir-pseudonymizer
+      app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+  template:
+    metadata:
+    {{- with .Values.fhirPseudonymizer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: fhir-pseudonymizer
+        app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.fhirPseudonymizer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.fhirPseudonymizer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: fhir-pseudonymizer
+          securityContext:
+            {{- toYaml .Values.fhirPseudonymizer.securityContext | nindent 12 }}
+          image: "{{ .Values.fhirPseudonymizer.image.registry }}/{{ .Values.fhirPseudonymizer.image.repository }}:{{ .Values.fhirPseudonymizer.image.tag }}"
+          imagePullPolicy: {{ .Values.fhirPseudonymizer.image.pullPolicy }}
+          env:
+            - name: COMPlus_EnableDiagnostics
+              value: "0"
+            - name: GPAS__VERSION
+              value: {{ .Values.gpas.version | quote }}
+            {{- if .Values.gpas.fhirUrl }}
+            - name: GPAS__URL
+              value: {{ .Values.gpas.fhirUrl | quote }}
+            {{- end }}
+            {{- if or (.Files.Glob "files/anonymization.yaml") .Values.fhirPseudonymizer.anonymizationConfig }}
+            - name: ANONYMIZATIONENGINECONFIGPATH
+              value: /etc/fhir-pseudonymizer/anonymization.yaml
+            {{- end }}
+            {{- if .Values.tracing.enabled }}
+            - name: JAEGER__ENABLED
+              value: "true"
+            {{- end }}
+            {{- if .Values.gpas.auth.basic.enabled }}
+            - name: GPAS__AUTH__BASIC__USERNAME
+              value: {{ .Values.gpas.auth.basic.username | quote }}
+            - name: GPAS__AUTH__BASIC__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fhir-gateway.gpasBasicAuthSecretName" . }}
+                  key: GPAS__AUTH__BASIC__PASSWORD
+            {{- end }}
+            {{- if .Values.fhirPseudonymizer.auth.apiKey.enabled }}
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fhir-gateway.fhirPseudonymizerApiKeySecretName" . }}
+                  key: APIKEY
+            {{- end }}
+            {{- if .Values.fhirPseudonymizer.extraEnv }}
+            {{- toYaml .Values.fhirPseudonymizer.extraEnv | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: {{ .Values.fhirPseudonymizer.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhirPseudonymizer.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.fhirPseudonymizer.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.fhirPseudonymizer.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.fhirPseudonymizer.readinessProbe.failureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            initialDelaySeconds: {{ .Values.fhirPseudonymizer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhirPseudonymizer.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.fhirPseudonymizer.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.fhirPseudonymizer.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.fhirPseudonymizer.livenessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.fhirPseudonymizer.resources | nindent 12 }}
+          volumeMounts:
+            {{- if or (.Files.Glob "files/anonymization.yaml") .Values.fhirPseudonymizer.anonymizationConfig }}
+            - name: anonymization-config
+              mountPath: /etc/fhir-pseudonymizer
+            {{- else }}
+            []
+            {{- end }}
+      {{- with .Values.fhirPseudonymizer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fhirPseudonymizer.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fhirPseudonymizer.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- if or (.Files.Glob "files/anonymization.yaml") .Values.fhirPseudonymizer.anonymizationConfig }}
+        - name: anonymization-config
+          configMap:
+            name: {{ include "fhir-gateway.fullname" . }}-anonymization
+        {{- else }}
+        []
+        {{- end }}
+{{- end -}}
