@@ -322,7 +322,7 @@ fhirPseudonymizer:
   image: # +doc-gen:ignore
     registry: harbor.miracum.org
     repository: miracum-etl/fhir-pseudonymizer
-    tag: v2.5.0
+    tag: v2.5.1
     pullPolicy: IfNotPresent
 
   metrics:
