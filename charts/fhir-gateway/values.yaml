@@ -320,9 +320,9 @@ fhirPseudonymizer:
 
   # container image
   image: # +doc-gen:ignore
-    registry: harbor.miracum.org
-    repository: miracum-etl/fhir-pseudonymizer
-    tag: v2.5.0
+    registry: ghcr.io
+    repository: miracum/fhir-pseudonymizer
+    tag: v2.5.1
     pullPolicy: IfNotPresent
 
   metrics:
