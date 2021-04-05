@@ -56,7 +56,7 @@ spec:
               value: /etc/fhir-pseudonymizer/anonymization.yaml
             {{- end }}
             {{- if .Values.tracing.enabled }}
-            - name: JAEGER__ENABLED
+            - name: TRACING__ENABLED
               value: "true"
             {{- end }}
             {{- if .Values.gpas.auth.basic.enabled }}
