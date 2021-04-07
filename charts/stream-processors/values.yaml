@@ -1,0 +1,36 @@
+# annotations to apply to all deployments
+commonAnnotations:
+  {}
+  # sidecar.jaegertracing.io/inject: "jaeger-prod"
+
+# name of the strimzi cluster. Used to construct the bootstrap server URL.
+strimziClusterName: kafka-cluster
+
+# The Kafka security protocol to use.
+# See <https://kafka.apache.org/26/javadoc/org/apache/kafka/common/security/auth/SecurityProtocol.html>
+# for a list of supported values.
+securityProtocol: SSL
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# PodSecurityContext applied to all deployments
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+# container security context. secure by default.
+securityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 11111
+  runAsGroup: 11111
+
+# list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example
+processors:
+  {}

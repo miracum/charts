@@ -1,0 +1,39 @@
+{{- range $name, $spec := .Values.processors }}
+{{- with $spec }}
+{{- if .metrics }}
+{{- if .metrics.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  {{- if .metrics.serviceMonitor.namespace }}
+  namespace: {{ .metrics.serviceMonitor.namespace }}
+  {{- end }}
+  labels:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ $name }}
+    {{- if .metrics.serviceMonitor.additionalLabels }}
+    {{- toYaml .metrics.serviceMonitor.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+    - port: {{ .metrics.serviceMonitor.port | default "http"}}
+      path: {{ .metrics.serviceMonitor.path | default "/metrics"}}
+      {{- if .metrics.serviceMonitor.interval }}
+      interval: {{ .metrics.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .metrics.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .metrics.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ $.Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "stream-processors.labels" $ | nindent 6 }}
+      app.kubernetes.io/name: {{ $name }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
