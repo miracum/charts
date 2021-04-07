@@ -103,4 +103,15 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
-generated: "2021-04-06T09:59:52.572069646Z"
+  stream-processors:
+  - apiVersion: v2
+    created: "2021-04-07T19:02:47.316299996Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 997e34a8c9dbf6646cdcb98f0cbafaee4a1b7be0345209bc78e39ea388608a91
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
+    version: 1.0.7
+generated: "2021-04-07T19:02:47.316318096Z"
