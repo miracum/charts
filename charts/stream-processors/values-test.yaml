@@ -1,0 +1,54 @@
+processors:
+  fhir-to-server:
+    replicaCount: 1
+    container:
+      image:
+        registry: docker.io
+        repository: nginx
+        tag: 1.19
+        pullPolicy: IfNotPresent
+      env:
+        - name: TOPIC
+          value: fhir-raw
+        - name: FHIR_URL
+          value: ""
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+        limits:
+          memory: "768Mi"
+          cpu: "500m"
+    extraContainers:
+      - name: nginx
+        image: docker.io/nginx:1.19
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "768Mi"
+            cpu: "500m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 11111
+          runAsGroup: 11111
+          readOnlyRootFilesystem: true

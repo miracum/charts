@@ -1,0 +1,20 @@
+project:
+  name: Kafka Stream Processors
+  shortName: stream-processors
+  url: https://gitlab.miracum.org/miracum/etl/streams
+  description: A Helm chart for deploying a set of Kafka stream processing apps.
+  app: the Kafka Stream Processors
+repository:
+  url: https://miracum.github.io/charts
+  name: miracum
+chart:
+  name: stream-processors
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+  - "Kubernetes v1.16+"
+  - "Helm v3"
+  - "Strimzi Operator installed"
+release:
+  name: stream-processors
+  namespace: stream-processors

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: stream-processors
+description: A Helm chart for deploying a set of Kafka stream processing apps
+type: application
+version: 1.0.7
+home: https://gitlab.miracum.org/miracum/etl/streams

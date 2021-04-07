@@ -1,0 +1,101 @@
+{{- range $name, $spec := .Values.processors }}
+{{- with $spec }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/version: {{ .container.image.tag | quote }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+  {{- with $.Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $name }}
+        app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ .container.image.registry }}/{{ .container.image.repository }}:{{ .container.image.tag }}"
+          imagePullPolicy: {{ .container.image.pullPolicy }}
+          {{- with .container }}
+          {{- if .livenessProbe }}
+          livenessProbe:
+            {{- toYaml .livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .readinessProbe }}
+          readinessProbe:
+            {{- toYaml .livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          env:
+            - name: GROUP_ID
+              value: {{ $name }}
+            - name: SECURITY_PROTOCOL
+              value: {{ $.Values.securityProtocol }}
+            - name: BOOTSTRAP_SERVERS
+              value: {{ $.Values.strimziClusterName }}-kafka-bootstrap:{{ (eq $.Values.securityProtocol "SSL") | ternary "9093" "9092" }}
+            - name: SSL_KEY_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: user.password
+            - name: SSL_TRUST_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
+                  key: ca.password
+            {{- if .container.env -}}
+            {{- toYaml .container.env | default "" | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .container.resources | nindent 12 }}
+          volumeMounts:
+            - name: kafka-certs
+              mountPath: "/opt/kafka-certs"
+              readOnly: true
+        {{- if .extraContainers }}
+        {{- toYaml .extraContainers | nindent 8}}
+        {{- end }}
+      volumes:
+        - name: kafka-certs
+          projected:
+            sources:
+            - secret:
+                name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
+                items:
+                  - key: ca.crt
+                    path: ca.crt
+                  - key: ca.p12
+                    path: ca.p12
+            - secret:
+                name: {{ $name }}
+                items:
+                  - key: user.crt
+                    path: user.crt
+                  - key: user.p12
+                    path: user.p12
+                  - key: user.key
+                    path: user.key
+{{- end }}
+{{- end }}
