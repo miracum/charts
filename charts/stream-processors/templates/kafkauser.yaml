@@ -1,6 +1,6 @@
 {{- range $name, $spec := .Values.processors }}
 ---
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
   name: {{ $name}}
