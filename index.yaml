@@ -2,6 +2,23 @@ apiVersion: v1
 entries:
   fhir-gateway:
   - apiVersion: v2
+    created: "2021-05-19T08:47:00.530920047Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.3.18
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 111f83c501b66e8d9fecafa6837a78afcce6131fac0a5dbefe077f6f16bb1743
+    home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.13/fhir-gateway-3.4.13.tgz
+    version: 3.4.13
+  - apiVersion: v2
     created: "2021-04-21T15:39:08.124919859Z"
     dependencies:
     - condition: postgresql.enabled
@@ -190,6 +207,16 @@ entries:
     version: 3.4.2
   stream-processors:
   - apiVersion: v2
+    created: "2021-05-19T08:47:00.69740557Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: ce7919475c038d0dd058df705f197297afc2ad79fb1eb185a63c73d92d98ac07
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.0.8/stream-processors-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
     created: "2021-04-07T19:02:47.316299996Z"
     description: A Helm chart for deploying a set of Kafka stream processing apps
     digest: 997e34a8c9dbf6646cdcb98f0cbafaee4a1b7be0345209bc78e39ea388608a91
@@ -199,4 +226,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-04-21T15:39:08.127175631Z"
+generated: "2021-05-19T08:47:00.697467172Z"
