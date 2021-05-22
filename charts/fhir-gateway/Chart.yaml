@@ -7,7 +7,7 @@ sources:
 home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 10.3.18
+    version: 10.4.6
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 3.4.14
+version: 3.4.15
