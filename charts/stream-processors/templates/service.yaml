@@ -1,0 +1,21 @@
+{{- range $name, $spec := .Values.processors }}
+{{- with $spec }}
+{{- if .metrics }}
+{{- if .metrics.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-metrics
+spec:
+  selector:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ $name }}
+  ports:
+    - protocol: TCP
+      port: {{ .metrics.port | default 8080 }}
+      targetPort: "metrics"
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

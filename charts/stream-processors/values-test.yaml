@@ -1,5 +1,5 @@
 processors:
-  fhir-to-server:
+  nginx:
     replicaCount: 1
     container:
       image:
@@ -20,7 +20,7 @@ processors:
           memory: "768Mi"
           cpu: "500m"
     extraContainers:
-      - name: nginx
+      - name: nginx-extra
         image: docker.io/nginx:1.19
         imagePullPolicy: IfNotPresent
         livenessProbe:

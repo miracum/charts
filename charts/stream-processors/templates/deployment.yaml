@@ -48,6 +48,11 @@ spec:
             {{- toYaml .livenessProbe | nindent 12 }}
           {{- end }}
           {{- end }}
+          {{- with .metrics }}
+          ports:
+            - containerPort: {{ .port | default 8080 }}
+              name: "metrics"
+          {{- end }}
           env:
             - name: GROUP_ID
               value: {{ $name }}

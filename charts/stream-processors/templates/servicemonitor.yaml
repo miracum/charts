@@ -18,7 +18,7 @@ metadata:
     {{- end }}
 spec:
   endpoints:
-    - port: {{ .metrics.serviceMonitor.port | default "http"}}
+    - port: "metrics"
       path: {{ .metrics.serviceMonitor.path | default "/metrics"}}
       {{- if .metrics.serviceMonitor.interval }}
       interval: {{ .metrics.serviceMonitor.interval }}
