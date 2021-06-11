@@ -2,6 +2,23 @@ apiVersion: v1
 entries:
   fhir-gateway:
   - apiVersion: v2
+    created: "2021-06-11T15:57:16.183867678Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.4.8
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: e946e19a093a0cc812401311f06fd00f92832d067f74a11c750bc523ebcc16b4
+    home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.18/fhir-gateway-3.4.18.tgz
+    version: 3.4.18
+  - apiVersion: v2
     created: "2021-05-30T11:46:46.075861304Z"
     dependencies:
     - condition: postgresql.enabled
@@ -314,4 +331,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-06-08T17:21:02.187885128Z"
+generated: "2021-06-11T15:57:16.184101996Z"
