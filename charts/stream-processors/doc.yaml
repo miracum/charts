@@ -14,7 +14,7 @@ chart:
 prerequisites:
   - "Kubernetes v1.16+"
   - "Helm v3"
-  - "Strimzi Operator installed"
+  - "Strimzi Kafka Operator installed"
 release:
   name: stream-processors
   namespace: stream-processors

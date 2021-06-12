@@ -18,7 +18,13 @@ This chart deploys the Kafka Stream Processors on a [Kubernetes](http://kubernet
 
 - Kubernetes v1.16+
 - Helm v3
-- Strimzi Operator installed
+- Strimzi Kafka Operator installed
+
+To install a simple Kafka cluster after the Strimzi Kafka Operator is installed, run:
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/examples/kafka/kafka-ephemeral-single.yaml
+```
 
 ## Installing the Chart
 
@@ -46,22 +52,22 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the `stream-processors` chart and their default values.
 
-| Parameter                                | Description                                                                                                                                                               | Default         |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| strimziClusterName                       | name of the strimzi cluster. Used to construct the bootstrap server URL.                                                                                                  | `kafka-cluster` |
-| securityProtocol                         | The Kafka security protocol to use. See <https://kafka.apache.org/26/javadoc/org/apache/kafka/common/security/auth/SecurityProtocol.html> for a list of supported values. | `SSL`           |
-| nameOverride                             |                                                                                                                                                                           | `""`            |
-| fullnameOverride                         |                                                                                                                                                                           | `""`            |
-| securityContext.allowPrivilegeEscalation |                                                                                                                                                                           | `false`         |
-| securityContext.privileged               |                                                                                                                                                                           | `false`         |
-| securityContext.runAsNonRoot             |                                                                                                                                                                           | `true`          |
-| securityContext.runAsUser                |                                                                                                                                                                           | `11111`         |
-| securityContext.runAsGroup               |                                                                                                                                                                           | `11111`         |
+| Parameter                                | Description                                                                                                                                                               | Default      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| strimziClusterName                       | name of the strimzi cluster. Used to construct the bootstrap server URL.                                                                                                  | `my-cluster` |
+| securityProtocol                         | The Kafka security protocol to use. See <https://kafka.apache.org/26/javadoc/org/apache/kafka/common/security/auth/SecurityProtocol.html> for a list of supported values. | `SSL`        |
+| nameOverride                             |                                                                                                                                                                           | `""`         |
+| fullnameOverride                         |                                                                                                                                                                           | `""`         |
+| securityContext.allowPrivilegeEscalation |                                                                                                                                                                           | `false`      |
+| securityContext.privileged               |                                                                                                                                                                           | `false`      |
+| securityContext.runAsNonRoot             |                                                                                                                                                                           | `true`       |
+| securityContext.runAsUser                |                                                                                                                                                                           | `11111`      |
+| securityContext.runAsGroup               |                                                                                                                                                                           | `11111`      |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install stream-processors miracum/stream-processors -n stream-processors --set strimziClusterName=kafka-cluster
+$ helm install stream-processors miracum/stream-processors -n stream-processors --set strimziClusterName=my-cluster
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
