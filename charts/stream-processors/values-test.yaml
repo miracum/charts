@@ -19,22 +19,21 @@ processors:
         limits:
           memory: "768Mi"
           cpu: "500m"
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 3
+        periodSeconds: 3
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 3
+        periodSeconds: 3
     extraContainers:
       - name: nginx-extra
         image: docker.io/nginx:1.19
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 3
-          periodSeconds: 3
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 3
-          periodSeconds: 3
         resources:
           requests:
             memory: "512Mi"
@@ -52,3 +51,44 @@ processors:
           runAsUser: 11111
           runAsGroup: 11111
           readOnlyRootFilesystem: true
+  ahd2fhir:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        additionalLabels:
+          release: prom
+    replicaCount: 1
+    container:
+      image:
+        registry: ghcr.io
+        repository: miracum/ahd2fhir
+        tag: v1.0.6
+        pullPolicy: IfNotPresent
+      env:
+        - name: AHD_URL
+          value: http://localhost:9999/health-discovery
+        - name: AHD_API_TOKEN
+          value: "123"
+        - name: AHD_PROJECT
+          value: "test"
+        - name: AHD_PIPELINE
+          value: "discharge"
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+        limits:
+          memory: "768Mi"
+          cpu: "500m"
+      livenessProbe:
+        httpGet:
+          path: /live
+          port: 8080
+        initialDelaySeconds: 3
+        periodSeconds: 3
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: 8080
+        initialDelaySeconds: 3
+        periodSeconds: 3

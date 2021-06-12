@@ -7,14 +7,20 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-metrics
+  labels:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/version: {{ $spec.container.image.tag | quote }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
 spec:
   selector:
-    {{- include "stream-processors.labels" $ | nindent 4 }}
     app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
   ports:
-    - protocol: TCP
+    - protocol: "TCP"
       port: {{ .metrics.port | default 8080 }}
       targetPort: "metrics"
+      name: "metrics"
 {{- end }}
 {{- end }}
 {{- end }}

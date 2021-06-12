@@ -4,7 +4,7 @@ commonAnnotations:
   # sidecar.jaegertracing.io/inject: "jaeger-prod"
 
 # name of the strimzi cluster. Used to construct the bootstrap server URL.
-strimziClusterName: kafka-cluster
+strimziClusterName: my-cluster
 
 # The Kafka security protocol to use.
 # See <https://kafka.apache.org/26/javadoc/org/apache/kafka/common/security/auth/SecurityProtocol.html>

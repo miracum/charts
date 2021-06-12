@@ -19,6 +19,12 @@ This chart deploys {{ .Project.App }} on a [Kubernetes](http://kubernetes.io) cl
 - {{ . }}
 {{- end }}
 
+To install a simple Kafka cluster after the Strimzi Kafka Operator is installed, run:
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/examples/kafka/kafka-ephemeral-single.yaml
+```
+
 ## Installing the Chart
 
 To install the chart with the release name `{{ .Release.Name }}`:

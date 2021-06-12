@@ -39,19 +39,21 @@ spec:
           image: "{{ .container.image.registry }}/{{ .container.image.repository }}:{{ .container.image.tag }}"
           imagePullPolicy: {{ .container.image.pullPolicy }}
           {{- with .container }}
-          {{- if .livenessProbe }}
+          {{- with .livenessProbe }}
           livenessProbe:
-            {{- toYaml .livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .readinessProbe }}
+          {{- with .readinessProbe }}
           readinessProbe:
-            {{- toYaml .livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- end }}
           {{- with .metrics }}
+          {{- if .enabled }}
           ports:
             - containerPort: {{ .port | default 8080 }}
               name: "metrics"
+          {{- end }}
           {{- end }}
           env:
             - name: GROUP_ID
