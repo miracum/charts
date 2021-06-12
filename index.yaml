@@ -292,6 +292,16 @@ entries:
     version: 3.4.2
   stream-processors:
   - apiVersion: v2
+    created: "2021-06-12T19:12:51.382309267Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 2050dd81a41b67efc15e117f8e8d120a45ddb4b9d9f540940f4e5985c2fd7cdf
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.1/stream-processors-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
     created: "2021-06-08T17:21:02.187551824Z"
     description: A Helm chart for deploying a set of Kafka stream processing apps
     digest: ae05668e05488865156eea9ad62b9907e936576977c39e659dd1e1f301ab887f
@@ -331,4 +341,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-06-11T15:57:16.184101996Z"
+generated: "2021-06-12T19:12:51.382405867Z"
