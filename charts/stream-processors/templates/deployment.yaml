@@ -58,16 +58,32 @@ spec:
           env:
             - name: GROUP_ID
               value: {{ $name }}
+            - name: KAFKA_GROUP_ID
+              value: {{ $name }}
             - name: SECURITY_PROTOCOL
               value: {{ $.Values.securityProtocol }}
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: {{ $.Values.securityProtocol }}
             - name: BOOTSTRAP_SERVERS
+              value: {{ $.Values.strimziClusterName }}-kafka-bootstrap:{{ (eq $.Values.securityProtocol "SSL") | ternary "9093" "9092" }}
+            - name: KAFKA_BOOTSTRAP_SERVERS
               value: {{ $.Values.strimziClusterName }}-kafka-bootstrap:{{ (eq $.Values.securityProtocol "SSL") | ternary "9093" "9092" }}
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ $name }}
                   key: user.password
+            - name: KAFKA_SSL_KEY_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: user.password
             - name: SSL_TRUST_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
+                  key: ca.password
+            - name: KAFKA_SSL_TRUST_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
