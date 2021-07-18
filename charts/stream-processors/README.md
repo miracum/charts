@@ -54,15 +54,19 @@ The following table lists the configurable parameters of the `stream-processors`
 
 | Parameter                                | Description                                                                                                                                                               | Default      |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| commonAnnotations                        | annotations to apply to all deployments                                                                                                                                   | `{}`         |
 | strimziClusterName                       | name of the strimzi cluster. Used to construct the bootstrap server URL.                                                                                                  | `my-cluster` |
 | securityProtocol                         | The Kafka security protocol to use. See <https://kafka.apache.org/26/javadoc/org/apache/kafka/common/security/auth/SecurityProtocol.html> for a list of supported values. | `SSL`        |
+| imagePullSecrets                         |                                                                                                                                                                           | `[]`         |
 | nameOverride                             |                                                                                                                                                                           | `""`         |
 | fullnameOverride                         |                                                                                                                                                                           | `""`         |
+| podSecurityContext                       | PodSecurityContext applied to all deployments                                                                                                                             | `{}`         |
 | securityContext.allowPrivilegeEscalation |                                                                                                                                                                           | `false`      |
 | securityContext.privileged               |                                                                                                                                                                           | `false`      |
 | securityContext.runAsNonRoot             |                                                                                                                                                                           | `true`       |
 | securityContext.runAsUser                |                                                                                                                                                                           | `11111`      |
 | securityContext.runAsGroup               |                                                                                                                                                                           | `11111`      |
+| processors                               | list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example                                                                            | `{}`         |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
