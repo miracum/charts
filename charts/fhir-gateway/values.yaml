@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: harbor.miracum.org
   repository: miracum-etl/fhir-gateway
-  tag: v3.8.2
+  tag: v3.9.0
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
