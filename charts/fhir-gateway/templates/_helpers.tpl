@@ -87,10 +87,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Create the JDBC URL from the host, port and database name.
 */}}
 {{- define "fhir-gateway.sinks.postgres.jdbcUrl" -}}
+{{- $appName := printf "%s-fhir-gateway" .Release.Name -}}
 {{- if index .Values "postgresql" "enabled" }}
 {{- $host := (include "fhir-gateway.postgresql.host" .) -}}
-{{ printf "jdbc:postgresql://%s:5432/%s" $host (index .Values "postgresql" "postgresqlDatabase" ) }}
+{{ printf "jdbc:postgresql://%s:5432/%s?ApplicationName=%s" $host (index .Values "postgresql" "postgresqlDatabase" ) $appName }}
 {{- else -}}
-{{ printf "jdbc:postgresql://%s:%d/%s" .Values.sinks.postgres.external.host (int64 .Values.sinks.postgres.external.port) .Values.sinks.postgres.external.database}}
+{{ printf "jdbc:postgresql://%s:%d/%s?ApplicationName=%s" .Values.sinks.postgres.external.host (int64 .Values.sinks.postgres.external.port) .Values.sinks.postgres.external.database $appName }}
 {{- end -}}
 {{- end -}}

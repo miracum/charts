@@ -66,6 +66,7 @@ The following table lists the configurable parameters of the `stream-processors`
 | securityContext.runAsNonRoot             |                                                                                                                                                                           | `true`       |
 | securityContext.runAsUser                |                                                                                                                                                                           | `11111`      |
 | securityContext.runAsGroup               |                                                                                                                                                                           | `11111`      |
+| defaultReplicaCount                      | sets the replicas value for all processor deployment unless overriden on a per-processor level as `.replicaCount`                                                         | `1`          |
 | processors                               | list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example                                                                            | `{}`         |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
