@@ -31,6 +31,8 @@ securityContext:
   runAsUser: 11111
   runAsGroup: 11111
 
+# sets the replicas value for all processor deployment unless overriden on a per-processor level as `.replicaCount`
+defaultReplicaCount: 1
+
 # list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example
-processors:
-  {}
+processors: {}
