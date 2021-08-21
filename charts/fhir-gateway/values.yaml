@@ -322,7 +322,7 @@ fhirPseudonymizer:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/fhir-pseudonymizer
-    tag: v2.8.0
+    tag: v2.9.0
     pullPolicy: IfNotPresent
 
   metrics:
