@@ -10,4 +10,10 @@ dependencies:
     version: 10.4.8
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 3.4.26
+annotations:
+  artifacthub.io/changes: |
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
+    - kind: added
+      description: allow specifying list of input topics as a YAML array instead of a single-line string
+version: 3.4.27

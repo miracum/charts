@@ -95,3 +95,8 @@ Create the JDBC URL from the host, port and database name.
 {{ printf "jdbc:postgresql://%s:%d/%s?ApplicationName=%s" .Values.sinks.postgres.external.host (int64 .Values.sinks.postgres.external.port) .Values.sinks.postgres.external.database $appName }}
 {{- end -}}
 {{- end -}}
+
+{{- define "fhir-gateway.utils.joinListWithComma" -}}
+{{- $local := dict "first" true -}}
+{{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
