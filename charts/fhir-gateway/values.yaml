@@ -13,9 +13,9 @@ replicaCount: 1
 
 # the container image for the fhir-gateway
 image: # +doc-gen:ignore
-  registry: harbor.miracum.org
-  repository: miracum-etl/fhir-gateway
-  tag: v3.9.3
+  registry: ghcr.io
+  repository: miracum/fhir-gateway
+  tag: v3.9.4
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -161,7 +161,11 @@ kafka:
   # and write them to `outputTopic`. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
   enabled: false
   # name of the Kafka topic to read resources from
+  # DEPRECATED: use `kafka.inputTopics` (note the s) instead.
   inputTopic: fhir-raw
+  # list of Kafka topics to read FHIR resources from
+  inputTopics:
+    - fhir-raw
   # name of the topic to write processed resources to
   outputTopic: fhir.post-gatway
   # either PLAINTEXT or SSL
@@ -322,7 +326,7 @@ fhirPseudonymizer:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/fhir-pseudonymizer
-    tag: v2.8.0
+    tag: v2.9.0
     pullPolicy: IfNotPresent
 
   metrics:

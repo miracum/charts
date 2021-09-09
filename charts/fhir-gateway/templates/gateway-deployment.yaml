@@ -81,7 +81,11 @@ spec:
             - name: SERVICES_KAFKA_ENABLED
               value: {{ .Values.kafka.enabled | quote }}
             - name: INPUT_TOPIC
+              {{- if .Values.kafka.inputTopics }}
+              value: {{ include "fhir-gateway.utils.joinListWithComma" .Values.kafka.inputTopics }}
+              {{- else }}
               value: {{ .Values.kafka.inputTopic | quote }}
+              {{- end }}
             - name: OUTPUT_TOPIC
               value: {{ .Values.kafka.outputTopic | quote }}
             - name: BOOTSTRAP_SERVERS
