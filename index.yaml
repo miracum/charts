@@ -8,6 +8,29 @@ entries:
         - kind: changed
           description: bumped gateway and pseudonymizer image tag to latest
     apiVersion: v2
+    created: "2021-09-26T23:26:43.725484921Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.10.3
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: d8b9ef1a16777a59fcd720daf31001db1033463d3ae1b1667e0e75f24efcf87f
+    home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://gitlab.miracum.org/miracum/etl/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.29/fhir-gateway-3.4.29.tgz
+    version: 3.4.29
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: bumped gateway and pseudonymizer image tag to latest
+    apiVersion: v2
     created: "2021-09-15T15:43:51.510082469Z"
     dependencies:
     - condition: postgresql.enabled
@@ -543,4 +566,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-09-15T15:43:51.510329871Z"
+generated: "2021-09-26T23:26:43.725753823Z"
