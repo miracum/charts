@@ -16,4 +16,4 @@ annotations:
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
       description: bumped gateway and pseudonymizer image tag to latest
-version: 3.4.29
+version: 3.4.30
