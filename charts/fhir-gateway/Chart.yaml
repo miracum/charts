@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: bumped gateway and pseudonymizer image tag to latest
-version: 3.4.30
+      description: bumped gateway image tag to latest
+version: 3.4.31
