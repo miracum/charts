@@ -7,7 +7,7 @@ sources:
 home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 10.10.3
+    version: 10.12.7
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
 annotations:
@@ -16,4 +16,4 @@ annotations:
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
       description: bumped gateway image tag to latest
-version: 3.4.31
+version: 3.4.32
