@@ -3,8 +3,8 @@ name: fhir-gateway
 description: A Helm chart for deploying the MIRACUM FHIR Gateway
 type: application
 sources:
-  - https://gitlab.miracum.org/miracum/etl/fhir-gateway
-home: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+  - https://github.com/miracum/fhir-gateway
+home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
     version: 10.12.7
@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: bumped gateway to v3.10.0
-version: 3.5.0
+      description: updated fhir-gateway source URL
+version: 3.5.1
