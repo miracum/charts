@@ -34,7 +34,7 @@ jobs:
         run: chart-powerlint.sh
       # used to test whether the changelog generation process works properly
       - name: Generate changelogs
-        run: .github/generate-chart-changelogs.sh
+        run: bash .github/generate-chart-changelogs.sh
 
   test:
     runs-on: ubuntu-20.04
