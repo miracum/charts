@@ -6,6 +6,29 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: updated ghcr.io/miracum/fhir-pseudonymizer image tag to v2.10.1
+    apiVersion: v2
+    created: "2021-11-08T19:18:47.425187883Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.12.7
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: ebcf22ad89d18e28dbb816a3e52fe2cc088931455fa85c6d6b7b04bca8c710c1
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.5.2/fhir-gateway-3.5.2.tgz
+    version: 3.5.2
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: updated fhir-gateway source URL
     apiVersion: v2
     created: "2021-11-05T15:36:33.618894803Z"
@@ -611,6 +634,22 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   stream-processors:
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: bumped version to test changelog generation
+    apiVersion: v2
+    created: "2021-11-08T19:18:47.563803733Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: c8b3a8e8fd7397a7fb66f018dc818f0aaee18a23a2e1258b5a6dbad8d5f4bbec
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.4/stream-processors-1.1.4.tgz
+    version: 1.1.4
   - apiVersion: v2
     created: "2021-07-27T19:58:38.872114862Z"
     description: A Helm chart for deploying a set of Kafka stream processing apps
@@ -681,4 +720,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-11-05T15:36:33.620677211Z"
+generated: "2021-11-08T19:18:47.566022958Z"
