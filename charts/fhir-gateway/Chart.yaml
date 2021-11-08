@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated fhir-gateway source URL
-version: 3.5.1
+      description: updated ghcr.io/miracum/fhir-pseudonymizer image tag to v2.10.1
+version: 3.5.2
