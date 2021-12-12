@@ -6,6 +6,29 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: update harbor.miracum.org/miracum-etl/loinc-conversion docker tag to v1.13.1
+    apiVersion: v2
+    created: "2021-12-12T12:02:32.615261053Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.12.7
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 48984150c256d39679b3e66e4da3a213229850d59a2ce0e7350dfccad9a645ff
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.5.4/fhir-gateway-3.5.4.tgz
+    version: 3.5.4
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: updated ghcr.io/miracum/fhir-gateway image tag to v3.10.2
     apiVersion: v2
     created: "2021-12-11T14:22:41.743251153Z"
@@ -743,4 +766,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-12-11T14:22:41.743712183Z"
+generated: "2021-12-12T12:02:32.615595162Z"
