@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated ghcr.io/miracum/fhir-gateway image tag to v3.10.2
-version: 3.5.3
+      description: update harbor.miracum.org/miracum-etl/loinc-conversion docker tag to v1.13.1
+version: 3.5.4
