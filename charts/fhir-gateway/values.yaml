@@ -226,7 +226,7 @@ loincConverter:
   image: # +doc-gen:ignore
     registry: harbor.miracum.org
     repository: miracum-etl/loinc-conversion
-    tag: v1.12.1
+    tag: v1.13.1
     pullPolicy: IfNotPresent
 
   metrics:
