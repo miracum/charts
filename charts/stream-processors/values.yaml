@@ -34,5 +34,8 @@ securityContext:
 # sets the replicas value for all processor deployment unless overriden on a per-processor level as `.replicaCount`
 defaultReplicaCount: 1
 
+# sets the revisionHistoryLimit value for all processor deployment unless overriden on a per-processor level as `.revisionHistoryLimit`
+defaultRevisionHistoryLimit: 10
+
 # list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example
 processors: {}
