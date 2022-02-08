@@ -16,6 +16,7 @@ metadata:
   {{- end }}
 spec:
   replicas: {{ default $.Values.defaultReplicaCount .replicaCount }}
+  revisionHistoryLimit: {{ default $.Values.defaultRevisionHistoryLimit .revisionHistoryLimit }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ $name }}
