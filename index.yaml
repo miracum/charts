@@ -707,6 +707,22 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: added configuration options for the deployments revisionHistoryLimit
+    apiVersion: v2
+    created: "2022-02-08T19:47:55.732274609Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: e72435a79851fd5a441b87e7dd0431b791567eb1c9c63e6d77090364ddbb286f
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.5/stream-processors-1.1.5.tgz
+    version: 1.1.5
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: bumped version to test changelog generation
     apiVersion: v2
@@ -789,4 +805,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2021-12-15T14:14:42.325751536Z"
+generated: "2022-02-08T19:47:55.736357795Z"
