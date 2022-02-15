@@ -66,8 +66,9 @@ The following table lists the configurable parameters of the `stream-processors`
 | securityContext.runAsNonRoot             |                                                                                                                                                                           | `true`       |
 | securityContext.runAsUser                |                                                                                                                                                                           | `11111`      |
 | securityContext.runAsGroup               |                                                                                                                                                                           | `11111`      |
-| defaultReplicaCount                      | sets the replicas value for all processor deployment unless overriden on a per-processor level as `.replicaCount`                                                         | `1`          |
-| defaultRevisionHistoryLimit              | sets the revisionHistoryLimit value for all processor deployment unless overriden on a per-processor level as `.revisionHistoryLimit`                                     | `10`         |
+| defaultReplicaCount                      | sets the replicas value for all processor deployments unless overriden on a per-processor level as `.replicaCount`                                                        | `1`          |
+| defaultRevisionHistoryLimit              | sets the revisionHistoryLimit value for all processor deployments unless overriden on a per-processor level as `.revisionHistoryLimit`                                    | `10`         |
+| defaultTolerations                       | sets list of tolerations for all processor deployments unless overriden on a per-processor level as `.tolerations`                                                        | `[]`         |
 | processors                               | list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example                                                                            | `{}`         |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:

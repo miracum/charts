@@ -8,5 +8,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: added
-      description: added configuration options for the deployments revisionHistoryLimit
-version: 1.1.5
+      description: added configuration options for the deployments tolerations
+version: 1.1.6
