@@ -99,8 +99,10 @@ spec:
               mountPath: "/opt/kafka-certs"
               readOnly: true
         {{- if .extraContainers }}
-        {{- toYaml .extraContainers | nindent 8}}
+        {{- toYaml .extraContainers | nindent 8 }}
         {{- end }}
+      tolerations:
+        {{- .tolerations | default $.Values.defaultTolerations | toYaml | nindent 8 }}
       volumes:
         - name: kafka-certs
           projected:
