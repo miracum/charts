@@ -1,0 +1,19 @@
+project:
+  name: FHIR Pseudonymizer
+  shortName: fhir-pseudonymizer
+  url: https://gitlab.miracum.org/miracum/etl/fhir-pseudonymizer
+  description: Helm chart for deploying the MIRACUM FHIR Pseudonymizer on Kubernetes.
+  app: the MIRACUM FHIR Pseudonymizer
+repository:
+  url: https://miracum.github.io/charts
+  name: miracum
+chart:
+  name: fhir-pseudonymizer
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+  - "Kubernetes v1.16+"
+  - "Helm v3"
+release:
+  name: fhir-pseudonymizer
+  namespace: fhir-pseudonymizer

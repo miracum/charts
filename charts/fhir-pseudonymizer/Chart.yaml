@@ -1,0 +1,15 @@
+apiVersion: v2
+name: fhir-pseudonymizer
+description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+type: application
+sources:
+  - https://github.com/miracum/fhir-pseudonymizer
+home: https://github.com/miracum/fhir-pseudonymizer
+dependencies: []
+annotations:
+  artifacthub.io/changes: |
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
+    - kind: added
+      description: initial version outsourced from the fhir-gateway chart
+version: 0.1.0
