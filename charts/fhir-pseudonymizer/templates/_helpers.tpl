@@ -46,7 +46,7 @@ Return the gPAS basic auth credentials
 {{- if .Values.gpas.auth.basic.existingSecret -}}
     {{- printf "%s" (tpl .Values.gpas.auth.basic.existingSecret $) -}}
 {{- else -}}
-    {{ printf "%s-%s" .Release.Name "gpas-auth" }}
+    {{ include "fhir-pseudonymizer.fullname" . }}-gpas-auth
 {{- end -}}
 {{- end -}}
 
@@ -57,11 +57,6 @@ Return the fhir-pseudonymizer api key
 {{- if .Values.auth.apiKey.existingSecret -}}
     {{- printf "%s" (tpl .Values.auth.apiKey.existingSecret $) -}}
 {{- else -}}
-    {{ printf "%s-%s" .Release.Name "fhir-pseudonymizer-api-key" }}
+    {{ include "fhir-pseudonymizer.fullname" . }}-api-key
 {{- end -}}
-{{- end -}}
-
-{{- define "fhir-pseudonymizer.utils.joinListWithComma" -}}
-{{- $local := dict "first" true -}}
-{{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
 {{- end -}}

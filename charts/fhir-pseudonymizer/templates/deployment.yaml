@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fhir-pseudonymizer.fullname" . }}-fhir-pseudonymizer
+  name: {{ include "fhir-pseudonymizer.fullname" . }}
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
     app.kubernetes.io/component: pseudonymizer
