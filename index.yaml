@@ -6,6 +6,29 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: (chore) rebuilt docs with latest chart-doc-gen
+    apiVersion: v2
+    created: "2022-03-03T10:15:58.786465725Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.12.7
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 9105bea6aadd83d698b34219a01127c7e42de6a455b0abc873dde07598929d22
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.5.6/fhir-gateway-3.5.6.tgz
+    version: 3.5.6
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: updated fhir-gateway image tag to latest
     apiVersion: v2
     created: "2021-12-15T14:14:42.325374931Z"
@@ -707,6 +730,24 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: (chore) rebuilt docs with latest chart-doc-gen
+    apiVersion: v2
+    created: "2022-03-03T10:15:59.008846753Z"
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 4dfc06202a10ca98f099b1a1279b52c4336fda335ecaba5f3d85fc9c3bb66114
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.1.1/fhir-pseudonymizer-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: added
           description: initial version outsourced from the fhir-gateway chart
     apiVersion: v2
@@ -722,6 +763,22 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.1.0/fhir-pseudonymizer-0.1.0.tgz
     version: 0.1.0
   stream-processors:
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: (chore) rebuilt docs with latest chart-doc-gen
+    apiVersion: v2
+    created: "2022-03-03T10:15:59.227655461Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 4e81d2bef046b150fa39401d125c46d189d1dda7097bcf312f042c024869f4b8
+    home: https://gitlab.miracum.org/miracum/etl/streams
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.7/stream-processors-1.1.7.tgz
+    version: 1.1.7
   - annotations:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
@@ -840,4 +897,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2022-03-01T17:14:57.053861463Z"
+generated: "2022-03-03T10:15:59.228307764Z"
