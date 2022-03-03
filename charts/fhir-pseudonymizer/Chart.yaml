@@ -10,6 +10,6 @@ annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: initial version outsourced from the fhir-gateway chart
-version: 0.1.0
+    - kind: changed
+      description: (chore) rebuilt docs with latest chart-doc-gen
+version: 0.1.1

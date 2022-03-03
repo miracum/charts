@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated fhir-gateway image tag to latest
-version: 3.5.5
+      description: (chore) rebuilt docs with latest chart-doc-gen
+version: 3.5.6
