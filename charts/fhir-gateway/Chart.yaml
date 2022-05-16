@@ -15,5 +15,5 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: (chore) rebuilt docs with latest chart-doc-gen
-version: 3.5.7
+      description: chore(deps) update helm values ghcr.io/miracum/fhir-pseudonymizer to v2.12.0
+version: 3.5.8
