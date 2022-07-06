@@ -2,6 +2,7 @@ chart-dirs:
   - charts
 chart-repos:
   - bitnami=https://charts.bitnami.com/bitnami
+  - bitnami-archived=https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   - miracum=https://miracum.github.io/charts
 debug: true
 remote: origin

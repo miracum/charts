@@ -7,7 +7,7 @@
 ```console
 $ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.8
+$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.9
 ```
 
 ## Breaking changes
@@ -31,7 +31,7 @@ This chart deploys the MIRACUM FHIR Gateway on a [Kubernetes](http://kubernetes.
 To install the chart with the release name `fhir-gateway`:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.8
+$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.9
 ```
 
 The command deploys the MIRACUM FHIR Gateway on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -136,14 +136,14 @@ The following table lists the configurable parameters of the `fhir-gateway` char
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.8 --set replicaCount=1
+$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.9 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.8 --values values.yaml
+$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --version=3.5.9 --values values.yaml
 ```
 
 ## Pseudonymization
