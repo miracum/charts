@@ -1,0 +1,115 @@
+{{- if .Values.list.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "recruit.fullname" . }}-list
+  labels:
+    {{- include "recruit.labels" . | nindent 4 }}
+    app.kubernetes.io/component: list
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.list.replicaCount }}
+  revisionHistoryLimit: {{ .Values.list.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "recruit.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: list
+  template:
+    metadata:
+      labels:
+        {{- include "recruit.podLabels" . | nindent 8 }}
+        app.kubernetes.io/component: list
+        {{- with .Values.list.extraPodLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/notify/notify-cm.yaml") . | sha256sum | quote }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.list.podSecurityContext | nindent 8 }}
+      containers:
+        - name: list
+          image: "{{ .Values.list.image.registry }}/{{ .Values.list.image.repository }}:{{ .Values.list.image.tag }}"
+          securityContext:
+            {{- toYaml .Values.list.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.list.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/health/liveness
+              port: http
+            initialDelaySeconds: {{ .Values.list.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.list.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.list.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.list.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.list.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /api/health/readiness
+              port: http
+            initialDelaySeconds: {{ .Values.list.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.list.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.list.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.list.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.list.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.list.resources | nindent 12 }}
+          env:
+            - name: FHIR_URL
+              value: {{ template "recruit.fhirserver.url" . }}
+            - name: KEYCLOAK_AUTH_URL
+              value: {{ .Values.list.auth.keycloak.url }}
+            - name: KEYCLOAK_CLIENT_ID
+              value: {{ .Values.list.auth.keycloak.clientId }}
+            - name: KEYCLOAK_REALM
+              value: {{ .Values.list.auth.keycloak.realm }}
+            - name: TRACING_ENABLED
+              value: {{ .Values.tracing.enabled | default false | quote}}
+            - name: RULES_FILE_PATH
+              value: "/etc/rules.yaml"
+            {{- if not .Values.list.auth.enabled }}
+            - name: KEYCLOAK_DISABLED
+              value: "true"
+            {{- end }}
+            {{- if .Values.list.extraEnv }}
+            {{ toYaml .Values.list.extraEnv | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: notification-configuration-file
+              mountPath: /etc/rules.yaml
+              subPath: application.yaml
+              readOnly: true
+      {{- with .Values.list.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.list.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.list.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.list.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: notification-configuration-file
+          configMap:
+            name: {{ template "recruit.fullname" . }}-notify-rules
+{{- end }}
