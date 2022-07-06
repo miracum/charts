@@ -5,51 +5,63 @@ on:
     branches: [master]
 
 jobs:
-  pre-commit:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: pre-commit/action@v2.0.3
-
   lint:
-    needs:
-      - pre-commit
-    runs-on: ubuntu-20.04
-    container: ghcr.io/chgl/kube-powertools:latest
+    runs-on: ubuntu-22.04
+    container: ghcr.io/chgl/kube-powertools:v1.18.4@sha256:498ab5e5dbc040d68e8e9ce51ccd04e80d441ff504aebe69d463284d07c0b783
     steps:
+      - name: Add workspace as safe directory
+        run: |
+          git config --global --add safe.directory /__w/charts/charts
+
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
         with:
           fetch-depth: 0
+
       - name: Check if documentation is up-to-date
-        run: generate-docs.sh && git diff --exit-code HEAD
+        run: |
+          generate-docs.sh
+          if git diff --exit-code HEAD; then
+            echo -e "\033[0;32mDocumentation up to date\033[0m ✔"
+          else
+            echo -e "\033[0;31mDocumentation outdated! Please run generate-docs.sh locally and push the changes.\033[0m ❌"
+            git diff --color
+            exit 1
+          fi
+
       - name: Update dependencies
         run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
+
       - name: Run YAML lint
         run: yamllint .
+
       - name: Run chart-testing (lint)
         run: ct lint --config .github/ct/ct.yaml
+
       - name: Run Powerlint
+        env:
+          KUBERNETES_VERSIONS: "1.22.0 1.23.0 1.24.0"
         run: chart-powerlint.sh
-      # used to test whether the changelog generation process works properly
-      - name: Generate changelogs
-        run: bash .github/generate-chart-changelogs.sh
+
+      # used to test whether the changelog generation process works
+      - name: Generate changelogs (test)
+        run: generate-chart-changelog.sh
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - lint
+    strategy:
+      matrix:
+        k8s-version: [1.22.7, 1.23.4, 1.24.0]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # renovate: tag=v3.0.2
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v2
-
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.1.0
+        uses: helm/chart-testing-action@dae259e86a35ff09145c0805e2d7dd3f7207064a # renovate: tag=v2.2.1
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -60,8 +72,12 @@ jobs:
           fi
 
       - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1.2.0
+        uses: helm/kind-action@d08cf6ff1575077dee99962540d77ce91c62387d # tag=v1.3.0
         if: steps.list-changed.outputs.changed == 'true'
+        with:
+          version: v0.13.0
+          cluster_name: kind-cluster-k8s-${{ matrix.k8s-version }}
+          node_image: kindest/node:v${{ matrix.k8s-version }}
 
       - name: Run chart-testing (install)
         run: ct install --config .github/ct/install.yaml
