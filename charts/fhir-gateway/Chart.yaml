@@ -10,7 +10,7 @@ dependencies:
     version: 10.12.7
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: postgresql.enabled
-version: 3.5.9
+version: 3.6.0
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
