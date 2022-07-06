@@ -5,10 +5,7 @@ metadata:
   name: {{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
-    app.kubernetes.io/component: pseudonymizer
-    app.kubernetes.io/version: {{ .Values.fhirPseudonymizer.image.tag }}
-    app.kubernetes.io/name: fhir-pseudonymizer
-    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+    app.kubernetes.io/component: fhir-pseudonymizer
   {{- with .Values.common.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -17,17 +14,18 @@ spec:
   replicas: {{ .Values.fhirPseudonymizer.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: fhir-pseudonymizer
-      app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: fhir-pseudonymizer
   template:
     metadata:
-    {{- with .Values.fhirPseudonymizer.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/anonymization-cm.yaml") . | sha256sum | quote }}
+        {{- with .Values.fhirPseudonymizer.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
-        app.kubernetes.io/name: fhir-pseudonymizer
-        app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+        {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
+        app.kubernetes.io/component: fhir-pseudonymizer
     spec:
       automountServiceAccountToken: false
       {{- with .Values.fhirPseudonymizer.imagePullSecrets }}

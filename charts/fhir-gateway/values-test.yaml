@@ -1,0 +1,3 @@
+postgresql:
+  auth:
+    postgresPassword: fhir-gateway-password

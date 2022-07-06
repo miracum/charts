@@ -10,9 +10,9 @@ spec:
   restartPolicy: Never
   containers:
     - name: test-fhir-gateway
-      image: busybox:1
+      image: docker.io/curlimages/curl:7.84.0@sha256:5a2a25d96aa941ea2fc47acc50122f7c3d007399a075df61a82d6d2c3a567a2b
       imagePullPolicy: IfNotPresent
-      command: ['wget', '-O', '-']
+      command: ["curl", "--fail-with-body"]
       args: ['{{ include "fhir-gateway.fullname" . }}:{{ .Values.service.port }}/actuator/health']
       securityContext:
         allowPrivilegeEscalation: false
@@ -36,9 +36,9 @@ spec:
         exec:
           command: ["true"]
     - name: test-loinc-conversion
-      image: busybox:1
+      image: docker.io/curlimages/curl:7.84.0@sha256:5a2a25d96aa941ea2fc47acc50122f7c3d007399a075df61a82d6d2c3a567a2b
       imagePullPolicy: IfNotPresent
-      command: ['wget', '-O', '-']
+      command: ["curl", "--fail-with-body"]
       args: ['{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/ready']
       securityContext:
         allowPrivilegeEscalation: false
@@ -62,9 +62,9 @@ spec:
         exec:
           command: ["true"]
     - name: test-fhir-pseudonymizer
-      image: busybox:1
+      image: docker.io/curlimages/curl:7.84.0@sha256:5a2a25d96aa941ea2fc47acc50122f7c3d007399a075df61a82d6d2c3a567a2b
       imagePullPolicy: IfNotPresent
-      command: ['wget', '-O', '-']
+      command: ["curl", "--fail-with-body"]
       args: ['{{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer:{{ .Values.fhirPseudonymizer.service.port }}/ready']
       securityContext:
         allowPrivilegeEscalation: false
