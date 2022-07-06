@@ -7,10 +7,11 @@ validate-yaml: true
 check-version-increment: true
 chart-dirs:
   - charts
-helm-extra-args: --timeout 300
+helm-extra-args: --timeout 300s
 upgrade: true
 skip-missing-values: true
 release-label: release
 chart-repos:
   - bitnami=https://charts.bitnami.com/bitnami
+  - bitnami-archived=https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
 release-notes-file: CHANGELOG.md

@@ -9,11 +9,18 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-20.04
-    container: ghcr.io/chgl/kube-powertools:latest
+    runs-on: ubuntu-22.04
+    container: ghcr.io/chgl/kube-powertools:v1.18.1@sha256:4d884690c940118efa465941f9f19f8ec7629cf54c0077a5e17983f6e6aaa3b2
+    permissions:
+      contents: write
+      packages: write
     steps:
+      - name: Add workspace as safe directory
+        run: |
+          git config --global --add safe.directory /__w/charts/charts
+
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
         with:
           fetch-depth: 0
 
@@ -29,12 +36,11 @@ jobs:
         run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
 
       - name: Generate changelogs
-        run: bash .github/generate-chart-changelogs.sh
+        run: generate-chart-changelog.sh
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.2.1
+        uses: helm/chart-releaser-action@a3454e46a6f5ac4811069a381e646961dda2e1bf # tag=v1.4.0
         with:
           config: .github/ct/ct.yaml
-          version: v1.3.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
