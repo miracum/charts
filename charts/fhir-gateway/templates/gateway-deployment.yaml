@@ -4,10 +4,7 @@ metadata:
   name: {{ include "fhir-gateway.fullname" . }}
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
-    app.kubernetes.io/component: gateway
-    app.kubernetes.io/version: {{ .Values.image.tag }}
-    app.kubernetes.io/name: fhir-gateway
-    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+    app.kubernetes.io/component: fhir-gateway
   {{- with .Values.common.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -16,8 +13,8 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: fhir-gateway
-      app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: fhir-gateway
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -25,8 +22,8 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        app.kubernetes.io/name: fhir-gateway
-        app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+        {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
+        app.kubernetes.io/component: fhir-gateway
     spec:
       automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
@@ -35,6 +32,34 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait-for-db
+          image: {{ include "fhir-gateway.waitforDB.image" . }}
+          imagePullPolicy: {{ .Values.waitForPostgresInitContainer.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            privileged: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+          env:
+            - name: PGHOST
+              value: {{ include "fhir-gateway.postgresql.host" $ | quote }}
+            - name: PGPORT
+              value: {{ include "fhir-gateway.postgresql.port" $ | quote }}
+            - name: PGUSER
+              value: {{ include "fhir-gateway.postgresql.user" $ | quote }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              until pg_isready; do
+                echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
+                sleep 15;
+              done;
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -45,18 +70,14 @@ spec:
             - name: SERVICES_PSQL_ENABLED
               value: {{ .Values.sinks.postgres.enabled | quote }}
             - name: SPRING_DATASOURCE_URL
-              value: {{ template "fhir-gateway.sinks.postgres.jdbcUrl" . }}
+              value: {{ include "fhir-gateway.sinks.postgresql.jdbcUrl" . }}
             - name: SPRING_DATASOURCE_USERNAME
-            {{- if index .Values "postgresql" "enabled" }}
-              value: {{ index .Values "postgresql" "postgresqlUsername" }}
-            {{- else }}
-              value: {{ .Values.sinks.postgres.external.username }}
-            {{- end }}
+              value: {{ include "fhir-gateway.postgresql.user" . }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "fhir-gateway.postgresSecretName" . }}
-                  key: postgresql-password
+                  name: {{ include "fhir-gateway.db-secret-name" . }}
+                  key: {{ include "fhir-gateway.db-secret-key" . }}
             - name: SERVICES_PSEUDONYMIZER_ENABLED
               value: {{ .Values.fhirPseudonymizer.enabled | quote }}
             - name: SERVICES_PSEUDONYMIZER_URL
@@ -128,15 +149,6 @@ spec:
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.readinessProbe.successThreshold }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-          startupProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: http
-            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.startupProbe.successThreshold }}
-            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

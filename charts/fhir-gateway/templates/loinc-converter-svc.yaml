@@ -14,6 +14,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: loinc-converter
-    app.kubernetes.io/instance: {{ .Release.Name }}-loinc-converter
+    {{- include "fhir-gateway.matchLabels" . | nindent 4 }}
+    app.kubernetes.io/component: loinc-converter
 {{- end -}}

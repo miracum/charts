@@ -36,19 +36,51 @@ Common labels
 */}}
 {{- define "fhir-gateway.labels" -}}
 helm.sh/chart: {{ include "fhir-gateway.chart" . }}
+app.kubernetes.io/name: {{ include "fhir-gateway.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Return the Postgres sink credentials secret name
+Labels to use on deploy.spec.selector.matchLabels and svc.spec.selector
 */}}
-{{- define "fhir-gateway.postgresSecretName" -}}
-{{- if .Values.sinks.postgres.external.existingSecret -}}
-    {{- printf "%s" (tpl .Values.sinks.postgres.external.existingSecret $) -}}
-{{- else if index .Values "postgresql" "enabled" -}}
-    {{ printf "%s-%s" .Release.Name "postgresql" }}
+{{- define "fhir-gateway.matchLabels" -}}
+app.kubernetes.io/name: {{ include "fhir-gateway.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{/*
+Get the name of the secret containing the DB password
+*/}}
+{{- define "fhir-gateway.db-secret-name" -}}
+{{- if .Values.postgresql.enabled -}}
+    {{- if .Values.postgresql.auth.existingSecret -}}
+        {{ .Values.postgresql.auth.existingSecret | quote }}
+    {{- else -}}
+        {{ ( include "fhir-gateway.postgresql.fullname" . ) }}
+    {{- end -}}
+{{- else if .Values.sinks.postgres.external.existingSecret -}}
+    {{ .Values.sinks.postgres.external.existingSecret | quote }}
 {{- else -}}
-    {{ printf "%s-%s" .Release.Name "postgres-secret" }}
+    {{- $fullname := ( include "fhir-gateway.fullname" . ) -}}
+    {{ printf "%s-%s" $fullname "postgres-secret" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the key inside the secret containing the DB user's password
+*/}}
+{{- define "fhir-gateway.db-secret-key" -}}
+{{- if .Values.postgresql.enabled -}}
+    {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
+        {{ "password" }}
+    {{- else -}}
+        {{ "postgres-password" }}
+    {{- end -}}
+{{- else if .Values.sinks.postgres.external.existingSecretKey -}}
+    {{ .Values.sinks.postgres.external.existingSecretKey | quote }}
+{{- else -}}
+    {{ "postgresql-password" }}
 {{- end -}}
 {{- end -}}
 
@@ -78,25 +110,69 @@ Return the fhir-pseudonymizer api key
 Create a default fully qualified postgresql name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "fhir-gateway.postgresql.host" -}}
-{{- $name := "postgresql" -}}
+{{- define "fhir-gateway.postgresql.fullname" -}}
+{{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the hostname of the postgresql database
+*/}}
+{{- define "fhir-gateway.postgresql.host" -}}
+{{- ternary (include "fhir-gateway.postgresql.fullname" .) .Values.sinks.postgres.external.host .Values.postgresql.enabled -}}
+{{- end -}}
+
+{{/*
+Return the database name
+*/}}
+{{- define "fhir-gateway.postgresql.database" -}}
+{{- ternary .Values.postgresql.auth.database .Values.sinks.postgres.external.database .Values.postgresql.enabled -}}
+{{- end -}}
+
+{{/*
+Return the database port
+*/}}
+{{- define "fhir-gateway.postgresql.port" -}}
+{{- ternary "5432" .Values.sinks.postgres.external.port .Values.postgresql.enabled -}}
+{{- end -}}
+
+{{/*
+Return the database username
+*/}}
+{{- define "fhir-gateway.postgresql.user" -}}
+{{- if .Values.postgresql.enabled -}}
+    {{- if .Values.postgresql.auth.username -}}
+        {{ .Values.postgresql.auth.username | quote }}
+    {{- else -}}
+        {{ "postgres" }}
+    {{- end -}}
+{{- else -}}
+    {{ .Values.sinks.postgres.external.username }}
+{{- end -}}
 {{- end -}}
 
 {{/*
 Create the JDBC URL from the host, port and database name.
 */}}
-{{- define "fhir-gateway.sinks.postgres.jdbcUrl" -}}
-{{- $appName := printf "%s-fhir-gateway" .Release.Name -}}
-{{- if index .Values "postgresql" "enabled" }}
+{{- define "fhir-gateway.sinks.postgresql.jdbcUrl" -}}
+{{- $appName := printf "%s-fhir-gateway" (include "fhir-gateway.fullname" .) -}}
+{{- $databaseName := (include "fhir-gateway.postgresql.database" .) -}}
 {{- $host := (include "fhir-gateway.postgresql.host" .) -}}
-{{ printf "jdbc:postgresql://%s:5432/%s?ApplicationName=%s" $host (index .Values "postgresql" "postgresqlDatabase" ) $appName }}
-{{- else -}}
-{{ printf "jdbc:postgresql://%s:%d/%s?ApplicationName=%s" .Values.sinks.postgres.external.host (int64 .Values.sinks.postgres.external.port) .Values.sinks.postgres.external.database $appName }}
-{{- end -}}
+{{- $port := (include "fhir-gateway.postgresql.port" .) -}}
+{{ printf "jdbc:postgresql://%s:%d/%s?ApplicationName=%s" $host (int $port) $databaseName $appName}}
 {{- end -}}
 
 {{- define "fhir-gateway.utils.joinListWithComma" -}}
 {{- $local := dict "first" true -}}
 {{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
+
+{{/*
+Image used to for the PostgreSQL readiness init containers
+*/}}
+{{- define "fhir-gateway.waitforDB.image" -}}
+{{- $registry := .Values.waitForPostgresInitContainer.image.registry -}}
+{{- $repository := .Values.waitForPostgresInitContainer.image.repository -}}
+{{- $tag := .Values.waitForPostgresInitContainer.image.tag -}}
+{{ printf "%s/%s:%s" $registry $repository $tag}}
 {{- end -}}

@@ -4,7 +4,7 @@ metadata:
   name: {{ include "fhir-gateway.fullname" . }}
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
-    app.kubernetes.io/component: gateway
+    app.kubernetes.io/component: fhir-gateway
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: fhir-gateway
-    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-gateway
+    {{- include "fhir-gateway.matchLabels" . | nindent 4 }}
+    app.kubernetes.io/component: fhir-gateway
