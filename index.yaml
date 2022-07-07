@@ -6,6 +6,29 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: updated README template to no longer include the chart version
+    apiVersion: v2
+    created: "2022-07-07T22:59:13.500071534Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 10.12.7
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 364ccfe35ddeb18bcaef26da88d6b5abc582046c2d26b9f0313e998e1a656bab
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-3.6.1/fhir-gateway-3.6.1.tgz
+    version: 3.6.1
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: use archived bitnami charts index for postgresql dependency. See <https://github.com/bitnami/charts/issues/10833>.
     apiVersion: v2
     created: "2022-07-06T22:25:08.457020202Z"
@@ -1018,4 +1041,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2022-07-06T22:25:08.457474706Z"
+generated: "2022-07-07T22:59:13.500639535Z"
