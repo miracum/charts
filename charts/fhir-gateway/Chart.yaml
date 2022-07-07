@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 10.12.7
+    version: 10.16.2
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: postgresql.enabled
-version: 3.6.1
+version: 3.6.2
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated README template to no longer include the chart version
+      description: use archived bitnami charts index for postgresql dependency. See <https://github.com/bitnami/charts/issues/10833>.
