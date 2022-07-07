@@ -17,6 +17,7 @@ sources:
   - https://github.com/miracum/recruit
 deprecated: false
 kubeVersion: ">= 1.21.0"
+icon: https://miracum.github.io/recruit/_img/miracum-logo-transparent-256x256.png
 dependencies:
   - condition: fhirserver.enabled
     alias: fhirserver
