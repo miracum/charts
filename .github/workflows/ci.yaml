@@ -79,5 +79,15 @@ jobs:
           cluster_name: kind-cluster-k8s-${{ matrix.k8s-version }}
           node_image: kindest/node:v${{ matrix.k8s-version }}
 
+      - name: Install external dependencies for testing integrations
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm install --wait \
+            --create-namespace \
+            --namespace=monitoring \
+            --set grafana.enabled=false \
+            --set alertmanager.enabled=false \
+            kube-prometheus-stack prometheus-community/kube-prometheus-stack
+
       - name: Run chart-testing (install)
         run: ct install --config .github/ct/install.yaml

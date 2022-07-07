@@ -29,10 +29,13 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Add bitnami repo
+      - name: Add Helm chart dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add bitnami-archived https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+          helm repo add codecentric https://codecentric.github.io/helm-charts
+          helm repo add chgl https://chgl.github.io/charts
+          helm repo add hapifhir https://hapifhir.github.io/hapi-fhir-jpaserver-starter
 
       - name: Update dependencies
         run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
