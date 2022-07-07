@@ -53,7 +53,7 @@ jobs:
       - lint
     strategy:
       matrix:
-        k8s-version: [1.22.7, 1.23.4, 1.24.0]
+        k8s-version: [1.22.9, 1.23.6, 1.24.2]
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # renovate: tag=v3.0.2
@@ -78,16 +78,6 @@ jobs:
           version: v0.13.0
           cluster_name: kind-cluster-k8s-${{ matrix.k8s-version }}
           node_image: kindest/node:v${{ matrix.k8s-version }}
-
-      - name: Install external dependencies for testing integrations
-        run: |
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm install --wait \
-            --create-namespace \
-            --namespace=monitoring \
-            --set grafana.enabled=false \
-            --set alertmanager.enabled=false \
-            kube-prometheus-stack prometheus-community/kube-prometheus-stack
 
       - name: Run chart-testing (install)
         run: ct install --config .github/ct/install.yaml

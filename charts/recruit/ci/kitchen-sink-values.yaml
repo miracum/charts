@@ -30,7 +30,7 @@ notify:
             notify: "everyMorning"
   metrics:
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: kube-prom-stack
 
@@ -55,14 +55,14 @@ list:
           - "/"
   metrics:
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: kube-prom-stack
 
 query:
   metrics:
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: kube-prom-stack
 
@@ -107,6 +107,8 @@ ohdsi:
   webApi:
     podAnnotations:
       linkerd.io/inject: "enabled"
+  achilles:
+    enabled: false
 
 fhirserver:
   replicaCount: 1
@@ -135,7 +137,7 @@ fhirserver:
     linkerd.io/inject: "enabled"
   metrics:
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: kube-prom-stack
 

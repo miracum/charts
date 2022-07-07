@@ -9,3 +9,4 @@ chart-repos:
   - hapifhir=https://hapifhir.github.io/hapi-fhir-jpaserver-starter
 debug: true
 remote: origin
+helm-extra-args: --timeout 600s
