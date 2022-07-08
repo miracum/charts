@@ -890,6 +890,93 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.1.0/fhir-pseudonymizer-0.1.0.tgz
     version: 0.1.0
+  recruit:
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: |
+            ⚠️ BREAKING CHANGE ⚠️: updated all chart-dependencies to their latest version.
+            See README.md for instructions on upgrading from earlier versions.
+        - kind: changed
+          description: |
+            ⚠️ BREAKING CHANGE ⚠️: only support Kubernetes versions 1.19 and above.
+            In particular, only version `networking.k8s.io/v1` of the `Ingress` object is included.
+        - kind: changed
+          description: |
+            ⚠️ BREAKING CHANGE ⚠️: `ohdsi.cdmInitJob.enabled` is now set to `false` by default to prevent issues when updating.
+            If your database is already setup with any previous version of this chart, you can ignore this change.
+            You should set this to `true` if you want to setup your OMOP CDM database for the first time and set it to `false` again after the
+            job has completed successfully.
+        - kind: changed
+          description: |
+            Include the release name in the JDBC URL's ApplicationName: `ApplicationName={{ recruit.fullname }}-{query, notify}`
+        - kind: fixed
+          description: |
+            Automatically roll the notify and list module deployments if the rules configuration has changed by adding a `checksum/config` annotation to the pods.
+            See <https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments> for the solution details.
+        - kind: added
+          description: |
+            Added option to configure `topologySpreadConstraints`. See <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+        - kind: fixed
+          description: |
+            Use a hard-coded but configurable image for the `wait-for-db` initContainer for the query module.
+            Fixes an issue when `ohdsi.postgresql.enabled` is set to `false`.
+        - kind: changed
+          description: |
+            Expose metrics on a dedicated port, `http-metrics (8081)`, to allow for defining more restrictive network policies.
+            This change should be transparent to end-users.
+        - kind: changed
+          description: |
+            Removed `app.kubernetes.io/version` label as it is redundant with the image tag.
+        - kind: changed
+          description: |
+            use digest with all image tags
+    apiVersion: v2
+    appVersion: 9.x
+    created: "2022-07-08T00:58:42.890463148Z"
+    dependencies:
+    - alias: fhirserver
+      condition: fhirserver.enabled
+      name: hapi-fhir-jpaserver
+      repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
+      version: 0.9.0
+    - condition: ohdsi.enabled
+      name: ohdsi
+      repository: https://chgl.github.io/charts
+      version: 0.17.12
+    - condition: mailhog.enabled
+      name: mailhog
+      repository: https://codecentric.github.io/helm-charts
+      version: 5.0.7
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.15
+    description: Helm chart for deploying the MIRACUM recruitment infrastructure on
+      Kubernetes.
+    digest: e3a88227d64889e3ab0fee606debab083087c9c3f963297dd9715a37ac4dacab
+    home: https://miracum.github.io/recruit
+    icon: https://miracum.github.io/recruit/_img/miracum-logo-transparent-256x256.png
+    keywords:
+    - miracum
+    - fhir
+    - clinical trials
+    - patient recruitment
+    - omop cdm
+    - ctrss
+    kubeVersion: '>= 1.21.0'
+    maintainers:
+    - name: chgl
+    name: recruit
+    sources:
+    - https://github.com/miracum/charts/tree/master/charts/recruit
+    - https://github.com/miracum/recruit
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/recruit-9.0.0/recruit-9.0.0.tgz
+    version: 9.0.0
   stream-processors:
   - annotations:
       artifacthub.io/changes: |
@@ -1041,4 +1128,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2022-07-07T22:59:13.500639535Z"
+generated: "2022-07-08T00:58:42.890950763Z"
