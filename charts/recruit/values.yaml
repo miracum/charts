@@ -40,7 +40,7 @@ waitForPostgresInitContainer:
 
 fhirserver:
   # Whether the included HAPI FHIR server should be used
-  # See <https://gitlab.miracum.org/miracum/charts/-/tree/master/charts/hapi-fhir-server> for options.
+  # See <https://github.com/hapifhir/hapi-fhir-jpaserver-starter/tree/master/charts/hapi-fhir-jpaserver#values> for options.
   enabled: true
   postgresql:
     # overrides the chart's postgres server name to avoid conflicts with the included ohdsi chart
@@ -436,7 +436,7 @@ list:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/list
-    tag: v2.15.4@sha256:c63f67666869b1cba9d5b7f958f0ef3c4797499407c2d0e0684ecfa976bb90f0
+    tag: v2.15.5@sha256:1d076650cbf2f364235e49203a98015d35443d72e74f462085ea3bcedd25cb4c
     pullPolicy: IfNotPresent
 
   # the service used to expose the list module web port
