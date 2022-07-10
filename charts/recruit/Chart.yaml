@@ -36,7 +36,7 @@ dependencies:
     name: postgresql
     version: 11.6.15
     repository: https://charts.bitnami.com/bitnami
-version: 9.0.1
+version: 9.1.0
 appVersion: "9.x"
 annotations:
   artifacthub.io/license: AGPL-3.0-or-later
@@ -56,6 +56,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: Added AGPL-3.0 license to chart
-    - kind: changed
-      description: Added artifacthub.io/license, links, and screenshots annotations to Chart.yaml
+      description: Updated ghcr.io/miracum/recruit/list to v2.15.5
