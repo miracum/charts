@@ -40,7 +40,7 @@ waitForPostgresInitContainer:
 
 fhirserver:
   # Whether the included HAPI FHIR server should be used
-  # See <https://gitlab.miracum.org/miracum/charts/-/tree/master/charts/hapi-fhir-server> for options.
+  # See <https://github.com/hapifhir/hapi-fhir-jpaserver-starter/tree/master/charts/hapi-fhir-jpaserver#values> for options.
   enabled: true
   postgresql:
     # overrides the chart's postgres server name to avoid conflicts with the included ohdsi chart
