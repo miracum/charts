@@ -27,7 +27,7 @@ dependencies:
   - condition: ohdsi.enabled
     name: ohdsi
     repository: https://chgl.github.io/charts
-    version: 0.17.12
+    version: 0.17.13
   - condition: mailhog.enabled
     name: mailhog
     repository: https://codecentric.github.io/helm-charts
@@ -36,7 +36,7 @@ dependencies:
     name: postgresql
     version: 11.6.15
     repository: https://charts.bitnami.com/bitnami
-version: 9.1.0
+version: 9.1.1
 appVersion: "9.x"
 annotations:
   artifacthub.io/license: AGPL-3.0-or-later
