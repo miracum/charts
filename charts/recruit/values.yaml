@@ -92,6 +92,8 @@ ohdsi:
       runAsNonRoot: true
       runAsUser: 10001
       runAsGroup: 10001
+      seccompProfile:
+        type: RuntimeDefault
     # extraEnv:
     #   - name: SETUP_SYNPUF
     #     value: "true"
@@ -237,6 +239,8 @@ query:
     runAsGroup: 65532
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
 
   # pod topology spread configuration
   # see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api
@@ -423,6 +427,8 @@ notify:
     runAsGroup: 65532
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
 
 list:
   # Whether the list module should be enabled
@@ -557,6 +563,8 @@ list:
     runAsUser: 65534
     runAsGroup: 65534
     readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
 
 postgresql:
   # enable the included postgres DB, currently used only by the notification module
