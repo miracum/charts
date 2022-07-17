@@ -82,7 +82,7 @@ ohdsi:
     image: # +doc-gen:ignore
       registry: harbor.miracum.org
       repository: miracum-etl/omop/init
-      tag: v3.1.1-cdm5.3.1@sha256:2961a7b777fa67d6cc1043e5fc6fa1093bd6f18a183899b1a5bb8a22ceb928c7
+      tag: v3.2.1-cdm5.3.1@sha256:75db2ecdb17b2c98493de6dda9432b5625c6aa736afdce29adecfa833a804cfd
     securityContext: # +doc-gen:ignore
       allowPrivilegeEscalation: false
       capabilities:
