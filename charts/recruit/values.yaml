@@ -82,7 +82,7 @@ ohdsi:
     image: # +doc-gen:ignore
       registry: harbor.miracum.org
       repository: miracum-etl/omop/init
-      tag: v3.1.1-cdm5.3.1@sha256:2961a7b777fa67d6cc1043e5fc6fa1093bd6f18a183899b1a5bb8a22ceb928c7
+      tag: v3.2.1-cdm5.3.1@sha256:75db2ecdb17b2c98493de6dda9432b5625c6aa736afdce29adecfa833a804cfd
     securityContext: # +doc-gen:ignore
       allowPrivilegeEscalation: false
       capabilities:
@@ -92,6 +92,8 @@ ohdsi:
       runAsNonRoot: true
       runAsUser: 10001
       runAsGroup: 10001
+      seccompProfile:
+        type: RuntimeDefault
     # extraEnv:
     #   - name: SETUP_SYNPUF
     #     value: "true"
@@ -237,6 +239,8 @@ query:
     runAsGroup: 65532
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
 
   # pod topology spread configuration
   # see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api
@@ -423,6 +427,8 @@ notify:
     runAsGroup: 65532
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
 
 list:
   # Whether the list module should be enabled
@@ -557,6 +563,8 @@ list:
     runAsUser: 65534
     runAsGroup: 65534
     readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
 
 postgresql:
   # enable the included postgres DB, currently used only by the notification module
