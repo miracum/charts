@@ -7,7 +7,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v1.18.4@sha256:498ab5e5dbc040d68e8e9ce51ccd04e80d441ff504aebe69d463284d07c0b783
+    container: ghcr.io/chgl/kube-powertools:v1.19.1@sha256:1a6e267c4fb666de833fed26189fe89274205d87a381773f8136359c91f8a08b
     steps:
       - name: Add workspace as safe directory
         run: |
