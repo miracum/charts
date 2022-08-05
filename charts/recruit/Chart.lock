@@ -7,9 +7,9 @@ dependencies:
   version: 0.17.13
 - name: mailhog
   repository: https://codecentric.github.io/helm-charts
-  version: 5.0.7
+  version: 5.2.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.6.16
-digest: sha256:04cf5fd11d2df895c2d1ee026c651c38d4fa541aa76625d14f9df3bb925050c0
-generated: "2022-07-17T23:03:48.2714301+02:00"
+digest: sha256:2cc38c024dd02a83de56f3a53926025b1ca7dcf6771fc56a46f2e75d148ea82e
+generated: "2022-08-05T17:19:52.373754444Z"
