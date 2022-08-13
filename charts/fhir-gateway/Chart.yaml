@@ -7,25 +7,11 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 11.6.17
+    version: 11.7.1
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 4.0.0
+version: 4.0.1
 annotations:
   artifacthub.io/changes: |
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "⚠️ BREAKING CHANGE: updated included PostgreSQL-subchart from 10.x to 11.x"
-    - kind: changed
-      description: "⚠️ BREAKING CHANGE: updated all labels to be more consistent and follow the Bitnami chart conventions. Requires a complete uninstall followed by a re-installation of the chart."
-    - kind: changed
-      description: "⚠️ BREAKING CHANGE: dropped non-v1 Ingress support"
-    - kind: changed
-      description: dropped startup probe
-    - kind: changed
-      description: updated loinc-conversion container to 1.13.3
-    - kind: changed
-      description: use digest for image tags
-    - kind: fixed
-      description: auto-reload fhir-pseudonymizer deployment on config changes
+      description: update helm release postgresql to v11.7.1
