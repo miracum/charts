@@ -4,12 +4,12 @@ dependencies:
   version: 0.9.0
 - name: ohdsi
   repository: https://chgl.github.io/charts
-  version: 0.17.13
+  version: 0.17.16
 - name: mailhog
   repository: https://codecentric.github.io/helm-charts
   version: 5.2.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.6.16
-digest: sha256:2cc38c024dd02a83de56f3a53926025b1ca7dcf6771fc56a46f2e75d148ea82e
-generated: "2022-08-05T17:19:52.373754444Z"
+digest: sha256:3c188a329674f8f4e479a063ef08e363272b94b0e888f7fefb6207ff2235be2f
+generated: "2022-08-13T18:27:49.5521443+02:00"
