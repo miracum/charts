@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.10.3
+  tag: v3.10.3@sha256:6b0f64d0f3bca7cf8ecfb63d221af546a0e3b80afdcff50cb53a4bfb45dfc5a7
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -43,9 +43,21 @@ securityContext: # +doc-gen:ignore
     drop:
       - ALL
   runAsNonRoot: true
-  runAsUser: 11111
-  runAsGroup: 11111
+  runAsUser: 65532
+  runAsGroup: 65532
   readOnlyRootFilesystem: true
+
+# configure the init container used to wait for postgres database connectivity
+# used by the query module to wait for the OMOP database and the notify module
+# to wait for its HA database - if `notify.ha.enabled=true`
+waitForPostgresInitContainer:
+  # image to use for the init container which waits until the database
+  # is ready to accept connections
+  image: # +doc-gen:ignore
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 14.4.0-debian-11-r4@sha256:58744ac056007ba278d80090d41722e30c49b20d85c56653f337e7e0a7b2f312
+    pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
 service: # +doc-gen:break
@@ -60,10 +72,12 @@ ingress:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # ingressClassName field
+  ingressClassName: ""
   # configure the hostname
   hosts:
     - host: chart-example.local
-      paths: []
+      paths: ["/"]
   # TLS config
   tls: []
   #  - secretName: chart-example-tls
@@ -112,13 +126,6 @@ livenessProbe: # +doc-gen:ignore
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
-# startup probe
-startupProbe: # +doc-gen:ignore
-  failureThreshold: 10
-  initialDelaySeconds: 30
-  periodSeconds: 20
-  successThreshold: 1
-  timeoutSeconds: 30
 
 metrics:
   serviceMonitor:
@@ -147,9 +154,11 @@ sinks:
       username: ""
       # password for the user
       password: ""
-      # can be used to specify the name of an existing secret with
-      # a `postgresql-password` key containing the password. An alternative to setting the password above.
+      # can be used to specify the name of an existing secret containing the PostgreSQL password.
+      # An alternative to setting the password above.
       existingSecret: ""
+      # the key inside the `existingSecret` containing the password.
+      existingSecretKey: "postgresql-password"
   fhirServer:
     # if enabled, sends all received resources to the specified FHIR server
     enabled: false
@@ -173,31 +182,23 @@ kafka:
   # name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
   strimziClusterName: "my-cluster"
 
+# see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for details
 postgresql:
   # enabled the included Postgres DB
   # see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for configuration options
   enabled: true
-  # name of the database used by the FHIR gateway to store the resources
-  postgresqlDatabase: "fhir_gateway"
-  replication:
-    # enable replication for data resilience
-    enabled: true
-    # number of read (slave) replicas
-    readReplicas: 2
-    # enable synchronous commit - this may degrade performance in favor of resiliency
-    synchronousCommit: "on"
-    # from the number of `readReplicas` defined above, set the number of those that will have synchronous replication
-    # NOTE: It cannot be > readReplicas
-    numSynchronousReplicas: 1
-  image:
-    # use a more recent Postgres version than the default
-    tag: 13.1.0
-    pullPolicy: IfNotPresent
-  containerSecurityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
+  auth:
+    # name of the database to create
+    # see: <https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#creating-a-database-on-first-run>
+    database: "fhir_gateway"
+    # Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    enablePostgresUser: true
+  primary:
+    containerSecurityContext: # +doc-gen:ignore
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
 
 gpas:
   # the gPAS TTP FHIR Gateway base URL used to be used by the pseudonymization service.
@@ -226,7 +227,7 @@ loincConverter:
   image: # +doc-gen:ignore
     registry: harbor.miracum.org
     repository: miracum-etl/loinc-conversion
-    tag: v1.13.1
+    tag: v1.13.3@sha256:ea806a32c9e5942a263a00cfaf4e9a362e31abb51ede139e8be21b23957353c2
     pullPolicy: IfNotPresent
 
   metrics:
@@ -262,8 +263,10 @@ loincConverter:
         - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
-    runAsUser: 11111
-    runAsGroup: 11111
+    runAsUser: 65532
+    runAsGroup: 65532
+    seccompProfile:
+      type: RuntimeDefault
 
   # service to expose the application
   service: # +doc-gen:break
@@ -326,7 +329,7 @@ fhirPseudonymizer:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/fhir-pseudonymizer
-    tag: v2.12.0
+    tag: v2.12.0@sha256:2e03bfa1e3cbd2615c3c5b382ee8da1db76c188674108f6a1606482f75051da1
     pullPolicy: IfNotPresent
 
   metrics:
@@ -373,8 +376,10 @@ fhirPseudonymizer:
         - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
-    runAsUser: 11111
-    runAsGroup: 11111
+    runAsUser: 65532
+    runAsGroup: 65532
+    seccompProfile:
+      type: RuntimeDefault
 
   # service to expose the fhir-pseudonymizer
   service: # +doc-gen:break

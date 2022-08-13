@@ -27,6 +27,6 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "fhir-gateway.labels" . | nindent 6 }}
+      {{- include "fhir-gateway.matchLabels" $ | nindent 6 }}
       app.kubernetes.io/component: fhir-pseudonymizer
 {{- end }}
