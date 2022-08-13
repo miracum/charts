@@ -6,6 +6,41 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "⚠️ BREAKING CHANGE: updated included PostgreSQL-subchart from 10.x to 11.x"
+        - kind: changed
+          description: "⚠️ BREAKING CHANGE: updated all labels to be more consistent and follow the Bitnami chart conventions. Requires a complete uninstall followed by a re-installation of the chart."
+        - kind: changed
+          description: "⚠️ BREAKING CHANGE: dropped non-v1 Ingress support"
+        - kind: changed
+          description: dropped startup probe
+        - kind: changed
+          description: updated loinc-conversion container to 1.13.3
+        - kind: changed
+          description: use digest for image tags
+        - kind: fixed
+          description: auto-reload fhir-pseudonymizer deployment on config changes
+    apiVersion: v2
+    created: "2022-08-13T16:26:52.717594653Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.17
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: b9c8363e1241a9bbcea743ce744e73ec3d5a0faa36ad0bffab4c38fa0742e0c2
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-4.0.0/fhir-gateway-4.0.0.tgz
+    version: 4.0.0
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: updated README template to no longer include the chart version
     apiVersion: v2
     created: "2022-07-07T22:59:13.500071534Z"
@@ -1327,4 +1362,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2022-07-17T21:28:53.618436512Z"
+generated: "2022-08-13T16:26:52.717990277Z"
