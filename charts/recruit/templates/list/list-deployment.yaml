@@ -76,8 +76,6 @@ spec:
               value: {{ .Values.list.auth.keycloak.clientId }}
             - name: KEYCLOAK_REALM
               value: {{ .Values.list.auth.keycloak.realm }}
-            - name: TRACING_ENABLED
-              value: {{ .Values.tracing.enabled | default false | quote}}
             - name: RULES_FILE_PATH
               value: "/etc/rules.yaml"
             {{- if not .Values.list.auth.enabled }}

@@ -59,7 +59,6 @@ The following table lists the configurable parameters of the `recruit` chart and
 | deploymentAnnotations                          | Annotations to set on all Deployment resources                                                                                                                                                                                                                                                                                                                                                                                                                     | <code>{}</code>                                                |
 | podAnnotations                                 | Annotations to set on all Pod resources                                                                                                                                                                                                                                                                                                                                                                                                                            | <code>{}</code>                                                |
 | extraLabels                                    | additionally labels to apply to all deployments                                                                                                                                                                                                                                                                                                                                                                                                                    | <code>{}</code>                                                |
-| tracing.enabled                                | enables OpenTelemetry-based tracing for all components                                                                                                                                                                                                                                                                                                                                                                                                             | <code>false</code>                                             |
 | fhirserver.enabled                             | Whether the included HAPI FHIR server should be used See <https://github.com/hapifhir/hapi-fhir-jpaserver-starter/tree/master/charts/hapi-fhir-jpaserver#values> for options.                                                                                                                                                                                                                                                                                      | <code>true</code>                                              |
 | fhirserver.postgresql.nameOverride             | overrides the chart's postgres server name to avoid conflicts with the included ohdsi chart                                                                                                                                                                                                                                                                                                                                                                        | <code>"fhir-server-postgres"</code>                            |
 | fhirserver.networkPolicy.enabled               | if enabled, access to the included FHIR server is limited to pods with the required labels. If set to `true`, all pods of the recruIT chart will be automatically configured to be able to access the server.                                                                                                                                                                                                                                                      | <code>false</code>                                             |
@@ -238,4 +237,70 @@ notify:
             notify: "everyHour"
           - email: "everyFiveMinutes@example.com"
             notify: "everyFiveMinutes"
+```
+
+## Distributed Tracing
+
+First install the Jaeger operator to prepare your cluster for tracing.
+
+```sh
+# required by the Jaeger Operator
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
+kubectl create namespace observability
+kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.37.0/jaeger-operator.yaml -n observability
+
+cat <<EOF | kubectl apply -n observability -f -
+# simple, all-in-one Jaeger installation. Not suitable for production use.
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: simplest
+EOF
+```
+
+The query and notify module include a [OpenTelemetry Java agent JAR](https://github.com/open-telemetry/opentelemetry-java-instrumentation)
+while the list module is manually instrumented. Tracing support can be enabled and configured per-module via environment variables. Here's
+an example configuration assuming the tracing collector/agent was installed following the steps above:
+
+```yaml
+query:
+  extraEnv:
+    - name: JAVA_TOOL_OPTIONS
+      value: "-javaagent:/opt/query/opentelemetry-javaagent.jar"
+    - name: OTEL_METRICS_EXPORTER
+      value: "none"
+    - name: OTEL_LOGS_EXPORTER
+      value: "none"
+    - name: OTEL_TRACES_EXPORTER
+      value: "jaeger"
+    - name: OTEL_SERVICE_NAME
+      value: "recruit-query"
+    - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+      value: "http://simplest-collector.observability.svc:14250"
+
+list:
+  extraEnv:
+    - name: TRACING_ENABLED
+      value: "true"
+    - name: OTEL_TRACES_EXPORTER
+      value: "jaeger"
+    - name: OTEL_SERVICE_NAME
+      value: "recruit-list"
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      value: "simplest-agent.observability.svc"
+
+notify:
+  extraEnv:
+    - name: JAVA_TOOL_OPTIONS
+      value: "-javaagent:/opt/notify/opentelemetry-javaagent.jar"
+    - name: OTEL_METRICS_EXPORTER
+      value: "none"
+    - name: OTEL_LOGS_EXPORTER
+      value: "none"
+    - name: OTEL_TRACES_EXPORTER
+      value: "jaeger"
+    - name: OTEL_SERVICE_NAME
+      value: "recruit-notify"
+    - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+      value: "http://simplest-collector.observability.svc:14250"
 ```

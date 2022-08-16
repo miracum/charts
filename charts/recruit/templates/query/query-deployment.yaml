@@ -144,8 +144,6 @@ spec:
               value: {{ include "recruit.utils.joinListWithComma" .Values.query.cohortSelectorLabels }}
             - name: QUERY_SCHEDULE_UNIXCRON
               value: {{ .Values.query.schedule | quote }}
-            - name: OPENTRACING_JAEGER_ENABLED
-              value: {{ .Values.tracing.enabled | default false | quote}}
             {{- if .Values.query.webAPI.auth.enabled }}
             - name: QUERY_WEBAPI_AUTH_ENABLED
               value: "true"

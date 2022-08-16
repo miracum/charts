@@ -28,7 +28,7 @@
       "extends": ["schedule:monthly"]
     },
     {
-      "matchPackageNames": ["postgresql"],
+      "matchPackageNames": ["postgresql", "ghcr.io/chgl/kube-powertools"],
       "extends": ["schedule:monthly"]
     }
   ]
