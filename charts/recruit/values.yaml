@@ -22,10 +22,6 @@ podAnnotations:
 # additionally labels to apply to all deployments
 extraLabels: {}
 
-tracing:
-  # enables OpenTelemetry-based tracing for all components
-  enabled: false
-
 # configure the init container used to wait for postgres database connectivity
 # used by the query module to wait for the OMOP database and the notify module
 # to wait for its HA database - if `notify.ha.enabled=true`
@@ -35,7 +31,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 14.4.0-debian-11-r4@sha256:58744ac056007ba278d80090d41722e30c49b20d85c56653f337e7e0a7b2f312
+    tag: 14.5.0-debian-11-r1@sha256:b84e2a99b1769a044167c7fd836f24dc2411ea2a9daae63ba9604fc58aa8de7f
     pullPolicy: IfNotPresent
 
 fhirserver:

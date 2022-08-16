@@ -150,8 +150,6 @@ spec:
               {{- else }}
               value: {{ .Values.notify.mail.server.username | quote }}
               {{- end }}
-            - name: OPENTRACING_JAEGER_ENABLED
-              value: {{ .Values.tracing.enabled | default false | quote}}
             - name: SPRING_MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
