@@ -267,7 +267,7 @@ notify:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/notify
-    tag: v3.2.4@sha256:0a3a2fffec7bca9a41ce1c762a2180bfa03bd64bae3f741515ead4fc48156050
+    tag: v3.2.5@sha256:ce34fbcff8564ab856579837d7ced1dcbc8d2ee105f2bccbf2a2e6107a84e41d
     pullPolicy: IfNotPresent
 
   metrics:
