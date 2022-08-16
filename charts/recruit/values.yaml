@@ -117,7 +117,7 @@ query:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/query
-    tag: v3.16.2@sha256:121f13d9df05791024b5e4659570bbe0a2a9fbcfc2cf066d29325d240b4b4dcd
+    tag: v3.16.4@sha256:0080bef593de3e4d535cfcf93815588dbc9b6f07bd18c48770bce5d4f1fc2f65
     pullPolicy: IfNotPresent
 
   metrics:
