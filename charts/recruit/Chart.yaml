@@ -23,20 +23,20 @@ dependencies:
     alias: fhirserver
     name: hapi-fhir-jpaserver
     repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-    version: 0.9.0
+    version: 0.10.0
   - condition: ohdsi.enabled
     name: ohdsi
     repository: https://chgl.github.io/charts
-    version: 0.17.16
+    version: 0.17.18
   - condition: mailhog.enabled
     name: mailhog
     repository: https://codecentric.github.io/helm-charts
     version: 5.2.0
   - condition: postgresql.enabled
     name: postgresql
-    version: 11.7.1
+    version: 11.8.1
     repository: https://charts.bitnami.com/bitnami
-version: 9.1.4
+version: 9.2.0
 appVersion: "9.x"
 annotations:
   artifacthub.io/license: AGPL-3.0-or-later
@@ -56,14 +56,12 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
+      description: updated hapi-fhir-jpaserver to v0.10.0
+    - kind: changed
+      description: updated ohdsi to v0.17.18
+    - kind: changed
+      description: updated postgresql to v1.8.1
+    - kind: changed
       description: |
-        dropped `tracing.enabled` setting in favor of module-specific configuration.
-        See [README.md](/charts/recruit/README.md#distributed-tracing).
-    - kind: changed
-      description: update ghcr.io/miracum/recruit/query docker tag to v3.16.4
-    - kind: changed
-      description: update ghcr.io/miracum/recruit/notify docker tag to v3.2.5
-    - kind: changed
-      description: update ghcr.io/miracum/recruit/list docker tag to v2.15.6
-    - kind: changed
-      description: updated `waitForPostgresInitContainer` to 14.5.0-debian-11-r1
+        set `securityContext.seccompProfile.type=RuntimeDefault` for included PostgreSQL, MailHog as well as all `initContainer` and Helm
+        test pods to comply with the "restricted" Pod Security Standard: <https://kubernetes.io/docs/concepts/security/pod-security-standards/>

@@ -42,16 +42,10 @@ spec:
         - name: wait-for-ha-db
           image: {{ include "recruit.waitforDB.image" . }}
           imagePullPolicy: {{ .Values.waitForPostgresInitContainer.image.pullPolicy }}
+          {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            privileged: false
-            capabilities:
-              drop:
-                - ALL
-            runAsNonRoot: true
-            runAsUser: 65530
-            runAsGroup: 65530
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: PGHOST
               value: {{ include "recruit.notify.database.host" $ | quote }}
@@ -70,16 +64,10 @@ spec:
         - name: wait-for-fhir-server
           image: docker.io/curlimages/curl:7.84.0@sha256:5a2a25d96aa941ea2fc47acc50122f7c3d007399a075df61a82d6d2c3a567a2b
           imagePullPolicy: IfNotPresent
+          {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            privileged: false
-            capabilities:
-              drop:
-                - ALL
-            runAsNonRoot: true
-            runAsUser: 65531
-            runAsGroup: 65531
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: FHIR_URL
               value: {{ template "recruit.fhirserver.url" . }}
