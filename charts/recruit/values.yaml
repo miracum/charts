@@ -34,6 +34,21 @@ waitForPostgresInitContainer:
     tag: 14.5.0-debian-11-r1@sha256:b84e2a99b1769a044167c7fd836f24dc2411ea2a9daae63ba9604fc58aa8de7f
     pullPolicy: IfNotPresent
 
+# container security context applied to init containers used by the query, list, and notify modules.
+# also used by the Helm test job pods
+restrictedContainerSecurityContext: # +doc-gen:ignore
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
 fhirserver:
   # Whether the included HAPI FHIR server should be used
   # See <https://github.com/hapifhir/hapi-fhir-jpaserver-starter/tree/master/charts/hapi-fhir-jpaserver#values> for options.
@@ -64,7 +79,10 @@ mailhog:
   enabled: true
   image: # +doc-gen:ignore
     pullPolicy: IfNotPresent
-
+  containerSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 ohdsi:
   # Whether the included OHDSI chart should be installed.
   # See <https://github.com/chgl/charts/tree/master/charts/ohdsi/values.yaml> for available options.
@@ -573,7 +591,10 @@ postgresql:
     database: "recruit"
   primary:
     containerSecurityContext: # +doc-gen:ignore
+      runAsNonRoot: true
       allowPrivilegeEscalation: false
       capabilities:
         drop:
           - ALL
+      seccompProfile:
+        type: RuntimeDefault
