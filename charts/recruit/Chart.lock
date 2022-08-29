@@ -1,7 +1,7 @@
 dependencies:
 - name: hapi-fhir-jpaserver
   repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-  version: 0.10.0
+  version: 0.10.1
 - name: ohdsi
   repository: https://chgl.github.io/charts
   version: 0.17.18
@@ -11,5 +11,5 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.8.1
-digest: sha256:974d4137d894e441b89dc4cad52c826f8f6dabb47a0366f0fbcd141e024ef6f3
-generated: "2022-08-25T21:49:37.3131125+02:00"
+digest: sha256:dae31f1bb6e0d3f65a04708c7424c423b75779685fd7e0c49b221e1e9debb35e
+generated: "2022-08-29T02:17:56.3398043+02:00"

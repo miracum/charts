@@ -187,4 +187,26 @@ notify:
       value: "recruit-notify"
     - name: OTEL_EXPORTER_JAEGER_ENDPOINT
       value: "http://simplest-collector.observability.svc:14250"
+
+fhirserver:
+  extraEnv:
+    # the recruit tool relies on the FHIR server subscription mechanism to create notifications.
+    # if you overwrite `fhirserver.extraEnv`, make sure to keep this setting enabled.
+    - name: HAPI_FHIR_SUBSCRIPTION_RESTHOOK_ENABLED
+      value: "true"
+    - name: SPRING_FLYWAY_BASELINE_ON_MIGRATE
+      value: "true"
+    # OTel options
+    - name: JAVA_TOOL_OPTIONS
+      value: "-javaagent:/app/opentelemetry-javaagent.jar"
+    - name: OTEL_METRICS_EXPORTER
+      value: "none"
+    - name: OTEL_LOGS_EXPORTER
+      value: "none"
+    - name: OTEL_TRACES_EXPORTER
+      value: "jaeger"
+    - name: OTEL_SERVICE_NAME
+      value: "recruit-hapi-fhir-server"
+    - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+      value: "http://simplest-collector.observability.svc:14250"
 ```
