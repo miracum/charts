@@ -32,6 +32,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.sinks.postgres.enabled }}
       initContainers:
         - name: wait-for-db
           image: {{ include "fhir-gateway.waitforDB.image" . }}
@@ -60,6 +61,7 @@ spec:
                 echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
                 sleep 15;
               done;
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -69,6 +71,7 @@ spec:
           env:
             - name: SERVICES_PSQL_ENABLED
               value: {{ .Values.sinks.postgres.enabled | quote }}
+            {{- if .Values.sinks.postgres.enabled }}
             - name: SPRING_DATASOURCE_URL
               value: {{ include "fhir-gateway.sinks.postgresql.jdbcUrl" . }}
             - name: SPRING_DATASOURCE_USERNAME
@@ -78,6 +81,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "fhir-gateway.db-secret-name" . }}
                   key: {{ include "fhir-gateway.db-secret-key" . }}
+            {{- else }}
+            - name: SPRING_SQL_INIT_MODE
+              value: "never"
+            {{- end }}
             - name: SERVICES_PSEUDONYMIZER_ENABLED
               value: {{ .Values.fhirPseudonymizer.enabled | quote }}
             - name: SERVICES_PSEUDONYMIZER_URL
