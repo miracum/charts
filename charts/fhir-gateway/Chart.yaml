@@ -15,5 +15,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: fixed
       description: |
-        support for cleanly and completely disabling the including postgres database and the use of any postgres instance.
+        support for cleanly and completely disabling the included postgres database and the use of any postgres instance.
         Set `sinks.postgres.enabled=false` and `postgresql.enabled=false` to do so.
