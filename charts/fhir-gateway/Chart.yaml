@@ -10,8 +10,10 @@ dependencies:
     version: 11.7.1
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 4.0.1
+version: 4.0.2
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: update helm release postgresql to v11.7.1
+    - kind: fixed
+      description: |
+        support for cleanly and completely disabling the included postgres database and the use of any postgres instance.
+        Set `sinks.postgres.enabled=false` and `postgresql.enabled=false` to do so.
