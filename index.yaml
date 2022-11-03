@@ -3,6 +3,29 @@ entries:
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: |
+            support for cleanly and completely disabling the included postgres database and the use of any postgres instance.
+            Set `sinks.postgres.enabled=false` and `postgresql.enabled=false` to do so.
+    apiVersion: v2
+    created: "2022-11-03T15:00:21.402378394Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.7.1
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: fd18b225e4707bc6ae0af0f6570f81295d52ca47a7c289e86b5b6c5d12354035
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-4.0.2/fhir-gateway-4.0.2.tgz
+    version: 4.0.2
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: update helm release postgresql to v11.7.1
     apiVersion: v2
@@ -1805,4 +1828,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
-generated: "2022-10-12T14:39:23.793038447Z"
+generated: "2022-11-03T15:00:21.402910886Z"
