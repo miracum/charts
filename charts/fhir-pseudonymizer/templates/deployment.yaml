@@ -5,7 +5,6 @@ metadata:
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
     app.kubernetes.io/component: pseudonymizer
-    app.kubernetes.io/version: {{ .Values.image.tag }}
     app.kubernetes.io/name: fhir-pseudonymizer
     app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
   {{- with .Values.global.deploymentAnnotations }}
@@ -20,10 +19,11 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/anonymization-cm.yaml") . | sha256sum | quote }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app.kubernetes.io/name: fhir-pseudonymizer
         app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
@@ -44,6 +44,13 @@ spec:
           env:
             - name: COMPlus_EnableDiagnostics
               value: "0"
+            - name: PseudonymizationService
+              value: {{ .Values.pseudonymizationService }}
+            {{- if eq .Values.pseudonymizationService "Vfps" }}
+            - name: Vfps__Address
+              value: {{ include "fhir-pseudonymizer.vfpsAddress" . }}
+            {{- end }}
+            {{- if eq .Values.pseudonymizationService "gPAS" }}
             - name: GPAS__VERSION
               value: {{ .Values.gpas.version | quote }}
             {{- if .Values.gpas.fhirUrl }}
@@ -59,6 +66,7 @@ spec:
                   name: {{ include "fhir-pseudonymizer.gpasBasicAuthSecretName" . }}
                   key: GPAS__AUTH__BASIC__PASSWORD
             {{- end }}
+            {{- end }}
             {{- if or (.Files.Glob "files/anonymization.yaml") .Values.anonymizationConfig }}
             - name: ANONYMIZATIONENGINECONFIGPATH
               value: /etc/fhir-pseudonymizer/anonymization.yaml
@@ -68,7 +76,7 @@ spec:
               value: "true"
             {{- end }}
             {{- if .Values.auth.apiKey.enabled }}
-            - name: APIKEY
+            - name: ApiKey
               valueFrom:
                 secretKeyRef:
                   name: {{ include "fhir-pseudonymizer.fhirPseudonymizerApiKeySecretName" . }}

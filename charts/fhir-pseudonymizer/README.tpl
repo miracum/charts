@@ -114,3 +114,8 @@ anonymizationConfig: |
   enablePartialZipCodesForRedact: true
   restrictedZipCodeTabulationAreas: []
 ```
+
+### Vfps
+
+The FHIR Pseudonymizer supports both gPAS and Vfps as a pseudonymization backend service. gPAS is set as the default.
+To switch to Vfps, set `pseudonymizationService=Vfps` and optionally set `vfps.enabled=true` to start an included version of the Vfps chart.
