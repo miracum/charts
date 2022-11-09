@@ -14,6 +14,9 @@ nameOverride: ""
 # String to fully override fullname template
 fullnameOverride: ""
 
+# the type of pseudonymization service to use. One of gPAS, Vfps, None
+pseudonymizationService: gPAS
+
 gpas:
   # the gPAS TTP FHIR Pseudonymizer base URL used to be used by the pseudonymization service.
   # it should look similar to this: `http://gpas:8080/ttp-fhir/fhir/`
@@ -38,7 +41,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.12.0
+  tag: v2.14.1@sha256:88ce9e7e6fed73374b309f85b8a09011d815df2598c8926e7e9ebd4bf8f8d20b
   pullPolicy: IfNotPresent
 
 metrics:
@@ -143,3 +146,34 @@ livenessProbe: # +doc-gen:ignore
 extraEnv: []
 # - name: EXAMPLE
 #   value: "example"
+
+# @ignored
+curl: # +doc-gen:ignore
+  image:
+    registry: index.docker.io
+    repository: curlimages/curl
+    tag: 7.86.0@sha256:cfdeba7f88bb85f6c87f2ec9135115b523a1c24943976a61fbf59c4f2eafd78e
+
+# container security context applied to init containers and the Helm test pods
+restrictedContainerSecurityContext: # +doc-gen:ignore
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+vfps:
+  # set to `true` to enable the included vfps sub-chart and auto-configure the FHIR Pseudonymizer
+  # to use it as the pseudonymization backend
+  enabled: false
+
+externalVfps:
+  # the address of an external vfps service to use.
+  # Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.
+  address: ""

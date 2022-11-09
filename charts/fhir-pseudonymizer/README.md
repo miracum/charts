@@ -7,7 +7,7 @@
 ```console
 $ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.1.3
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys the MIRACUM FHIR Pseudonymizer on a [Kubernetes](http://kuber
 To install the chart with the release name `fhir-pseudonymizer`:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.1.3
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0
 ```
 
 The command deploys the MIRACUM FHIR Pseudonymizer on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -51,6 +51,7 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 | global.tracing.enabled                  | enables tracing by default, traces are exported in Jaeger format to `localhost:16686`                                                                                                                                                                                            | <code>false</code>                            |
 | nameOverride                            | String to partially override fullname template (will maintain the release name)                                                                                                                                                                                                  | <code>""</code>                               |
 | fullnameOverride                        | String to fully override fullname template                                                                                                                                                                                                                                       | <code>""</code>                               |
+| pseudonymizationService                 | the type of pseudonymization service to use. One of gPAS, Vfps, None                                                                                                                                                                                                             | <code>gPAS</code>                             |
 | gpas.fhirUrl                            | the gPAS TTP FHIR Pseudonymizer base URL used to be used by the pseudonymization service. it should look similar to this: `http://gpas:8080/ttp-fhir/fhir/`                                                                                                                      | <code>""</code>                               |
 | gpas.version                            | Version of gPAS used. There were breaking changes to the FHIR API starting in 1.10.2, so explicitely set this value to 1.10.2 if `gpas.fhirUrl` points to gPAS 1.10.2.                                                                                                           | <code>"1.10.1"</code>                         |
 | gpas.auth.basic.enabled                 | whether the fhir-pseudonymizer needs to provide basic auth credentials to access the gPAS FHIR API                                                                                                                                                                               | <code>false</code>                            |
@@ -73,18 +74,20 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 | tolerations                             | tolerations for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>                                                                                                                                                                   | <code>[]</code>                               |
 | affinity                                | affinity for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>                                                                                                                                                | <code>{}</code>                               |
 | extraEnv                                | extra environment variables to apply to the container                                                                                                                                                                                                                            | <code>[]</code>                               |
+| vfps.enabled                            | set to `true` to enable the included vfps sub-chart and auto-configure the FHIR Pseudonymizer to use it as the pseudonymization backend                                                                                                                                          | <code>false</code>                            |
+| externalVfps.address                    | the address of an external vfps service to use. Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.                                                                                                                                            | <code>""</code>                               |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.1.3 --set gpas.version="1.10.1"
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0 --set pseudonymizationService=gPAS
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.1.3 --values values.yaml
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0 --values values.yaml
 ```
 
 ## Pseudonymization
@@ -141,3 +144,8 @@ anonymizationConfig: |
   enablePartialZipCodesForRedact: true
   restrictedZipCodeTabulationAreas: []
 ```
+
+### Vfps
+
+The FHIR Pseudonymizer supports both gPAS and Vfps as a pseudonymization backend service. gPAS is set as the default.
+To switch to Vfps, set `pseudonymizationService=Vfps` and optionally set `vfps.enabled=true` to start an included version of the Vfps chart.

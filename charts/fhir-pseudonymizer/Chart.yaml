@@ -5,11 +5,19 @@ type: application
 sources:
   - https://github.com/miracum/fhir-pseudonymizer
 home: https://github.com/miracum/fhir-pseudonymizer
-dependencies: []
+dependencies:
+  - name: vfps
+    version: 1.0.0
+    repository: https://miracum.github.io/charts
+    condition: vfps.enabled
+version: 0.2.0
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: chore(deps) update helm values ghcr.io/miracum/fhir-pseudonymizer to v2.12.0
-version: 0.1.3
+      description: chore(deps) update helm values ghcr.io/miracum/fhir-pseudonymizer to v2.14.1
+    - kind: changed
+      description: digest-pinned ghcr.io/miracum/fhir-pseudonymizer image
+    - kind: added
+      description: added vfps chart as an optional, disabled-by-default dependency

@@ -60,3 +60,14 @@ Return the fhir-pseudonymizer api key
     {{ include "fhir-pseudonymizer.fullname" . }}-api-key
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the vfps address to use
+*/}}
+{{- define "fhir-pseudonymizer.vfpsAddress" -}}
+{{- if .Values.vfps.enabled -}}
+    {{- printf "dns:///%s-headless:%d" (include "vfps.fullname" .Subcharts.vfps) 8081 -}}
+{{- else -}}
+    {{- .Values.externalVfps.address -}}
+{{- end -}}
+{{- end -}}
