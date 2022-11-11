@@ -114,7 +114,7 @@ spec:
             - name: OMOP_JDBCURL
               value: {{ include "recruit.omop.jdbcUrl" . }}
             - name: OMOP_USERNAME
-              value: {{ .Values.query.omop.username }}
+              value: {{ include "recruit.omop.db.user" . }}
             - name: OMOP_PASSWORD
               valueFrom:
                 secretKeyRef:
