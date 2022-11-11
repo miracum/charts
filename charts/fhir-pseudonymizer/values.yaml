@@ -1,12 +1,5 @@
-# Default values for fhir-pseudonymizer.
-global:
-  # metadata.annotations to apply to all deployments
-  deploymentAnnotations: {}
-
-  tracing:
-    # enables tracing
-    # by default, traces are exported in Jaeger format to `localhost:16686`
-    enabled: false
+# metadata.annotations to apply to the deployment
+deploymentAnnotations: {}
 
 # String to partially override fullname template (will maintain the release name)
 nameOverride: ""
@@ -88,8 +81,10 @@ securityContext: # +doc-gen:ignore
       - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 11111
-  runAsGroup: 11111
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
 
 # service to expose the fhir-pseudonymizer
 service: # +doc-gen:break
@@ -144,8 +139,20 @@ livenessProbe: # +doc-gen:ignore
 
 # extra environment variables to apply to the container
 extraEnv: []
-# - name: EXAMPLE
-#   value: "example"
+# - name: UseSystemTextJsonFhirSerializer
+#   value: "true"
+
+# pod topology spread configuration
+# see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api
+topologySpreadConstraints:
+  []
+  # - maxSkew: 1
+  #   topologyKey: topology.kubernetes.io/zone
+  #   whenUnsatisfiable: ScheduleAnyway
+  #   labelSelector:
+  #     matchLabels:
+  #       app.kubernetes.io/name: fhir-pseudonymizer
+  #       app.kubernetes.io/instance: fhir-pseudonymizer
 
 # @ignored
 curl: # +doc-gen:ignore

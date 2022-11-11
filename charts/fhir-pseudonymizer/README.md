@@ -7,7 +7,7 @@
 ```console
 $ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.0
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys the MIRACUM FHIR Pseudonymizer on a [Kubernetes](http://kuber
 To install the chart with the release name `fhir-pseudonymizer`:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.0
 ```
 
 The command deploys the MIRACUM FHIR Pseudonymizer on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -47,8 +47,7 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 
 | Parameter                               | Description                                                                                                                                                                                                                                                                      | Default                                       |
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| global.deploymentAnnotations            | metadata.annotations to apply to all deployments                                                                                                                                                                                                                                 | <code>{}</code>                               |
-| global.tracing.enabled                  | enables tracing by default, traces are exported in Jaeger format to `localhost:16686`                                                                                                                                                                                            | <code>false</code>                            |
+| deploymentAnnotations                   | metadata.annotations to apply to the deployment                                                                                                                                                                                                                                  | <code>{}</code>                               |
 | nameOverride                            | String to partially override fullname template (will maintain the release name)                                                                                                                                                                                                  | <code>""</code>                               |
 | fullnameOverride                        | String to fully override fullname template                                                                                                                                                                                                                                       | <code>""</code>                               |
 | pseudonymizationService                 | the type of pseudonymization service to use. One of gPAS, Vfps, None                                                                                                                                                                                                             | <code>gPAS</code>                             |
@@ -74,20 +73,21 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 | tolerations                             | tolerations for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>                                                                                                                                                                   | <code>[]</code>                               |
 | affinity                                | affinity for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>                                                                                                                                                | <code>{}</code>                               |
 | extraEnv                                | extra environment variables to apply to the container                                                                                                                                                                                                                            | <code>[]</code>                               |
+| topologySpreadConstraints               | pod topology spread configuration see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api                                                                                                                                                   | <code>[]</code>                               |
 | vfps.enabled                            | set to `true` to enable the included vfps sub-chart and auto-configure the FHIR Pseudonymizer to use it as the pseudonymization backend                                                                                                                                          | <code>false</code>                            |
 | externalVfps.address                    | the address of an external vfps service to use. Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.                                                                                                                                            | <code>""</code>                               |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0 --set pseudonymizationService=gPAS
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.0 --set pseudonymizationService=gPAS
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.2.0 --values values.yaml
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.0 --values values.yaml
 ```
 
 ## Pseudonymization

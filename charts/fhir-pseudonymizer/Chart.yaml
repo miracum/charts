@@ -10,14 +10,18 @@ dependencies:
     version: 1.0.0
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.2.0
+version: 0.3.0
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: chore(deps) update helm values ghcr.io/miracum/fhir-pseudonymizer to v2.14.1
+      description: "⚠️ BREAKING CHANGE: standardized all labels to follow Bitnami conventions"
     - kind: changed
-      description: digest-pinned ghcr.io/miracum/fhir-pseudonymizer image
+      description: "⚠️ BREAKING CHANGE: removed `global` values. `deploymentAnnotations` moved to top-level value."
     - kind: added
-      description: added vfps chart as an optional, disabled-by-default dependency
+      description: "configuration value for `topologySpreadConstraints`"
+    - kind: changed
+      description: "set `securityContext.runAsUser` and `.runAsGroup` to `65532`, aka the `nobody` user"
+    - kind: changed
+      description: "set `securityContext.seccompProfile.type` to `RuntimeDefault`"

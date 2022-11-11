@@ -5,7 +5,6 @@ metadata:
   name: {{ include "fhir-pseudonymizer.fullname" . }}-anonymization
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
-    app.kubernetes.io/component: fhir-pseudonymizer
 data:
 {{- if (.Files.Glob "files/anonymization.yaml") }}
 {{- (.Files.Glob "files/anonymization.yaml").AsConfig | nindent 2 }}
