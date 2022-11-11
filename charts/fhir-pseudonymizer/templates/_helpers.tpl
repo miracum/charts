@@ -36,7 +36,19 @@ Common labels
 */}}
 {{- define "fhir-pseudonymizer.labels" -}}
 helm.sh/chart: {{ include "fhir-pseudonymizer.chart" . }}
+{{ include "fhir-pseudonymizer.matchLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "fhir-pseudonymizer.matchLabels" -}}
+app.kubernetes.io/name: {{ include "fhir-pseudonymizer.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -59,6 +71,13 @@ Return the fhir-pseudonymizer api key
 {{- else -}}
     {{ include "fhir-pseudonymizer.fullname" . }}-api-key
 {{- end -}}
+{{- end -}}
+
+{{/*
+Return the vfps address to use
+*/}}
+{{- define "fhir-pseudonymizer.isApiKeyAuthEnabled" -}}
+    {{- .Values.auth.apiKey.enabled -}}
 {{- end -}}
 
 {{/*

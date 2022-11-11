@@ -4,7 +4,6 @@ metadata:
   name: {{ include "fhir-pseudonymizer.fullname" . }}
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
-    app.kubernetes.io/component: fhir-pseudonymizer
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,5 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: fhir-pseudonymizer
-    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+    {{- include "fhir-pseudonymizer.matchLabels" . | nindent 4 }}

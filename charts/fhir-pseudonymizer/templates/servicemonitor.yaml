@@ -8,7 +8,6 @@ metadata:
   {{- end }}
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
-    app.kubernetes.io/component: fhir-pseudonymizer
     {{- if .Values.metrics.serviceMonitor.additionalLabels }}
     {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
     {{- end }}
@@ -27,6 +26,5 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "fhir-pseudonymizer.labels" . | nindent 6 }}
-      app.kubernetes.io/component: fhir-pseudonymizer
+      {{- include "fhir-pseudonymizer.matchLabels" . | nindent 6 }}
 {{- end }}

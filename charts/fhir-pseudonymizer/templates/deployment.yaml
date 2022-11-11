@@ -4,10 +4,7 @@ metadata:
   name: {{ include "fhir-pseudonymizer.fullname" . }}
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
-    app.kubernetes.io/component: pseudonymizer
-    app.kubernetes.io/name: fhir-pseudonymizer
-    app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
-  {{- with .Values.global.deploymentAnnotations }}
+  {{- with .Values.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -15,8 +12,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: fhir-pseudonymizer
-      app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+      {{- include "fhir-pseudonymizer.matchLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -25,8 +21,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app.kubernetes.io/name: fhir-pseudonymizer
-        app.kubernetes.io/instance: {{ .Release.Name }}-fhir-pseudonymizer
+        {{- include "fhir-pseudonymizer.matchLabels" . | nindent 8 }}
     spec:
       automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
@@ -70,10 +65,6 @@ spec:
             {{- if or (.Files.Glob "files/anonymization.yaml") .Values.anonymizationConfig }}
             - name: ANONYMIZATIONENGINECONFIGPATH
               value: /etc/fhir-pseudonymizer/anonymization.yaml
-            {{- end }}
-            {{- if .Values.global.tracing.enabled }}
-            - name: TRACING__ENABLED
-              value: "true"
             {{- end }}
             {{- if .Values.auth.apiKey.enabled }}
             - name: ApiKey
@@ -126,6 +117,10 @@ spec:
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
