@@ -477,6 +477,21 @@ list:
       # the Keycloak auth URL. Should end in `/auth`.
       url: "http://localhost:8083/auth"
 
+  dePseudonymization:
+    # if enabled, all FHIR resource will first be processed by the fhir-pseudonymizer for de-pseudonymization before being displayed.
+    enabled: false
+    # API base URL of the FHIR pseudonymizer to use. If `fhir-pseudonymizer.enabled` is set to `true`, this URL will be auto-configured.
+    serviceUrl: "http://fhir-pseudonymizer:8080/fhir"
+    # the API key to invoke the FHIR pseudonymizer
+    apiKey: ""
+    # use an existing Secret resource that contains the API key
+    existingApiKeySecret:
+      # name of an existing Kubernetes Secret that contains the API key.
+      # Leave empty to use `dePseudonymization.apiKey` instead.
+      name: ""
+      # key of the Kubernetes Secret that contains the API key
+      key: "fhir-pseudonymizer-api-key"
+
   metrics:
     serviceMonitor:
       # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
@@ -598,3 +613,20 @@ postgresql:
           - ALL
       seccompProfile:
         type: RuntimeDefault
+
+# configuration for the optional fhir-pseudonymizer dependency
+fhir-pseudonymizer:
+  # install the included fhir-pseudonymizer chart. If set to `true`, the list module is auto-configured to use this service.
+  enabled: false
+  # default to using Vfps as a pseudonym service. It is included as a dependency of the fhir-pseudonymizer.
+  pseudonymizationService: Vfps
+  vfps:
+    # enable the included Vfps service.
+    enabled: true
+
+# @ignored
+curl: # +doc-gen:ignore
+  image:
+    registry: index.docker.io
+    repository: curlimages/curl
+    tag: 7.86.0@sha256:cfdeba7f88bb85f6c87f2ec9135115b523a1c24943976a61fbf59c4f2eafd78e

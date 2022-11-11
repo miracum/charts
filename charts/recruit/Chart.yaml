@@ -36,7 +36,11 @@ dependencies:
     name: postgresql
     version: 11.9.8
     repository: https://charts.bitnami.com/bitnami
-version: 9.2.3
+  - condition: fhir-pseudonymizer.enabled
+    name: fhir-pseudonymizer
+    version: 0.3.0
+    repository: https://miracum.github.io/charts
+version: 9.3.0
 appVersion: "9.x"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
@@ -64,8 +68,6 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated ohdsi sub-chart to v0.19.1. This version allows enabling distributed tracing for the OHDSI WebAPI component.
-    - kind: changed
-      description: updated postgresql sub-chart to v11.9.8
-    - kind: changed
-      description: updated curlimages/curl to v7.85.0
+      description: |
+        Added fhir-pseudonymizer as an optional chart dependency.
+        If enabled, the list module's de-pseudonymization is auto-configured to use it.

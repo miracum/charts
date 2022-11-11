@@ -39,7 +39,7 @@ spec:
         {{- toYaml .Values.list.podSecurityContext | nindent 8 }}
       initContainers:
         - name: wait-for-fhir-server
-          image: docker.io/curlimages/curl:7.85.0@sha256:9fab1b73f45e06df9506d947616062d7e8319009257d3a05d970b0de80a41ec5
+          image: "{{ .Values.curl.image.registry }}/{{ .Values.curl.image.repository }}:{{ .Values.curl.image.tag }}"
           imagePullPolicy: IfNotPresent
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
@@ -87,7 +87,8 @@ spec:
             {{- toYaml .Values.list.resources | nindent 12 }}
           env:
             - name: FHIR_URL
-              value: {{ template "recruit.fhirserver.url" . }}
+              value: {{ include "recruit.fhirserver.url" . }}
+            {{- if .Values.list.auth.enabled }}
             - name: KEYCLOAK_AUTH_URL
               value: {{ .Values.list.auth.keycloak.url }}
             - name: KEYCLOAK_CLIENT_ID
@@ -96,9 +97,23 @@ spec:
               value: {{ .Values.list.auth.keycloak.realm }}
             - name: RULES_FILE_PATH
               value: "/etc/rules.yaml"
-            {{- if not .Values.list.auth.enabled }}
+            {{- else }}
             - name: KEYCLOAK_DISABLED
               value: "true"
+            {{- end }}
+            {{- if .Values.list.dePseudonymization.enabled }}
+            - name: DE_PSEUDONYMIZATION_ENABLED
+              value: "true"
+            - name: DE_PSEUDONYMIZATION_SERVICE_URL
+              value: {{ include "recruit.list.fhirPseudonymizer.serviceUrl" . }}
+            {{/* This isn't great, but there is no `toBool`: https://github.com/helm/helm/issues/10382 */}}
+            {{- if (eq (include "recruit.list.fhirPseudonymizer.isApiKeyAuthEnabled" .) "true") }}
+            - name: DE_PSEUDONYMIZATION_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "recruit.list.fhirPseudonymizer.apiKey.secretName" . }}
+                  key: {{ include "recruit.list.fhirPseudonymizer.apiKey.secretKey" . }}
+            {{- end }}
             {{- end }}
             {{- if .Values.list.extraEnv }}
             {{ toYaml .Values.list.extraEnv | nindent 12 }}
