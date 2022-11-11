@@ -902,6 +902,37 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "⚠️ BREAKING CHANGE: standardized all labels to follow Bitnami conventions"
+        - kind: changed
+          description: "⚠️ BREAKING CHANGE: removed `global` values. `deploymentAnnotations` moved to top-level value."
+        - kind: added
+          description: "configuration value for `topologySpreadConstraints`"
+        - kind: changed
+          description: "set `securityContext.runAsUser` and `.runAsGroup` to `65532`, aka the `nobody` user"
+        - kind: changed
+          description: "set `securityContext.seccompProfile.type` to `RuntimeDefault`"
+    apiVersion: v2
+    created: "2022-11-11T15:57:26.714790448Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.0.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: c870566779b84b7fc70ac4b84c1943b2490e253990a9abb30c9f21d88dfcc208
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.3.0/fhir-pseudonymizer-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: chore(deps) update helm values ghcr.io/miracum/fhir-pseudonymizer to v2.14.1
         - kind: changed
           description: digest-pinned ghcr.io/miracum/fhir-pseudonymizer image
@@ -1900,4 +1931,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2022-11-09T18:49:15.986447582Z"
+generated: "2022-11-11T15:57:26.715137247Z"
