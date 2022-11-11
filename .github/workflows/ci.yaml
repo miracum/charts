@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [master]
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   lint:
     runs-on: ubuntu-22.04

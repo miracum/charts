@@ -93,7 +93,7 @@ service: # +doc-gen:break
 
 # configure the anonymization rules, see <https://gitlab.miracum.org/miracum/etl/deployment/-/blob/master/fhir-gw/anonymization.yaml> for an example.
 # this is evaluated as a template. Also see [README.md](README.md#pseudonymization) for configuring it within this values.yaml
-anonymizationConfig: {}
+anonymizationConfig: ""
 
 # resource requests and limits
 resources:

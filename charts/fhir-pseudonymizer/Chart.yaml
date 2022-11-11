@@ -10,18 +10,10 @@ dependencies:
     version: 1.0.0
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.3.0
+version: 0.3.1
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "⚠️ BREAKING CHANGE: standardized all labels to follow Bitnami conventions"
-    - kind: changed
-      description: "⚠️ BREAKING CHANGE: removed `global` values. `deploymentAnnotations` moved to top-level value."
-    - kind: added
-      description: "configuration value for `topologySpreadConstraints`"
-    - kind: changed
-      description: "set `securityContext.runAsUser` and `.runAsGroup` to `65532`, aka the `nobody` user"
-    - kind: changed
-      description: "set `securityContext.seccompProfile.type` to `RuntimeDefault`"
+    - kind: fixed
+      description: "`anonymizationConfig` value should be of type string"
