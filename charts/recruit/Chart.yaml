@@ -40,7 +40,7 @@ dependencies:
     name: fhir-pseudonymizer
     version: 0.3.0
     repository: https://miracum.github.io/charts
-version: 9.3.0
+version: 9.3.1
 appVersion: "9.x"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
@@ -67,7 +67,8 @@ annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
+    - kind: fixed
       description: |
-        Added fhir-pseudonymizer as an optional chart dependency.
-        If enabled, the list module's de-pseudonymization is auto-configured to use it.
+        "Previously, the query module's `OMOP_USERNAME` was always set to `.Values.query.omop.username`,
+         which would default to `postgres`. This has been updated to use the OHDSI chart's `ohdsi.database.user`
+         template if `.Values.ohdsi.enabled` is `true` instead."
