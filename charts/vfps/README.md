@@ -21,7 +21,7 @@ helm install --create-namespace vfps miracum/vfps -n vfps
 ## Usage
 
 ```sh
-kubectl run --namespace=vfps -i --tty --rm debug --image=ghcr.io/miracum/vfps-grpc-utils:latest --restart=Never -- bash
+kubectl run --namespace=vfps -i --tty --rm --image=ghcr.io/miracum/vfps-grpc-utils:latest --restart=Never vfps-tester -- bash
 
 nobody@debug:/$ grpcurl \
   -plaintext \
@@ -36,6 +36,7 @@ nobody@debug:/$ ghz --duration=1m \
   --lb-strategy=round_robin \
   --cpus=3 \
   --insecure \
+  --enable-compression \
   --import-paths=/tmp/protos/ \
   --proto=Protos/vfps/api/v1/pseudonyms.proto \
   --call=vfps.api.v1.PseudonymService/Create \
@@ -82,6 +83,7 @@ nobody@debug:/$ ghz --duration=1m \
 | replicaCount                                  | int    | `1`                                                                                                               | number of replicas                                                                                                                                                                                                                                                                                                                        |
 | resources                                     | object | `{}`                                                                                                              | resource limits and requests                                                                                                                                                                                                                                                                                                              |
 | service.grpcPort                              | int    | `8081`                                                                                                            | the port which supports HTTP2 only, to accept plaintext gRPC calls                                                                                                                                                                                                                                                                        |
+| service.metricsPort                           | int    | `8082`                                                                                                            | the port exposed on the service to access metrics on `/metrics`                                                                                                                                                                                                                                                                           |
 | service.port                                  | int    | `8080`                                                                                                            | the port for the main endpoint which supports HTTP1, HTTP2, and HTTP3                                                                                                                                                                                                                                                                     |
 | service.type                                  | string | `"ClusterIP"`                                                                                                     | the type of service                                                                                                                                                                                                                                                                                                                       |
 | serviceAccount.annotations                    | object | `{}`                                                                                                              | Annotations to add to the service account                                                                                                                                                                                                                                                                                                 |

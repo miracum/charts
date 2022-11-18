@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/vfps
-  tag: v1.0.0@sha256:1a40c9da29adecf18375f48fe96fa58712c4f5b6094bf08a542520044a4d5f77
+  tag: v1.1.0@sha256:a0680eeed1e6d96310c92310172c25b6deaae45d7a81c133d53221ec00222058
   pullPolicy: IfNotPresent
 
 migrationsJob:
@@ -72,6 +72,8 @@ service:
   port: 8080
   # -- the port which supports HTTP2 only, to accept plaintext gRPC calls
   grpcPort: 8081
+  # -- the port exposed on the service to access metrics on `/metrics`
+  metricsPort: 8082
 
 ingress:
   # -- create an Ingress for the application

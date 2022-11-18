@@ -10,6 +10,8 @@ replicaCount: 3
 
 serviceMonitor:
   enabled: false
+  additionalLabels:
+    release: kube-prometheus-stack
 
 resources:
   limits:

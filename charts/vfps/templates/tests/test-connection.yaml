@@ -34,7 +34,7 @@ spec:
     - name: probe-metrics-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl", "--fail-with-body"]
-      args: ["http://{{ include "vfps.fullname" . }}:{{ .Values.service.port }}/metrics"]
+      args: ["http://{{ include "vfps.fullname" . }}:{{ .Values.service.metricsPort }}/metrics"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
