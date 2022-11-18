@@ -23,7 +23,7 @@ helm install --create-namespace vfps miracum/vfps -n vfps
 ## Usage
 
 ```sh
-kubectl run --namespace=vfps -i --tty --rm debug --image=ghcr.io/miracum/vfps-grpc-utils:latest --restart=Never -- bash
+kubectl run --namespace=vfps -i --tty --rm --image=ghcr.io/miracum/vfps-grpc-utils:latest --restart=Never vfps-tester -- bash
 
 nobody@debug:/$ grpcurl \
   -plaintext \
@@ -38,6 +38,7 @@ nobody@debug:/$ ghz --duration=1m \
   --lb-strategy=round_robin \
   --cpus=3 \
   --insecure \
+  --enable-compression \
   --import-paths=/tmp/protos/ \
   --proto=Protos/vfps/api/v1/pseudonyms.proto \
   --call=vfps.api.v1.PseudonymService/Create \
