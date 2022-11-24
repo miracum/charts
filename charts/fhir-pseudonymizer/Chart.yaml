@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 1.0.0
+    version: 1.1.1
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.3.1
+version: 0.3.2
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
-      description: "`anonymizationConfig` value should be of type string"
+    - kind: changed
+      description: "updated vfps sub-chart to v1.1.1"
