@@ -901,6 +901,29 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "updated vfps sub-chart to v1.1.1"
+    apiVersion: v2
+    created: "2022-11-24T23:29:48.748466419Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.1.1
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: c2a7d1dcf6c815723ed89d7cfd463fa7749878527df5a08654abeb08ce6f9c0e
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.3.2/fhir-pseudonymizer-0.3.2.tgz
+    version: 0.3.2
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: fixed
           description: "`anonymizationConfig` value should be of type string"
     apiVersion: v2
@@ -2195,4 +2218,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2022-11-24T23:18:02.285565917Z"
+generated: "2022-11-24T23:29:48.749019821Z"
