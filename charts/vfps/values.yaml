@@ -156,7 +156,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 15.0.0-debian-11-r3@sha256:6ebd4468a91c35300c992c4c0ee10e13dfcccd928a5a3de5cd089d3a3bf19c1c
+    tag: 15.1.0-debian-11-r0@sha256:27915588d5203a10a1c23624d9c81644437f33b7c224e25f79bcd9bd09bbb8e2
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -222,6 +222,6 @@ postgresql:
 # @ignored
 curl:
   image:
-    registry: index.docker.io
+    registry: docker.io
     repository: curlimages/curl
     tag: 7.86.0@sha256:cfdeba7f88bb85f6c87f2ec9135115b523a1c24943976a61fbf59c4f2eafd78e
