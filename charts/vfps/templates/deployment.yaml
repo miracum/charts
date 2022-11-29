@@ -54,7 +54,7 @@ spec:
               done;
         {{ if .Values.migrationsJob.enabled }}
         - name: wait-for-migrations-job
-          image: ghcr.io/groundnuty/k8s-wait-for:no-root-v1.7@sha256:27283e1889d2f33040c51fc5d2066c88c9668c2c8708620b50762990e0740e4c
+          image: ghcr.io/groundnuty/k8s-wait-for:no-root-v2.0@sha256:a26d3d3f6e1c747dd812aba5eef3189d535d0b4e810506bac51f8209a58a0102
           args: ["job", "{{ include "vfps.migrationsJob.resourceName" . }}"]
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
@@ -88,7 +88,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: COMPlus_EnableDiagnostics
+            - name: DOTNET_EnableDiagnostics
               value: "0"
             - name: ConnectionStrings__PostgreSQL
               value: {{ include "vfps.database.connection-string" . }}
