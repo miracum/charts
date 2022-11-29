@@ -2093,6 +2093,53 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "renamed `COMPlus_EnableDiagnostics` default env var to `DOTNET_EnableDiagnostics`"
+        - kind: changed
+          description: "updated `ghcr.io/groundnuty/k8s-wait-for:no-root-v1.7` to `v2.0`"
+        - kind: changed
+          description: "updated vfps image to v1.1.1"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "true"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/chgl/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.1.1
+    created: "2022-11-29T20:48:05.520301656Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: 8e205639647b4dd14ffa705a0c4f810af061b4c075f5f33ea285176d78d7aa88
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-1.1.2/vfps-1.1.2.tgz
+    version: 1.1.2
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: updated postgresql sub-chart to v12.1.2
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -2218,4 +2265,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2022-11-24T23:29:48.749019821Z"
+generated: "2022-11-29T20:48:05.520999056Z"
