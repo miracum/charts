@@ -19,8 +19,8 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.1.1
-appVersion: "1.1.0"
+version: 1.1.2
+appVersion: "1.1.1"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -28,6 +28,7 @@ annotations:
   artifacthub.io/prerelease: "true"
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   artifacthub.io/screenshots: |
     - title: Screenshot of the OpenAPI/Swagger UI for the REST API
       url: https://raw.githubusercontent.com/chgl/vfps/master/docs/img/openapi.png
@@ -35,4 +36,8 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: updated postgresql sub-chart to v12.1.2
+      description: "renamed `COMPlus_EnableDiagnostics` default env var to `DOTNET_EnableDiagnostics`"
+    - kind: changed
+      description: "updated `ghcr.io/groundnuty/k8s-wait-for:no-root-v1.7` to `v2.0`"
+    - kind: changed
+      description: "updated vfps image to v1.1.1"
