@@ -31,7 +31,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 14.5.0-debian-11-r1@sha256:b84e2a99b1769a044167c7fd836f24dc2411ea2a9daae63ba9604fc58aa8de7f
+    tag: 15.1.0-debian-11-r1@sha256:9bf6861fd3849a182f990abc7361c7299e63fdfc1b154c1193e3d7e725f6dd9f
     pullPolicy: IfNotPresent
 
 # container security context applied to init containers used by the query, list, and notify modules.
