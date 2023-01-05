@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.10.3@sha256:6b0f64d0f3bca7cf8ecfb63d221af546a0e3b80afdcff50cb53a4bfb45dfc5a7
+  tag: v3.10.7@sha256:5de00ed2315d32ece5337fe8e20357524a18b23e46112660a43250488a9144b4
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -56,7 +56,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 14.4.0-debian-11-r4@sha256:58744ac056007ba278d80090d41722e30c49b20d85c56653f337e7e0a7b2f312
+    tag: 15.1.0-debian-11-r0@sha256:27915588d5203a10a1c23624d9c81644437f33b7c224e25f79bcd9bd09bbb8e2
     pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
@@ -329,7 +329,7 @@ fhirPseudonymizer:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/fhir-pseudonymizer
-    tag: v2.12.0@sha256:2e03bfa1e3cbd2615c3c5b382ee8da1db76c188674108f6a1606482f75051da1
+    tag: v2.15.1@sha256:84d60b439bd1535de941a70c578b8e092f2d7091b57b887d55394588c72873de
     pullPolicy: IfNotPresent
 
   metrics:
@@ -436,3 +436,25 @@ fhirPseudonymizer:
   extraEnv: []
   # - name: EXAMPLE
   #   value: "example"
+
+# @ignored
+curl: # +doc-gen:ignore
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 7.87.0@sha256:f7f265d5c64eb4463a43a99b6bf773f9e61a50aaa7cefaf564f43e42549a01dd
+
+# container security context applied to init containers used by the query, list, and notify modules.
+# also used by the Helm test job pods
+restrictedContainerSecurityContext: # +doc-gen:ignore
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
