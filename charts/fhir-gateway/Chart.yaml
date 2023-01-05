@@ -7,13 +7,15 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 11.7.1
+    version: 12.1.2
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 4.0.2
+version: 5.0.0
 annotations:
   artifacthub.io/changes: |
-    - kind: fixed
-      description: |
-        support for cleanly and completely disabling the included postgres database and the use of any postgres instance.
-        Set `sinks.postgres.enabled=false` and `postgresql.enabled=false` to do so.
+    - kind: changed
+      description: "updated curlimages/curl image to 7.87.0"
+    - kind: changed
+      description: "updated fhir-pseudonymizer image to 2.15.1"
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: updated postgresql sub-chart to 12.1.2. Uses postgres v15 internally."
