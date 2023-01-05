@@ -38,9 +38,9 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
   - condition: fhir-pseudonymizer.enabled
     name: fhir-pseudonymizer
-    version: 0.3.0
+    version: 0.3.3
     repository: https://miracum.github.io/charts
-version: 9.3.1
+version: 9.3.2
 appVersion: "9.x"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
