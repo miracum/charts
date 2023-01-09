@@ -89,6 +89,8 @@ spec:
                 secretKeyRef:
                   name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage={{ .Values.java.maxRamPercentage }} -XX:G1PeriodicGCInterval={{ .Values.java.g1PeriodicGcInterval }} -XX:G1PeriodicGCSystemLoadThreshold={{ .Values.java.g1PeriodicGcSystemLoadThreshold }}"
             {{- if .container.env -}}
             {{- toYaml .container.env | default "" | nindent 12 }}
             {{- end }}

@@ -42,3 +42,8 @@ defaultTolerations: []
 
 # list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example
 processors: {}
+
+java:
+  maxRamPercentage: 50
+  g1PeriodicGcInterval: 1000
+  g1PeriodicGcSystemLoadThreshold: 1000
