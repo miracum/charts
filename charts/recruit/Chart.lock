@@ -1,7 +1,7 @@
 dependencies:
 - name: hapi-fhir-jpaserver
   repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-  version: 0.10.1
+  version: 0.11.1
 - name: ohdsi
   repository: https://chgl.github.io/charts
   version: 0.19.1
@@ -14,5 +14,5 @@ dependencies:
 - name: fhir-pseudonymizer
   repository: https://miracum.github.io/charts
   version: 0.3.0
-digest: sha256:ac0a95254e1d1a5b29876818e2b884696b095451e5d5dea74fb5361fc081e1e3
-generated: "2022-11-11T15:58:40.14246516Z"
+digest: sha256:5ae967b20dc1c173be7bc0417700d89fa1b09e9f550348c839e828c1a73b7943
+generated: "2023-01-10T22:27:30.620116449Z"

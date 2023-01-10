@@ -23,7 +23,7 @@ dependencies:
     alias: fhirserver
     name: hapi-fhir-jpaserver
     repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-    version: 0.10.1
+    version: 0.11.1
   - condition: ohdsi.enabled
     name: ohdsi
     repository: https://chgl.github.io/charts
@@ -40,7 +40,7 @@ dependencies:
     name: fhir-pseudonymizer
     version: 0.3.0
     repository: https://miracum.github.io/charts
-version: 9.3.1
+version: 9.3.2
 appVersion: "9.x"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
