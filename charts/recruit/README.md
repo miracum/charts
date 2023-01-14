@@ -5,9 +5,9 @@
 ## TL;DR;
 
 ```console
-$ helm repo add miracum https://miracum.github.io/charts
-$ helm repo update
-$ helm install recruit miracum/recruit -n recruit
+helm repo add miracum https://miracum.github.io/charts
+helm repo update
+helm install recruit miracum/recruit -n recruit
 ```
 
 You can find more exhaustive documentation at the recruIT documentation site: <https://miracum.github.io/recruit/deployment/kubernetes>.
@@ -30,7 +30,7 @@ See [UPGRADING.md](./docs/UPGRADING.md) for information on breaking changes intr
 To install the chart with the release name `recruit`:
 
 ```console
-$ helm install recruit miracum/recruit -n recruit
+helm install recruit miracum/recruit -n recruit
 ```
 
 The command deploys the recruIT clinical trial recruitment support system on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -42,7 +42,7 @@ The command deploys the recruIT clinical trial recruitment support system on the
 To uninstall/delete the `recruit`:
 
 ```console
-$ helm delete recruit -n recruit
+helm delete recruit -n recruit
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -96,12 +96,13 @@ The following table lists the configurable parameters of the `recruit` chart and
 | query.omop.existingSecret                            | name of an existing secret to use instead of `omop.password`. Must include an `omop-password` key.                                                                                                                                                                                                                                                                                                                                                                 | <code>""</code>                                                |
 | query.omop.resultsSchema                             | Name of the database schema containing the results of the cohort generation                                                                                                                                                                                                                                                                                                                                                                                        | <code>cds_results</code>                                       |
 | query.omop.cdmSchema                                 | Name of the database schema containing the actual clinical data                                                                                                                                                                                                                                                                                                                                                                                                    | <code>cds_cdm</code>                                           |
+| query.shouldWaitForNotify                            | whether the query module should wait for the notification module to be up before starting. implemented as an init container that waits on notify's `/actuator/health` endpoint                                                                                                                                                                                                                                                                                     | <code>false</code>                                             |
 | query.resources                                      | resource requests and limits for the container                                                                                                                                                                                                                                                                                                                                                                                                                     | <code>{}</code>                                                |
 | query.nodeSelector                                   | node labels for pod assignment see: <https://kubernetes.io/docs/user-guide/node-selection/>                                                                                                                                                                                                                                                                                                                                                                        | <code>{}</code>                                                |
 | query.tolerations                                    | tolerations for pod assignment see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>                                                                                                                                                                                                                                                                                                                                                      | <code>[]</code>                                                |
 | query.affinity                                       | affinity for pod assignment see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>                                                                                                                                                                                                                                                                                                                                   | <code>{}</code>                                                |
 | query.podSecurityContext                             | security context for the pod                                                                                                                                                                                                                                                                                                                                                                                                                                       | <code>{}</code>                                                |
-| query.topologySpreadConstraints                      | pod topology spread configuration see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api                                                                                                                                                                                                                                                                                                                                     | <code>[]</code>                                                |
+| query.topologySpreadConstraints                      | pod topology spread configuration see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>                                                                                                                                                                                                                                                                                                                                   | <code>[]</code>                                                |
 | notify.enabled                                       | Whether the notification module should be enabled                                                                                                                                                                                                                                                                                                                                                                                                                  | <code>true</code>                                              |
 | notify.replicaCount                                  | number of replicas for the notify component. should only be set to a number > 1 if `notify.ha.enabled=true`                                                                                                                                                                                                                                                                                                                                                        | <code>1</code>                                                 |
 | notify.revisionHistoryLimit                          | specify how many old ReplicaSets for this Deployment you want to retain.                                                                                                                                                                                                                                                                                                                                                                                           | <code>5</code>                                                 |
@@ -178,18 +179,19 @@ The following table lists the configurable parameters of the `recruit` chart and
 | fhir-pseudonymizer.enabled                           | install the included fhir-pseudonymizer chart. If set to `true`, the list module is auto-configured to use this service.                                                                                                                                                                                                                                                                                                                                           | <code>false</code>                                             |
 | fhir-pseudonymizer.pseudonymizationService           | default to using Vfps as a pseudonym service. It is included as a dependency of the fhir-pseudonymizer.                                                                                                                                                                                                                                                                                                                                                            | <code>Vfps</code>                                              |
 | fhir-pseudonymizer.vfps.enabled                      | enable the included Vfps service.                                                                                                                                                                                                                                                                                                                                                                                                                                  | <code>true</code>                                              |
+| broadseaAtlasdb.enabled                              | whether to deploy the OHDSI Broadsea Atlasdb (<https://github.com/OHDSI/Broadsea-Atlasdb>) currently only used by internal integration tests. See [./values-integrationtest.yaml](values-integrationtest.yaml)                                                                                                                                                                                                                                                     | <code>false</code>                                             |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install recruit miracum/recruit -n recruit --set fhirserver.postgresql.nameOverride="fhir-server-postgres"
+helm install recruit miracum/recruit -n recruit --set fhirserver.postgresql.nameOverride="fhir-server-postgres"
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install recruit miracum/recruit -n recruit --values values.yaml
+helm install recruit miracum/recruit -n recruit --values values.yaml
 ```
 
 ## Configure Notifcation Rules

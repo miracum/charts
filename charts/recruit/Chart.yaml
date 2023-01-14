@@ -13,8 +13,7 @@ keywords:
 maintainers:
   - name: chgl
 sources:
-  - https://github.com/miracum/charts/tree/master/charts/recruit
-  - https://github.com/miracum/recruit
+  - https://github.com/miracum/recruit/tree/master/charts/recruit
 deprecated: false
 kubeVersion: ">= 1.21.0"
 icon: https://miracum.github.io/recruit/_img/miracum-recruit-k8s-logo.png
@@ -23,25 +22,27 @@ dependencies:
     alias: fhirserver
     name: hapi-fhir-jpaserver
     repository: https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-    version: 0.10.1
+    version: 0.11.1
   - condition: ohdsi.enabled
     name: ohdsi
     repository: https://chgl.github.io/charts
-    version: 0.19.1
+    version: 0.20.1
   - condition: mailhog.enabled
     name: mailhog
     repository: https://codecentric.github.io/helm-charts
-    version: 5.2.0
+    version: 5.2.2
   - condition: postgresql.enabled
     name: postgresql
-    version: 11.9.8
+    version: 12.1.2
     repository: https://charts.bitnami.com/bitnami
   - condition: fhir-pseudonymizer.enabled
     name: fhir-pseudonymizer
-    version: 0.3.0
+    version: 0.3.3
     repository: https://miracum.github.io/charts
-version: 9.3.1
-appVersion: "9.x"
+# x-release-please-start-version
+version: 10.0.0
+appVersion: 10.0.0
+# x-release-please-end
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/operator: "false"
@@ -67,8 +68,28 @@ annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
+    - kind: changed
+      description: updated recruIT image tags to v10.0.0 # x-release-please-version
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: updated included postgresql chart to v12, which is based on PostgreSQL 15.1"
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: updated included ohdsi chart to v0.20.1, which internally uses a v12 postgresql chart based on PostgreSQL 15.1"
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: updated included hapi-fhir-jpaserver chart to v0.11.1, which internally uses a v12 postgresql chart based on PostgreSQL 15.1"
+    - kind: changed
+      description: "updated fhir-pseudonymizer sub-chart to v0.3.3"
+    - kind: changed
+      description: "updated mailhog sub-chart to v5.2.2"
+    - kind: changed
+      description: "updated omop cdm init job to v3.3.2"
+    - kind: changed
       description: |
-        "Previously, the query module's `OMOP_USERNAME` was always set to `.Values.query.omop.username`,
-         which would default to `postgres`. This has been updated to use the OHDSI chart's `ohdsi.database.user`
-         template if `.Values.ohdsi.enabled` is `true` instead."
+        "added an init container to the query module deployment to wait for the notify module to be ready.
+        Required for integration testing where the notify module may be unavailable
+        before the query module creates first recommendations therefore causing the FHIR server
+        to not be able to trigger the subscription webhook of notify.
+        Can be disabled by setting `query.shouldWaitForNotify=false`."
+    - kind: changed
+      description: |
+        mount the notify-rules config at the `/app` path instead of `/opt/notify` due to standardizing the base
+        working directory for all containers to `/app`.

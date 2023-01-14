@@ -1,8 +1,17 @@
 # Upgrading & Breaking Changes
 
+## v10
+
+Once more, all chart dependencies were updated to their latest major version. Particularly the HAPI FHIR and OHDSI chart
+had breaking changes in the form of majorly updating their PostgreSQL sub-chart to v12 (based on PostgreSQL v15).
+
+If you were using the included PostgreSQL databases, you will have to follow the instructions for [v9 below](#v9),
+manually changing the PostgreSQL image versions as appropriate for your current deployment.
+
 ## v9
 
-This updates all dependencies to their latest version. Both the included HAPI FHIR and the OHDSI sub-chart had breaking changes in their new versions:
+This updates all dependencies to their latest version. Both the included HAPI FHIR and the OHDSI sub-chart had breaking
+changes in their new versions:
 
 1. [OHDSI Helm chart breaking changes](https://github.com/chgl/charts/tree/master/charts/ohdsi#breaking-changes)
 
@@ -15,12 +24,12 @@ This updates all dependencies to their latest version. Both the included HAPI FH
 ### Steps for manually updating from version `8.6.4` to `9.0.0` while keeping the databases
 
 The easiest way to update is uninstalling the version 8 release without deleting the persistent volumes,
-explicitely setting the previously used PostgreSQL container image versions and passwords in your `values.yaml`,
+explicitly setting the previously used PostgreSQL container image versions and passwords in your `values.yaml`,
 and newly installing version 9.
 
 We assume that the chart was initially installed as follows:
 
-> ⚠️ [docs/migrations/v8-to-v9/values-v8.yaml](docs/migrations/v8-to-v9/values-v8.yaml) has enabled the notify module's HA-mode.
+> ⚠️ [docs/migrations/v8-to-v9/values-v8.yaml](migrations/v8-to-v9/values-v8.yaml) has enabled the notify module's HA-mode.
 > Since this is a recent feature, disabled by default, you most likely have not enabled it and may want to set
 > `notify.ha.enabled=false` and `postgresql.enabled=false` to keep HA disabled.
 
@@ -176,8 +185,9 @@ The pod/deployment labels have been updated to follow the Bitnami Helm conventio
 
 ## v7
 
-Starting with version 7.0.0 of this chart, the notification module has been updated to v3. The breaking change is related to a completely revamped notification configuration, which allows
-setting the notification frequency. See [Configure Notification Rules](#configure-notifcation-rules) below for an example config.
+Starting with version 7.0.0 of this chart, the notification module has been updated to v3. The breaking change is related
+to a completely revamped notification configuration, which allows setting the notification frequency.
+See [Configure Notification Rules](../README.md#configure-notifcation-rules) below for an example config.
 
 Additionally, several values that were previously globally scoped, have now been scoped to each component.
 You can now configure `nodeSelector`, `affinity`, etc. per-component.
@@ -186,15 +196,17 @@ You can now configure `nodeSelector`, `affinity`, etc. per-component.
 
 v7.0.1 is a small update with several unplanned breaking changes:
 
-The `notify.mailServer` config has been split into `notify.mail.server` for SMTP settings and the additional `notify.mail.from` and `notify.mail.screeningListLinkTemplate` settings.
-See the [Configuration Section](#configuration) below for details
+The `notify.mailServer` config has been split into `notify.mail.server` for SMTP settings and the additional
+`notify.mail.from` and `notify.mail.screeningListLinkTemplate` settings.
+See the [Configuration Section](../README.md#configuration) below for details
 
 ## v6
 
 Starting with v6.0.0 of this chart all labels have been updated to be conformant to the Kubernetes' guidelines (<https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/>).
 This means that you can't just update your release using `helm upgrade` but need to uninstall the old release first.
 
-This major release also updates the screening list component to v2, which requires an existing Keycloak installation to run. The following values need to be set:
+This major release also updates the screening list component to v2, which requires an existing Keycloak installation to run.
+The following values need to be set:
 
 ```yaml
 list:
