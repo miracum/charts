@@ -31,7 +31,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 14.5.0-debian-11-r1@sha256:b84e2a99b1769a044167c7fd836f24dc2411ea2a9daae63ba9604fc58aa8de7f
+    tag: 15.1.0-debian-11-r0@sha256:27915588d5203a10a1c23624d9c81644437f33b7c224e25f79bcd9bd09bbb8e2
     pullPolicy: IfNotPresent
 
 # container security context applied to init containers used by the query, list, and notify modules.
@@ -96,7 +96,7 @@ ohdsi:
     image: # +doc-gen:ignore
       registry: harbor.miracum.org
       repository: miracum-etl/omop/init
-      tag: v3.2.1-cdm5.3.1@sha256:75db2ecdb17b2c98493de6dda9432b5625c6aa736afdce29adecfa833a804cfd
+      tag: v3.3.2-cdm5.3.1@sha256:40521fabaa73f9d01daec43ba9d510fc0f89b73714515006b70333c4b043d52c
     securityContext: # +doc-gen:ignore
       allowPrivilegeEscalation: false
       capabilities:
@@ -131,7 +131,7 @@ query:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/query
-    tag: v3.16.4@sha256:0080bef593de3e4d535cfcf93815588dbc9b6f07bd18c48770bce5d4f1fc2f65
+    tag: v10.0.0 # x-release-please-version
     pullPolicy: IfNotPresent
 
   metrics:
@@ -209,6 +209,10 @@ query:
   cohortSelectorLabels:
     - "UC1"
 
+  # whether the query module should wait for the notification module to be up before starting.
+  # implemented as an init container that waits on notify's `/actuator/health` endpoint
+  shouldWaitForNotify: false
+
   # Configuration for the container's readiness probe. See <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/>
   readinessProbe: # +doc-gen:ignore
     failureThreshold: 3
@@ -257,7 +261,7 @@ query:
       type: RuntimeDefault
 
   # pod topology spread configuration
-  # see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api
+  # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
   topologySpreadConstraints:
     []
     # - maxSkew: 1
@@ -281,7 +285,7 @@ notify:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/notify
-    tag: v3.2.5@sha256:ce34fbcff8564ab856579837d7ced1dcbc8d2ee105f2bccbf2a2e6107a84e41d
+    tag: v10.0.0 # x-release-please-version
     pullPolicy: IfNotPresent
 
   metrics:
@@ -456,7 +460,7 @@ list:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/list
-    tag: v2.15.6@sha256:9c9ed72b32857cb1cccabc76a4d6fc75e7e9ea7359e02f51869ac91b9cccfa28
+    tag: v10.0.0 # x-release-please-version
     pullPolicy: IfNotPresent
 
   # the service used to expose the list module web port
@@ -627,6 +631,11 @@ fhir-pseudonymizer:
 # @ignored
 curl: # +doc-gen:ignore
   image:
-    registry: index.docker.io
+    registry: docker.io
     repository: curlimages/curl
-    tag: 7.86.0@sha256:cfdeba7f88bb85f6c87f2ec9135115b523a1c24943976a61fbf59c4f2eafd78e
+    tag: 7.87.0@sha256:f7f265d5c64eb4463a43a99b6bf773f9e61a50aaa7cefaf564f43e42549a01dd
+
+broadseaAtlasdb:
+  # whether to deploy the OHDSI Broadsea Atlasdb (<https://github.com/OHDSI/Broadsea-Atlasdb>)
+  # currently only used by internal integration tests. See [./values-integrationtest.yaml](values-integrationtest.yaml)
+  enabled: false
