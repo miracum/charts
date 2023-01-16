@@ -131,7 +131,7 @@ query:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/recruit/query
-    tag: v10.0.0 # x-release-please-version
+    tag: v10.0.5 # x-release-please-version
     pullPolicy: IfNotPresent
 
   metrics:
