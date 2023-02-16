@@ -31,5 +31,10 @@
       "matchPackageNames": ["postgresql", "ghcr.io/chgl/kube-powertools"],
       "extends": ["schedule:monthly"]
     }
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "charts/recruit/**"
   ]
 }
