@@ -2,11 +2,19 @@ apiVersion: v2
 name: stream-processors
 description: A Helm chart for deploying a set of Kafka stream processing apps
 type: application
-home: https://gitlab.miracum.org/miracum/etl/streams
+home: https://github.com/miracum/charts
+deprecated: false
+keywords:
+  - kafka
+  - strimzi kafka operator
+  - stream processing
+version: 1.1.9
 annotations:
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: (chore) rebuilt docs with latest chart-doc-gen
-version: 1.1.8
+    - kind: fixed
+      description: fixed handling of images specified with both a tag and digest

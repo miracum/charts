@@ -38,3 +38,16 @@ Common labels
 helm.sh/chart: {{ include "stream-processors.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
+
+{{/*
+version label value
+*/}}
+{{- define "stream-processors.version-label-value" -}}
+{{- $tagAsString := (toString .container.image.tag) }}
+{{- if contains "@" $tagAsString }}
+{{- $split := regexSplit "@" $tagAsString 2 }}
+    {{- first $split | quote}}
+{{- else }}
+    {{- $tagAsString | quote }}
+{{- end }}
+{{- end }}

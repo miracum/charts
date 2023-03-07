@@ -7,7 +7,7 @@
 ```console
 $ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
-$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.8
+$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.9
 ```
 
 ## Introduction
@@ -31,7 +31,7 @@ kubectl apply -f https://raw.githubusercontent.com/strimzi/strimzi-kafka-operato
 To install the chart with the release name `stream-processors`:
 
 ```console
-$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.8
+$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.9
 ```
 
 The command deploys the Kafka Stream Processors on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -74,12 +74,12 @@ The following table lists the configurable parameters of the `stream-processors`
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.8 --set strimziClusterName=my-cluster
+$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.9 --set strimziClusterName=my-cluster
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.8 --values values.yaml
+$ helm install stream-processors miracum/stream-processors -n stream-processors --version=1.1.9 --values values.yaml
 ```

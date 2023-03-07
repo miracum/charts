@@ -67,7 +67,7 @@ processors:
       image:
         registry: ghcr.io
         repository: miracum/ahd2fhir
-        tag: v1.0.6
+        tag: v1.0.6@sha256:fe17777ac6f0562254371435ebf433e554a4e1704fef46bdeb539013f8cb06cc
         pullPolicy: IfNotPresent
       env:
         - name: AHD_URL
