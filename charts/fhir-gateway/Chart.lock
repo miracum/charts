@@ -2,5 +2,8 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 12.1.2
-digest: sha256:525689611a29f90b0bc8cd674df5d97024c99eda8104216390f6747904fd0208
-generated: "2023-01-05T17:24:20.9051415+01:00"
+- name: fhir-pseudonymizer
+  repository: https://miracum.github.io/charts
+  version: 0.3.3
+digest: sha256:e35b6378e9c486ffc2a68ed95aa01f291f6db54545fdcc89bb49cd50a47c6894
+generated: "2023-03-24T20:06:36.935402827+01:00"

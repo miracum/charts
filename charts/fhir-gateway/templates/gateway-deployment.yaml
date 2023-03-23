@@ -86,13 +86,13 @@ spec:
               value: "never"
             {{- end }}
             - name: SERVICES_PSEUDONYMIZER_ENABLED
-              value: {{ .Values.fhirPseudonymizer.enabled | quote }}
+              value: "{{ include "fhir-gateway.pseudonymizer.isEnabled" . }}"
             - name: SERVICES_PSEUDONYMIZER_URL
-              value: "http://{{ include "fhir-gateway.fullname" . }}-fhir-pseudonymizer:{{ .Values.fhirPseudonymizer.service.port }}/fhir"
+              value: "{{ include "fhir-gateway.pseudonymizer.baseUrl" . }}"
             - name: SERVICES_LOINC_CONVERSIONS_ENABLED
               value: {{ .Values.loincConverter.enabled | quote }}
             - name: SERVICES_LOINC_CONVERSIONS_URL
-              value: http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1
+              value: "http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1"
             - name: SERVICES_FHIRSERVER_ENABLED
               value: {{ .Values.sinks.fhirServer.enabled | quote }}
             {{- if .Values.sinks.fhirServer.enabled -}}

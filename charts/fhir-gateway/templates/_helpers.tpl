@@ -85,28 +85,6 @@ Get the key inside the secret containing the DB user's password
 {{- end -}}
 
 {{/*
-Return the gPAS basic auth credentials
-*/}}
-{{- define "fhir-gateway.gpasBasicAuthSecretName" -}}
-{{- if .Values.gpas.auth.basic.existingSecret -}}
-    {{- printf "%s" (tpl .Values.gpas.auth.basic.existingSecret $) -}}
-{{- else -}}
-    {{ printf "%s-%s" .Release.Name "gpas-auth" }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the fhir-pseudonymizer api key
-*/}}
-{{- define "fhir-gateway.fhirPseudonymizerApiKeySecretName" -}}
-{{- if .Values.fhirPseudonymizer.auth.apiKey.existingSecret -}}
-    {{- printf "%s" (tpl .Values.fhirPseudonymizer.auth.apiKey.existingSecret $) -}}
-{{- else -}}
-    {{ printf "%s-%s" .Release.Name "fhir-pseudonymizer-api-key" }}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Create a default fully qualified postgresql name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
@@ -175,4 +153,24 @@ Image used to for the PostgreSQL readiness init containers
 {{- $repository := .Values.waitForPostgresInitContainer.image.repository -}}
 {{- $tag := .Values.waitForPostgresInitContainer.image.tag -}}
 {{ printf "%s/%s:%s" $registry $repository $tag}}
+{{- end -}}
+
+{{/*
+Whether the fhir-pseudonymizer is enabled.
+*/}}
+{{- define "fhir-gateway.pseudonymizer.isEnabled" -}}
+{{ (index .Values "fhir-pseudonymizer" "enabled") }}
+{{- end -}}
+
+{{/*
+Base URL of the fhir-pseudonymizer service.
+*/}}
+{{- define "fhir-gateway.pseudonymizer.baseUrl" -}}
+{{- $host := (include "fhir-pseudonymizer.fullname" (index .Subcharts "fhir-pseudonymizer")) -}}
+{{/*
+Currently hard-coded since it is somewhat unlikely to ever change (famous last words).
+Alternatively, the fhir-pseudonymizer sub-chart could expose that value as a template, or expose the entire baseUrl as one.
+*/}}
+{{- $port := 8080 -}}
+{{ printf "http://%s:%d/fhir" $host (int $port) }}
 {{- end -}}

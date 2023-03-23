@@ -10,12 +10,15 @@ dependencies:
     version: 12.1.2
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
-version: 5.0.0
+  - name: fhir-pseudonymizer
+    condition: fhir-pseudonymizer.enabled
+    version: 0.3.3
+    repository: https://miracum.github.io/charts
+version: 6.0.0
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "updated curlimages/curl image to 7.87.0"
-    - kind: changed
-      description: "updated fhir-pseudonymizer image to 2.15.1"
-    - kind: changed
-      description: "⚠️ BREAKING CHANGE: updated postgresql sub-chart to 12.1.2. Uses postgres v15 internally."
+      description: |
+        "⚠️ BREAKING CHANGE: use the fhir-pseudonymizer sub-chart instead of the integrated fhir-pseudonymizer deployments.
+          - Renames the `fhirPseudonymizer` section to `fhir-pseudonymizer`
+          - This moves the `gpas` section from the `values.yaml` inside the `fhir-pseudonymizer` section."

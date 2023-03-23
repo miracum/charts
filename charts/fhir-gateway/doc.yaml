@@ -1,7 +1,7 @@
 project:
   name: FHIR Gateway
   shortName: fhir-gateway
-  url: https://gitlab.miracum.org/miracum/etl/fhir-gateway
+  url: https://github.com/miracum/fhir-gateway
   description: Helm chart for deploying the MIRACUM FHIR Gateway on Kubernetes.
   app: the MIRACUM FHIR Gateway
 repository:
