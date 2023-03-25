@@ -4,8 +4,30 @@ fhir-pseudonymizer:
     enabled: true
     postgresql:
       auth:
-        postgresPassword: "postgres"
-        database: "vfps"
+        postgresPassword: "vfps-postgres"
+    appsettings: |
+      {
+        "Init": {
+          "v1": {
+            "Namespaces": [
+              {
+                "Name": "patient-identifiers",
+                "Description": "Pseudonyms for patient identifiers",
+                "PseudonymGenerationMethod": "SecureRandomBase64UrlEncoded",
+                "PseudonymLength": 32,
+                "PseudonymPrefix": "pid-"
+              },
+              {
+                "Name": "visit-identifiers",
+                "Description": "Pseudonyms for visit identifiers",
+                "PseudonymGenerationMethod": "SecureRandomBase64UrlEncoded",
+                "PseudonymLength": 32,
+                "PseudonymPrefix": "vid-"
+              }
+            ]
+          }
+        }
+      }
 
   anonymizationConfig: |
     fhirVersion: R4
@@ -14,12 +36,10 @@ fhir-pseudonymizer:
         method: redact
       - path: nodesByType('Identifier').where(type.coding.system='http://terminology.hl7.org/CodeSystem/v2-0203' and type.coding.code='VN').value
         method: pseudonymize
-        domain: patient-identifiers
+        domain: visit-identifiers
       - path: nodesByType('Identifier').where(type.coding.system='http://terminology.hl7.org/CodeSystem/v2-0203' and type.coding.code='MR').value
         method: pseudonymize
-        domain: visit-identifiers
-      - path: nodesByType('Identifier').where(type.coding.system='http://fhir.de/CodeSystem/identifier-type-de-basis' and type.coding.code='GKV' or type.coding.code='PKV')
-        method: redact
+        domain: patient-identifiers
     parameters:
       dateShiftKey: ""
       dateShiftScope: resource

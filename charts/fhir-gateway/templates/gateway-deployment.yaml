@@ -99,6 +99,10 @@ spec:
             - name: SERVICES_FHIRSERVER_URL
               value: {{ .Values.sinks.fhirServer.url }}
             {{- end }}
+            - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
+              value: "true"
+            - name: MANAGEMENT_SERVER_PORT
+              value: "8081"
             - name: OPENTRACING_JAEGER_ENABLED
               value: {{ .Values.tracing.enabled | quote }}
 {{- if not .Values.tracing.enabled }}
@@ -138,9 +142,12 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: http-metrics
+              containerPort: 8081
+              protocol: TCP
           livenessProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /livez
               port: http
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -149,7 +156,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /readyz
               port: http
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}

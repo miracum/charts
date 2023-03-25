@@ -85,7 +85,7 @@ Return the vfps address to use
 */}}
 {{- define "fhir-pseudonymizer.vfpsAddress" -}}
 {{- if .Values.vfps.enabled -}}
-    {{- printf "dns:///%s-headless:%d" (include "vfps.fullname" .Subcharts.vfps) 8081 -}}
+    {{- printf "dns:///%s-headless:%d" (include "vfps.fullname" .Subcharts.vfps) (.Values.vfps.service.grpcPort) -}}
 {{- else -}}
     {{- .Values.externalVfps.address -}}
 {{- end -}}

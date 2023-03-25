@@ -167,10 +167,6 @@ Base URL of the fhir-pseudonymizer service.
 */}}
 {{- define "fhir-gateway.pseudonymizer.baseUrl" -}}
 {{- $host := (include "fhir-pseudonymizer.fullname" (index .Subcharts "fhir-pseudonymizer")) -}}
-{{/*
-Currently hard-coded since it is somewhat unlikely to ever change (famous last words).
-Alternatively, the fhir-pseudonymizer sub-chart could expose that value as a template, or expose the entire baseUrl as one.
-*/}}
-{{- $port := 8080 -}}
+{{- $port := (index .Values "fhir-pseudonymizer" "service" "port") -}}
 {{ printf "http://%s:%d/fhir" $host (int $port) }}
 {{- end -}}

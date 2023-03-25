@@ -12,7 +12,7 @@ dependencies:
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.3.3
+    version: 0.3.4
     repository: https://miracum.github.io/charts
 version: 6.0.0
 annotations:
@@ -21,4 +21,6 @@ annotations:
       description: |
         "⚠️ BREAKING CHANGE: use the fhir-pseudonymizer sub-chart instead of the integrated fhir-pseudonymizer deployments.
           - Renames the `fhirPseudonymizer` section to `fhir-pseudonymizer`
-          - This moves the `gpas` section from the `values.yaml` inside the `fhir-pseudonymizer` section."
+          - This moves the `gpas` section from the root of the values.yaml inside the `fhir-pseudonymizer` section."
+    - kind: changed
+      description: "Expose actuator on a dedicated port, `8081`, and changed liveness and readiness probes accordingly"

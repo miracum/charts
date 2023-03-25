@@ -12,6 +12,10 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
   selector:
     {{- include "fhir-gateway.matchLabels" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway

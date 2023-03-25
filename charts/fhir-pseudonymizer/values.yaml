@@ -180,6 +180,9 @@ vfps:
   # to use it as the pseudonymization backend
   enabled: false
 
+  service: # +doc-gen:ignore
+    grpcPort: 8081
+
 externalVfps:
   # the address of an external vfps service to use.
   # Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.

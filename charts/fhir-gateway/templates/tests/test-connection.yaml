@@ -13,7 +13,7 @@ spec:
       image: "{{ .Values.curl.image.registry }}/{{ .Values.curl.image.repository }}:{{ .Values.curl.image.tag }}"
       imagePullPolicy: IfNotPresent
       command: ["curl", "--fail-with-body"]
-      args: ['{{ include "fhir-gateway.fullname" . }}:{{ .Values.service.port }}/actuator/health']
+      args: ['{{ include "fhir-gateway.fullname" . }}:{{ .Values.service.metricsPort }}/actuator/health']
       {{- with $.Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

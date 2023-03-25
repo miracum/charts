@@ -63,6 +63,7 @@ waitForPostgresInitContainer:
 service: # +doc-gen:break
   type: ClusterIP
   port: 8080
+  metricsPort: 8081
 
 ingress:
   # if enabled, create an Ingress to expose the FHIR Gateway outside the cluster
@@ -304,6 +305,10 @@ fhir-pseudonymizer:
   # if this is set to false, then the FHIR gateway will not attempt to pseudonymize/anonymize
   # the resources.
   enabled: true
+  service: # +doc-gen:ignore
+    # sets the pseudonymizer's service port to a fixed one here to be able to use the value
+    # within the fhir-gateway's templates.
+    port: 8080
   vfps:
     postgresql:
       # overrides the chart's postgres server name to avoid conflicts with the fhir-gateway's postgresql
