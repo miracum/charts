@@ -102,6 +102,17 @@ spec:
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
+          {{- if .Values.appsettings }}
+          volumeMounts:
+            - name: appsettings
+              mountPath: /opt/vfps/appsettings.Production.json
+              readOnly: true
+              subPath: appsettings.Production.json
+          {{- end }}
+      volumes:
+        - name: appsettings
+          configMap:
+            name: {{ include "vfps.fullname" . }}-appsettings
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

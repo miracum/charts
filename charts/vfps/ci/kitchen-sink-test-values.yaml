@@ -19,3 +19,20 @@ database:
 
 ingress:
   enabled: true
+
+appsettings: |
+  {
+    "Init": {
+      "v1": {
+        "Namespaces": [
+          {
+            "Name": "default",
+            "Description": "a default namespace created as part of the application startup",
+            "PseudonymGenerationMethod": "SecureRandomBase64UrlEncoded",
+            "PseudonymLength": 32,
+            "PseudonymPrefix": "default-"
+          }
+        ]
+      }
+    }
+  }

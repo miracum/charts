@@ -20,8 +20,8 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.1.4
-appVersion: "1.1.3"
+version: 1.2.0
+appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,6 +37,6 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "updated vfps image to v1.1.3"
+      description: "updated vfps image to v1.2.0"
     - kind: changed
-      description: "updated curlimages/curl image to 7.87.0"
+      description: "allow providing an appsettings.json config mounted via config"
