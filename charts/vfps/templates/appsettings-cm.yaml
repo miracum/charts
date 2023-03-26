@@ -1,0 +1,12 @@
+{{- if .Values.appsettings -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "vfps.fullname" . }}-appsettings
+  labels:
+    {{- include "vfps.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+data:
+  appsettings.Production.json: |-
+    {{ .Values.appsettings | nindent 4 }}
+{{- end }}

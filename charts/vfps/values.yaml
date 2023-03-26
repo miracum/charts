@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/vfps
-  tag: v1.1.3@sha256:a4940766829e5d5f330030e8813049d2f074651876853f672f45de0709e35fbf
+  tag: v1.2.0@sha256:9b1f77c0bb8d65710665a3c6d7a6b0918b49c262ef5427475b9cae03475d9ce7
   pullPolicy: IfNotPresent
 
 migrationsJob:
@@ -225,3 +225,23 @@ curl:
     registry: docker.io
     repository: curlimages/curl
     tag: 7.87.0@sha256:f7f265d5c64eb4463a43a99b6bf773f9e61a50aaa7cefaf564f43e42549a01dd
+
+# -- a JSON configuration object which is mounted as `appsettings.Production.json` inside the container.
+# useful to define namespaces to create as part of the application startup.
+appsettings: ""
+# |
+#   {
+#     "Init": {
+#       "v1": {
+#         "Namespaces": [
+#           {
+#             "Name": "default",
+#             "Description": "a default namespace created as part of the application startup",
+#             "PseudonymGenerationMethod": "SecureRandomBase64UrlEncoded",
+#             "PseudonymLength": 32,
+#             "PseudonymPrefix": "default-"
+#           }
+#         ]
+#       }
+#     }
+#   }
