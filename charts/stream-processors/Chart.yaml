@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.1.9
+version: 1.1.10
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -17,4 +17,6 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: fixed
-      description: fixed handling of images specified with both a tag and digest
+      description: |
+        "set the KafkaUser object name to the chart release full name and the processors's name.
+         Previously, only the processor's name was used which could result in conflicts."

@@ -72,12 +72,12 @@ spec:
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ $name }}
+                  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
                   key: user.password
             - name: KAFKA_SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ $name }}
+                  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
                   key: user.password
             - name: SSL_TRUST_STORE_PASSWORD
               valueFrom:
@@ -115,7 +115,7 @@ spec:
                   - key: ca.p12
                     path: ca.p12
             - secret:
-                name: {{ $name }}
+                name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
                 items:
                   - key: user.crt
                     path: user.crt
