@@ -1010,6 +1010,29 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
+          description: "fixed port incorrectly translated to float instead of int"
+    apiVersion: v2
+    created: "2023-03-27T18:51:42.401412482Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: d4dac849c17cc284061a2a4d6b6439b5df73ce3736df728f7c3402f2f1afd15e
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.3.6/fhir-pseudonymizer-0.3.6.tgz
+    version: 0.3.6
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "updated fhir-pseudonymizer to v2.17.0"
     apiVersion: v2
@@ -2969,4 +2992,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T18:17:45.267144071Z"
+generated: "2023-03-27T18:51:42.401602282Z"
