@@ -2433,6 +2433,31 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: fixed
+          description: |
+            "set the KafkaUser object name to the chart release full name and the processors's name.
+             Previously, only the processor's name was used which could result in conflicts."
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2023-03-27T17:44:51.133821109Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 6813d88dedf6c0145d962d651cc55625c7d457c8c2b4f2ec1c638f5738cf026a
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.10/stream-processors-1.1.10.tgz
+    version: 1.1.10
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
           description: fixed handling of images specified with both a tag and digest
       artifacthub.io/recommendations: |
         - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -2917,4 +2942,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T17:09:30.021820825Z"
+generated: "2023-03-27T17:44:51.134135215Z"
