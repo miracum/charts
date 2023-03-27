@@ -3,6 +3,33 @@ entries:
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: "updated fhir-pseudonymizer to v0.3.6"
+        - kind: fixed
+          description: "only run the helm test job against the loinc converter if it's enabled"
+    apiVersion: v2
+    created: "2023-03-27T19:06:25.303431647Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.6
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 6837bb0a5e271fc35188741284fae9285efac0b0f4a95fb1a27846cb406cd568
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.3/fhir-gateway-6.0.3.tgz
+    version: 6.0.3
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: "Only create a postgres secret if the sink is enabled"
         - kind: changed
@@ -2992,4 +3019,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T18:51:42.401602282Z"
+generated: "2023-03-27T19:06:25.303720042Z"
