@@ -16,7 +16,7 @@ gpas:
   fhirUrl: ""
   # Version of gPAS used.
   # There were breaking changes to the FHIR API starting in 1.10.2,
-  # so explicitely set this value to 1.10.2 if `gpas.fhirUrl` points to gPAS 1.10.2.
+  # so explicitly set this value to 1.10.2 if `gpas.fhirUrl` points to gPAS 1.10.2.
   version: "1.10.1"
   auth:
     basic:

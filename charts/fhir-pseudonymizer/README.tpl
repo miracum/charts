@@ -62,7 +62,7 @@ $ helm install {{ .Release.Name }} {{ .Repository.Name }}/{{ .Chart.Name }} -n {
 
 ## Pseudonymization
 
-You can configure custom anonymization rules directly in the `values.yaml`. For example, the following configuraiton is used by the fhir-pseudonymizer by default.
+You can configure custom anonymization rules directly in the `values.yaml`. For example, the following configuration is used by the fhir-pseudonymizer by default.
 It simply encrypts the medical record and visit numbers:
 
 ```yaml
