@@ -14,10 +14,12 @@ dependencies:
     condition: fhir-pseudonymizer.enabled
     version: 0.3.6
     repository: https://miracum.github.io/charts
-version: 6.0.2
+version: 6.0.3
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "updated fhir-pseudonymizer to v6.0.2"
+      description: "updated fhir-pseudonymizer to v0.3.6"
+    - kind: fixed
+      description: "only run the helm test job against the loinc converter if it's enabled"

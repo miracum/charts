@@ -4,6 +4,6 @@ dependencies:
   version: 12.1.2
 - name: fhir-pseudonymizer
   repository: https://miracum.github.io/charts
-  version: 0.3.5
-digest: sha256:b2ef52df62da7eccbfd9ec2446508238b3c02bb6f40052e4c45a48e2135a3b70
-generated: "2023-03-27T18:55:20.497225221+02:00"
+  version: 0.3.6
+digest: sha256:43c49b84c446e8ce89dfe078e7cbad14f712425baf33956670c2cca1bcf197a7
+generated: "2023-03-27T20:52:46.811649628+02:00"
