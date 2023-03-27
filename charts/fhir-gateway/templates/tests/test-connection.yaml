@@ -31,6 +31,7 @@ spec:
       readinessProbe:
         exec:
           command: ["true"]
+    {{- if .Values.loincConverter.enabled }}
     - name: test-loinc-conversion
       image: "{{ .Values.curl.image.registry }}/{{ .Values.curl.image.repository }}:{{ .Values.curl.image.tag }}"
       imagePullPolicy: IfNotPresent
@@ -53,3 +54,4 @@ spec:
       readinessProbe:
         exec:
           command: ["true"]
+      {{- end }}

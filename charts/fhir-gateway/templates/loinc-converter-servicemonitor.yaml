@@ -1,3 +1,4 @@
+{{- if .Values.loincConverter.enabled -}}
 {{- if .Values.loincConverter.metrics.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -29,4 +30,5 @@ spec:
     matchLabels:
       {{- include "fhir-gateway.matchLabels" $ | nindent 6 }}
       app.kubernetes.io/component: loinc-converter
+{{- end }}
 {{- end }}
