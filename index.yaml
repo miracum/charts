@@ -3,6 +3,33 @@ entries:
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "Use the chart release full name to determine the kafka user secret name instead of just .Release.Name"
+        - kind: changed
+          description: "Updated fhir-pseudonymizer sub-chart to 0.3.5"
+    apiVersion: v2
+    created: "2023-03-27T17:09:30.021362019Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.5
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: b80b1abb64d0a616ed1c861cf618528d64fc7a7117a2f96b6fd003e0a7b514cb
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.1/fhir-gateway-6.0.1.tgz
+    version: 6.0.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: |
             "⚠️ BREAKING CHANGE: use the fhir-pseudonymizer sub-chart instead of the integrated fhir-pseudonymizer deployments.
@@ -2890,4 +2917,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T16:22:08.367291602Z"
+generated: "2023-03-27T17:09:30.021820825Z"
