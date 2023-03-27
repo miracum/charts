@@ -105,11 +105,11 @@ spec:
               value: "8081"
             - name: OPENTRACING_JAEGER_ENABLED
               value: {{ .Values.tracing.enabled | quote }}
-{{- if not .Values.tracing.enabled }}
+            {{- if not .Values.tracing.enabled }}
             - name: JAEGER_SERVICE_NAME
               value: "fhir-gateway"
-{{- end }}
-{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+            {{- end }}
+            {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
             - name: SERVICES_KAFKA_ENABLED
               value: {{ .Values.kafka.enabled | quote }}
             - name: INPUT_TOPIC
@@ -127,17 +127,17 @@ spec:
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-kafka-user
+                  name: {{ include "fhir-gateway.fullname" . }}-kafka-user
                   key: user.password
             - name: SSL_TRUST_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
-{{- end }}
-{{- if .Values.extraEnv }}
-{{ toYaml .Values.extraEnv | indent 12 }}
-{{- end }}
+            {{- end }}
+            {{- if .Values.extraEnv }}
+            {{ toYaml .Values.extraEnv | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080
