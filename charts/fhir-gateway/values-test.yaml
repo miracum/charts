@@ -1,3 +1,9 @@
 postgresql:
   auth:
     postgresPassword: fhir-gateway-password
+
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prometheus-stack

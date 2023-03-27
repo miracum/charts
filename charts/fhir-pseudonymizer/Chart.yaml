@@ -10,10 +10,10 @@ dependencies:
     version: 1.2.0
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.3.4
+version: 0.3.5
 annotations:
   artifacthub.io/changes: |
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "updated vfps sub-chart to v1.2.0"
+      description: "updated fhir-pseudonymizer to v2.17.0"
