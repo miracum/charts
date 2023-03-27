@@ -4,6 +4,33 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
+          description: "Only create a postgres secret if the sink is enabled"
+        - kind: changed
+          description: "Set seccompProfile for fhir-gateway securityContext"
+    apiVersion: v2
+    created: "2023-03-27T18:17:45.266648569Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.5
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 1d6ff4568df4b026f5cd1b8668be8e88b6521ca1882f3c9ed46393c98109f2bf
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.2/fhir-gateway-6.0.2.tgz
+    version: 6.0.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
           description: "Use the chart release full name to determine the kafka user secret name instead of just .Release.Name"
         - kind: changed
           description: "Updated fhir-pseudonymizer sub-chart to 0.3.5"
@@ -2942,4 +2969,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T17:44:51.134135215Z"
+generated: "2023-03-27T18:17:45.267144071Z"
