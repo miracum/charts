@@ -12,15 +12,14 @@ dependencies:
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.3.4
+    version: 0.3.5
     repository: https://miracum.github.io/charts
-version: 6.0.0
+version: 6.0.1
 annotations:
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
+    - kind: fixed
+      description: "Use the chart release full name to determine the kafka user secret name instead of just .Release.Name"
     - kind: changed
-      description: |
-        "⚠️ BREAKING CHANGE: use the fhir-pseudonymizer sub-chart instead of the integrated fhir-pseudonymizer deployments.
-          - Renames the `fhirPseudonymizer` section to `fhir-pseudonymizer`
-          - This moves the `gpas` section from the root of the values.yaml inside the `fhir-pseudonymizer` section."
-    - kind: changed
-      description: "Expose actuator on a dedicated port, `8081`, and changed liveness and readiness probes accordingly"
+      description: "Updated fhir-pseudonymizer sub-chart to 0.3.5"
