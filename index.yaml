@@ -4,6 +4,36 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: |
+            "⚠️ BREAKING CHANGE: use the fhir-pseudonymizer sub-chart instead of the integrated fhir-pseudonymizer deployments.
+              - Renames the `fhirPseudonymizer` section to `fhir-pseudonymizer`
+              - This moves the `gpas` section from the root of the values.yaml inside the `fhir-pseudonymizer` section."
+        - kind: changed
+          description: "Expose actuator on a dedicated port, `8081`, and changed liveness and readiness probes accordingly"
+    apiVersion: v2
+    created: "2023-03-27T16:22:08.194144561Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.4
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: f4271724bf16cfb11c7808b2c289155bc7e30609e45a08a087fd1b3d8c2a299f
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.0/fhir-gateway-6.0.0.tgz
+    version: 6.0.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "updated curlimages/curl image to 7.87.0"
         - kind: changed
           description: "updated fhir-pseudonymizer image to 2.15.1"
@@ -922,6 +952,29 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "updated fhir-pseudonymizer to v2.17.0"
+    apiVersion: v2
+    created: "2023-03-27T16:22:08.366678887Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: a82d741a126f504348165189f7b7e2dcb02d9a376774a1dde0a32abec9bb6834
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.3.5/fhir-pseudonymizer-0.3.5.tgz
+    version: 0.3.5
   - annotations:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
@@ -2837,4 +2890,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-26T21:45:36.432130004Z"
+generated: "2023-03-27T16:22:08.367291602Z"
