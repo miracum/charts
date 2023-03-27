@@ -46,6 +46,8 @@ securityContext: # +doc-gen:ignore
   runAsUser: 65532
   runAsGroup: 65532
   readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
 
 # configure the init container used to wait for postgres database connectivity
 # used by the query module to wait for the OMOP database and the notify module
