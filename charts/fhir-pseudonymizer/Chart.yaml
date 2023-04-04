@@ -10,10 +10,10 @@ dependencies:
     version: 1.2.0
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.3.6
+version: 0.3.7
 annotations:
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
-      description: "fixed port incorrectly translated to float instead of int"
+    - kind: changed
+      description: "Updated curlimages/curl to v8"
