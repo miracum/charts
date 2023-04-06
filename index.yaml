@@ -4,6 +4,31 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: "Updated curlimages/curl to v8"
+    apiVersion: v2
+    created: "2023-04-06T12:14:47.271331956Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.6
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: d6d2eb90672da2a0888796b5f055dab8adddbebebb5e64a9db7dee7fcfdb3dab
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.4/fhir-gateway-6.0.4.tgz
+    version: 6.0.4
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "updated fhir-pseudonymizer to v0.3.6"
         - kind: fixed
           description: "only run the helm test job against the loinc converter if it's enabled"
@@ -1033,6 +1058,27 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "Updated curlimages/curl to v8"
+    apiVersion: v2
+    created: "2023-04-06T12:14:47.470465298Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: d1986095c7457e4ab3d98a7754c8894edb28b8a0f1dc38f29d3d50d40de9d126
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.3.7/fhir-pseudonymizer-0.3.7.tgz
+    version: 0.3.7
   - annotations:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
@@ -2705,6 +2751,48 @@ entries:
     version: 1.0.7
   vfps:
   - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "Updated curlimages/curl to v8"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2023-04-06T12:14:47.661665347Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: 64881960da104d1da01a055f895b17e1e69e62a2b946f67e6d49f0c1cf3b5565
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-1.2.1/vfps-1.2.1.tgz
+    version: 1.2.1
+  - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
@@ -3019,4 +3107,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-27T19:06:25.303720042Z"
+generated: "2023-04-06T12:14:47.662180653Z"
