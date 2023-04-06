@@ -7,7 +7,7 @@
 ```console
 $ helm repo add miracum https://miracum.github.io/charts
 $ helm repo update
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.6
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.7
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys the MIRACUM FHIR Pseudonymizer on a [Kubernetes](http://kuber
 To install the chart with the release name `fhir-pseudonymizer`:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.6
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.7
 ```
 
 The command deploys the MIRACUM FHIR Pseudonymizer on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -69,7 +69,7 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 | service                                 | service to expose the fhir-pseudonymizer                                                                                                                                                                                                                                               | <code>{"port":8080,"type":"ClusterIP"}</code> |
 | anonymizationConfig                     | configure the anonymization rules, see <https://github.com/miracum/fhir-pseudonymizer/blob/HEAD/src/FhirPseudonymizer/anonymization.yaml> for an example. this is evaluated as a template. Also see [README.md](README.md#pseudonymization) for configuring it within this values.yaml | <code>""</code>                               |
 | resources                               | resource requests and limits                                                                                                                                                                                                                                                           | <code>{}</code>                               |
-| nodeSelector                            | node labels for pods assignment see: <https://kubernetes.io/docs/user-guide/node-selection/>                                                                                                                                                                                           | <code>{}</code>                               |
+| nodeSelector                            | node labels for pods assignment see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>                                                                                                                                                                      | <code>{}</code>                               |
 | tolerations                             | tolerations for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>                                                                                                                                                                         | <code>[]</code>                               |
 | affinity                                | affinity for pods assignment see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>                                                                                                                                                      | <code>{}</code>                               |
 | extraEnv                                | extra environment variables to apply to the container                                                                                                                                                                                                                                  | <code>[]</code>                               |
@@ -80,14 +80,14 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.6 --set pseudonymizationService=gPAS
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.7 --set pseudonymizationService=gPAS
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.6 --values values.yaml
+$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.3.7 --values values.yaml
 ```
 
 ## Pseudonymization
