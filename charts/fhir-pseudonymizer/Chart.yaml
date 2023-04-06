@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 1.2.0
+    version: 1.2.1
     repository: https://miracum.github.io/charts
     condition: vfps.enabled
-version: 0.3.7
+version: 0.3.8
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Updated curlimages/curl to v8"
+      description: "Updated vfps sub-chart to 1.2.1"
