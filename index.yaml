@@ -6,6 +6,31 @@ entries:
         - kind: changed
           description: "Updated curlimages/curl to v8"
     apiVersion: v2
+    created: "2023-04-09T17:46:58.931790163Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.3.7
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: c22120fba6dacce6d156c417b69308b1c597b9c3947e82ccf351d58dcec36148
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.5/fhir-gateway-6.0.5.tgz
+    version: 6.0.5
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "Updated curlimages/curl to v8"
+    apiVersion: v2
     created: "2023-04-06T12:14:47.271331956Z"
     dependencies:
     - condition: postgresql.enabled
@@ -3128,4 +3153,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-04-09T17:25:15.256493247Z"
+generated: "2023-04-09T17:46:58.932116681Z"
