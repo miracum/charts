@@ -1,1 +1,2 @@
+exclude = [ '.*\.nip.io', '.*example:8080.*', '.*fhir-pseudonymizer:8080.*' ]
 exclude_all_private = true
