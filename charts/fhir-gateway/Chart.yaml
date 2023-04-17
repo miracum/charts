@@ -20,4 +20,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Updated curlimages/curl to v8"
+      description: "Updated fhir-pseudonymizer sub-chart to 0.3.8"
