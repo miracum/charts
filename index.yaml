@@ -1111,6 +1111,27 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: "Added option to mount extra volumes (e.g. useful for self-signed certs when communicating with gPAS)"
+    apiVersion: v2
+    created: "2023-05-04T18:47:25.895523091Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.2.1
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 4af439ff142748260c04502ece15a68755854b55ea5db35612f561f0a3d87eab
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.4.0/fhir-pseudonymizer-0.4.0.tgz
+    version: 0.4.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "Updated vfps sub-chart to 1.2.1"
     apiVersion: v2
     created: "2023-04-09T17:25:15.255984743Z"
@@ -3252,4 +3273,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-04-17T16:59:39.076718824Z"
+generated: "2023-05-04T18:47:25.895918296Z"
