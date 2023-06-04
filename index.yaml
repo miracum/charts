@@ -1165,6 +1165,27 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated vfps to 1.2.2 and use oci chart source
+    apiVersion: v2
+    created: "2023-06-04T18:41:48.206550222Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 1.2.2
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: c7e0da81cc5ae144fb4381c2fc97a308c1a6a2b58e8d6ba8d0c3661475866040
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.4.2/fhir-pseudonymizer-0.4.2.tgz
+    version: 0.4.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: updated curl used by helm tests to version to v8.1.1
     apiVersion: v2
     created: "2023-06-04T14:32:36.347356365Z"
@@ -3394,4 +3415,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-06-04T14:32:36.490782697Z"
+generated: "2023-06-04T18:41:48.206890319Z"
