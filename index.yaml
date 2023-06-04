@@ -4,6 +4,35 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated curl used by helm tests to version to v8.1.1
+        - kind: changed
+          description: updated postgresql sub-chart to v12.5.6
+        - kind: changed
+          description: switched to OCI-registry based sub-chart
+    apiVersion: v2
+    created: "2023-06-04T14:32:36.21460917Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: https://miracum.github.io/charts
+      version: 0.4.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 1e4f7b463f4a3e76b2166266684afeb94862fb857387e42ce8669cbaf6246cc1
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.8/fhir-gateway-6.0.8.tgz
+    version: 6.0.8
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "Updated fhir-pseudonymizer sub-chart to 0.3.8"
     apiVersion: v2
     created: "2023-05-04T19:46:21.489465351Z"
@@ -1133,6 +1162,27 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: updated curl used by helm tests to version to v8.1.1
+    apiVersion: v2
+    created: "2023-06-04T14:32:36.347356365Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: https://miracum.github.io/charts
+      version: 1.2.1
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: d59ff4fed8048d7f358f397beb09764e33ac1b18975514cd0f45d0b15caf82be
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.4.1/fhir-pseudonymizer-0.4.1.tgz
+    version: 0.4.1
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -2944,6 +2994,52 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated curl used by helm tests to version to v8.1.1
+        - kind: changed
+          description: updated postgresql sub-chart to v12.5.6
+        - kind: changed
+          description: switched to OCI-registry based sub-chart
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2023-06-04T14:32:36.490369391Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: f70bf5da5abb9d7b5e748fb4b374275c54631f9ad3ac66ef9f5218089970ada3
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-1.2.2/vfps-1.2.2.tgz
+    version: 1.2.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "Updated curlimages/curl to v8"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -3298,4 +3394,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-05-04T19:46:21.48970035Z"
+generated: "2023-06-04T14:32:36.490782697Z"
