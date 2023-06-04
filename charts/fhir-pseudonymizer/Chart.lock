@@ -1,6 +1,6 @@
 dependencies:
 - name: vfps
   repository: https://miracum.github.io/charts
-  version: 1.2.1
-digest: sha256:86cce308e29d536ab1a8832d523c7a2a671500e340a626d32178585c09609b71
-generated: "2023-04-06T16:24:39.937517407Z"
+  version: 1.2.2
+digest: sha256:74b82e186d18aeb2337c2025f3844205363264460a8d84010794147ba24b331a
+generated: "2023-06-04T16:37:18.588849443Z"
