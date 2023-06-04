@@ -13,10 +13,13 @@ permissions: read-all
 jobs:
   release:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v1.22.15@sha256:4e6920719e66d1fa19fc640cf9c36c2c88be647733e0cf4c0bec3889f4040211
+    container: ghcr.io/chgl/kube-powertools:v2.0.1@sha256:26d150eb3676ad5d237b5b72ddd027758bd783f4051c72459431a71410e0d98f
     permissions:
       contents: write
-      # packages: write # may be necessary once we push to OCI/ghcr.io
+      # needed to push to ghcr.io
+      packages: write
+      # needed once we add cosign
+      # id-token: write
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -47,8 +50,23 @@ jobs:
         run: generate-chart-changelog.sh
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@98bccfd32b0f76149d188912ac8e45ddd3f8695f # tag=v1.4.1
+        uses: helm/chart-releaser-action@be16258da8010256c6e82849661221415f031968 # v1.5.0
         with:
           config: .github/ct/ct.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo "${GHCR_REGISTRY_PASSWORD}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
+        env:
+          GHCR_REGISTRY_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Push Charts to ghcr.io
+        run: |
+          for pkg in .cr-release-packages/*; do
+            if [ -z "${pkg:-}" ]; then
+              break
+            fi
+            helm push "${pkg}" oci://ghcr.io/${{ github.repository }}
+          done

@@ -7,17 +7,21 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 12.1.2
-    repository: https://charts.bitnami.com/bitnami
+    version: 12.5.6
+    repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
     version: 0.4.0
     repository: https://miracum.github.io/charts
-version: 6.0.7
+version: 6.0.8
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Updated fhir-pseudonymizer sub-chart to 0.3.8"
+      description: updated curl used by helm tests to version to v8.1.1
+    - kind: changed
+      description: updated postgresql sub-chart to v12.5.6
+    - kind: changed
+      description: switched to OCI-registry based sub-chart

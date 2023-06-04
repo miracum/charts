@@ -10,7 +10,7 @@ permissions: read-all
 jobs:
   lint:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v1.22.15@sha256:4e6920719e66d1fa19fc640cf9c36c2c88be647733e0cf4c0bec3889f4040211
+    container: ghcr.io/chgl/kube-powertools:v2.0.1@sha256:26d150eb3676ad5d237b5b72ddd027758bd783f4051c72459431a71410e0d98f
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Powerlint
         env:
-          KUBERNETES_VERSIONS: "1.24.0 1.25.0 1.26.0"
+          KUBERNETES_VERSIONS: "1.25.0 1.26.0 1.27.0"
         run: chart-powerlint.sh
 
       # used to test whether the changelog generation process works
@@ -56,7 +56,7 @@ jobs:
       - lint
     strategy:
       matrix:
-        k8s-version: [1.24.7, 1.25.3, 1.26.0]
+        k8s-version: [1.25.9, 1.26.4, 1.27.2]
     steps:
       - name: Checkout
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
@@ -64,21 +64,20 @@ jobs:
           fetch-depth: 0
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@afea100a513515fbd68b0e72a7bb0ae34cb62aec # tag=v2.3.1
+        uses: helm/chart-testing-action@e8788873172cb653a90ca2e819d79d65a66d4e76 # v2.4.0
 
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
           changed=$(ct list-changed)
           if [[ -n "$changed" ]]; then
-            echo "::set-output name=changed::true"
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
           fi
 
       - name: Create k8s Kind Cluster
-        uses: helm/kind-action@d08cf6ff1575077dee99962540d77ce91c62387d # tag=v1.3.0
-        if: steps.list-changed.outputs.changed == 'true'
+        uses: helm/kind-action@fa81e57adff234b2908110485695db0f181f3c67 # v1.7.0
+        if: ${{ steps.list-changed.outputs.changed == 'true' }}
         with:
-          version: v0.17.0
           cluster_name: kind-cluster-k8s-${{ matrix.k8s-version }}
           node_image: kindest/node:v${{ matrix.k8s-version }}
 
