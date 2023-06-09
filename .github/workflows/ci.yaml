@@ -81,5 +81,15 @@ jobs:
           cluster_name: kind-cluster-k8s-${{ matrix.k8s-version }}
           node_image: kindest/node:v${{ matrix.k8s-version }}
 
+      - name: Install Kube Prometheus Stack
+        if: ${{ steps.list-changed.outputs.changed == 'true' }}
+        run: |
+          helm install kube-prom-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack \
+            --namespace=monitoring \
+            --create-namespace \
+            --set=kubeStateMetrics.enabled=false \
+            --set=nodeExporter.enabled=false \
+            --set=grafana.enabled=false
+
       - name: Run chart-testing (install)
         run: ct install --config .github/ct/install.yaml

@@ -1,0 +1,28 @@
+apiVersion: v2
+name: blaze
+description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast CQL Evaluation Engine.
+type: application
+home: https://github.com/samply/blaze
+keywords:
+  - FHIR
+  - CQL
+sources:
+  - https://github.com/samply/blaze
+maintainers:
+  - name: miracum
+deprecated: false
+kubeVersion: ">= 1.19.0"
+version: 0.1.0
+appVersion: "0.x"
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: added
+      description: initial release

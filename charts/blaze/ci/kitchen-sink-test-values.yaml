@@ -1,0 +1,10 @@
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: kube-prom-stack
+
+ingress:
+  enabled: true
+
+serviceAccount:
+  create: true

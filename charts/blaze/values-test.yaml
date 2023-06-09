@@ -1,0 +1,15 @@
+serviceMonitor:
+  enabled: false
+  additionalLabels:
+    release: kube-prometheus-stack
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+
+ingress:
+  enabled: true
