@@ -1,0 +1,215 @@
+# -- number of replicas. ⚠️ Blaze does not support running with multiple replicas.
+replicaCount: 1
+
+# @ignored
+image:
+  registry: ghcr.io
+  repository: samply/blaze
+  tag: 0.20.6@sha256:b7cb34a440637d682eb3fba9e7acdbe3febb7ef8ef9cf0a18355b4759bae25ce
+  pullPolicy: IfNotPresent
+
+# -- set the server base URL. Evaluated as a template. Equivalent to setting the `BASE_URL` environment variable.
+baseUrl: 'http://{{ include "blaze.fullname" . }}:{{ .Values.service.port }}'
+
+# -- whether referential integrity should be enforced. Equivalent to setting the `ENFORCE_REFERENTIAL_INTEGRITY` environment variable.
+enforceReferentialIntegrity: true
+
+# -- the log level to set. Equivalent to setting the `LOG_LEVEL` environment variable.
+logLevel: "INFO"
+
+# -- sets the value for the `JAVA_TOOL_OPTIONS` environment variable.
+javaToolOptions: "-XX:-OmitStackTraceInFastThrow"
+
+serviceMonitor:
+  # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+  enabled: false
+  # -- additional labels to apply to the ServiceMonitor object, e.g. `release: prometheus`
+  additionalLabels: {}
+  # namespace: monitoring
+  # interval: 30s
+  # scrapeTimeout: 10s
+
+# -- image pull secrets used by the main deployment container
+imagePullSecrets: []
+
+# -- override the release name
+nameOverride: ""
+
+# -- override the full release name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: false
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- annotations to set on the main deployment's pod
+podAnnotations: {}
+
+# -- the pod security context
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+# @ignored
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  # -- the type of service
+  type: ClusterIP
+  # -- the port for the main endpoint
+  port: 8080
+  # -- the port exposed on the service to access metrics on `/metrics`
+  metricsPort: 8082
+
+ingress:
+  # -- create an Ingress for the application
+  enabled: false
+  # -- ingressClassName to use
+  className: ""
+  # -- extra annotations to apply to the Ingress resource
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # -- list of ingress hosts
+  hosts:
+    - host: blaze.127.0.0.1.nip.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          portName: http
+  # -- TLS configuration
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# -- resource limits and requests
+resources:
+  {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- pod node selector
+nodeSelector: {}
+
+# -- pod tolerations
+tolerations: []
+
+# -- pod affinity
+affinity: {}
+
+# -- pod topology spread configuration
+# see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+topologySpreadConstraints:
+  []
+  # - maxSkew: 1
+  #   topologyKey: topology.kubernetes.io/zone
+  #   whenUnsatisfiable: ScheduleAnyway
+  #   labelSelector:
+  #     matchLabels:
+  #       app.kubernetes.io/instance: vfps
+
+# -- container security context applied to init containers and the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- extra environment variables to set on the blaze server container
+extraEnv: []
+
+# @ignored
+curl:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.1.2@sha256:ef501f5efa67be41da985b441bd63130ef39d4d6a4f9c035d737884357438b6c
+
+# -- configuration for the server persistence
+persistence:
+  # -- enable data persistence using PVC
+  enabled: true
+  # -- name of an existing PVC to use
+  existingClaim: ""
+  # -- PVC Storage Class for data volume
+  # If defined, storageClassName: <storageClass>
+  # If set to "-", storageClassName: "", which disables dynamic provisioning
+  # If undefined (the default) or set to null, no storageClassName spec is
+  #   set, choosing the default provisioner.
+  storageClass: ""
+  # -- PVC Access Mode for data volume
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC Storage Request for volume
+  size: 8Gi
+  # -- annotations for the PVC
+  annotations: {}
+  # -- labels for the PVC
+  labels: {}
+  # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
+  # selector:
+  #   matchLabels:
+  #     app: my-app
+  selector: {}
+
+# @ignored
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 5
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 10
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 10
+
+# @ignored
+startupProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 10
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 10

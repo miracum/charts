@@ -1,0 +1,19 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.typeBadge" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+## Installation
+
+```sh
+helm install blaze oci://ghcr.io/miracum/charts/blaze -n blaze
+```
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
