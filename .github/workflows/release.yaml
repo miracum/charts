@@ -16,10 +16,8 @@ jobs:
     container: ghcr.io/chgl/kube-powertools:v2.0.1@sha256:26d150eb3676ad5d237b5b72ddd027758bd783f4051c72459431a71410e0d98f
     permissions:
       contents: write
-      # needed to push to ghcr.io
       packages: write
-      # needed once we add cosign
-      # id-token: write
+      id-token: write
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -58,7 +56,10 @@ jobs:
 
       - name: Login to GitHub Container Registry
         run: |
+          # used by helm
           echo "${GHCR_REGISTRY_PASSWORD}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
+          # used by cosign
+          echo "${GHCR_REGISTRY_PASSWORD}" | crane auth login ghcr.io --username ${{ github.actor }} --password-stdin
         env:
           GHCR_REGISTRY_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -68,5 +69,8 @@ jobs:
             if [ -z "${pkg:-}" ]; then
               break
             fi
-            helm push "${pkg}" oci://ghcr.io/${{ github.repository }}
+            helm push "${pkg}" oci://ghcr.io/${{ github.repository }} 2> .digest
+            OCI_ARTIFACT_PATH="$(awk -F "[, ]+" '/Pushed/{print $NF}' < .digest)"
+            OCI_ARTIFACT_DIGEST="$(awk -F "[, ]+" '/Digest/{print $NF}' < .digest)"
+            cosign sign --yes "${OCI_ARTIFACT_PATH}@${OCI_ARTIFACT_DIGEST}"
           done
