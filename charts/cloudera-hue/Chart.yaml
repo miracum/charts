@@ -1,0 +1,34 @@
+apiVersion: v2
+name: cloudera-hue
+description: A Helm chart for deploying Cloudera Hue.
+type: application
+home: https://gethue.com/
+keywords:
+  - databases
+  - query-assistant
+sources:
+  - https://github.com/cloudera/hue
+maintainers:
+  - name: miracum
+deprecated: false
+kubeVersion: ">= 1.19.0"
+dependencies:
+  - name: postgresql
+    version: 12.5.6
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: postgresql.enabled
+version: 0.1.0
+appVersion: "4.11.0"
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: changed
+      description: "initial release"

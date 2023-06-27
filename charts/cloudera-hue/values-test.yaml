@@ -1,0 +1,14 @@
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prometheus-stack
+
+# doesn't work yet
+extraHueConfig: |
+  [notebook]
+  [[interpreters]]
+  [[[postgresql]]]
+  name=Hue's PostgreSQL
+  interface=sqlalchemy
+  options='{"url": "postgresql://${PGUSER}:${PGPASSWORD}@{{ include "cloudera-hue.database.host" $ }}:{{ include "cloudera-hue.database.port" $ }}/{{ include "cloudera-hue.database.name" $ }}"}'
