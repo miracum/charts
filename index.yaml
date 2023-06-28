@@ -91,6 +91,42 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/blaze-0.1.0/blaze-0.1.0.tgz
     version: 0.1.0
+  cloudera-hue:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "initial release"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    appVersion: 4.11.0
+    created: "2023-06-28T19:44:44.65396637Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying Cloudera Hue.
+    digest: 8f516f5b79bfd354e718e3738f6a41536944c61e2a38bd3d25915a853b0a14b8
+    home: https://gethue.com/
+    keywords:
+    - databases
+    - query-assistant
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: cloudera-hue
+    sources:
+    - https://github.com/cloudera/hue
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.0/cloudera-hue-0.1.0.tgz
+    version: 0.1.0
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
@@ -3594,4 +3630,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-06-15T21:46:15.265745794Z"
+generated: "2023-06-28T19:44:44.654238984Z"
