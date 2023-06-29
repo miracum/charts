@@ -1376,6 +1376,27 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated vfps sub-chart to 1.2.4
+    apiVersion: v2
+    created: "2023-06-29T23:07:10.626676305Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 1.2.4
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 4a716fa1bb0d6bc285056612d7fab46a9263cbeaa5c93e1ffd668a86335f9fcd
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.4.5/fhir-pseudonymizer-0.4.5.tgz
+    version: 0.4.5
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: dropped resource requests/limits from Helm test pods
     apiVersion: v2
     created: "2023-06-29T22:10:30.79397522Z"
@@ -3754,4 +3775,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-06-29T22:10:30.943227165Z"
+generated: "2023-06-29T23:07:10.626985212Z"
