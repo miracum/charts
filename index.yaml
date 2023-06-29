@@ -160,6 +160,31 @@ entries:
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: set kafka consumer group id to the release name
+    apiVersion: v2
+    created: "2023-06-29T23:39:38.539780195Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.5
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 12f554879b44edac00bfed34c399611a125cb2adb0ea49ed7d7e37bf4960b12b
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.11/fhir-gateway-6.0.11.tgz
+    version: 6.0.11
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: dropped resource requests/limits from Helm test pods
         - kind: changed
@@ -3775,4 +3800,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-06-29T23:07:10.626985212Z"
+generated: "2023-06-29T23:39:38.540118898Z"
