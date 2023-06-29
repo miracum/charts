@@ -1,0 +1,7 @@
+fhir-pseudonymizer:
+  vfps:
+    # disabled until all deps no longer set resource reqs/limits
+    enabled: false
+    postgresql:
+      enabled: true
+      nameOverride: "vfps-postgres"

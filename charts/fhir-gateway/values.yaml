@@ -312,6 +312,7 @@ fhir-pseudonymizer:
     # within the fhir-gateway's templates.
     port: 8080
   vfps:
+    nameOverride: gateway-vfps
     postgresql:
       # overrides the chart's postgres server name to avoid conflicts with the fhir-gateway's postgresql
       nameOverride: "vfps-postgres"

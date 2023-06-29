@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}
+  name: {{ include "fhir-gateway.fullname" . }}-gateway
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway
