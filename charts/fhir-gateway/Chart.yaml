@@ -12,16 +12,12 @@ dependencies:
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.4.3
+    version: 0.4.5
     repository: oci://ghcr.io/miracum/charts
-version: 6.0.10
+version: 6.0.11
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
-      description: dropped resource requests/limits from Helm test pods
-    - kind: changed
-      description: "appended `-gateway` to name of main deployment, service, ingress, serviceMonitor"
-    - kind: changed
-      description: "set nameOverride for vfps sub-chart to avoid naming collisions"
+    - kind: fixed
+      description: set kafka consumer group id to the release name

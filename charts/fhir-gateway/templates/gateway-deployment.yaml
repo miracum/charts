@@ -120,6 +120,8 @@ spec:
               {{- end }}
             - name: OUTPUT_TOPIC
               value: {{ .Values.kafka.outputTopic | quote }}
+            - name: GROUP_ID
+              value: {{ include "fhir-gateway.fullname" . }}-gateway
             - name: BOOTSTRAP_SERVERS
               value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
             - name: SECURITY_PROTOCOL
