@@ -10,10 +10,10 @@ dependencies:
     version: 1.2.2
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.4.3
+version: 0.4.4
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.1.2
+      description: dropped resource requests/limits from Helm test pods

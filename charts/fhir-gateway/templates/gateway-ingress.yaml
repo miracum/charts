@@ -4,7 +4,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-gateway
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway

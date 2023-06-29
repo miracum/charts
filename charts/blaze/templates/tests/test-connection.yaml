@@ -39,13 +39,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      resources:
-        limits:
-          cpu: 100m
-          memory: 64Mi
-        requests:
-          cpu: 100m
-          memory: 64Mi
       livenessProbe:
         exec:
           command: ["true"]
@@ -60,13 +53,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      resources:
-        limits:
-          cpu: 100m
-          memory: 64Mi
-        requests:
-          cpu: 100m
-          memory: 64Mi
       livenessProbe:
         exec:
           command: ["true"]

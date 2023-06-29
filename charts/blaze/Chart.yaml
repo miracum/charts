@@ -12,7 +12,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.2.0
+version: 0.2.1
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -25,4 +25,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "updated ghcr.io/samply/blaze docker tag to v0.21.0"
+      description: dropped resource requests/limits from Helm test pods
