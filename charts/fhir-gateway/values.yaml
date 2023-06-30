@@ -172,6 +172,8 @@ kafka:
   # if enabled, the FHIR Gateway will read resources from the specified Kafka topic `inputTopic`
   # and write them to `outputTopic`. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
   enabled: false
+  # the Kafka consumer group id. Evaluated as a template.
+  groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
   # name of the Kafka topic to read resources from
   # DEPRECATED: use `kafka.inputTopics` (note the s) instead.
   inputTopic: fhir-raw

@@ -170,3 +170,15 @@ Base URL of the fhir-pseudonymizer service.
 {{- $port := (index .Values "fhir-pseudonymizer" "service" "port") -}}
 {{ printf "http://%s:%d/fhir" $host (int $port) }}
 {{- end -}}
+
+{{/*
+Renders a value that contains template.
+Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl>
+*/}}
+{{- define "fhir-gateway.tplvalues.render" -}}
+    {{- if typeIs "string" .value }}
+        {{- tpl .value .context }}
+    {{- else }}
+        {{- tpl (.value | toYaml) .context }}
+    {{- end }}
+{{- end -}}
