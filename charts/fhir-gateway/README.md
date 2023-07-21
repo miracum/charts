@@ -5,9 +5,7 @@
 ## TL;DR;
 
 ```console
-$ helm repo add miracum https://miracum.github.io/charts
-$ helm repo update
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway
+$ helm install fhir-gateway oci://ghcr.io/miracum/charts/fhir-gateway --create-namespace -n fhir-gateway
 ```
 
 ## Breaking changes
@@ -31,7 +29,7 @@ This chart deploys the MIRACUM FHIR Gateway on a [Kubernetes](http://kubernetes.
 To install the chart with the release name `fhir-gateway`:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway
+$ helm install fhir-gateway oci://ghcr.io/miracum/charts/fhir-gateway -n fhir-gateway
 ```
 
 The command deploys the MIRACUM FHIR Gateway on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -109,16 +107,17 @@ The following table lists the configurable parameters of the `fhir-gateway` char
 | fhir-pseudonymizer.enabled                             | whether to enable the FHIR Pseudonymizer - a thin, FHIR-native wrapper on top of gPAS an Vfps with additional options for anonymization. if this is set to false, then the FHIR gateway will not attempt to pseudonymize/anonymize the resources. | <code>true</code>                                                |
 | fhir-pseudonymizer.vfps.nameOverride                   |                                                                                                                                                                                                                                                   | <code>gateway-vfps</code>                                        |
 | fhir-pseudonymizer.vfps.postgresql.nameOverride        | overrides the chart's postgres server name to avoid conflicts with the fhir-gateway's postgresql                                                                                                                                                  | <code>"vfps-postgres"</code>                                     |
+| tests.resources                                        | configure the test pods resource requests and limits                                                                                                                                                                                              | <code>{}</code>                                                  |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --set replicaCount=1
+$ helm install fhir-gateway oci://ghcr.io/miracum/charts/fhir-gateway -n fhir-gateway --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-gateway miracum/fhir-gateway -n fhir-gateway --values values.yaml
+$ helm install fhir-gateway oci://ghcr.io/miracum/charts/fhir-gateway -n fhir-gateway --values values.yaml
 ```

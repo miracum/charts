@@ -40,3 +40,5 @@ annotations:
       description: avoid dots in migrations job name
     - kind: changed
       description: updated curl image to 8.2.0
+    - kind: added
+      description: allow setting resource limits and requests for the Helm test pods

@@ -18,6 +18,10 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.tests.resources }}
+      resources:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       livenessProbe:
         exec:
           command: ["true"]
@@ -32,6 +36,10 @@ spec:
       args: ['{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/ready']
       {{- with $.Values.restrictedContainerSecurityContext }}
       securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tests.resources }}
+      resources:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       livenessProbe:

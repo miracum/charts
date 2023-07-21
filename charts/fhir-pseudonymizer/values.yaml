@@ -34,7 +34,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.17.0@sha256:431a7f4516c1f641966c507941b87a997441665656572a1c00c44376ef08fe24
+  tag: v2.17.1@sha256:425daebd80579ed273fbc359f018ad2eccf2c92d196b9eccc5409324f98d487b
   pullPolicy: IfNotPresent
 
 metrics:
@@ -149,7 +149,7 @@ extraVolumeMounts: []
 extraVolumes: []
 
 # pod topology spread configuration
-# see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api
+# see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
 topologySpreadConstraints:
   []
   # - maxSkew: 1
@@ -165,7 +165,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f
+    tag: 8.2.0@sha256:daf3f46a2639c1613b25e85c9ee4193af8a1d538f92483d67f9a3d7f21721827
 
 # container security context applied to init containers and the Helm test pods
 restrictedContainerSecurityContext: # +doc-gen:ignore
@@ -193,3 +193,13 @@ externalVfps:
   # the address of an external vfps service to use.
   # Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.
   address: ""
+
+tests:
+  # configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

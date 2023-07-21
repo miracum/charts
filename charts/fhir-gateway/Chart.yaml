@@ -14,10 +14,12 @@ dependencies:
     condition: fhir-pseudonymizer.enabled
     version: 0.4.5
     repository: oci://ghcr.io/miracum/charts
-version: 6.0.12
+version: 6.0.13
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: allow configuring the consumer group id as a value
+      description: updated curl image to 8.2.0
+    - kind: added
+      description: allow setting resource limits and requests for the Helm test pods

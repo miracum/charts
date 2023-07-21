@@ -12,7 +12,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.3.0
+version: 0.3.1
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -25,4 +25,6 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated blaze image tag to v0.22.0
+      description: updated curl image to 8.2.0
+    - kind: added
+      description: allow setting resource limits and requests for the Helm test pods
