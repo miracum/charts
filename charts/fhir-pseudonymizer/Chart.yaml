@@ -7,10 +7,10 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 1.2.4
+    version: 1.2.5
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.4.6
+version: 0.4.7
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
