@@ -5,8 +5,7 @@ project:
   description: A Helm chart for deploying a set of Kafka stream processing apps.
   app: the Kafka Stream Processors
 repository:
-  url: https://miracum.github.io/charts
-  name: miracum
+  name: oci://ghcr.io/miracum/charts
 chart:
   name: stream-processors
   values: "-- generate from values file --"

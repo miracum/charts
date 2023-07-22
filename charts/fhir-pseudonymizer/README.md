@@ -5,9 +5,7 @@
 ## TL;DR;
 
 ```console
-$ helm repo add miracum https://miracum.github.io/charts
-$ helm repo update
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.4.5
+$ helm install fhir-pseudonymizer oci://ghcr.io/miracum/charts/fhir-pseudonymizer --create-namespace -n fhir-pseudonymizer
 ```
 
 ## Introduction
@@ -24,7 +22,7 @@ This chart deploys the MIRACUM FHIR Pseudonymizer on a [Kubernetes](http://kuber
 To install the chart with the release name `fhir-pseudonymizer`:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.4.5
+$ helm install fhir-pseudonymizer oci://ghcr.io/miracum/charts/fhir-pseudonymizer --create-namespace -n fhir-pseudonymizer
 ```
 
 The command deploys the MIRACUM FHIR Pseudonymizer on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -75,21 +73,22 @@ The following table lists the configurable parameters of the `fhir-pseudonymizer
 | extraEnv                                | extra environment variables to apply to the container                                                                                                                                                                                                                                  | <code>[]</code>                               |
 | extraVolumeMounts                       | extra volumeMounts for the main fhir-pseudonymizer container                                                                                                                                                                                                                           | <code>[]</code>                               |
 | extraVolumes                            | extra volumes                                                                                                                                                                                                                                                                          | <code>[]</code>                               |
-| topologySpreadConstraints               | pod topology spread configuration see: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api                                                                                                                                                         | <code>[]</code>                               |
+| topologySpreadConstraints               | pod topology spread configuration see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>                                                                                                                                                       | <code>[]</code>                               |
 | vfps.enabled                            | set to `true` to enable the included vfps sub-chart and auto-configure the FHIR Pseudonymizer to use it as the pseudonymization backend                                                                                                                                                | <code>false</code>                            |
 | externalVfps.address                    | the address of an external vfps service to use. Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.                                                                                                                                                  | <code>""</code>                               |
+| tests.resources                         | configure the test pods resource requests and limits                                                                                                                                                                                                                                   | <code>{}</code>                               |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.4.5 --set pseudonymizationService=gPAS
+$ helm install fhir-pseudonymizer oci://ghcr.io/miracum/charts/fhir-pseudonymizer -n fhir-pseudonymizer --set pseudonymizationService=gPAS
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install fhir-pseudonymizer miracum/fhir-pseudonymizer -n fhir-pseudonymizer --version=0.4.5 --values values.yaml
+$ helm install fhir-pseudonymizer oci://ghcr.io/miracum/charts/fhir-pseudonymizer -n fhir-pseudonymizer --values values.yaml
 ```
 
 ## Pseudonymization

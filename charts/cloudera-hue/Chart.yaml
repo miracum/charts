@@ -17,7 +17,7 @@ dependencies:
     version: 12.5.6
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
-version: 0.1.0
+version: 0.1.1
 appVersion: "4.11.0"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,6 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "initial release"
+      description: updated curl image to 8.2.0
+    - kind: added
+      description: allow setting resource limits and requests for the Helm test pods

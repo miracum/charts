@@ -5,9 +5,7 @@
 ## TL;DR;
 
 ```console
-$ helm repo add {{ .Repository.Name }} {{ .Repository.URL }}
-$ helm repo update
-$ helm install {{ .Release.Name }} {{ .Repository.Name }}/{{ .Chart.Name }} -n {{ .Release.Namespace }}
+$ helm install {{ .Release.Name }} {{ .Repository.Name }}/{{ .Chart.Name }} --create-namespace -n {{ .Release.Namespace }}
 ```
 
 ## Breaking changes
