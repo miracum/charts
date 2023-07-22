@@ -4,6 +4,38 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated curl image to 8.2.0
+        - kind: added
+          description: allow setting resource limits and requests for the Helm test pods
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2023-07-22T10:45:32.954055328Z"
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: d0161df68e304ba39cc0a14faf120618d912e0e5137e013d41e3a4c6a5d74ee4
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.3.1/blaze-0.3.1.tgz
+    version: 0.3.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: updated blaze image tag to v0.22.0
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -155,6 +187,43 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated curl image to 8.2.0
+        - kind: added
+          description: allow setting resource limits and requests for the Helm test pods
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    appVersion: 4.11.0
+    created: "2023-07-22T10:45:33.154777694Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying Cloudera Hue.
+    digest: 04d945530df91946f32117906e22281fc8c06aceb137224a2ed7c462dfa1d648
+    home: https://gethue.com/
+    keywords:
+    - databases
+    - query-assistant
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: cloudera-hue
+    sources:
+    - https://github.com/cloudera/hue
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.1/cloudera-hue-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "initial release"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -188,6 +257,33 @@ entries:
     - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.0/cloudera-hue-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: updated curl image to 8.2.0
+        - kind: added
+          description: allow setting resource limits and requests for the Helm test pods
+    apiVersion: v2
+    created: "2023-07-22T10:45:33.37940697Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.5
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 25daf95c1f8154e2c16d752ac26b50d007cd2baf1e99a66a91abe76adec85a37
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.13/fhir-gateway-6.0.13.tgz
+    version: 6.0.13
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -1453,6 +1549,31 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: updated curl image to 8.2.0
+        - kind: changed
+          description: updated fhir-pseudonymizer image to 2.17.1
+        - kind: added
+          description: allow setting resource limits and requests for the Helm test pods
+    apiVersion: v2
+    created: "2023-07-22T10:45:33.588570663Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 1.2.4
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: b604f91ed8507f4ae2dc6ffcf91456b58d5aacdac7d50164530b1ea303545e5c
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.4.6/fhir-pseudonymizer-0.4.6.tgz
+    version: 0.4.6
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -3171,6 +3292,29 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docs to use OCI chart repository"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2023-07-22T10:45:33.769880446Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 85fa98f3972bc58016e920bd493f02c8bb1e3c2497804f802f01daf647da13bd
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.1.11/stream-processors-1.1.11.tgz
+    version: 1.1.11
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: fixed
           description: |
             "set the KafkaUser object name to the chart release full name and the processors's name.
@@ -3366,6 +3510,52 @@ entries:
     - https://github.com/miracum/charts/releases/download/stream-processors-1.0.7/stream-processors-1.0.7.tgz
     version: 1.0.7
   vfps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: avoid dots in migrations job name
+        - kind: changed
+          description: updated curl image to 8.2.0
+        - kind: added
+          description: allow setting resource limits and requests for the Helm test pods
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2023-07-22T10:45:33.9730574Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: 4006878924fce4ddce00fb6d00a20184820282f80f95dde6b91e2e8a5afd7269
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-1.2.5/vfps-1.2.5.tgz
+    version: 1.2.5
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -3855,4 +4045,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-07-05T22:40:24.394341248Z"
+generated: "2023-07-22T10:45:33.975909436Z"
