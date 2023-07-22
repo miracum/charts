@@ -16,8 +16,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated curl image to 8.2.0
-    - kind: changed
-      description: updated fhir-pseudonymizer image to 2.17.1
-    - kind: added
-      description: allow setting resource limits and requests for the Helm test pods
+      description: updated vfps sub-chart to 1.2.5
