@@ -1,0 +1,13 @@
+rock:
+  replicaCount: 3
+
+opal:
+  ingress:
+    enabled: true
+
+dsPoll:
+  enabled: true
+  queueServerHost: "localhost.example:9090"
+
+postgresql:
+  enabled: true

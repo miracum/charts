@@ -1,0 +1,60 @@
+{{- with .Values.dsPoll -}}
+{{- if .enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ include "opal.fullname" $ }}-ds-poll
+  labels:
+    {{- include "opal.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: ds-poll
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: ds-poll
+  template:
+    metadata:
+      labels:
+        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: ds-poll
+    spec:
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      containers:
+        - name: ds-poll
+          image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          command: ["python3", "ds_poll.py"]
+          args:
+            - -q
+            - {{ .queueServerHost }}
+            - -o
+            - "{{ include "opal.fullname" $ }}-opal:{{ $.Values.opal.service.port }}"
+            - -l
+            - {{ default 10 .logLevel | quote }}
+            - -t
+            - {{ default 2 .threads | quote }}
+            - -s
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+{{- end }}

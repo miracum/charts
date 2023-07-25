@@ -1,0 +1,10 @@
+rock:
+  replicaCount: 2
+
+opal:
+  ingress:
+    enabled: true
+
+dsPoll:
+  enabled: true
+  queueServerUrl: "http://localhost/"

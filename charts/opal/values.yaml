@@ -1,0 +1,335 @@
+# -- override the release name
+nameOverride: ""
+
+# -- override the full release name
+fullnameOverride: ""
+
+opal:
+  # -- number of replicas. Should be kept as 1 unless ReadWriteMany persistence is used
+  replicaCount: 1
+
+  # @ignored
+  image:
+    registry: docker.io
+    repository: obiba/opal
+    tag: 4.6@sha256:d74ccbf137f1e6285fc307df960779114e448e2a50777f1cf00f04622b44d258
+    pullPolicy: IfNotPresent
+
+  auth:
+    administrator:
+      password: ""
+      passwordSecret:
+        name: ""
+        key: ""
+
+  ingress:
+    # -- create an Ingress for the application
+    enabled: false
+    # -- ingressClassName to use
+    className: ""
+    # -- extra annotations to apply to the Ingress resource
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    # -- list of ingress hosts
+    hosts:
+      - host: opal.127.0.0.1.nip.io
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            portName: http
+    # -- TLS configuration
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  # -- configuration for the server persistence
+  persistence:
+    # -- enable data persistence using PVC
+    enabled: true
+    # -- name of an existing PVC to use
+    existingClaim: ""
+    # -- PVC Storage Class for data volume
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    #   set, choosing the default provisioner.
+    storageClass: ""
+    # -- PVC Access Mode for data volume
+    accessModes:
+      - ReadWriteOnce
+    # -- PVC Storage Request for volume
+    size: 8Gi
+    # -- annotations for the PVC
+    annotations: {}
+    # -- labels for the PVC
+    labels: {}
+    # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
+    # selector:
+    #   matchLabels:
+    #     app: my-app
+    selector: {}
+
+  database:
+    data:
+      # -- database hostname of an external database used to store data. Only used if `postgresql.enabled` is set to `false`.
+      host: "data.host.example.com"
+      # -- port used to connect to the postgres DB
+      port: 5432
+      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      database: "opal_data"
+      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      username: "opal_data_admin"
+      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      password: "opal_data_password"
+      existingSecret:
+        # -- name of an existing secret containing the password to the DB.
+        name: ""
+        # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
+        key: "password"
+    ids:
+      # -- database hostname of an external database used to store ids. Only used if `postgresql.enabled` is set to `false`.
+      host: "data.host.example.com"
+      # -- port used to connect to the postgres DB
+      port: 5432
+      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      database: "opal_ids"
+      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      username: "opal_ids_password"
+      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      password: "opal"
+      existingSecret:
+        # -- name of an existing secret containing the password to the DB.
+        name: ""
+        # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
+        key: "password"
+
+  # -- extra environment variables to set on the opal api container
+  extraEnv: []
+
+  # -- image pull secrets used by the opal container
+  imagePullSecrets: []
+
+  # -- annotations to set on the opal pod
+  podAnnotations: {}
+
+  # -- the pod security context
+  podSecurityContext:
+    fsGroup: 101
+
+  # @ignored
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 101
+    runAsGroup: 65534
+    seccompProfile:
+      type: RuntimeDefault
+
+  service:
+    # -- the type of service
+    type: ClusterIP
+    # -- the port for the main web interface
+    port: 8080
+    # -- the port for the TLS-secured interface
+    httpsPort: 8443
+
+  # -- resource limits and requests
+  resources:
+    {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  # -- pod node selector
+  nodeSelector: {}
+
+  # -- pod tolerations
+  tolerations: []
+
+  # -- pod affinity
+  affinity: {}
+
+# @ignored
+waitForDatabaseInitContainer:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 15.3.0-debian-11-r7@sha256:cc301eef743685f4f69d1d719853988e8a9650c90fd9521f4742ce400b3fdf6a
+    pullPolicy: IfNotPresent
+
+# -- container security context applied to init containers and the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+postgresql:
+  enabled: true
+  auth:
+    database: opal
+  primary:
+    containerSecurityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+
+rock:
+  # -- number of rock instances in the cluster
+  replicaCount: 1
+
+  # @ignored
+  image:
+    registry: docker.io
+    repository: datashield/rock-base
+    tag: "6.3@sha256:ebb5be25ccdaa59ff780b55bb12208c365ab03d7c0dae3412578c97d6268f3e3"
+    pullPolicy: IfNotPresent
+
+  # -- resource limits and requests
+  resources: {}
+
+  # -- configuration for the server persistence
+  persistence:
+    # -- enable data persistence using PVC
+    enabled: true
+    # -- name of an existing PVC to use
+    existingClaim: ""
+    # -- PVC Storage Class for data volume
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    #   set, choosing the default provisioner.
+    storageClass: ""
+    # -- PVC Access Mode for data volume
+    accessModes:
+      - ReadWriteOnce
+    # -- PVC Storage Request for volume
+    size: 8Gi
+    # -- annotations for the PVC
+    annotations: {}
+    # -- labels for the PVC
+    labels: {}
+    # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
+    # selector:
+    #   matchLabels:
+    #     app: my-app
+    selector: {}
+
+  service:
+    # -- the type of service
+    type: ClusterIP
+    # -- the port for the REST API
+    port: 8085
+
+  # -- container security context
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 105
+    runAsGroup: 65534
+    seccompProfile:
+      type: RuntimeDefault
+
+  # -- pod security context
+  podSecurityContext:
+    fsGroup: 105
+
+  # -- pod node selector
+  nodeSelector: {}
+
+  # -- pod tolerations
+  tolerations: []
+
+  # -- pod affinity
+  affinity: {}
+
+dsPoll:
+  # -- enable the QP poll component. See <https://github.com/medizininformatik-initiative/distributed-analysis_datashield-qp>
+  enabled: false
+
+  # -- number of replicas
+  replicaCount: 1
+
+  # @ignored
+  image:
+    registry: ghcr.io
+    repository: medizininformatik-initiative/distributed-analysis_datashield-qp/ds_poll
+    tag: v0.0.2@sha256:dd982c797ef019225608962619eaaa9443a7d9efa3f4dac617efa292378c4162
+    pullPolicy: IfNotPresent
+
+  # -- the host of the queue server component
+  queueServerHost: ""
+
+  # -- resource requests and limits
+  resources: {}
+
+  # -- container security context
+  # @ignored
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 4242
+    runAsGroup: 4242
+    seccompProfile:
+      type: RuntimeDefault
+
+  # -- pod security context
+  podSecurityContext: {}
+
+  # -- pod node selector
+  nodeSelector: {}
+
+  # -- pod tolerations
+  tolerations: []
+
+  # -- pod affinity
+  affinity: {}
+
+# @ignored
+curl:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.2.0@sha256:daf3f46a2639c1613b25e85c9ee4193af8a1d538f92483d67f9a3d7f21721827
+
+tests:
+  # -- configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
