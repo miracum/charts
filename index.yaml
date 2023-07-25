@@ -2056,6 +2056,44 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.1.0/fhir-pseudonymizer-0.1.0.tgz
     version: 0.1.0
+  opal:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: first release
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2023-07-25T19:27:36.048011191Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying the opal server, a DataShield rock cluster,
+      and the QP poll server.
+    digest: 6853967381519dbe80dd2595bc36dd556c1042c131fb909f7c8c4a90fdfef6be
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/medizininformatik-initiative/distributed-analysis_datashield-qp
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.1.0/opal-0.1.0.tgz
+    version: 0.1.0
   recruit:
   - annotations:
       artifacthub.io/changes: |-
@@ -4091,4 +4129,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-07-22T15:44:51.480345746Z"
+generated: "2023-07-25T19:27:36.04833379Z"
