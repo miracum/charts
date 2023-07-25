@@ -1,0 +1,35 @@
+apiVersion: v2
+name: opal
+description: A Helm chart for deploying the opal server, a DataShield rock cluster, and the QP poll server.
+type: application
+home: https://opaldoc.obiba.org/en/latest/index.html
+keywords:
+  - DataShield
+  - opal
+  - obiba
+sources:
+  - https://github.com/obiba/opal
+  - https://github.com/datashield/docker-rock
+  - https://github.com/medizininformatik-initiative/distributed-analysis_datashield-qp
+maintainers:
+  - name: miracum
+dependencies:
+  - name: postgresql
+    version: 12.5.6
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: postgresql.enabled
+deprecated: false
+kubeVersion: ">= 1.19.0"
+version: 0.1.0
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: added
+      description: first release

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opal.fullname" . }}-rock
+  labels:
+    {{- include "opal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: rock
+spec:
+  type: {{ .Values.rock.service.type }}
+  ports:
+    - port: {{ .Values.rock.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "opal.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: rock
