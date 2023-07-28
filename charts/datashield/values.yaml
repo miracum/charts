@@ -12,15 +12,18 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.6@sha256:d74ccbf137f1e6285fc307df960779114e448e2a50777f1cf00f04622b44d258
+    tag: 4.6@sha256:d1e7a8bc3495fda6b572fcb6a5f399d4d8cd051e60eca36885f449c2c673f859
     pullPolicy: IfNotPresent
 
   auth:
     administrator:
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
       password: ""
-      passwordSecret:
+      existingSecret:
+        # -- name of an existing secret that contains the administrator password.
         name: ""
-        key: ""
+        # -- key inside that existing secret that contains the administrator password
+        key: "opal-administrator-password"
 
   ingress:
     # -- create an Ingress for the application

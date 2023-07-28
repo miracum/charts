@@ -1,6 +1,6 @@
 apiVersion: v2
-name: opal
-description: A Helm chart for deploying the opal server, a DataShield rock cluster, and the QP poll server.
+name: datashield
+description: A Helm chart for deploying the opal server and a DataShield rock cluster.
 type: application
 home: https://opaldoc.obiba.org/en/latest/index.html
 keywords:

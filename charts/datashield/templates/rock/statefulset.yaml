@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name:  {{ include "opal.fullname" $ }}-rock
+  name:  {{ include "datashield.fullname" $ }}-rock
   labels:
-    {{- include "opal.labels" $ | nindent 4 }}
+    {{- include "datashield.labels" $ | nindent 4 }}
     app.kubernetes.io/component: rock
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ include "opal.fullname" $ }}-rock
+  serviceName: {{ include "datashield.fullname" $ }}-rock
   selector:
     matchLabels:
-      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      {{- include "datashield.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: rock
   template:
     metadata:
       labels:
-        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        {{- include "datashield.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: rock
     spec:
       {{- with .imagePullSecrets }}
@@ -58,7 +58,7 @@ spec:
               protocol: TCP
           env:
             - name: ROCK_CLUSTER
-              value: "{{ include "opal.fullname" $ }}"
+              value: "{{ include "datashield.fullname" $ }}"
             - name: ROCK_ID
               valueFrom:
                 fieldRef:
@@ -105,9 +105,9 @@ spec:
           requests:
             storage: {{ .persistence.size | quote }}
         {{- if .persistence.selector }}
-        selector: {{- include "opal.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        selector: {{- include "datashield.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+        {{- include "datashield.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
   {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:

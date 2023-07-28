@@ -2,14 +2,14 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "opal.fullname" . }}-ds-poll
+  name: {{ include "datashield.fullname" . }}-ds-poll
   labels:
-    {{- include "opal.labels" . | nindent 4 }}
+    {{- include "datashield.labels" . | nindent 4 }}
     app.kubernetes.io/component: ds-poll
 spec:
   podSelector:
     matchLabels:
-      {{- include "opal.selectorLabels" . | nindent 6 }}
+      {{- include "datashield.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: ds-poll
   # deny all inbound traffic
   ingress: []
