@@ -256,6 +256,44 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.0/cloudera-hue-0.1.0.tgz
     version: 0.1.0
+  datashield:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: first release
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2023-07-28T15:26:45.561002134Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying the opal server and a DataShield rock
+      cluster.
+    digest: 4b9a7f66ecb498b195ae94434f2598cef7c91962484ccce942259e7a1537ab29
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/medizininformatik-initiative/distributed-analysis_datashield-qp
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
+    version: 0.1.0
   fhir-gateway:
   - annotations:
       artifacthub.io/changes: |
@@ -4129,4 +4167,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-07-25T19:27:36.04833379Z"
+generated: "2023-07-28T15:26:45.561274436Z"
