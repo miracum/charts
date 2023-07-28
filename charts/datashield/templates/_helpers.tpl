@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "opal.name" -}}
+{{- define "datashield.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "opal.fullname" -}}
+{{- define "datashield.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "opal.chart" -}}
+{{- define "datashield.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "opal.labels" -}}
-helm.sh/chart: {{ include "opal.chart" . }}
-{{ include "opal.selectorLabels" . }}
+{{- define "datashield.labels" -}}
+helm.sh/chart: {{ include "datashield.chart" . }}
+{{ include "datashield.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "opal.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "opal.name" . }}
+{{- define "datashield.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "datashield.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "opal.serviceAccountName" -}}
+{{- define "datashield.serviceAccountName" -}}
 {{- if (or .Values.serviceAccount.create .Values.migrationsJob.enabled) }}
-{{- default (include "opal.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "datashield.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{/*
 Get the container image for the wait-for-db init container
 */}}
-{{- define "opal.waitForDatabaseInitContainerImage" -}}
+{{- define "datashield.waitForDatabaseInitContainerImage" -}}
 {{- $registry := .Values.waitForDatabaseInitContainer.image.registry -}}
 {{- $repository := .Values.waitForDatabaseInitContainer.image.repository -}}
 {{- $tag := .Values.waitForDatabaseInitContainer.image.tag -}}
@@ -76,7 +76,7 @@ Get the container image for the wait-for-db init container
 Create a default fully qualified postgresql name. TODO: could we use SubChart template rendering to render this?
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "opal.postgresql.fullname" -}}
+{{- define "datashield.postgresql.fullname" -}}
 {{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -84,21 +84,21 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.data.host .Values.postgresql.enabled -}}
+{{- define "datashield.database.host" -}}
+{{- ternary (include "datashield.postgresql.fullname" .) .Values.opal.database.data.host .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.port" -}}
+{{- define "datashield.database.port" -}}
 {{- ternary "5432" .Values.opal.database.data.port .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.user" -}}
+{{- define "datashield.database.user" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if .Values.postgresql.auth.username -}}
         {{ .Values.postgresql.auth.username | quote }}
@@ -113,24 +113,24 @@ Add environment variables to configure database values
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.name" -}}
+{{- define "datashield.database.name" -}}
 {{- ternary .Values.postgresql.auth.database .Values.opal.database.data.database .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
 */}}
-{{- define "opal.database.db-secret-name" -}}
+{{- define "datashield.database.db-secret-name" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if .Values.postgresql.auth.existingSecret -}}
         {{ .Values.postgresql.auth.existingSecret | quote }}
     {{- else -}}
-        {{ ( include "opal.postgresql.fullname" . ) }}
+        {{ ( include "datashield.postgresql.fullname" . ) }}
     {{- end -}}
 {{- else if .Values.opal.database.data.existingSecret.name -}}
     {{ .Values.opal.database.data.existingSecret.name | quote }}
 {{- else -}}
-    {{- $fullname := ( include "opal.fullname" . ) -}}
+    {{- $fullname := ( include "datashield.fullname" . ) -}}
     {{ printf "%s-%s" $fullname "db-secret" }}
 {{- end -}}
 {{- end -}}
@@ -138,7 +138,7 @@ Get the name of the secret containing the DB password
 {{/*
 Get the key inside the secret containing the DB user's password
 */}}
-{{- define "opal.database.db-secret-key" -}}
+{{- define "datashield.database.db-secret-key" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
         {{ "password" }}
@@ -155,21 +155,21 @@ Get the key inside the secret containing the DB user's password
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.ids.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.ids.host .Values.postgresql.enabled -}}
+{{- define "datashield.database.ids.host" -}}
+{{- ternary (include "datashield.postgresql.fullname" .) .Values.opal.database.ids.host .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.ids.port" -}}
+{{- define "datashield.database.ids.port" -}}
 {{- ternary "5432" .Values.opal.database.ids.port .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.ids.user" -}}
+{{- define "datashield.database.ids.user" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if .Values.postgresql.auth.username -}}
         {{ .Values.postgresql.auth.username | quote }}
@@ -184,24 +184,24 @@ Add environment variables to configure database values
 {{/*
 Add environment variables to configure database values
 */}}
-{{- define "opal.database.ids.name" -}}
+{{- define "datashield.database.ids.name" -}}
 {{- ternary .Values.postgresql.auth.database .Values.opal.database.ids.database .Values.postgresql.enabled -}}
 {{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
 */}}
-{{- define "opal.database.ids.db-secret-name" -}}
+{{- define "datashield.database.ids.db-secret-name" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if .Values.postgresql.auth.existingSecret -}}
         {{ .Values.postgresql.auth.existingSecret | quote }}
     {{- else -}}
-        {{ ( include "opal.postgresql.fullname" . ) }}
+        {{ ( include "datashield.postgresql.fullname" . ) }}
     {{- end -}}
 {{- else if .Values.opal.database.ids.existingSecret.name -}}
     {{ .Values.opal.database.ids.existingSecret.name | quote }}
 {{- else -}}
-    {{- $fullname := ( include "opal.fullname" . ) -}}
+    {{- $fullname := ( include "datashield.fullname" . ) -}}
     {{ printf "%s-%s" $fullname "db-secret" }}
 {{- end -}}
 {{- end -}}
@@ -209,7 +209,7 @@ Get the name of the secret containing the DB password
 {{/*
 Get the key inside the secret containing the DB user's password
 */}}
-{{- define "opal.database.ids.db-secret-key" -}}
+{{- define "datashield.database.ids.db-secret-key" -}}
 {{- if .Values.postgresql.enabled -}}
     {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
         {{ "password" }}
@@ -227,7 +227,7 @@ Get the key inside the secret containing the DB user's password
 Return  the proper Storage Class
 Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_storage.tpl>
 */}}
-{{- define "opal.storage.class" -}}
+{{- define "datashield.storage.class" -}}
 {{- $storageClass := .persistence.storageClass -}}
 {{- if .global -}}
     {{- if .global.storageClass -}}
@@ -247,7 +247,7 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_stora
 Renders a value that contains template.
 Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl>
 */}}
-{{- define "opal.tplvalues.render" -}}
+{{- define "datashield.tplvalues.render" -}}
     {{- if typeIs "string" .value }}
         {{- tpl .value .context }}
     {{- else }}
@@ -255,11 +255,35 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplva
     {{- end }}
 {{- end -}}
 
-{{- define "opal.rock-hosts" -}}
-{{- $rockServiceName := printf "%s-rock" (include "opal.fullname" .) -}}
+{{- define "datashield.rock-hosts" -}}
+{{- $rockServiceName := printf "%s-rock" (include "datashield.fullname" .) -}}
 {{- $rock := list -}}
 {{- range int .Values.rock.replicaCount | until -}}
 {{- $rock = printf "%s-%d.%s:%d" $rockServiceName . $rockServiceName (int $.Values.rock.service.port) | append $rock -}}
 {{- end -}}
 {{- join "," $rock -}}
+{{- end -}}
+
+
+{{/*
+Get the name of the secret containing the admin password
+*/}}
+{{- define "datashield.auth.admin-secret-name" -}}
+{{- if empty .Values.opal.auth.administrator.existingSecret.name -}}
+    {{- $secretName := printf "%s-opal-administrator" (include "datashield.fullname" .) -}}
+    {{ $secretName }}
+{{- else -}}
+    {{ .Values.opal.auth.administrator.existingSecret.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the key inside the secret containing the admin password
+*/}}
+{{- define "datashield.auth.admin-secret-key" -}}
+{{- if empty .Values.opal.auth.administrator.existingSecret.name -}}
+    {{ "administrator-password" }}
+{{- else -}}
+    {{ .Values.opal.auth.administrator.existingSecret.key }}
+{{- end -}}
 {{- end -}}

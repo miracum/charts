@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name:  {{ include "opal.fullname" $ }}-opal
+  name:  {{ include "datashield.fullname" $ }}-opal
   labels:
-    {{- include "opal.labels" $ | nindent 4 }}
+    {{- include "datashield.labels" $ | nindent 4 }}
     app.kubernetes.io/component: opal
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ include "opal.fullname" $ }}-opal
+  serviceName: {{ include "datashield.fullname" $ }}-opal
   selector:
     matchLabels:
-      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      {{- include "datashield.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: opal
   template:
     metadata:
       labels:
-        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        {{- include "datashield.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: opal
     spec:
       {{- with .imagePullSecrets }}
@@ -27,7 +27,7 @@ spec:
         {{- toYaml .podSecurityContext | nindent 8 }}
       initContainers:
         - name: wait-for-db
-          image: {{ include "opal.waitForDatabaseInitContainerImage" $ }}
+          image: {{ include "datashield.waitForDatabaseInitContainerImage" $ }}
           imagePullPolicy: {{ $.Values.waitForDatabaseInitContainer.image.pullPolicy }}
           {{- with $.Values.restrictedContainerSecurityContext }}
           securityContext:
@@ -35,11 +35,11 @@ spec:
           {{- end }}
           env:
             - name: PGHOST
-              value: {{ include "opal.database.host" $ }}
+              value: {{ include "datashield.database.host" $ }}
             - name: PGPORT
-              value: {{ include "opal.database.port" $ | quote }}
+              value: {{ include "datashield.database.port" $ | quote }}
             - name: PGUSER
-              value: {{ include "opal.database.user" $ }}
+              value: {{ include "datashield.database.user" $ }}
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -55,7 +55,7 @@ spec:
           {{- end }}
           env:
             - name: ROCK_URL
-              value: "http://{{ include "opal.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/"
+              value: "http://{{ include "datashield.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/"
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -98,36 +98,39 @@ spec:
             {{- toYaml .resources | nindent 12 }}
           env:
             - name: OPAL_ADMINISTRATOR_PASSWORD
-              value: "test"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.auth.admin-secret-name" $ }}
+                  key: {{ include "datashield.auth.admin-secret-key" $ }}
 
             - name: ROCK_HOSTS
-              value: {{ include "opal.rock-hosts" $ }}
+              value: {{ include "datashield.rock-hosts" $ }}
 
             # DB for data
             - name: POSTGRESDATA_HOST
-              value: {{ include "opal.database.host" $ }}
+              value: {{ include "datashield.database.host" $ }}
             - name: POSTGRESDATA_USER
-              value: {{ include "opal.database.user" $ }}
+              value: {{ include "datashield.database.user" $ }}
             - name: POSTGRESDATA_DATABASE
-              value: {{ include "opal.database.name" $ }}
+              value: {{ include "datashield.database.name" $ }}
             - name: POSTGRESDATA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "opal.database.db-secret-name" $ }}
-                  key: {{ include "opal.database.db-secret-key" $ }}
+                  name: {{ include "datashield.database.db-secret-name" $ }}
+                  key: {{ include "datashield.database.db-secret-key" $ }}
 
             # DB for ids
             - name: POSTGRESIDS_HOST
-              value: {{ include "opal.database.ids.host" $ }}
+              value: {{ include "datashield.database.ids.host" $ }}
             - name: POSTGRESIDS_USER
-              value: {{ include "opal.database.ids.user" $ }}
+              value: {{ include "datashield.database.ids.user" $ }}
             - name: POSTGRESIDS_DATABASE
-              value: {{ include "opal.database.ids.name" $ }}
+              value: {{ include "datashield.database.ids.name" $ }}
             - name: POSTGRESIDS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "opal.database.ids.db-secret-name" $ }}
-                  key: {{ include "opal.database.ids.db-secret-key" $ }}
+                  name: {{ include "datashield.database.ids.db-secret-name" $ }}
+                  key: {{ include "datashield.database.ids.db-secret-key" $ }}
 
             {{- if .extraEnv }}
             {{- toYaml .extraEnv | nindent 12 }}
@@ -168,9 +171,9 @@ spec:
           requests:
             storage: {{ .persistence.size | quote }}
         {{- if .persistence.selector }}
-        selector: {{- include "opal.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        selector: {{- include "datashield.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+        {{- include "datashield.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
   {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:

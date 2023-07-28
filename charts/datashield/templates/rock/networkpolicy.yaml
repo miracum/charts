@@ -1,20 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "opal.fullname" . }}-rock
+  name: {{ include "datashield.fullname" . }}-rock
   labels:
-    {{- include "opal.labels" . | nindent 4 }}
+    {{- include "datashield.labels" . | nindent 4 }}
     app.kubernetes.io/component: rock
 spec:
   podSelector:
     matchLabels:
-      {{- include "opal.selectorLabels" . | nindent 6 }}
+      {{- include "datashield.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: rock
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              {{- include "opal.selectorLabels" . | nindent 14 }}
+              {{- include "datashield.selectorLabels" . | nindent 14 }}
               app.kubernetes.io/component: opal
       ports:
         - port: http

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "opal.fullname" . }}-rock
+  name: {{ include "datashield.fullname" . }}-rock
   labels:
-    {{- include "opal.labels" . | nindent 4 }}
+    {{- include "datashield.labels" . | nindent 4 }}
     app.kubernetes.io/component: rock
 spec:
   type: {{ .Values.rock.service.type }}
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "opal.selectorLabels" . | nindent 4 }}
+    {{- include "datashield.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: rock
