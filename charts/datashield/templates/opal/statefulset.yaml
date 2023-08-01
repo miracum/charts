@@ -83,17 +83,17 @@ spec:
                 - test
                 - -f
                 - /opt/opal/bin/first_run.sh.done
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 20
+          {{- with .livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /ui/index.html
-              port: http
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: /ui/index.html
-              port: http
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .resources | nindent 12 }}
           env:
@@ -105,6 +105,27 @@ spec:
 
             - name: ROCK_HOSTS
               value: {{ include "datashield.rock-hosts" $ }}
+            - name: ROCK_ADMINISTRATOR_USER
+              value: {{ $.Values.rock.auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_USER
+              value: {{ $.Values.rock.auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_USER
+              value: {{ $.Values.rock.auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.user-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.user-secret-key" $ }}
 
             # DB for data
             - name: POSTGRESDATA_HOST

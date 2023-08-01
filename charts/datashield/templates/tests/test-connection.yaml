@@ -13,7 +13,7 @@ spec:
     - name: probe-opal-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl", "--fail-with-body"]
-      args: ["http://{{ include "datashield.fullname" . }}-opal:{{ .Values.opal.service.port }}/ui"]
+      args: ["http://{{ include "datashield.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -31,7 +31,7 @@ spec:
     - name: probe-rock-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl", "--fail-with-body"]
-      args: ["http://{{ include "datashield.fullname" . }}-rock:{{ .Values.rock.service.port }}/"]
+      args: ["http://{{ include "datashield.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

@@ -287,3 +287,72 @@ Get the key inside the secret containing the admin password
     {{ .Values.opal.auth.administrator.existingSecret.key }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Get the name of the secret containing the rock admin password
+*/}}
+{{- define "datashield.rock.auth.admin-secret-name" -}}
+{{- if empty .Values.rock.auth.administrator.existingSecret.name -}}
+    {{- $secretName := printf "%s-rock-users" (include "datashield.fullname" .) -}}
+    {{ $secretName }}
+{{- else -}}
+    {{ .Values.rock.auth.administrator.existingSecret.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the key inside the secret containing the rock admin password
+*/}}
+{{- define "datashield.rock.auth.admin-secret-key" -}}
+{{- if empty .Values.rock.auth.administrator.existingSecret.name -}}
+    {{ "administrator-password" }}
+{{- else -}}
+    {{ .Values.rock.auth.administrator.existingSecret.key }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the name of the secret containing the rock manager password
+*/}}
+{{- define "datashield.rock.auth.manager-secret-name" -}}
+{{- if empty .Values.rock.auth.manager.existingSecret.name -}}
+    {{- $secretName := printf "%s-rock-users" (include "datashield.fullname" .) -}}
+    {{ $secretName }}
+{{- else -}}
+    {{ .Values.rock.auth.manager.existingSecret.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the key inside the secret containing the rock manager password
+*/}}
+{{- define "datashield.rock.auth.manager-secret-key" -}}
+{{- if empty .Values.rock.auth.manager.existingSecret.name -}}
+    {{ "manager-password" }}
+{{- else -}}
+    {{ .Values.rock.auth.manager.existingSecret.key }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the name of the secret containing the rock user password
+*/}}
+{{- define "datashield.rock.auth.user-secret-name" -}}
+{{- if empty .Values.rock.auth.user.existingSecret.name -}}
+    {{- $secretName := printf "%s-rock-users" (include "datashield.fullname" .) -}}
+    {{ $secretName }}
+{{- else -}}
+    {{ .Values.rock.auth.user.existingSecret.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the key inside the secret containing the rock user password
+*/}}
+{{- define "datashield.rock.auth.user-secret-key" -}}
+{{- if empty .Values.rock.auth.user.existingSecret.name -}}
+    {{ "user-password" }}
+{{- else -}}
+    {{ .Values.rock.auth.user.existingSecret.key }}
+{{- end -}}
+{{- end -}}

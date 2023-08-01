@@ -45,6 +45,34 @@ spec:
               mountPath: /srv
             - name: data
               mountPath: /var/lib/rock/
+          env:
+            - name: ROCK_CLUSTER
+              value: "{{ include "datashield.fullname" $ }}"
+            - name: ROCK_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ROCK_ADMINISTRATOR_NAME
+              value: {{ .auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_NAME
+              value: {{ .auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_NAME
+              value: {{ .auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.user-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.user-secret-key" $ }}
       containers:
         - name: rock
           image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
@@ -56,6 +84,16 @@ spec:
             - name: http
               containerPort: 8085
               protocol: TCP
+          {{- with .livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
           env:
             - name: ROCK_CLUSTER
               value: "{{ include "datashield.fullname" $ }}"
@@ -63,6 +101,27 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: ROCK_ADMINISTRATOR_NAME
+              value: {{ .auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_NAME
+              value: {{ .auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_NAME
+              value: {{ .auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datashield.rock.auth.user-secret-name" $ }}
+                  key: {{ include "datashield.rock.auth.user-secret-key" $ }}
           volumeMounts:
             - name: tmp
               mountPath: /tmp
@@ -70,8 +129,6 @@ spec:
               mountPath: /srv
             - name: data
               mountPath: /var/lib/rock/
-          resources:
-            {{- toYaml .resources | nindent 12 }}
       volumes:
         - name: tmp
           emptyDir: {}

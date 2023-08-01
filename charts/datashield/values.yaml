@@ -161,6 +161,30 @@ opal:
   # -- pod affinity
   affinity: {}
 
+  # -- readiness probe
+  # @ignored
+  readinessProbe:
+    httpGet:
+      path: /ui/index.html
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 20
+
+  # -- liveness probe
+  # @ignored
+  livenessProbe:
+    httpGet:
+      path: /ui/index.html
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 30
+
 # @ignored
 waitForDatabaseInitContainer:
   image:
@@ -209,6 +233,35 @@ rock:
     repository: datashield/rock-base
     tag: "6.3@sha256:ebb5be25ccdaa59ff780b55bb12208c365ab03d7c0dae3412578c97d6268f3e3"
     pullPolicy: IfNotPresent
+
+  auth:
+    administrator:
+      name: "administrator"
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the administrator password.
+        name: ""
+        # -- key inside that existing secret that contains the administrator password
+        key: "rock-administrator-password"
+    manager:
+      name: "manager"
+      # -- the password for the manager user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the manager password.
+        name: ""
+        # -- key inside that existing secret that contains the manager password
+        key: "rock-manager-password"
+    user:
+      name: "user"
+      # -- the password for the user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the user password.
+        name: ""
+        # -- key inside that existing secret that contains the user password
+        key: "rock-user-password"
 
   # -- resource limits and requests
   resources: {}
@@ -273,52 +326,29 @@ rock:
   # -- pod affinity
   affinity: {}
 
-dsPoll:
-  # -- enable the QP poll component. See <https://github.com/medizininformatik-initiative/distributed-analysis_datashield-qp>
-  enabled: false
-
-  # -- number of replicas
-  replicaCount: 1
-
+  # -- readiness probe
   # @ignored
-  image:
-    registry: ghcr.io
-    repository: medizininformatik-initiative/distributed-analysis_datashield-qp/ds_poll
-    tag: v0.0.2@sha256:dd982c797ef019225608962619eaaa9443a7d9efa3f4dac617efa292378c4162
-    pullPolicy: IfNotPresent
+  readinessProbe:
+    httpGet:
+      path: /_check
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 20
 
-  # -- the host of the queue server component
-  queueServerHost: ""
-
-  # -- resource requests and limits
-  resources: {}
-
-  # -- container security context
+  # -- liveness probe
   # @ignored
-  securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    privileged: false
-    capabilities:
-      drop:
-        - ALL
-    runAsNonRoot: true
-    runAsUser: 4242
-    runAsGroup: 4242
-    seccompProfile:
-      type: RuntimeDefault
-
-  # -- pod security context
-  podSecurityContext: {}
-
-  # -- pod node selector
-  nodeSelector: {}
-
-  # -- pod tolerations
-  tolerations: []
-
-  # -- pod affinity
-  affinity: {}
+  livenessProbe:
+    httpGet:
+      path: /_info
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 30
 
 # @ignored
 curl:
