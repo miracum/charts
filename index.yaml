@@ -259,6 +259,42 @@ entries:
   datashield:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: set rock cluster name to "default"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2023-08-02T17:20:45.321154416Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 81881257b109bf43acd1103533f1a989751c99528a569f3783ff87dde625bc65
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.3.0/datashield-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: removed
           description: "BREAKING CHANGE: removed dspoll component"
       artifacthub.io/containsSecurityUpdates: "false"
@@ -4203,4 +4239,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-08-01T06:57:45.585455888Z"
+generated: "2023-08-02T17:20:45.321754422Z"
