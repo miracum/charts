@@ -47,7 +47,7 @@ spec:
               mountPath: /var/lib/rock/
           env:
             - name: ROCK_CLUSTER
-              value: "{{ include "datashield.fullname" $ }}"
+              value: "{{ tpl .clusterName $ }}"
             - name: ROCK_ID
               valueFrom:
                 fieldRef:
@@ -96,7 +96,7 @@ spec:
             {{- toYaml .resources | nindent 12 }}
           env:
             - name: ROCK_CLUSTER
-              value: "{{ include "datashield.fullname" $ }}"
+              value: "{{ tpl .clusterName $ }}"
             - name: ROCK_ID
               valueFrom:
                 fieldRef:

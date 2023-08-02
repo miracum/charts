@@ -234,8 +234,12 @@ rock:
     tag: "6.3@sha256:ebb5be25ccdaa59ff780b55bb12208c365ab03d7c0dae3412578c97d6268f3e3"
     pullPolicy: IfNotPresent
 
+  # -- rock cluster name. Evaluated as a template
+  clusterName: "default"
+
   auth:
     administrator:
+      # -- the user name for the administrator user.
       name: "administrator"
       # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
       password: ""
@@ -245,6 +249,7 @@ rock:
         # -- key inside that existing secret that contains the administrator password
         key: "rock-administrator-password"
     manager:
+      # -- the user name for the manager user.
       name: "manager"
       # -- the password for the manager user. If unset and no existing secret is specified, a random one is generated.
       password: ""
@@ -254,6 +259,7 @@ rock:
         # -- key inside that existing secret that contains the manager password
         key: "rock-manager-password"
     user:
+      # -- the user name for the user user.
       name: "user"
       # -- the password for the user. If unset and no existing secret is specified, a random one is generated.
       password: ""
@@ -299,7 +305,7 @@ rock:
     # -- the port for the REST API
     port: 8085
 
-  # -- container security context
+  # @ignored
   securityContext:
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
