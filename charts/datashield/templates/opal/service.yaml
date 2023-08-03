@@ -16,6 +16,10 @@ spec:
       targetPort: https
       protocol: TCP
       name: https
+    - port: {{ .Values.opal.service.sshPort }}
+      targetPort: ssh
+      protocol: TCP
+      name: ssh
   selector:
     {{- include "datashield.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: opal

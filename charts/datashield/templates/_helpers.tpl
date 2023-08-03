@@ -264,7 +264,6 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplva
 {{- join "," $rock -}}
 {{- end -}}
 
-
 {{/*
 Get the name of the secret containing the admin password
 */}}
@@ -355,4 +354,12 @@ Get the key inside the secret containing the rock user password
 {{- else -}}
     {{ .Values.rock.auth.user.existingSecret.key }}
 {{- end -}}
+{{- end -}}
+
+{{- define "datashield.opal.ingress-hosts" -}}
+{{- $hosts := list -}}
+{{- range .Values.opal.ingress.hosts -}}
+{{- $hosts = printf "%s" .host | append $hosts -}}
+{{- end -}}
+{{- join "," $hosts -}}
 {{- end -}}

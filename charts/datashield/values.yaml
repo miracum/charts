@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.6@sha256:d1e7a8bc3495fda6b572fcb6a5f399d4d8cd051e60eca36885f449c2c673f859
+    tag: 4.6@sha256:b0ffe22ed4ba7a161e42bdf1e13565808ccf99f8a3cffaee6d2da6cca0dd742b
     pullPolicy: IfNotPresent
 
   auth:
@@ -32,7 +32,8 @@ opal:
     className: ""
     # -- extra annotations to apply to the Ingress resource
     annotations:
-      {}
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     # -- list of ingress hosts
@@ -41,7 +42,7 @@ opal:
         paths:
           - path: /
             pathType: ImplementationSpecific
-            portName: http
+            portName: https
     # -- TLS configuration
     tls: []
     #  - secretName: chart-example-tls
@@ -141,6 +142,8 @@ opal:
     port: 8080
     # -- the port for the TLS-secured interface
     httpsPort: 8443
+    # -- the port for SSH access
+    sshPort: 8022
 
   # -- resource limits and requests
   resources:

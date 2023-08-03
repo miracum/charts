@@ -55,11 +55,11 @@ spec:
           {{- end }}
           env:
             - name: ROCK_URL
-              value: "http://{{ include "datashield.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/"
+              value: "http://{{ include "datashield.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/_check"
           command: ["/bin/sh", "-c"]
           args:
             - |
-              until [ "$(curl -s -o /dev/null -L -w '%{http_code}' "$ROCK_URL")" == "200" ]; do
+              until [ "$(curl -s -o /dev/null -L -w '%{http_code}' "$ROCK_URL")" == "204" ]; do
                 echo "$(date): Waiting for rock cluster @ $ROCK_URL to be up";
                 sleep 15;
               done;
@@ -76,6 +76,9 @@ spec:
               protocol: TCP
             - name: https
               containerPort: 8443
+              protocol: TCP
+            - name: ssh
+              containerPort: 8022
               protocol: TCP
           startupProbe:
             exec:
@@ -152,6 +155,12 @@ spec:
                 secretKeyRef:
                   name: {{ include "datashield.database.ids.db-secret-name" $ }}
                   key: {{ include "datashield.database.ids.db-secret-key" $ }}
+
+            {{- if .ingress.enabled }}
+            # CSRF
+            - name: CSRF_ALLOWED
+              value: {{ include "datashield.opal.ingress-hosts" $ }}
+            {{- end }}
 
             {{- if .extraEnv }}
             {{- toYaml .extraEnv | nindent 12 }}
