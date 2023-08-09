@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.2.5
+version: 1.2.6
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -36,9 +36,5 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
-      description: avoid dots in migrations job name
     - kind: changed
-      description: updated curl image to 8.2.0
-    - kind: added
-      description: allow setting resource limits and requests for the Helm test pods
+      description: update docker.io/curlimages/curl tag to v8.2.1
