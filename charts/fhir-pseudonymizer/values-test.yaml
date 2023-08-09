@@ -1,5 +1,7 @@
 pseudonymizationService: Vfps
 
+replicaCount: 3
+
 vfps:
   enabled: true
   replicaCount: 2

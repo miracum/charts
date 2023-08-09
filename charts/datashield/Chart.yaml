@@ -19,7 +19,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.4.0
+version: 0.4.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -31,6 +31,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: forward ingress to https port by default
-    - kind: changed
-      description: expose SSH port
+      description: update docker.io/curlimages/curl tag to v8.2.1

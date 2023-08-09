@@ -34,7 +34,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.17.1@sha256:425daebd80579ed273fbc359f018ad2eccf2c92d196b9eccc5409324f98d487b
+  tag: v2.18.0@sha256:936bea4f83a1a9e49094590941ee2c4a56d082c14fd4526ac5b04d750204baa9
   pullPolicy: IfNotPresent
 
 metrics:
@@ -160,12 +160,46 @@ topologySpreadConstraints:
   #       app.kubernetes.io/name: fhir-pseudonymizer
   #       app.kubernetes.io/instance: fhir-pseudonymizer
 
+podDisruptionBudget:
+  # create a PodDisruptionBudget resource
+  enabled: false
+  # Minimum available instances; ignored if there is no PodDisruptionBudget
+  minAvailable: 1
+  # Maximum unavailable instances; ignored if there is no PodDisruptionBudget
+  maxUnavailable: ""
+
+autoscaling:
+  # enable horizontal pod autoscaling
+  enabled: false
+  # minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down.
+  # It defaults to 1 pod. minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is
+  # enabled and at least one Object or External metric is configured.
+  # Scaling is active as long as at least one metric value is available.
+  minReplicas: 1
+  # upper limit for the number of pods that can be set by the autoscaler; cannot be smaller than `minReplicas`.
+  maxReplicas: 5
+  # target average CPU utilization (represented as a percentage of requested CPU)
+  # over all the pods; if not specified the default autoscaling policy will be used.
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # whether to automount the SA token
+  automountServiceAccountToken: false
+
 # @ignored
 curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.2.0@sha256:daf3f46a2639c1613b25e85c9ee4193af8a1d538f92483d67f9a3d7f21721827
+    tag: 8.2.1@sha256:bb0843a1307b1aa73f65f24379d11dde881c16db62ba50810de0c64d48e740ed
 
 # container security context applied to init containers and the Helm test pods
 restrictedContainerSecurityContext: # +doc-gen:ignore
