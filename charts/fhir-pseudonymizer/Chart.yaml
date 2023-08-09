@@ -10,10 +10,22 @@ dependencies:
     version: 1.2.5
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.4.7
+version: 0.5.0
 annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated vfps sub-chart to 1.2.5
+      description: update ghcr.io/miracum/fhir-pseudonymizer tag to v2.18.0
+    - kind: changed
+      description: update docker.io/curlimages/curl tag to v8.2.1
+    - kind: added
+      description: HPA support
+    - kind: added
+      description: PDB support

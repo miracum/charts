@@ -90,3 +90,14 @@ Return the vfps address to use
     {{- .Values.externalVfps.address -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "fhir-pseudonymizer.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "fhir-pseudonymizer.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

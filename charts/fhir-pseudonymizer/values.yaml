@@ -160,6 +160,40 @@ topologySpreadConstraints:
   #       app.kubernetes.io/name: fhir-pseudonymizer
   #       app.kubernetes.io/instance: fhir-pseudonymizer
 
+podDisruptionBudget:
+  # create a PodDisruptionBudget resource
+  enabled: false
+  # Minimum available instances; ignored if there is no PodDisruptionBudget
+  minAvailable: 1
+  # Maximum unavailable instances; ignored if there is no PodDisruptionBudget
+  maxUnavailable: ""
+
+autoscaling:
+  # enable horizontal pod autoscaling
+  enabled: false
+  # minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down.
+  # It defaults to 1 pod. minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is
+  # enabled and at least one Object or External metric is configured.
+  # Scaling is active as long as at least one metric value is available.
+  minReplicas: 1
+  # upper limit for the number of pods that can be set by the autoscaler; cannot be smaller than `minReplicas`.
+  maxReplicas: 5
+  # target average CPU utilization (represented as a percentage of requested CPU)
+  # over all the pods; if not specified the default autoscaling policy will be used.
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # whether to automount the SA token
+  automountServiceAccountToken: false
+
 # @ignored
 curl: # +doc-gen:ignore
   image:

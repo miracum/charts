@@ -34,3 +34,19 @@ anonymizationConfig: |
     enablePartialDatesForRedact: true
     enablePartialZipCodesForRedact: true
     restrictedZipCodeTabulationAreas: []
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  maxUnavailable: ""
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+serviceAccount:
+  create: true
+  name: "test"
+  automountServiceAccountToken: true
