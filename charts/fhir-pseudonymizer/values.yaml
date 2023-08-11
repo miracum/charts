@@ -86,10 +86,12 @@ securityContext: # +doc-gen:ignore
   seccompProfile:
     type: RuntimeDefault
 
-# service to expose the fhir-pseudonymizer
+# service to expose the fhir-pseudonymizer at
 service: # +doc-gen:break
   type: ClusterIP
   port: 8080
+  # port to expose metrics at under the `/metrics` path
+  metricsPort: 8081
 
 # configure the anonymization rules, see <https://github.com/miracum/fhir-pseudonymizer/blob/HEAD/src/FhirPseudonymizer/anonymization.yaml> for an example.
 # this is evaluated as a template. Also see [README.md](README.md#pseudonymization) for configuring it within this values.yaml

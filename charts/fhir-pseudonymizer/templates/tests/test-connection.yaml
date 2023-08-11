@@ -32,7 +32,7 @@ spec:
       image: "{{ .Values.curl.image.registry }}/{{ .Values.curl.image.repository }}:{{ .Values.curl.image.tag }}"
       imagePullPolicy: IfNotPresent
       command: ["curl", "--fail-with-body"]
-      args: ["{{ include "fhir-pseudonymizer.fullname" . }}:{{ .Values.service.port }}/metrics"]
+      args: ["{{ include "fhir-pseudonymizer.fullname" . }}:{{ .Values.service.metricsPort }}/metrics"]
       {{- with $.Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
