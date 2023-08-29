@@ -12,7 +12,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.3.2
+version: 0.3.3
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -25,4 +25,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl tag to v8.2.1
+      description: updated ghcr.io/samply/blaze image to 0.22.1

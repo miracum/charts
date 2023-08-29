@@ -34,7 +34,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.18.1@sha256:5a6e2a4edd0965df359f4dcc9b454a51ced53db70951e5dbab2d8274ea8a4e67
+  tag: v2.19.1@sha256:2238c7b57b62ed703f2b89014dbff40a8b2a7d467235875e4a0ab77dcb477c6a
   pullPolicy: IfNotPresent
 
 metrics:
@@ -110,6 +110,29 @@ resources:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+ingress:
+  # create an Ingress for the application
+  enabled: false
+  # ingressClassName to use
+  className: ""
+  # extra annotations to apply to the Ingress resource
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # list of ingress hosts
+  hosts:
+    - host: fhir-pseudonymizer.127.0.0.1.nip.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          portName: http
+  # TLS configuration
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
 # node labels for pods assignment
 # see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>
