@@ -37,3 +37,12 @@ anonymizationConfig: |
     enablePartialDatesForRedact: true
     enablePartialZipCodesForRedact: true
     restrictedZipCodeTabulationAreas: []
+
+ingress:
+  enabled: true
+  hosts:
+    - host: fhir-pseudonymizer.127.0.0.1.nip.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          portName: http
