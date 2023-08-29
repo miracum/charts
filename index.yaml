@@ -4,6 +4,36 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: updated ghcr.io/samply/blaze image to 0.22.1
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2023-08-29T20:10:09.692841418Z"
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 0451fb635d355986ea044824b6ffaaf1098632dc61937596eb57a5e330d697ea
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.3.3/blaze-0.3.3.tgz
+    version: 0.3.3
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update docker.io/curlimages/curl tag to v8.2.1
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -1848,6 +1878,35 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: added Ingress support
+        - kind: changed
+          description: updated image to v2.19.1
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2023-08-29T20:10:09.851892236Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 1.2.5
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 43f315af818e62f28e3d9873162180aa8d2cb5c909a3115e84d92772c3a1ad2f
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.5.3/fhir-pseudonymizer-0.5.3.tgz
+    version: 0.5.3
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -4532,4 +4591,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-08-11T13:40:45.71070451Z"
+generated: "2023-08-29T20:10:09.852897257Z"
