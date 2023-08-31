@@ -64,6 +64,46 @@ spec:
                 sleep 15;
               done;
       containers:
+        - name: datashield-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/datashield.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: data
+              mountPath: /srv
+              readOnly: true
+        - name: rest-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/rest.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: data
+              mountPath: /srv
+              readOnly: true
         - name: opal
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
