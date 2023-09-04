@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.0
+version: 0.5.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -31,7 +31,5 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
-      description: "updated obiba/opal image to 4.6@sha256:0cff692fae7033789e65fb2661a2515d9cbb999e2e741a0a39b769e5c57dc343"
-    - kind: added
-      description: sidecar containers to tail the filesystem logs of both opal and the rock pods
+    - kind: fixed
+      description: incorrect auth user prefix for the rock secrets
