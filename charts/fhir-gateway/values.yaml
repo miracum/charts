@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.10.9@sha256:f4bae212ee8c137c522df7610b931d648ee7a5dd237f842432ae092fc3adbd0a
+  tag: v3.12.1@sha256:68122d4154d025760e433f2eb7a58750d9d6b82adaabd803dc015b2a408006f3
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -212,7 +212,7 @@ loincConverter:
   image: # +doc-gen:ignore
     registry: harbor.miracum.org
     repository: miracum-etl/loinc-conversion
-    tag: v1.14.0@sha256:b370da4881ed59ad3b9a7088bc5bd82fc89551a90acdecd8fbaf5c37dd760728
+    tag: v1.14.2@sha256:9815eb71c13fa2a0b74df6492f41cc2d7b9969696984e6045b6217600ad1f0e1
     pullPolicy: IfNotPresent
 
   metrics:
@@ -324,7 +324,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.2.1@sha256:bb0843a1307b1aa73f65f24379d11dde881c16db62ba50810de0c64d48e740ed
+    tag: 8.3.0@sha256:961cf9e2a1939ea380b3f16e313a581b5d4681dd9dc4b1ace060eb396a71df0d
 
 # container security context applied to init containers used by the query, list, and notify modules.
 # also used by the Helm test job pods

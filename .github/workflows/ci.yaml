@@ -10,7 +10,7 @@ permissions: read-all
 jobs:
   lint:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v2.0.1@sha256:26d150eb3676ad5d237b5b72ddd027758bd783f4051c72459431a71410e0d98f
+    container: ghcr.io/chgl/kube-powertools:v2.1.30@sha256:5c9d7b4cac83743901b6b57badda2eaebce9037db2721577fc5a2e69410eaf80
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -20,6 +20,10 @@ jobs:
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
           fetch-depth: 0
+
+      # via <https://github.com/helm/chart-testing/issues/577>
+      - run: |
+          git branch "master" "origin/master"
 
       - name: Check if documentation is up-to-date
         run: |
@@ -56,7 +60,7 @@ jobs:
       - lint
     strategy:
       matrix:
-        k8s-version: [1.25.9, 1.26.4, 1.27.2]
+        k8s-version: [1.25.11, 1.26.6, 1.27.3, 1.28.0]
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
