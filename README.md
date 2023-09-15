@@ -9,6 +9,9 @@ helm repo add miracum https://miracum.github.io/charts
 helm repo update
 ```
 
+> [!NOTE]
+> Also available as OCI artifacts: <https://github.com/orgs/miracum/packages?repo_name=charts>.
+
 ## Development
 
 1. (Optional) Install the [pre-commit](https://pre-commit.com/) hooks

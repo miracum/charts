@@ -1,7 +1,12 @@
 fhir-pseudonymizer:
   vfps:
-    # disabled until all deps no longer set resource reqs/limits
-    enabled: false
+    enabled: true
     postgresql:
       enabled: true
       nameOverride: "vfps-postgres"
+
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prom-stack
