@@ -35,11 +35,8 @@ jobs:
 
       - name: Add Helm chart dependency repos
         run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add codecentric https://codecentric.github.io/helm-charts
-          helm repo add chgl https://chgl.github.io/charts
           helm repo add hapifhir https://hapifhir.github.io/hapi-fhir-jpaserver-starter
-          helm repo add miracum https://miracum.github.io/charts
 
       - name: Update dependencies
         run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
