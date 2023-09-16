@@ -12,16 +12,12 @@ dependencies:
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.4.7
+    version: 0.5.5
     repository: oci://ghcr.io/miracum/charts
-version: 6.0.16
+version: 6.0.17
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.3.0
-    - kind: changed
-      description: update harbor.miracum.org/miracum-etl/loinc-conversion docker tag to v1.14.2
-    - kind: changed
-      description: update ghcr.io/miracum/fhir-gateway docker tag to v3.12.1
+      description: update fhir-pseudonymizer subchart to 0.5.5
