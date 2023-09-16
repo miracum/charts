@@ -1,4 +1,5 @@
 fhir-pseudonymizer:
+  pseudonymizationService: "Vfps"
   vfps:
     enabled: true
     postgresql:

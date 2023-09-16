@@ -7,3 +7,6 @@ metrics:
     enabled: true
     additionalLabels:
       release: kube-prometheus-stack
+
+fhir-pseudonymizer:
+  pseudonymizationService: "None"

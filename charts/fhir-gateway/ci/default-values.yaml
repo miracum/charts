@@ -3,3 +3,6 @@ sinks:
     enabled: true
 postgresql:
   enabled: true
+
+fhir-pseudonymizer:
+  pseudonymizationService: "None"
