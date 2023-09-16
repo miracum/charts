@@ -717,6 +717,31 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: update fhir-pseudonymizer subchart to 0.5.5
+    apiVersion: v2
+    created: "2023-09-16T11:17:43.585858707Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.6
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.5.5
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 5f41861839a41c1aa4c47b12bd316128f401bb76a8351428a57119442142d69e
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.0.17/fhir-gateway-6.0.17.tgz
+    version: 6.0.17
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update docker.io/curlimages/curl docker tag to v8.3.0
         - kind: changed
           description: update harbor.miracum.org/miracum-etl/loinc-conversion docker tag to v1.14.2
@@ -4968,4 +4993,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-09-16T10:00:18.427166793Z"
+generated: "2023-09-16T11:17:43.586341713Z"
