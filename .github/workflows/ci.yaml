@@ -67,6 +67,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: downgrade helm
+        shell: bash
+        run: |
+          sudo rm /usr/local/bin/helm
+          sudo  curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > /tmp/helm.sh
+          sudo chmod +x /tmp/helm.sh
+          sudo /tmp/helm.sh --version v3.12.3
+          helm version
+
       - name: Set up chart-testing
         uses: helm/chart-testing-action@e8788873172cb653a90ca2e819d79d65a66d4e76 # v2.4.0
 
