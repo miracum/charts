@@ -4210,6 +4210,29 @@ entries:
       artifacthub.io/changes: |
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: "Added deployment strategy type template with default RollingUpdate"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2023-10-13T12:34:30.246655864Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 2528eb2097e54f310cfa16aeff920a5871995196cb973d54d60f53cd1c47fe44
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.2.0/stream-processors-1.2.0.tgz
+    version: 1.2.0
+  - annotations:
+      artifacthub.io/changes: |
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "Updated docs to use OCI chart repository"
       artifacthub.io/recommendations: |
@@ -5047,4 +5070,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-10-06T13:31:51.769547829Z"
+generated: "2023-10-13T12:34:30.246967866Z"
