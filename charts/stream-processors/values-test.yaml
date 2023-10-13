@@ -78,6 +78,7 @@ processors:
           value: "test"
         - name: AHD_PIPELINE
           value: "discharge"
+      deploymentStrategyType: Recreate
       resources:
         requests:
           memory: "512Mi"
