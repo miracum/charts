@@ -21,6 +21,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ $name }}
       app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+  strategy:
+    type: {{ default "RollingUpdate" .deploymentStrategyType }}
   template:
     metadata:
       labels:
