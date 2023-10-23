@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.6@sha256:0cff692fae7033789e65fb2661a2515d9cbb999e2e741a0a39b769e5c57dc343
+    tag: 4.6@sha256:79782ac5b921535bfcdee141b7045e978a1e983bef924324445db14159d47909
     pullPolicy: IfNotPresent
 
   auth:
@@ -364,7 +364,7 @@ curl:
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.3.0@sha256:961cf9e2a1939ea380b3f16e313a581b5d4681dd9dc4b1ace060eb396a71df0d
+    tag: 8.4.0@sha256:4a3396ae573c44932d06ba33f8696db4429c419da87cbdc82965ee96a37dd0af
 
 tests:
   # -- configure the test pods resource requests and limits

@@ -37,16 +37,10 @@ spec:
         - name: wait-for-db
           image: {{ include "fhir-gateway.waitforDB.image" . }}
           imagePullPolicy: {{ .Values.waitForPostgresInitContainer.image.pullPolicy }}
+          {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            privileged: false
-            capabilities:
-              drop:
-                - ALL
-            runAsNonRoot: true
-            runAsUser: 1001
-            runAsGroup: 1001
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: PGHOST
               value: {{ include "fhir-gateway.postgresql.host" $ | quote }}
