@@ -10,7 +10,7 @@ permissions: read-all
 jobs:
   lint:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v2.2.13@sha256:d977eebe6a7b5219b29fc2559832eeed4bc0203e529536abef69a3e8bb4c9cd6
+    container: ghcr.io/chgl/kube-powertools:v2.1.31@sha256:3c0e9cda457f9f6ed3d1ea51a02d54893f53074d98da7469c0da9d28fbbc69b5
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -66,15 +66,6 @@ jobs:
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
           fetch-depth: 0
-
-      - name: downgrade helm
-        shell: bash
-        run: |
-          rm /usr/local/bin/helm
-          curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > /tmp/helm.sh
-          chmod +x /tmp/helm.sh
-          /tmp/helm.sh --version v3.12.3
-          helm version
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@e8788873172cb653a90ca2e819d79d65a66d4e76 # v2.4.0
