@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.2.7
+version: 1.2.8
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -37,4 +37,6 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.3.0
+      description: update docker.io/curlimages/curl docker tag to v8.4.0
+    - kind: changed
+      description: refreshed docs with latest helm-docs
