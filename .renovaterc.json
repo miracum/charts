@@ -30,6 +30,10 @@
     {
       "matchPackageNames": ["postgresql", "ghcr.io/chgl/kube-powertools"],
       "extends": ["schedule:monthly"]
+    },
+    {
+      "matchPackagePatterns": ["^ghcr.io\\/miracum\\/"],
+      "pinDigests": false
     }
   ],
   "ignorePaths": [

@@ -54,6 +54,36 @@ jobs:
       - name: Generate changelogs (test)
         run: generate-chart-changelog.sh
 
+  test-kyverno:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Add workspace as safe directory
+        run: |
+          git config --global --add safe.directory /__w/charts/charts
+
+      - name: Checkout
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          fetch-depth: 0
+
+      - name: Update dependencies
+        run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
+
+      - name: Test chart against Kyverno policies
+        uses: ckotzbauer/kyverno-test-action@0d96bdb966a134a9062c23284ac5585e44b7dc0b # main
+        with:
+          # for testing
+          chart-dir: charts/fhir-gateway
+          policy-files: |
+            policies/verify-images.yaml
+          kyverno-version: 1.10.3
+          debug: true
+
+      - run: |
+          ls -lsa /tmp/kyverno-test/
+          cat /tmp/kyverno-test/kyverno-test.yaml
+          cat /tmp/kyverno-test/rules.yaml
+
   test:
     runs-on: ubuntu-22.04
     needs:
