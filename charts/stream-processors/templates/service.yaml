@@ -9,7 +9,7 @@ metadata:
   name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-metrics
   labels:
     {{- include "stream-processors.labels" $ | nindent 4 }}
-    app.kubernetes.io/version: {{ $spec.container.image.tag | quote }}
+    app.kubernetes.io/version: {{ include "stream-processors.version-label-value" . }}
     app.kubernetes.io/name: {{ $name }}
     app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
 spec:

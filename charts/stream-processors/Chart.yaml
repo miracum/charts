@@ -8,13 +8,13 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.2.1
+version: 1.2.3
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
       description: refreshed docs with latest helm-docs

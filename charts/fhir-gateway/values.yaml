@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.12.2@sha256:fbd28aa2c37c054c3687466c10edec95afa972a5de1177b930e08167da44d74b
+  tag: v3.12.6@sha256:f101b7897b36100a2b3bc16ecf6d02e199344b75fb65af2ae416e07c41d876fb
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -210,9 +210,9 @@ loincConverter:
   enabled: true
 
   image: # +doc-gen:ignore
-    registry: harbor.miracum.org
-    repository: miracum-etl/loinc-conversion
-    tag: v1.14.2@sha256:9815eb71c13fa2a0b74df6492f41cc2d7b9969696984e6045b6217600ad1f0e1
+    registry: ghcr.io
+    repository: miracum/loinc-conversion
+    tag: v1.14.3@sha256:e17fd9ea8ce26befe51d33588046de28f0e7e870eb89831f236c79f2bf627bb1
     pullPolicy: IfNotPresent
 
   metrics:
