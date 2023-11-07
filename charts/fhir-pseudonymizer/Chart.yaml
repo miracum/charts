@@ -10,7 +10,7 @@ dependencies:
     version: 1.2.7
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.5.7
+version: 0.5.8
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -22,6 +22,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.4.0
-    - kind: changed
-      description: refreshed docs with latest helm-docs
+      description: update ghcr.io/miracum/fhir-pseudonymizer docker tag to v2.21.2
