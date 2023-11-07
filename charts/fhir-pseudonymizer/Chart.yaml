@@ -22,6 +22,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.4.0
-    - kind: changed
-      description: refreshed docs with latest helm-docs
+      description: updated vfps sub-chart to 1.2.8
