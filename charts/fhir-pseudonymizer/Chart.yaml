@@ -10,7 +10,7 @@ dependencies:
     version: 1.2.8
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.5.8
+version: 0.5.9
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
