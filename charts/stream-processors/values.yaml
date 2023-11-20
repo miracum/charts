@@ -37,6 +37,12 @@ defaultReplicaCount: 1
 # sets the revisionHistoryLimit value for all processor deployments unless overridden on a per-processor level as `.revisionHistoryLimit`
 defaultRevisionHistoryLimit: 10
 
+# sets default nodeSelector for all processor deployments unless overridden on a per-processor level as `.nodeSelector`
+defaultNodeSelector: {}
+
+# sets default affinity for all processor deployments unless overridden on a per-processor level as `.affinity`
+defaultAffinity: {}
+
 # sets list of tolerations for all processor deployments unless overridden on a per-processor level as `.tolerations`
 defaultTolerations: []
 

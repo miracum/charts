@@ -103,6 +103,10 @@ spec:
         {{- if .extraContainers }}
         {{- toYaml .extraContainers | nindent 8 }}
         {{- end }}
+      nodeSelector:
+        {{- .nodeSelector | default $.Values.defaultNodeSelector | toYaml | nindent 8 }}
+      affinity:
+        {{- .affinity | default $.Values.defaultAffinity | toYaml | nindent 8 }}
       tolerations:
         {{- .tolerations | default $.Values.defaultTolerations | toYaml | nindent 8 }}
       volumes:
