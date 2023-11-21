@@ -4641,6 +4641,27 @@ entries:
         - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
         - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
     apiVersion: v2
+    created: "2023-11-21T09:11:46.946464599Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: cf6a84931f5a2056a3358b5ab5c77c00039b6542b43cb2036be9d29a67bcd939
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.3.0/stream-processors-1.3.0.tgz
+    version: 1.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: refreshed docs with latest helm-docs
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
     created: "2023-11-07T13:15:17.165684Z"
     description: A Helm chart for deploying a set of Kafka stream processing apps
     digest: a1d0537b8ae7cf7bf5b5e1e348a849069f6c2b90bff3fa618bb182700d1fac77
@@ -5650,4 +5671,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2023-11-07T17:03:14.715834856Z"
+generated: "2023-11-21T09:11:46.94719086Z"
