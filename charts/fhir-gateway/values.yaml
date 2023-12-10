@@ -58,7 +58,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 15.3.0-debian-11-r7@sha256:cc301eef743685f4f69d1d719853988e8a9650c90fd9521f4742ce400b3fdf6a
+    tag: 16.1.0-debian-11-r7@sha256:9dc9494ee06e1d002f0c47f0322e5842a87842db42f26f611cb26fe00bcf124b
     pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
