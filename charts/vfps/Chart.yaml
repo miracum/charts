@@ -15,12 +15,12 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgresql
-    version: 12.5.6
+    version: 13.2.24
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.2.9
+version: 2.0.0
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -37,4 +37,10 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: refreshed docs with latest helm-docs
+      description: |
+        ⚠️ BREAKING CHANGE: updated postgresql sub-chart to 13.2.24, which upgrades PostgreSQL from v15 to v16 internally.
+        Upgrading PostgreSQL without downtime isn't possible. This change is only relevant if the chart is deployed with `postgresql.enabled=true`.
+    - kind: changed
+      description: update docker.io/curlimages/curl docker tag to v8.5.0
+    - kind: changed
+      description: update ghcr.io/miracum/vfps docker tag to v1.3.2
