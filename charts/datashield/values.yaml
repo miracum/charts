@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.6@sha256:79782ac5b921535bfcdee141b7045e978a1e983bef924324445db14159d47909
+    tag: 4.6@sha256:50abaa400d5b474981c951719301ce4f3c9f5058090cc878e5e82b1b35342881
     pullPolicy: IfNotPresent
 
   auth:
@@ -364,7 +364,7 @@ curl:
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.4.0@sha256:4a3396ae573c44932d06ba33f8696db4429c419da87cbdc82965ee96a37dd0af
+    tag: 8.5.0@sha256:4bfa3e2c0164fb103fb9bfd4dc956facce32b6c5d47cc09fcec883ce9535d5ac
 
 tests:
   # -- configure the test pods resource requests and limits
@@ -381,7 +381,7 @@ logCollectorSidecar:
   image:
     registry: docker.io
     repository: library/busybox
-    tag: 1.36.1-uclibc@sha256:3e516f71d8801b0ce6c3f8f8e4f11093ec04e168177a90f1da4498014ee06b6b
+    tag: 1.36.1-uclibc@sha256:27441c673d7b790259201123b4fe396a6115f35e7afb6e11f576be2b48a171cd
   # -- configure the resources used by the log collector sidecar container used to tail the
   # filesystem-stored log files
   resources: {}
