@@ -14,10 +14,12 @@ dependencies:
     condition: fhir-pseudonymizer.enabled
     version: 0.6.0
     repository: oci://ghcr.io/miracum/charts
-version: 6.0.23
+version: 6.0.24
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated FHIR Gateway image digest
+      description: update docker.io/curlimages/curl docker tag to v8.5.0
+    - kind: changed
+      description: update fhir-pseudonymizer sub-chart to 0.6.0
