@@ -4,6 +4,36 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: update ghcr.io/samply/blaze docker tag to v0.23.4
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2024-01-15T09:54:23.797381907Z"
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 7b636e8bd20b216f65d0c2047cba8048f2e27ee378ac5ab6d59833f0850724a4
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.3.8/blaze-0.3.8.tgz
+    version: 0.3.8
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update ghcr.io/samply/blaze docker tag to v0.23.3
         - kind: changed
           description: refreshed docs with latest helm-docs
@@ -1042,6 +1072,35 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: update docker.io/curlimages/curl docker tag to v8.5.0
+        - kind: changed
+          description: update ghcr.io/miracum/loinc-conversion docker tag to v1.14.5
+        - kind: changed
+          description: update ghcr.io/miracum/fhir-gateway docker tag to v3.12.7
+    apiVersion: v2
+    created: "2024-01-15T09:54:23.971477409Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 13.2.24
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.2
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: a2342a6a40e442c32b79cce1c1d19669270b2805bd7e0bfdeb83734d831cdbfc
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.1.1/fhir-gateway-6.1.1.tgz
+    version: 6.1.1
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -6074,4 +6133,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-01-15T09:35:49.11724526Z"
+generated: "2024-01-15T09:54:23.971994613Z"
