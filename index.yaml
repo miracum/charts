@@ -2605,6 +2605,35 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: update ghcr.io/miracum/fhir-pseudonymizer docker tag to v2.21.5
+        - kind: changed
+          description: update vfps sub-chart to v2.0.1
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-01-15T09:35:49.11673022Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.0.1
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: eedf27029d6433da4a82bd1421e0ab001773173f420dfc9e338f94543a4869ee
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.6.2/fhir-pseudonymizer-0.6.2.tgz
+    version: 0.6.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update docker.io/curlimages/curl docker tag to v8.5.0
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -6045,4 +6074,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-01-08T21:36:03.279622621Z"
+generated: "2024-01-15T09:35:49.11724526Z"
