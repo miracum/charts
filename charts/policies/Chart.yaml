@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.25.0"
-version: 0.1.0
+version: 0.1.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -22,5 +22,7 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: added
-      description: initial release
+    - kind: changed
+      description: enforce -> Enforce
+    - kind: changed
+      description: predicateType -> type

@@ -52,7 +52,7 @@ spec:
                       githubWorkflowRepository: miracum/{{ $imageName }}
           # This section declares some policy conditions acting on the provenance itself.
           attestations:
-            - predicateType: https://slsa.dev/provenance/v0.2
+            - type: https://slsa.dev/provenance/v0.2
               conditions:
                 - all:
                     # This condition verifies that the image was generated from

@@ -4,7 +4,7 @@
 nameOverride: ""
 fullnameOverride: ""
 
-validationFailureAction: enforce
+validationFailureAction: Enforce
 webhookTimeoutSeconds: 30
 failurePolicy: Fail
 
