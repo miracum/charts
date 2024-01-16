@@ -1,0 +1,76 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ include "policies.fullname" . }}
+  labels:
+    {{- include "policies.labels" . | nindent 4 }}
+  annotations:
+    policies.kyverno.io/title: Verify SLSA provenance and image cosign keyless signature
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.8.3
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.25"
+    policies.kyverno.io/description: >-
+      Provenance is used to identify how an artifact was produced
+      and from where it originated. SLSA provenance is an industry-standard
+      method of representing that provenance. This policy verifies that an
+      image has SLSA provenance and was signed by the expected subject and issuer
+      when produced through GitHub Actions.
+spec:
+  validationFailureAction: {{ .Values.validationFailureAction }}
+  webhookTimeoutSeconds: {{ .Values.webhookTimeoutSeconds }}
+  failurePolicy: {{ .Values.failurePolicy }}
+  rules:
+    {{- range $i, $imageName := .Values.images }}
+    - name: check-{{ $imageName }}
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        # imageReferences sets which images the policy will apply to.
+        # Wildcard values are supported.
+        - imageReferences:
+            - "ghcr.io/miracum/{{ $imageName }}:v*"
+          attestors:
+            # This section declares which attestors are accepted. The subject
+            # below corresponds to the OIDC identity of the container workflow.
+            # The issuer corresponds to the GitHub OIDC server that issues the
+            # identity.
+            - entries:
+                - keyless:
+                    subject: "https://github.com/miracum/.github/.github/workflows/standard-build.yaml@*"
+                    issuer: "https://token.actions.githubusercontent.com"
+                    rekor:
+                      url: https://rekor.sigstore.dev
+                    additionalExtensions:
+                      githubWorkflowTrigger: release
+                      githubWorkflowName: ci
+                      githubWorkflowRepository: miracum/{{ $imageName }}
+          # This section declares some policy conditions acting on the provenance itself.
+          attestations:
+            - predicateType: https://slsa.dev/provenance/v0.2
+              conditions:
+                - all:
+                    # This condition verifies that the image was generated from
+                    # the source repository we expect.
+                    - key: {{` "{{ invocation.configSource.uri }}" `}}
+                      operator: Equals
+                      value: "git+https://github.com/miracum/{{ $imageName }}@refs/tags/v*"
+
+                    # This condition verifies the entrypoint of the workflow.
+                    - key: {{` "{{ invocation.configSource.entryPoint }}" `}}
+                      operator: Equals
+                      value: ".github/workflows/ci.yaml"
+
+                    # This condition verifies that the builder is the builder we
+                    # expect and trust. The following condition can be used
+                    # unmodified. It verifies that the builder is the container
+                    # workflow.
+                    - key: {{` "{{ regex_match('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$', '{{ builder.id}}') }}" `}}
+                      operator: Equals
+                      value: true
+    {{- end }}

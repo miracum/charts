@@ -1,0 +1,19 @@
+# Default values for policies.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
+
+validationFailureAction: enforce
+webhookTimeoutSeconds: 30
+failurePolicy: Fail
+
+images:
+  - fhir-gateway
+  - fhir-pseudonymizer
+  - loinc-conversion
+  - vfps
+  - obds-to-fhir
+  - ohdsi-cohort-sync
+  - ahd2fhir
+  - kafka-fhir-to-server
