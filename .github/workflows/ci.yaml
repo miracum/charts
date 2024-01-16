@@ -91,5 +91,12 @@ jobs:
             --set=nodeExporter.enabled=false \
             --set=grafana.enabled=false
 
+      - name: Install Kyverno
+        if: ${{ steps.list-changed.outputs.changed == 'true' }}
+        run: |
+          helm install kyverno oci://ghcr.io/kyverno/charts/kyverno \
+            --namespace=kyverno \
+            --create-namespace
+
       - name: Run chart-testing (install)
         run: ct install --config .github/ct/install.yaml
