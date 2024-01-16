@@ -3579,6 +3579,35 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/opal-0.1.0/opal-0.1.0.tgz
     version: 0.1.0
+  policies:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: initial release
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2024-01-16T20:17:49.978375282Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: 6b25b9c94b58589aa9d00467f54488214c5d4f1d176ef6b4fe425dd00dd0e89c
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.25.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.1.0/policies-0.1.0.tgz
+    version: 0.1.0
   recruit:
   - annotations:
       artifacthub.io/changes: |-
@@ -6133,4 +6162,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-01-15T09:54:23.971994613Z"
+generated: "2024-01-16T20:17:49.978804853Z"
