@@ -1,0 +1,26 @@
+apiVersion: v2
+name: policies
+description: A Helm chart for deploying Kyverno policies verifying images of the github.com/miracum organization.
+type: application
+home: https://github.com/miracum/charts
+keywords:
+  - kyverno
+sources:
+  - https://github.com/miracum/charts
+maintainers:
+  - name: miracum
+deprecated: false
+kubeVersion: ">= 1.25.0"
+version: 0.1.0
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: added
+      description: initial release
