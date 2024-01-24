@@ -91,6 +91,18 @@ spec:
                 secretKeyRef:
                   name: {{ $.Values.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
+            {{- with .kafka }}
+            {{- if .topics }}
+            - name: TOPICS
+              value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
+            - name: TOPIC
+              value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
+            - name: KAFKA_TOPICS
+              value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
+            - name: KAFKA_TOPIC
+              value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
+            {{- end }}
+            {{- end }}
             {{- if .container.env -}}
             {{- toYaml .container.env | default "" | nindent 12 }}
             {{- end }}

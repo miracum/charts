@@ -63,6 +63,11 @@ processors:
         additionalLabels:
           release: prom
     replicaCount: 1
+    kafka:
+      topics:
+        - test-1
+        - test-2
+        - test-3
     container:
       image:
         registry: ghcr.io

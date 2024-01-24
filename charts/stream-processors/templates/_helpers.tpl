@@ -51,3 +51,8 @@ version label value
     {{- $tagAsString | quote }}
 {{- end }}
 {{- end }}
+
+{{- define "stream-processors.utils.joinListWithComma" -}}
+{{- $local := dict "first" true -}}
+{{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
