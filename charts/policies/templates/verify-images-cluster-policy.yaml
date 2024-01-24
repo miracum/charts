@@ -74,3 +74,22 @@ spec:
                       operator: Equals
                       value: true
     {{- end }}
+    - name: check-curl
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        # imageReferences sets which images the policy will apply to.
+        # Wildcard values are supported.
+        - imageReferences:
+            - "docker.io/curlimages/curl:*"
+          attestors:
+            - entries:
+                - keys:
+                    publicKeys: |-
+                      -----BEGIN PUBLIC KEY-----
+                      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwFTRXl79xRiAFa5ZX4aZ7Vkdqmji
+                      5WY0zqc3bd6B08CsNftlYsu2gAqdWm0IlzoQpi2Zi5C437RTg/DgLQ6Bkg==
+                      -----END PUBLIC KEY-----

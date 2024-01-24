@@ -27,5 +27,5 @@ $ helm upgrade --install policies oci://ghcr.io/miracum/charts/policies --create
 | images[6]               | string | `"ahd2fhir"`             |             |
 | images[7]               | string | `"kafka-fhir-to-server"` |             |
 | nameOverride            | string | `""`                     |             |
-| validationFailureAction | string | `"enforce"`              |             |
+| validationFailureAction | string | `"Enforce"`              |             |
 | webhookTimeoutSeconds   | int    | `30`                     |             |
