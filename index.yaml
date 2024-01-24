@@ -3583,6 +3583,34 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: added curl to checked images
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2024-01-24T17:27:09.531349988Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: f492a57134276dd33aa24ab2d63d19ec7974e22c5b71763a0ab24eff18c30e85
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.25.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.1.2/policies-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: enforce -> Enforce
         - kind: changed
           description: predicateType -> type
@@ -6192,4 +6220,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-01-16T21:23:50.956995834Z"
+generated: "2024-01-24T17:27:09.531809941Z"
