@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.3.0
+version: 1.4.0
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -16,5 +16,5 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
-      description: refreshed docs with latest helm-docs
+    - kind: added
+      description: config option `*.kafka.topics` to set the `KAFKA_TOPICS` env var from an array
