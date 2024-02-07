@@ -4,6 +4,36 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: update ghcr.io/samply/blaze docker tag to v0.24.1
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2024-02-07T16:52:15.68379974Z"
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 9c288e54f5421e66ef493698dfd69669b6eed4467a1e1695c9a8e35f53c17891
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.3.10/blaze-0.3.10.tgz
+    version: 0.3.10
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update ghcr.io/samply/blaze docker tag to v0.24.0
         - kind: changed
           description: update docker.io/curlimages/curl docker tag to v8.6.0
@@ -6478,4 +6508,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-02-07T14:33:39.416437398Z"
+generated: "2024-02-07T16:52:15.684309248Z"
