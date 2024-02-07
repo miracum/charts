@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 2.0.1
+version: 2.0.2
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -37,4 +37,8 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.5.0
+      description: update ghcr.io/miracum/vfps docker tag to v1.3.3
+    - kind: changed
+      description: update docker.io/curlimages/curl docker tag to v8.6.0
+    - kind: changed
+      description: update docker.io/bitnami/postgresql docker tag to v16
