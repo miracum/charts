@@ -17,7 +17,7 @@ dependencies:
     version: 12.5.6
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
-version: 0.1.6
+version: 0.1.7
 appVersion: "4.11.0"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,6 +31,6 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: refreshed docs with latest helm-docs
+      description: update docker.io/curlimages/curl docker tag to v8.6.0
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.5.0
+      description: update docker.io/bitnami/postgresql docker tag to v16

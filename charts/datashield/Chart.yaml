@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.6
+version: 0.5.7
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -32,10 +32,8 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update docker.io/library/busybox:1.36.1-uclibc docker digest to 27441c6
+      description: update docker.io/curlimages/curl docker tag to v8.6.0
     - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.5.0
+      description: update docker.io/library/busybox:1.36.1-uclibc docker digest to cc71f45
     - kind: changed
-      description: update docker.io/obiba/opal:4.6 docker digest to 50abaa4
-    - kind: changed
-      description: refreshed docs with latest helm-docs
+      description: update docker.io/bitnami/postgresql docker tag to v16

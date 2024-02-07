@@ -117,7 +117,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 15.3.0-debian-11-r7@sha256:cc301eef743685f4f69d1d719853988e8a9650c90fd9521f4742ce400b3fdf6a
+    tag: 16.1.0-debian-11-r15@sha256:29e3dd0e7e7a740eabdbae6f82673507d180701a719bbdb6d6308a58cf723e64
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -155,7 +155,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.5.0@sha256:4bfa3e2c0164fb103fb9bfd4dc956facce32b6c5d47cc09fcec883ce9535d5ac
+    tag: 8.6.0@sha256:c3b8bee303c6c6beed656cfc921218c529d65aa61114eb9e27c62047a1271b9b
 
 database:
   # -- database hostname of an external database. Only used if `postgresql.enabled` is set to `false`.
