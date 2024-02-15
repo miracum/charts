@@ -112,6 +112,9 @@ spec:
             - name: kafka-certs
               mountPath: "/opt/kafka-certs"
               readOnly: true
+          {{- if .container.extraVolumeMounts }}
+            {{- toYaml .container.extraVolumeMounts | nindent 12 }}
+          {{- end }}
         {{- if .extraContainers }}
         {{- toYaml .extraContainers | nindent 8 }}
         {{- end }}
@@ -141,5 +144,8 @@ spec:
                     path: user.p12
                   - key: user.key
                     path: user.key
+      {{- if .extraVolumes }}
+        {{- toYaml .extraVolumes | nindent 8 }}
+      {{- end }}
 {{- end }}
 {{- end }}

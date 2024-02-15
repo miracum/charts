@@ -68,12 +68,21 @@ processors:
         - test-1
         - test-2
         - test-3
+    extraVolumes:
+      - name: acme-root-ca
+        configMap:
+          name: acme-root-ca
     container:
       image:
         registry: ghcr.io
         repository: miracum/ahd2fhir
         tag: v1.0.6@sha256:fe17777ac6f0562254371435ebf433e554a4e1704fef46bdeb539013f8cb06cc
         pullPolicy: IfNotPresent
+      extraVolumeMounts:
+        - name: acme-root-ca
+          mountPath: /etc/ssl/certs/acme-root-ca.crt
+          subPath: acme-root-ca.crt
+          readOnly: true
       env:
         - name: AHD_URL
           value: http://localhost:9999/health-discovery
