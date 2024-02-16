@@ -1215,6 +1215,31 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: "allow disabling health probes"
+    apiVersion: v2
+    created: "2024-02-16T11:47:29.533692353Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 13.2.24
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.2
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 96bcb21c0648d43ab6cf19b2c593ca60e0583b66b9aab6f24517ccefa09d7046
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.2.0/fhir-gateway-6.2.0.tgz
+    version: 6.2.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: update ghcr.io/miracum/loinc-conversion docker tag to v1.14.6
         - kind: changed
           description: update docker.io/curlimages/curl docker tag to v8.6.0
@@ -6529,4 +6554,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-02-15T12:57:39.04849755Z"
+generated: "2024-02-16T11:47:29.534108796Z"
