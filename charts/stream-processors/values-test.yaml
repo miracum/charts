@@ -72,6 +72,10 @@ processors:
       - name: acme-root-ca
         configMap:
           name: acme-root-ca
+    initContainers:
+      - name: test
+        image: ghcr.io/miracum/ahd2fhir:v1.0.6@sha256:fe17777ac6f0562254371435ebf433e554a4e1704fef46bdeb539013f8cb06cc
+
     container:
       image:
         registry: ghcr.io
