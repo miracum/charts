@@ -2,3 +2,6 @@ livenessProbe:
   enabled: false
 readinessProbe:
   enabled: false
+
+fhir-pseudonymizer:
+  pseudonymizationService: "Vfps"
