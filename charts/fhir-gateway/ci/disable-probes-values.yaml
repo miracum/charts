@@ -4,4 +4,4 @@ readinessProbe:
   enabled: true
 
 fhir-pseudonymizer:
-  pseudonymizationService: "Vfps"
+  pseudonymizationService: "None"
