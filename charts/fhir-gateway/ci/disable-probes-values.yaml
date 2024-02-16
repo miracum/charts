@@ -1,0 +1,7 @@
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: true
+
+fhir-pseudonymizer:
+  pseudonymizationService: "None"
