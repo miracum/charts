@@ -2882,6 +2882,33 @@ entries:
   fhir-pseudonymizer:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: don't specify replicas if autoscaling is enabled
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-03-01T12:21:59.146271689Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.0.1
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 47485b659fc3a8b3c5150020807b925d956be69ec41ed8237cc4f4362d4666ba
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.6.4/fhir-pseudonymizer-0.6.4.tgz
+    version: 0.6.4
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: update docker.io/curlimages/curl docker tag to v8.6.0
       artifacthub.io/containsSecurityUpdates: "false"
@@ -5340,6 +5367,27 @@ entries:
   stream-processors:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "values-test security context"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-03-01T12:21:59.269577965Z"
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: 1564133720a29bb7c12b439e62dbfec0d13f709770cdb4350a96a363ad7d77b5
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.6.1/stream-processors-1.6.1.tgz
+    version: 1.6.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: "Support for specifying init containers"
       artifacthub.io/recommendations: |
@@ -6575,4 +6623,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-02-16T16:13:39.292184258Z"
+generated: "2024-03-01T12:21:59.270633212Z"
