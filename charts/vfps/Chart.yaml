@@ -37,8 +37,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: update ghcr.io/miracum/vfps docker tag to v1.3.3
-    - kind: changed
-      description: update docker.io/curlimages/curl docker tag to v8.6.0
-    - kind: changed
-      description: update docker.io/bitnami/postgresql docker tag to v16
+      description: update ghcr.io/miracum/vfps docker tag to v1.3.4
