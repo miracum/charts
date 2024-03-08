@@ -381,7 +381,7 @@ logCollectorSidecar:
   image:
     registry: docker.io
     repository: library/busybox
-    tag: 1.36.1-uclibc@sha256:cc71f45a5a48738c4c295314b2bc9bcc18eb0c33e7bb127c3735b751b724141b
+    tag: 1.36.1-uclibc@sha256:97e3873d1f61ba651b632e4755fc52e1d90c9f6e4f01d9b720f37af5efed17e5
   # -- configure the resources used by the log collector sidecar container used to tail the
   # filesystem-stored log files
   resources: {}
