@@ -24,7 +24,7 @@ spec:
   failurePolicy: {{ .Values.failurePolicy }}
   rules:
     {{- range $i, $imageName := .Values.images }}
-    - name: check-{{ $imageName }}
+    - name: verify-{{ $imageName | replace "/" "-"}}
       match:
         any:
           - resources:
@@ -74,7 +74,7 @@ spec:
                       operator: Equals
                       value: true
     {{- end }}
-    - name: check-curl
+    - name: verify-curlimages-curl
       match:
         any:
           - resources:
@@ -93,3 +93,56 @@ spec:
                       MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwFTRXl79xRiAFa5ZX4aZ7Vkdqmji
                       5WY0zqc3bd6B08CsNftlYsu2gAqdWm0IlzoQpi2Zi5C437RTg/DgLQ6Bkg==
                       -----END PUBLIC KEY-----
+    - name: verify-docker-io-bitnami
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      verifyImages:
+      - type: Notary
+        imageReferences:
+        - "docker.io/bitnami/*"
+        attestors:
+        - count: 1
+          entries:
+          - certificates:
+              cert: |-
+                -----BEGIN CERTIFICATE-----
+                MIIGdDCCBFygAwIBAgIUDBaWhJB62sRxczoYu1AcuyKzx9gwDQYJKoZIhvcNAQEL
+                BQAwdjELMAkGA1UEBhMCVVMxFTATBgNVBAoMDFZNd2FyZSwgSW5jLjEjMCEGA1UE
+                CwwaVk13YXJlIEFwcGxpY2F0aW9uIENhdGFsb2cxKzApBgNVBAMMIlZNd2FyZSBB
+                cHBsaWNhdGlvbiBDYXRhbG9nIFJvb3QgQ0EwHhcNMjMxMTA2MTUzMDM0WhcNNDMx
+                MTAyMTUzMDM0WjB2MQswCQYDVQQGEwJVUzEVMBMGA1UECgwMVk13YXJlLCBJbmMu
+                MSMwIQYDVQQLDBpWTXdhcmUgQXBwbGljYXRpb24gQ2F0YWxvZzErMCkGA1UEAwwi
+                Vk13YXJlIEFwcGxpY2F0aW9uIENhdGFsb2cgUm9vdCBDQTCCAiIwDQYJKoZIhvcN
+                AQEBBQADggIPADCCAgoCggIBAKa8IGkj5z0TDXV0MmHOBpCcl+Prnr+PR1qM44O5
+                tJtw0Uniaka3Vttp4E+M5rbKqjd/neWwClaJWT3Fg2HC7vi4G0QhauZiuaob4hBc
+                2DSPJd7/x3T+CIvu6CC3gCLcMJCEYE5mBoCFEiDeiqlHHzf4SI2e6RFJtv+dC7Oc
+                Jj7BgccZvZXHeL4qHQs+zGU/oGyK+Iwn7mHnJp8rmDEHaHTbtXDeTqbxcPPJurDT
+                trAW/HfrohCoRMZuZBBgf9s876XgoNz8b8FIQksA8OOTgLQdgDaqDAql+ddZzsrk
+                l7VhFkztpinrynKpiz2FtlNfOaaD6rq3hpvbYMe3LkJdqw9cr64H2qGf1/Lx+SEh
+                rxBwCcs1tmD8LfK4X1Io4JBDMmwfwZ70NdNqxmCxp6y03F52tAhr1DjvEPVXmBgL
+                qdPdmpjNMFgPcjMniTBUfQczsy7UNDlmIUvEVNUQISP3KYFJFV4UOWZ+Kpdf1UPY
+                95r/JPlRgJKVQ973EvUPlDkSAlY476L46C+jpZNUf6qm352Mf/VMhoSvAXKCYEzj
+                WCf46x4nVRCXTR+StapUy5Ru5Azeo0/BXxTErtHatvGA8+igHD4Sn98MiHDO7gXt
+                G9eBzIFPx3jyOIQPFhwujHR+8jA/Y9Z5k3T5C6VNpVRZGG7kW3p5gYCM5yq9cCyB
+                tm7nAgMBAAGjgfkwgfYwHQYDVR0OBBYEFA22F2MbRn7kx4J5/ZppgpvCKBqhMIGz
+                BgNVHSMEgaswgaiAFA22F2MbRn7kx4J5/ZppgpvCKBqhoXqkeDB2MQswCQYDVQQG
+                EwJVUzEVMBMGA1UECgwMVk13YXJlLCBJbmMuMSMwIQYDVQQLDBpWTXdhcmUgQXBw
+                bGljYXRpb24gQ2F0YWxvZzErMCkGA1UEAwwiVk13YXJlIEFwcGxpY2F0aW9uIENh
+                dGFsb2cgUm9vdCBDQYIUDBaWhJB62sRxczoYu1AcuyKzx9gwDwYDVR0TAQH/BAUw
+                AwEB/zAOBgNVHQ8BAf8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAGOdQSsRNipU
+                dZIL/K5fqbgjdYwafpgdjF8z1r9yLKWIEuCCiQFqRZ1CzjnP4jnIlYJXqvqpwklA
+                AE56ZNvjo4LzOkElA4emEa+GmLSQ4CqXn+iwX1DYwkyVP7rgZ+k8kjSFjIF2rDhz
+                dqnqHA1eyUyb3PhmDFY2694bhWv7D76MzGKLZOFBg3ar0khQp5VaI/bHW1nALAAd
+                paM7uAQW/6I20McETtON0weCvbTuljuIVGADLOGwQwjsn7kHbrldEr0EIbtdiEPb
+                2Ohis50tPyfrtKVKP/gZBsyTHMaiYxkiNacEDB+cdeDi6kH1Vmm3EFSXWX3vs30D
+                3A8AnXw6L7YbXk4PnRy2ueIrs6bya5B9PSzbA2+gEzGnWpZsZmo85DmgpulSSOCM
+                lzsP/72ikru888yR0Mvf6BgGestpuXfSSNqUYUTcZVwetyMx/1UC1yCapLJN6eu4
+                0oPiQGhSv2uyu6070ne4kXkZL+DYQIjIzqUhS+4AFhBM7drKpo/9gWtHrTq4NRI1
+                Q5mnf3lzlPxKV8Uyu2LzdwGb7ySFogAH5/1BGwWVbJvuV+GozJ/AzoPGsNE7mRHu
+                ijySwgpMy1PoslxC6UhAeY6IdzoqS1PPQzinknikc4XvG7GLZUwtTooOyHx/ofQo
+                RlcLAokhium7GrRC8aceTPeaZHW1+ewh
+                -----END CERTIFICATE-----
+  
