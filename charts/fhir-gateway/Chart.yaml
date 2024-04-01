@@ -20,6 +20,6 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "updated fhir-pseudonymizer sub-chart to 0.6.6"
+      description: updated curlimages/curl to 8.7.1
     - kind: changed
-      description: "update ghcr.io/miracum/loinc-conversion docker tag to v1.14.8"
+      description: update ghcr.io/miracum/fhir-gateway image tag to v3.12.12
