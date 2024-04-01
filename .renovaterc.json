@@ -2,8 +2,10 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>miracum/.github//renovate/default", "schedule:daily"],
   "bumpVersion": "patch",
-  "regexManagers": [
+  "gitIgnoredAuthors": ["github-actions"],
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Update kube-powertools container image",
       "fileMatch": [
         "README.md$",
@@ -25,6 +27,10 @@
     {
       "matchPackageNames": ["postgresql", "ghcr.io/chgl/kube-powertools"],
       "extends": ["schedule:monthly"]
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "pinDigests": false
     }
   ],
   "ignorePaths": ["charts/recruit/**"]
