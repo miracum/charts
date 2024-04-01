@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.6@sha256:50abaa400d5b474981c951719301ce4f3c9f5058090cc878e5e82b1b35342881
+    tag: 4.7@sha256:e6c3802296d9de1a29151cb528ff7ef83aeb16599dfb77bbc6df59a87382c2a4
     pullPolicy: IfNotPresent
 
   auth:
@@ -193,7 +193,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.1.0-debian-11-r15@sha256:29e3dd0e7e7a740eabdbae6f82673507d180701a719bbdb6d6308a58cf723e64
+    tag: 16.2.0-debian-11-r15@sha256:2c2157370fc86b53f107ec95b09ad10951473e05f1478d52a58fd800d79bb544
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -364,7 +364,7 @@ curl:
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.6.0@sha256:c3b8bee303c6c6beed656cfc921218c529d65aa61114eb9e27c62047a1271b9b
+    tag: 8.7.1@sha256:25d29daeb9b14b89e2fa8cc17c70e4b188bca1466086907c2d9a4b56b59d8e21
 
 tests:
   # -- configure the test pods resource requests and limits
