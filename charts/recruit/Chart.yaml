@@ -40,8 +40,8 @@ dependencies:
     version: 0.5.7
     repository: oci://ghcr.io/miracum/charts
 # x-release-please-start-version
-version: 10.1.7
-appVersion: 10.1.7
+version: 10.1.8
+appVersion: 10.1.8
 # x-release-please-end
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
