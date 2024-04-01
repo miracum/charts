@@ -216,15 +216,6 @@ postgresql:
   enabled: true
   auth:
     database: opal
-  primary:
-    containerSecurityContext:
-      runAsNonRoot: true
-      seccompProfile:
-        type: RuntimeDefault
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
 
 rock:
   # -- number of rock instances in the cluster

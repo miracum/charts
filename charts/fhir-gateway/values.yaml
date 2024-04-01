@@ -207,12 +207,6 @@ postgresql:
     database: "fhir_gateway"
     # Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
     enablePostgresUser: true
-  primary:
-    containerSecurityContext: # +doc-gen:ignore
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
 
 loincConverter:
   # whether to enable the LOINC conversion and harmonization service
