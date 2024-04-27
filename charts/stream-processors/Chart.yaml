@@ -8,7 +8,11 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.6.1
+version: 1.7.0-beta.1
+dependencies:
+  - name: common
+    version: 2.19.1
+    repository: oci://registry-1.docker.io/bitnamicharts
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -16,5 +20,8 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "values-test security context"
+    - kind: added
+      description: "option for persistence and running as a StatefulSet"
+    - kind: added
+      description: "mount /tmp as an emtpyDir by default"
+      description: "changed default ContainerSecurityContext to use default seccompProfile"

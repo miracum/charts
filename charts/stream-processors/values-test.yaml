@@ -2,6 +2,12 @@ processors:
   nginx:
     replicaCount: 1
     revisionHistoryLimit: 0
+    persistence:
+      enabled: true
+      annotations:
+        app: test
+      labels:
+        qwe: "{{.Release.Name}}"
     container:
       image:
         registry: docker.io

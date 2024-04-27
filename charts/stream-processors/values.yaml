@@ -27,9 +27,12 @@ securityContext:
   capabilities:
     drop:
       - ALL
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsUser: 11111
   runAsGroup: 11111
+  seccompProfile:
+    type: RuntimeDefault
 
 # sets the replicas value for all processor deployments unless overridden on a per-processor level as `.replicaCount`
 defaultReplicaCount: 1
@@ -45,6 +48,44 @@ defaultAffinity: {}
 
 # sets list of tolerations for all processor deployments unless overridden on a per-processor level as `.tolerations`
 defaultTolerations: []
+
+# the default configuration for processors. This config is merged with any specific settings under `processors.*.`
+default:
+  persistence:
+    # Enable persistence. This changes the processor's type from Deployment to a StatefulSet
+    enabled: false
+    # Name to assign the volume
+    volumeName: "data"
+    # Name of an existing PVC to use
+    existingClaim: ""
+    # The path the volume will be mounted at. Also sets the `SPRING_KAFKA_STREAMS_STATE_DIR` environment variable to this value.
+    mountPath: /opt/kafka/streams/state
+    # PVC Storage Class for the data volume
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.  (gp2 on AWS, standard on GKE, AWS & OpenStack)
+    storageClass: ""
+    # PVC Access Mode for volume
+    accessModes:
+      - ReadWriteOnce
+    # PVC Storage Request for volume
+    size: 8Gi
+    # Annotations for the PVC
+    annotations: {}
+    # Labels for the PVC
+    labels: {}
+    # Selector to match an existing Persistent Volume (this value is evaluated as a template)
+    selector: {}
+    # Custom PVC data source
+    dataSource: {}
+    persistentVolumeClaimRetentionPolicy:
+      # Enable Persistent volume retention policy for Statefulset
+      enabled: false
+      # Volume retention behavior when the replica count of the StatefulSet is reduced
+      whenScaled: Retain
+      # Volume retention behavior that applies when the StatefulSet is deleted
+      whenDeleted: Retain
 
 # list of stream processing deployments. See [values-test.yaml](values-test.yaml) for an example
 processors: {}

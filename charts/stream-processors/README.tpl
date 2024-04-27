@@ -17,10 +17,17 @@ This chart deploys {{ .Project.App }} on a [Kubernetes](http://kubernetes.io) cl
 - {{ . }}
 {{- end }}
 
-To install a simple Kafka cluster after the Strimzi Kafka Operator is installed, run:
+To install a simple Kafka cluster using the Strimzi Operator, run:
 
 ```sh
+helm upgrade --install strimzi-operator oci://quay.io/strimzi-helm/strimzi-kafka-operator
 kubectl apply -f https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/examples/kafka/kafka-ephemeral-single.yaml
+
+# Optional: install the Kube Prometheus stack to test the ServiceMonitor integration:
+helm upgrade --install kube-prom-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack \
+    --set=kubeStateMetrics.enabled=false \
+    --set=nodeExporter.enabled=false \
+    --set=grafana.enabled=false
 ```
 
 ## Installing the Chart

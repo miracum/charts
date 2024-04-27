@@ -1,8 +1,9 @@
 {{- range $name, $spec := .Values.processors }}
+{{- $spec := mustMergeOverwrite $.Values.default $spec -}}
 {{- with $spec }}
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ ternary "StatefulSet" "Deployment" .persistence.enabled }}
 metadata:
   name: {{ include "stream-processors.fullname" $ }}-{{ $name }}
   labels:
@@ -21,8 +22,10 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ $name }}
       app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+  {{- if not .persistence.enabled }}
   strategy:
     type: {{ default "RollingUpdate" .deploymentStrategyType }}
+  {{- end }}
   template:
     metadata:
       labels:
@@ -107,6 +110,10 @@ spec:
               value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
             {{- end }}
             {{- end }}
+            {{- if .persistence.enabled }}
+            - name: SPRING_KAFKA_STREAMS_STATE_DIR
+              value: {{ .persistence.mountPath }}
+            {{- end }}
             {{- if .container.env -}}
             {{- toYaml .container.env | default "" | nindent 12 }}
             {{- end }}
@@ -116,6 +123,12 @@ spec:
             - name: kafka-certs
               mountPath: "/opt/kafka-certs"
               readOnly: true
+            - name: tmp
+              mountPath: "/tmp"
+          {{- if .persistence.enabled }}
+            - name: {{ .persistence.volumeName }}
+              mountPath: {{ .persistence.mountPath }}
+          {{- end }}
           {{- if .container.extraVolumeMounts }}
             {{- toYaml .container.extraVolumeMounts | nindent 12 }}
           {{- end }}
@@ -129,6 +142,8 @@ spec:
       tolerations:
         {{- .tolerations | default $.Values.defaultTolerations | toYaml | nindent 8 }}
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: kafka-certs
           projected:
             sources:
@@ -151,5 +166,44 @@ spec:
       {{- if .extraVolumes }}
         {{- toYaml .extraVolumes | nindent 8 }}
       {{- end }}
+{{- if .persistence.enabled }}
+  {{- if .persistence.existingClaim -}}
+        - name: {{ .persistence.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ tpl .persistence.existingClaim $ }}
+  {{- else }}
+  {{- if .persistence.persistentVolumeClaimRetentionPolicy.enabled }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: {{ .persistence.persistentVolumeClaimRetentionPolicy.whenDeleted }}
+    whenScaled: {{ .persistence.persistentVolumeClaimRetentionPolicy.whenScaled }}
+  {{- end }}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: {{ .persistence.volumeName }}
+        {{- if .persistence.annotations }}
+        annotations: {{- include "common.tplvalues.render" (dict "value" .persistence.annotations "context" $) | nindent 10 }}
+        {{- end }}
+        {{- if .persistence.labels }}
+        labels: {{- include "common.tplvalues.render" (dict "value" .persistence.labels "context" $) | nindent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+        {{- range .persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        {{- if .persistence.dataSource }}
+        dataSource: {{- include "common.tplvalues.render" (dict "value" .persistence.dataSource "context" $) | nindent 10 }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .persistence.size | quote }}
+        {{- if .persistence.selector }}
+        selector: {{- include "common.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        {{- end }}
+        {{- include "common.storage.class" (dict "persistence" .persistence) | nindent 8 }}
+  {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
