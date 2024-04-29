@@ -18,6 +18,9 @@ metadata:
 spec:
   replicas: {{ default $.Values.defaultReplicaCount .replicaCount }}
   revisionHistoryLimit: {{ default $.Values.defaultRevisionHistoryLimit .revisionHistoryLimit }}
+  {{- if .persistence.enabled }}
+  serviceName: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ $name }}
