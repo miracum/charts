@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.7.0-beta.1
+version: 1.7.0-beta.2
 dependencies:
   - name: common
     version: 2.19.1
@@ -24,4 +24,5 @@ annotations:
       description: "option for persistence and running as a StatefulSet"
     - kind: added
       description: "mount /tmp as an emtpyDir by default"
+    - kind: changed
       description: "changed default ContainerSecurityContext to use default seccompProfile"
