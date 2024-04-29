@@ -1,5 +1,5 @@
 {{- range $name, $processor := .Values.processors }}
-{{- $spec := mustMergeOverwrite $.Values.default $processor -}}
+{{- $spec := mustMergeOverwrite (deepCopy $.Values.default) $processor -}}
 {{- with $spec }}
 ---
 apiVersion: apps/v1

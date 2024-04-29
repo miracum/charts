@@ -145,3 +145,12 @@ processors:
           port: 8080
         initialDelaySeconds: 3
         periodSeconds: 3
+  nginx2:
+    replicaCount: 1
+    revisionHistoryLimit: 0
+    container:
+      image:
+        registry: docker.io
+        repository: nginx
+        tag: 1.19
+        pullPolicy: IfNotPresent
