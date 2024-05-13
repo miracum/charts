@@ -20,6 +20,8 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated curlimages/curl to 8.7.1
+      description: postgresql sub-chart to 15.3.0
     - kind: changed
-      description: update ghcr.io/miracum/fhir-gateway image tag to v3.12.12
+      description: fhir-pseudonymizer sub-chart to 0.6.7
+    - kind: changed
+      description: ghcr.io/miracum/fhir-gateway to v3.12.13

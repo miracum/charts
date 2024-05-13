@@ -31,4 +31,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated curlimages/curl to 8.7.1
+      description: postgresql sub-chart to 15.3.0

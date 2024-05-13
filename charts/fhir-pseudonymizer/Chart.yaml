@@ -22,6 +22,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated curlimages/curl to 8.7.1
-    - kind: changed
-      description: update ghcr.io/miracum/fhir-pseudonymizer docker tag to v2.21.8
+      description: vfps sub-chart to 2.0.4
