@@ -14,10 +14,10 @@ deprecated: false
 kubeVersion: ">= 1.19.0"
 dependencies:
   - name: postgresql
-    version: 15.2.0
+    version: 15.3.0
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
-version: 0.1.8
+version: 0.1.9
 appVersion: "4.11.0"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated curlimages/curl to 8.7.1
+      description: postgresql sub-chart to 15.3.0
