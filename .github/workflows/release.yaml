@@ -13,7 +13,7 @@ permissions: read-all
 jobs:
   release:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v2.2.66@sha256:cb8ce85ffe081527c08c740f489daaf8aaf4cdbe1fdceb4d48b1a25b9678941e
+    container: ghcr.io/chgl/kube-powertools:v2.2.69@sha256:0e3a54ffbe9abee17d81d9969d7971426cfcc35e6f4d34a980d334e4fcc2a016
     permissions:
       contents: write
       packages: write
@@ -24,7 +24,7 @@ jobs:
           git config --global --add safe.directory /__w/charts/charts
 
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           fetch-depth: 0
 
