@@ -15,12 +15,12 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgresql
-    version: 15.3.0
+    version: 15.5.2
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 2.0.5
+version: 2.0.7
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -37,4 +37,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: postgresql sub-chart to 15.3.0
+      description: dependency updates

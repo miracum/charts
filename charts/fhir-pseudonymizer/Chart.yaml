@@ -7,10 +7,10 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 2.0.4
+    version: 2.0.5
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
-version: 0.6.8
+version: 0.6.10
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -22,4 +22,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: vfps sub-chart to 2.0.4
+      description: dependency updates
