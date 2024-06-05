@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.7.1
+version: 1.7.2
 dependencies:
   - name: common
     version: 2.19.3
@@ -20,5 +20,5 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "merge logic"
+    - kind: changed
+      description: dependency updates
