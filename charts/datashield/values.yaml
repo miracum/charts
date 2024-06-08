@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.7@sha256:645820f8c50e6bef5aa82cc91c9a186e13ed7eb5d58f3516eeecfa9b5764ed9e
+    tag: 4.7.3@sha256:7267f36e10eaa56ac7f25e2a371d26df5ed0ac60616f82d22217476814e67505
     pullPolicy: IfNotPresent
 
   auth:
@@ -225,7 +225,7 @@ rock:
   image:
     registry: docker.io
     repository: datashield/rock-base
-    tag: "6.3@sha256:4d5c0993221d121a3e5bc551ef30f37b3642cf1030ca086b278800b74dde5db2"
+    tag: 6.3.0@sha256:4d5c0993221d121a3e5bc551ef30f37b3642cf1030ca086b278800b74dde5db2
     pullPolicy: IfNotPresent
 
   # -- rock cluster name. Evaluated as a template

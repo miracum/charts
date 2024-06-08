@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.12
+version: 0.5.13
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -32,4 +32,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: dependency updates
+      description: using full image tag
