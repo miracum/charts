@@ -1625,6 +1625,31 @@ entries:
         - kind: changed
           description: dependency updates
     apiVersion: v2
+    created: "2024-06-09T08:23:44.762961047Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 15.5.4
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.11
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 0591e70490df6f41b24463ac20a98ab2c5c7341c3169d3651a9c9883160e5fb5
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.2.7/fhir-gateway-6.2.7.tgz
+    version: 6.2.7
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: dependency updates
+    apiVersion: v2
     created: "2024-06-08T17:48:41.658555307Z"
     dependencies:
     - condition: postgresql.enabled
@@ -3421,6 +3446,33 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: dependency updates
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-06-09T08:23:44.973921594Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.0.8
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: d5be1427633aab56227dc2a0fa9354095fca421dcf4b70c26db50ad9591a2eba
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.6.12/fhir-pseudonymizer-0.6.12.tgz
+    version: 0.6.12
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -7820,4 +7872,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-06-08T17:48:42.053023754Z"
+generated: "2024-06-09T08:23:44.974522725Z"
