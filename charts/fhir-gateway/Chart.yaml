@@ -14,10 +14,10 @@ dependencies:
     condition: fhir-pseudonymizer.enabled
     version: 0.6.11
     repository: oci://ghcr.io/miracum/charts
-version: 6.2.7
+version: 6.2.8
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
-      description: dependency updates
+    - kind: fixed
+      description: fix template bug when setting `fhir-pseudonymizer.enabled=false`
