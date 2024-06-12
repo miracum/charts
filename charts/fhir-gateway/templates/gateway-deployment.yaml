@@ -79,10 +79,15 @@ spec:
             - name: SPRING_SQL_INIT_MODE
               value: "never"
             {{- end }}
+            {{- if (index .Values "fhir-pseudonymizer" "enabled") }}
             - name: SERVICES_PSEUDONYMIZER_ENABLED
-              value: "{{ include "fhir-gateway.pseudonymizer.isEnabled" . }}"
+              value: "true"
             - name: SERVICES_PSEUDONYMIZER_URL
               value: "{{ include "fhir-gateway.pseudonymizer.baseUrl" . }}"
+            {{- else }}
+            - name: SERVICES_PSEUDONYMIZER_ENABLED
+              value: "false"
+            {{- end }}
             - name: SERVICES_LOINC_CONVERSIONS_ENABLED
               value: {{ .Values.loincConverter.enabled | quote }}
             - name: SERVICES_LOINC_CONVERSIONS_URL

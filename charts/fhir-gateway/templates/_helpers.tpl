@@ -156,13 +156,6 @@ Image used to for the PostgreSQL readiness init containers
 {{- end -}}
 
 {{/*
-Whether the fhir-pseudonymizer is enabled.
-*/}}
-{{- define "fhir-gateway.pseudonymizer.isEnabled" -}}
-{{ (index .Values "fhir-pseudonymizer" "enabled") }}
-{{- end -}}
-
-{{/*
 Base URL of the fhir-pseudonymizer service.
 */}}
 {{- define "fhir-gateway.pseudonymizer.baseUrl" -}}
