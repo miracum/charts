@@ -17,3 +17,7 @@ images:
   - ohdsi-cohort-sync
   - ahd2fhir
   - kafka-fhir-to-server
+  - util-images/spark-delta
+  - util-images/apache-superset
+  - util-images/strimzi-kafka-connect
+  - util-images/kyuubi-delta

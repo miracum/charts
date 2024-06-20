@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.25.0"
-version: 0.1.2
+version: 0.2.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -23,4 +23,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: added curl to checked images
+      description: "added docker.io/bitnami to checked images (<https://blog.bitnami.com/2024/03/bitnami-packaged-containers-and-helm.html>)"
