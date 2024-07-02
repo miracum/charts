@@ -12,7 +12,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.4.1
+version: 0.4.2
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
