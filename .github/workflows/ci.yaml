@@ -10,7 +10,7 @@ permissions: read-all
 jobs:
   lint:
     runs-on: ubuntu-22.04
-    container: ghcr.io/chgl/kube-powertools:v2.3.6@sha256:61c11c34c0b2a3854c75713679b562754dc02354f27d56a61364f87b6bce2efb
+    container: ghcr.io/chgl/kube-powertools:v2.3.7@sha256:d1d150738e0749c0205e55839308eb54099be7be7657ba6e9503c7bae5eed0dd
     steps:
       - name: Add workspace as safe directory
         run: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Powerlint
         env:
-          KUBERNETES_VERSIONS: "1.26.0 1.27.0 1.28.0 1.29.0"
+          KUBERNETES_VERSIONS: "1.28.0 1.29.0 1.30.0"
         run: chart-powerlint.sh
 
       # used to test whether the changelog generation process works
@@ -56,7 +56,7 @@ jobs:
       - lint
     strategy:
       matrix:
-        k8s-version: [1.26.14, 1.27.11, 1.28.7, 1.29.2]
+        k8s-version: [1.28.9, 1.29.4, 1.30.2]
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
