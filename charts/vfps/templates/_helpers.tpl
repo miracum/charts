@@ -61,6 +61,16 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "vfps.migrationsJob.serviceAccountName" -}}
+{{- if .Values.migrationsJob.serviceAccount.create }}
+{{- default (include "vfps.migrationsJob.resourceName" .) .Values.migrationsJob.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.migrationsJob.serviceAccount.name }}
+{{- end }}
+{{- end }}
 
 {{/*
 Get the container image for the wait-for-db init container

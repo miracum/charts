@@ -145,6 +145,10 @@ opal:
     # -- the port for SSH access
     sshPort: 8022
 
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
   # -- resource limits and requests
   resources:
     {}
@@ -187,6 +191,17 @@ opal:
     periodSeconds: 20
     successThreshold: 1
     timeoutSeconds: 30
+
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
 
 # @ignored
 waitForDatabaseInitContainer:
@@ -263,8 +278,23 @@ rock:
         # -- key inside that existing secret that contains the user password
         key: "rock-user-password"
 
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
   # -- resource limits and requests
   resources: {}
+
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
 
   # -- configuration for the server persistence
   persistence:
@@ -358,6 +388,10 @@ curl:
     tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
 
 tests:
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # -- configure the test pods resource requests and limits
   resources: {}
   # limits:
@@ -373,8 +407,24 @@ logCollectorSidecar:
     registry: docker.io
     repository: library/busybox
     tag: 1.36.1-uclibc@sha256:97d85ff9630b634ddff3e3ff69fd02bc3b69de8dba0c5002eb0ad6915d1bf4c0
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # -- configure the resources used by the log collector sidecar container used to tail the
   # filesystem-stored log files
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the init containers pods resource requests and limits
   resources: {}
   # limits:
   #   cpu: 100m

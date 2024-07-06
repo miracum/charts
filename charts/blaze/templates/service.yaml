@@ -12,10 +12,12 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+   {{- if .Values.metrics.enabled }}
     - port: {{ .Values.service.metricsPort }}
       targetPort: http-metrics
       protocol: TCP
       name: http-metrics
+    {{- end }}
   selector:
     {{- include "blaze.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: server

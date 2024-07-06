@@ -5,6 +5,11 @@ metadata:
   labels:
     {{- include "vfps.labels" . | nindent 4 }}
     app.kubernetes.io/component: api
+  annotations:
+    polaris.fairwinds.com/automountServiceAccountToken-exempt: "true"
+    {{- with .Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -28,6 +33,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "vfps.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
@@ -62,7 +68,7 @@ spec:
           {{- end }}
         {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: vfps
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -85,8 +91,11 @@ spec:
             httpGet:
               path: /readyz
               port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.resources }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          {{- else if ne .Values.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
+          {{- end }}
           env:
             - name: DOTNET_EnableDiagnostics
               value: "0"
