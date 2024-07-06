@@ -18,9 +18,6 @@ dependencies:
     version: 15.5.14
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
-  - name: common
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.20.3
 deprecated: false
 kubeVersion: ">= 1.19.0"
 version: 0.6.0

@@ -7,7 +7,7 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 2.0.8
+    version: 2.0.9
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
   - name: common
