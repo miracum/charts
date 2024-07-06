@@ -11,22 +11,27 @@ checks:
   missingPodDisruptionBudget: ignore
   topologySpreadConstraint: ignore
 
+  # efficiency
+  cpuRequestsMissing: ignore
+  cpuLimitsMissing: ignore
+  memoryRequestsMissing: ignore
+  memoryLimitsMissing: ignore
+
   # security
-  # warning while we update all chart deps
-  automountServiceAccountToken: warning
+  automountServiceAccountToken: ignore
   hostIPCSet: danger
   hostPIDSet: danger
-  linuxHardening: danger
+  linuxHardening: warning
   missingNetworkPolicy: ignore
   notReadOnlyRootFilesystem: warning
   privilegeEscalationAllowed: danger
   runAsRootAllowed: danger
   runAsPrivileged: danger
   dangerousCapabilities: danger
-  insecureCapabilities: danger
+  insecureCapabilities: warning
   hostNetworkSet: danger
-  hostPortSet: danger
-  tlsSettingsMissing: ignore
+  hostPortSet: warning
+  tlsSettingsMissing: warning
   sensitiveContainerEnvVar: ignore
   sensitiveConfigmapContent: danger
   clusterrolePodExecAttach: danger

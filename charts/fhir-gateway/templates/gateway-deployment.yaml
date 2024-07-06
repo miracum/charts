@@ -25,7 +25,8 @@ spec:
         {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
         app.kubernetes.io/component: fhir-gateway
     spec:
-      automountServiceAccountToken: false
+      serviceAccountName: {{ include "fhir-gateway.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -40,6 +41,11 @@ spec:
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: PGHOST
@@ -154,8 +160,11 @@ spec:
           readinessProbe:
             {{- include "fhir-gateway.tplvalues.render" (dict "value" (omit .Values.readinessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.resources }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          {{- else if ne .Values.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
