@@ -4,6 +4,8 @@ metadata:
   name: {{ include "cloudera-hue.fullname" . }}
   labels:
     {{- include "cloudera-hue.labels" . | nindent 4 }}
+  annotations:
+    polaris.fairwinds.com/automountServiceAccountToken-exempt: "true"
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
