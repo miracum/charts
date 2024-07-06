@@ -161,6 +161,8 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" .resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
+            - name: JAVA_OPTS
+              value: "{{ $.Values.opal.javaOpts }}"
             - name: OPAL_ADMINISTRATOR_PASSWORD
               valueFrom:
                 secretKeyRef:

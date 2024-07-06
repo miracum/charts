@@ -49,6 +49,9 @@ opal:
     #    hosts:
     #      - chart-example.local
 
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:MaxPermSize=256M -XX:+UseG1GC"
+
   # -- configuration for the server persistence
   persistence:
     # -- enable data persistence using PVC
