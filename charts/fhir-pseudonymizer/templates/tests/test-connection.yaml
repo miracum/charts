@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "fhir-pseudonymizer.labels" . | nindent 4 }}
   annotations:
-    helm.sh/hook: test-success
+    helm.sh/hook: test
     polaris.fairwinds.com/topologySpreadConstraint-exempt: "true"
     polaris.fairwinds.com/priorityClassNotSet-exempt: "true"
 spec:

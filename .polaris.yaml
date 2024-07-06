@@ -12,7 +12,8 @@ checks:
   topologySpreadConstraint: ignore
 
   # security
-  automountServiceAccountToken: danger
+  # warning while we update all chart deps
+  automountServiceAccountToken: warning
   hostIPCSet: danger
   hostPIDSet: danger
   linuxHardening: danger

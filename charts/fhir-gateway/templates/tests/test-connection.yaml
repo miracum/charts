@@ -5,9 +5,12 @@ metadata:
   labels:
     {{- include "fhir-gateway.labels" . | nindent 4 }}
   annotations:
-    helm.sh/hook: test-success
+    helm.sh/hook: test
+    polaris.fairwinds.com/topologySpreadConstraint-exempt: "true"
+    polaris.fairwinds.com/priorityClassNotSet-exempt: "true"
 spec:
   restartPolicy: Never
+  automountServiceAccountToken: {{ .Values.tests.automountServiceAccountToken }}
   containers:
     - name: test-fhir-gateway
       image: "{{ .Values.curl.image.registry }}/{{ .Values.curl.image.repository }}:{{ .Values.curl.image.tag }}"
@@ -18,9 +21,10 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tests.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.tests.resources }}
+      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
+      {{- else if ne .Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
       {{- end }}
       livenessProbe:
         exec:
@@ -38,9 +42,10 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tests.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.tests.resources }}
+      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
+      {{- else if ne .Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
       {{- end }}
       livenessProbe:
         exec:
