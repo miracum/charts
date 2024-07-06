@@ -10,14 +10,14 @@ sources:
   - https://github.com/cloudera/hue
 maintainers:
   - name: miracum
-deprecated: false
+deprecated: true
 kubeVersion: ">= 1.19.0"
 dependencies:
   - name: postgresql
     version: 15.5.11
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
-version: 0.1.14
+version: 0.2.0
 appVersion: "4.11.0"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: dependency updates
+      description: deprecated chart
