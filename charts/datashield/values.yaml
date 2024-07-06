@@ -147,7 +147,7 @@ opal:
 
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
-  resourcesPreset: "small"
+  resourcesPreset: "large"
 
   # -- resource limits and requests
   resources:
@@ -280,7 +280,7 @@ rock:
 
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
-  resourcesPreset: "small"
+  resourcesPreset: "medium"
 
   # -- resource limits and requests
   resources: {}
