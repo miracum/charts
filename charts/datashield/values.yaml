@@ -50,7 +50,7 @@ opal:
     #      - chart-example.local
 
   # -- sets the value for the `JAVA_OPTS` environment variable
-  javaOpts: "-XX:MaxPermSize=256M -XX:+UseG1GC"
+  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
 
   # -- configuration for the server persistence
   persistence:
@@ -341,14 +341,14 @@ rock:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 105
+    runAsUser: 104
     runAsGroup: 65534
     seccompProfile:
       type: RuntimeDefault
 
   # -- pod security context
   podSecurityContext:
-    fsGroup: 105
+    fsGroup: 104
 
   # -- pod node selector
   nodeSelector: {}
