@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 2.0.9
+    version: 2.1.0
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.20.3
-version: 0.7.0
+version: 0.7.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -25,6 +25,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Set default resource requests and limits for all containers using presets"
-    - kind: changed
-      description: "added service account settings"
+      description: "updated vfps sub-chart to 2.1.0"
