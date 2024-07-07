@@ -12,12 +12,12 @@ dependencies:
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.6.13
+    version: 0.7.0
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.20.3
-version: 6.3.0
+version: 6.3.1
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
