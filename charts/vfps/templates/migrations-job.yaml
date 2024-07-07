@@ -15,6 +15,8 @@ spec:
         app.kubernetes.io/component: migrations
     spec:
       restartPolicy: {{ .Values.migrationsJob.restartPolicy }}
+      serviceAccountName: {{ include "vfps.migrationsJob.serviceAccountName" $ }}
+      automountServiceAccountToken: {{ .Values.migrationsJob.serviceAccount.automountServiceAccountToken }}
       initContainers:
         - name: wait-for-db
           image: {{ include "vfps.waitForDatabaseInitContainerImage" . }}
@@ -22,6 +24,11 @@ spec:
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: PGHOST
@@ -46,6 +53,11 @@ spec:
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.migrationsJob.resources }}
+          resources: {{- toYaml $.Values.migrationsJob.resources | nindent 12 }}
+          {{- else if ne $.Values.migrationsJob.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.migrationsJob.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: COMPlus_EnableDiagnostics

@@ -20,14 +20,17 @@ logLevel: "INFO"
 # -- sets the value for the `JAVA_TOOL_OPTIONS` environment variable.
 javaToolOptions: "-XX:-OmitStackTraceInFastThrow"
 
-serviceMonitor:
-  # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
-  enabled: false
-  # -- additional labels to apply to the ServiceMonitor object, e.g. `release: prometheus`
-  additionalLabels: {}
-  # namespace: monitoring
-  # interval: 30s
-  # scrapeTimeout: 10s
+metrics:
+  # -- Enable the export of Prometheus metrics
+  enabled: true
+  serviceMonitor:
+    # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+    enabled: false
+    # -- additional labels to apply to the ServiceMonitor object, e.g. `release: prometheus`
+    additionalLabels: {}
+    # namespace: monitoring
+    # interval: 30s
+    # scrapeTimeout: 10s
 
 # -- image pull secrets used by the main deployment container
 imagePullSecrets: []
@@ -46,6 +49,8 @@ serviceAccount:
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  # -- whether to automount the SA token.
+  automountServiceAccountToken: false
 
 # -- annotations to set on the main deployment's pod
 podAnnotations: {}
@@ -74,7 +79,7 @@ service:
   # -- the port for the main endpoint
   port: 8080
   # -- the port exposed on the service to access metrics on `/metrics`
-  metricsPort: 8082
+  metricsPort: 8081
 
 ingress:
   # -- create an Ingress for the application
@@ -99,15 +104,18 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- resource limits and requests
-resources:
-  {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "medium"
+
+# -- configure the resource requests and limits
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 # -- pod node selector
 nodeSelector: {}
@@ -117,6 +125,43 @@ tolerations: []
 
 # -- pod affinity
 affinity: {}
+
+networkPolicy:
+  # -- Enable creation of NetworkPolicy resources
+  enabled: false
+  # -- When set to false, only pods with the correct client label will have network access to the ports blaze is
+  # listening on. When true, blaze will accept connections from any source (with the correct destination port).
+  allowExternal: true
+  # -- Allow the pod to access any range of port and all destinations.
+  allowExternalEgress: false
+  # -- Labels to match to allow traffic from other namespaces
+  ingressNSMatchLabels: {}
+  # -- Pod labels to match to allow traffic from other namespaces
+  ingressNSPodMatchLabels: {}
+  # -- Add extra ingress rules to the NetworkPolicy
+  # e.g:
+  # extraIngress:
+  #   - ports:
+  #       - port: 1234
+  #     from:
+  #       - podSelector:
+  #           - matchLabels:
+  #               - role: frontend
+  #       - podSelector:
+  #           - matchExpressions:
+  #               - key: role
+  #                 operator: In
+  #                 values:
+  #                   - frontend
+  extraIngress: []
+
+  # -- policy access to the metrics endpoint
+  metrics:
+    allowExternal: true
+    # -- Labels to match to allow traffic from other namespaces
+    ingressNSMatchLabels: {}
+    # -- Pod labels to match to allow traffic from other namespaces
+    ingressNSPodMatchLabels: {}
 
 # -- pod topology spread configuration
 # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
@@ -214,7 +259,19 @@ startupProbe:
   successThreshold: 1
   timeoutSeconds: 10
 
+podDisruptionBudget:
+  # -- create a PodDisruptionBudget resource
+  enabled: false
+  # -- Minimum available instances; ignored if there is no PodDisruptionBudget
+  minAvailable: 1
+  # -- Maximum unavailable instances; ignored if there is no PodDisruptionBudget
+  maxUnavailable: ""
+
 tests:
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # -- configure the test pods resource requests and limits
   resources: {}
   # limits:

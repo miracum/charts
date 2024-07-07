@@ -58,7 +58,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r17@sha256:5f5da81926e99bde90bd188bb43bf8de4bbcc1da45087e375631693e82d8b1c7
+    tag: 16.3.0-debian-12-r19@sha256:b0248a5e2bf4fda5208183d4a6203287828666823a7a57431cfa4d31688bae97
     pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
@@ -87,18 +87,18 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "medium"
+# -- configure the resources used by the log collector sidecar container used to tail the
+# filesystem-stored log files
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 # node labels for pods assignment
 # see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>
@@ -148,6 +148,17 @@ metrics:
     # namespace: monitoring
     # interval: 30s
     # scrapeTimeout: 10s
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: false
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # -- whether to automount the SA token.
+  automountServiceAccountToken: false
 
 sinks:
   postgres:
@@ -261,20 +272,17 @@ loincConverter:
     type: ClusterIP
     port: 8080
 
-  # resource limits and requests
-  resources:
-    {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "medium"
+  # configure the init containers pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
   # node labels for pods assignment
   # see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>
   nodeSelector: {}
@@ -345,7 +353,24 @@ restrictedContainerSecurityContext: # +doc-gen:ignore
     type: RuntimeDefault
 
 tests:
+  automountServiceAccountToken: false
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the init containers pods resource requests and limits
   resources: {}
   # limits:
   #   cpu: 100m

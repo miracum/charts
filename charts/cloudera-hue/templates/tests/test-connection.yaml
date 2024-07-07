@@ -6,6 +6,9 @@ metadata:
     {{- include "cloudera-hue.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    polaris.fairwinds.com/topologySpreadConstraint-exempt: "true"
+    polaris.fairwinds.com/priorityClassNotSet-exempt: "true"
+    polaris.fairwinds.com/automountServiceAccountToken-exempt: "true"
 spec:
   restartPolicy: Never
   containers:

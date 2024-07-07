@@ -49,6 +49,9 @@ opal:
     #    hosts:
     #      - chart-example.local
 
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+
   # -- configuration for the server persistence
   persistence:
     # -- enable data persistence using PVC
@@ -145,6 +148,10 @@ opal:
     # -- the port for SSH access
     sshPort: 8022
 
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
   # -- resource limits and requests
   resources:
     {}
@@ -188,12 +195,23 @@ opal:
     successThreshold: 1
     timeoutSeconds: 30
 
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
+
 # @ignored
 waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r17@sha256:5f5da81926e99bde90bd188bb43bf8de4bbcc1da45087e375631693e82d8b1c7
+    tag: 16.3.0-debian-12-r19@sha256:b0248a5e2bf4fda5208183d4a6203287828666823a7a57431cfa4d31688bae97
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -231,6 +249,9 @@ rock:
   # -- rock cluster name. Evaluated as a template
   clusterName: "default"
 
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+
   auth:
     administrator:
       # -- the user name for the administrator user.
@@ -263,8 +284,23 @@ rock:
         # -- key inside that existing secret that contains the user password
         key: "rock-user-password"
 
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
   # -- resource limits and requests
   resources: {}
+
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
 
   # -- configuration for the server persistence
   persistence:
@@ -308,14 +344,14 @@ rock:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 105
+    runAsUser: 104
     runAsGroup: 65534
     seccompProfile:
       type: RuntimeDefault
 
   # -- pod security context
   podSecurityContext:
-    fsGroup: 105
+    fsGroup: 104
 
   # -- pod node selector
   nodeSelector: {}
@@ -358,6 +394,10 @@ curl:
     tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
 
 tests:
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # -- configure the test pods resource requests and limits
   resources: {}
   # limits:
@@ -373,8 +413,24 @@ logCollectorSidecar:
     registry: docker.io
     repository: library/busybox
     tag: 1.36.1-uclibc@sha256:97d85ff9630b634ddff3e3ff69fd02bc3b69de8dba0c5002eb0ad6915d1bf4c0
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # -- configure the resources used by the log collector sidecar container used to tail the
   # filesystem-stored log files
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the init containers pods resource requests and limits
   resources: {}
   # limits:
   #   cpu: 100m

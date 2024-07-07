@@ -25,12 +25,19 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "datashield.rock.serviceAccountName" $ }}
+      automountServiceAccountToken: {{ .serviceAccount.automountServiceAccountToken }}
       initContainers:
         - name: first-run
           image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
           command:
             - /bin/sh
             - -c
@@ -82,8 +89,11 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          resources:
-            {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
           livenessProbe:
             exec:
               command: ["true"]
@@ -102,8 +112,11 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          resources:
-            {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
           livenessProbe:
             exec:
               command: ["true"]
@@ -132,9 +145,14 @@ spec:
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          resources:
-            {{- toYaml .resources | nindent 12 }}
+          {{- if .resources }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          {{- else if ne .resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .resourcesPreset) | nindent 12 }}
+          {{- end }}
           env:
+            - name: JAVA_OPTS
+              value: "{{ $.Values.opal.javaOpts }}"
             - name: ROCK_CLUSTER
               value: "{{ tpl .clusterName $ }}"
             - name: ROCK_ID

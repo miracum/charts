@@ -51,18 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "datashield.serviceAccountName" -}}
-{{- if (or .Values.serviceAccount.create .Values.migrationsJob.enabled) }}
-{{- default (include "datashield.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-
-{{/*
 Get the container image for the wait-for-db init container
 */}}
 {{- define "datashield.waitForDatabaseInitContainerImage" -}}
@@ -363,3 +351,25 @@ Get the key inside the secret containing the rock user password
 {{- end -}}
 {{- join "," $hosts -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "datashield.opal.serviceAccountName" -}}
+{{- if .Values.opal.serviceAccount.create }}
+{{- default (include "datashield.fullname" .) .Values.opal.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.opal.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "datashield.rock.serviceAccountName" -}}
+{{- if .Values.rock.serviceAccount.create }}
+{{- default (include "datashield.fullname" .) .Values.rock.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.rock.serviceAccount.name }}
+{{- end }}
+{{- end }}

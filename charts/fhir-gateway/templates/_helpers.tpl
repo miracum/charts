@@ -180,3 +180,14 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplva
     {{- $value }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "fhir-gateway.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "fhir-gateway.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

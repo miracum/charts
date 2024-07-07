@@ -10,9 +10,13 @@ sources:
   - https://github.com/samply/blaze
 maintainers:
   - name: miracum
+dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.20.3
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.4.2
+version: 0.5.0
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -25,4 +29,8 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: dependency updates
+      description: "Set default resource requests and limits for all containers using presets"
+    - kind: changed
+      description: "added service account settings"
+    - kind: changed
+      description: "BREAKING CHANGE: move `serviceMonitor` below a `metrics` section"

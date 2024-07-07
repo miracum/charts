@@ -1,6 +1,8 @@
 # cloudera-hue
 
-![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.11.0](https://img.shields.io/badge/AppVersion-4.11.0-informational?style=flat-square)
+> **:exclamation: This Helm Chart is deprecated!**
+
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.11.0](https://img.shields.io/badge/AppVersion-4.11.0-informational?style=flat-square)
 
 A Helm chart for deploying Cloudera Hue.
 
@@ -22,7 +24,7 @@ Kubernetes: `>= 1.19.0`
 
 | Repository                               | Name       | Version |
 | ---------------------------------------- | ---------- | ------- |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 15.5.11 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 15.5.14 |
 
 ## Values
 

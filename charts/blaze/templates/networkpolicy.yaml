@@ -1,0 +1,79 @@
+{{- if .Values.networkPolicy.enabled }}
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ include "blaze.fullname" . }}
+  labels:
+    {{- include "blaze.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "blaze.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: server
+  policyTypes:
+    - Ingress
+    - Egress
+  {{- if .Values.networkPolicy.allowExternalEgress }}
+  egress:
+    - {}
+  {{- else }}
+  # there isn't much need for external connections. _maybe_ when oauth is enabled, but need to verify
+  egress: []
+  {{- end }}
+  ingress:
+    - ports:
+        - port: http
+      from:
+      {{- if not .Values.networkPolicy.allowExternal }}
+        - podSelector:
+            matchLabels:
+              {{ template "common.names.fullname" . }}-client: "true"
+      {{- end }}
+      {{- if .Values.networkPolicy.ingressNSMatchLabels }}
+        - namespaceSelector:
+            matchLabels:
+              {{- range $key, $value := .Values.networkPolicy.ingressNSMatchLabels }}
+              {{ $key | quote }}: {{ $value | quote }}
+              {{- end }}
+          {{- if .Values.networkPolicy.ingressNSPodMatchLabels }}
+          podSelector:
+            matchLabels:
+              {{- range $key, $value := .Values.networkPolicy.ingressNSPodMatchLabels }}
+              {{ $key | quote }}: {{ $value | quote }}
+              {{- end }}
+          {{- end }}
+        {{- end }}
+    {{- if .Values.metrics.enabled }}
+    - ports:
+        - port: http-metrics
+      from:
+      {{- if not .Values.networkPolicy.metrics.allowExternal }}
+        - podSelector:
+            matchLabels:
+              {{ template "common.names.fullname" . }}-client: "true"
+      {{- end }}
+      {{- if .Values.networkPolicy.metrics.ingressNSMatchLabels }}
+        - namespaceSelector:
+            matchLabels:
+              {{- range $key, $value := .Values.networkPolicy.metrics.ingressNSMatchLabels }}
+              {{ $key | quote }}: {{ $value | quote }}
+              {{- end }}
+          {{- if .Values.networkPolicy.metrics.ingressNSPodMatchLabels }}
+          podSelector:
+            matchLabels:
+              {{- range $key, $value := .Values.networkPolicy.metrics.ingressNSPodMatchLabels }}
+              {{ $key | quote }}: {{ $value | quote }}
+              {{- end }}
+          {{- end }}
+        {{- end }}
+    {{- end }}
+
+    {{- if .Values.networkPolicy.extraIngress }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.networkPolicy.extraIngress "context" $) | nindent 4 }}
+    {{- end }}
+{{- end }}

@@ -16,6 +16,27 @@ migrationsJob:
   restartPolicy: Never
   # -- extra environment variables to set on the migrations job container
   extraEnv: []
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+  # -- configure the init containers pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  serviceAccount:
+    # -- Specifies whether a service account should be created
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token
+    automountServiceAccountToken: false
 
 serviceMonitor:
   # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
@@ -43,6 +64,8 @@ serviceAccount:
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  # -- whether to automount the SA token. required if migrations are enabled.
+  automountServiceAccountToken: true
 
 # -- annotations to set on the main deployment's pod
 podAnnotations: {}
@@ -98,15 +121,18 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- resource limits and requests
-resources:
-  {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "medium"
+# -- configure the resources used by the log collector sidecar container used to tail the
+# filesystem-stored log files
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 autoscaling:
   # -- enable horizontal pod autoscaling
@@ -156,7 +182,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r17@sha256:5f5da81926e99bde90bd188bb43bf8de4bbcc1da45087e375631693e82d8b1c7
+    tag: 16.3.0-debian-12-r19@sha256:b0248a5e2bf4fda5208183d4a6203287828666823a7a57431cfa4d31688bae97
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -238,7 +264,24 @@ appsettings: ""
 #   }
 
 tests:
+  automountServiceAccountToken: false
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
   # configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the init containers pods resource requests and limits
   resources: {}
   # limits:
   #   cpu: 100m

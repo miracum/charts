@@ -61,8 +61,11 @@ spec:
             timeoutSeconds: {{ .Values.loincConverter.livenessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.loincConverter.livenessProbe.successThreshold }}
             failureThreshold: {{ .Values.loincConverter.livenessProbe.failureThreshold }}
-          resources:
-            {{- toYaml .Values.loincConverter.resources | nindent 12 }}
+          {{- if .Values.loincConverter.resources }}
+          resources: {{- toYaml .Values.loincConverter.resources | nindent 12 }}
+          {{- else if ne .Values.loincConverter.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.loincConverter.resourcesPreset) | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.tracing.enabled }}
             - name: TRACING_ENABLED

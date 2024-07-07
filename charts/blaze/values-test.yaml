@@ -1,7 +1,9 @@
-serviceMonitor:
-  enabled: false
-  additionalLabels:
-    release: kube-prometheus-stack
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+    additionalLabels:
+      release: kube-prometheus-stack
 
 resources:
   limits:
