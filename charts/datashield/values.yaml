@@ -249,6 +249,9 @@ rock:
   # -- rock cluster name. Evaluated as a template
   clusterName: "default"
 
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+
   auth:
     administrator:
       # -- the user name for the administrator user.

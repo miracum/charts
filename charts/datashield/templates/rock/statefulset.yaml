@@ -151,6 +151,8 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" .resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
+            - name: JAVA_OPTS
+              value: "{{ $.Values.opal.javaOpts }}"
             - name: ROCK_CLUSTER
               value: "{{ tpl .clusterName $ }}"
             - name: ROCK_ID
