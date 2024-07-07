@@ -22,5 +22,5 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
-      description: fix template bug when setting `fhir-pseudonymizer.enabled=false`
+    - kind: changed
+      description: updated fhir-pseudonymizer sub-chart to 0.7.0
