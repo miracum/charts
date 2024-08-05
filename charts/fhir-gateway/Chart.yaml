@@ -23,4 +23,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: updated fhir-pseudonymizer sub-chart to 0.7.0
+      description: "dependency updates"

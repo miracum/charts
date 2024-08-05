@@ -21,4 +21,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: dependency updates
+      description: "dependency updates"

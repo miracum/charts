@@ -32,6 +32,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Set default resource requests and limits for all containers using presets"
-    - kind: changed
-      description: "added service account settings"
+      description: "dependency updates"

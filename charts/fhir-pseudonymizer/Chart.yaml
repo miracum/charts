@@ -25,4 +25,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "updated vfps sub-chart to 2.1.0"
+      description: "dependency updates"
