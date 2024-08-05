@@ -15,7 +15,7 @@ replicaCount: 1
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.13.1@sha256:7046c3b9d59ff848a63c2e793fcb388b687ade06204594af14931d4f599079ae
+  tag: v3.13.2@sha256:e90e73bf62c64022ab0f180fbbb924056cdd0ae8d7829368bd7346c82f44d3b0
   pullPolicy: IfNotPresent
 
 # image pull secrets for the pod
@@ -58,7 +58,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r19@sha256:b0248a5e2bf4fda5208183d4a6203287828666823a7a57431cfa4d31688bae97
+    tag: 16.3.0-debian-12-r23@sha256:865e341baf49006e32b3e72254a15a81c939178cb9c48fcd9faf1c0ac4b49664
     pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
@@ -89,7 +89,7 @@ ingress:
 
 # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
 # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
-resourcesPreset: "medium"
+resourcesPreset: "small"
 # -- configure the resources used by the log collector sidecar container used to tail the
 # filesystem-stored log files
 resources: {}
@@ -335,7 +335,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
+    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
 
 # container security context applied to init containers used by the query, list, and notify modules.
 # also used by the Helm test job pods

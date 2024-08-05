@@ -15,15 +15,15 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgresql
-    version: 15.5.14
+    version: 15.5.20
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.20.3
+    version: 2.20.5
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 2.1.0
+version: 2.1.1
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -40,6 +40,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Set default resource requests and limits for all containers using presets"
-    - kind: changed
-      description: "added service account settings"
+      description: "dependency updates"

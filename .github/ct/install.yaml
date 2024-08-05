@@ -6,3 +6,4 @@ chart-repos:
 debug: true
 remote: origin
 helm-extra-args: --timeout 600s
+target-branch: master
