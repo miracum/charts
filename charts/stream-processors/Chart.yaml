@@ -8,10 +8,10 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.7.4
+version: 1.7.5
 dependencies:
   - name: common
-    version: 2.20.3
+    version: 2.20.5
     repository: oci://registry-1.docker.io/bitnamicharts
 annotations:
   artifacthub.io/recommendations: |

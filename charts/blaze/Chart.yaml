@@ -13,10 +13,10 @@ maintainers:
 dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.20.3
+    version: 2.20.5
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.0
+version: 0.5.1
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0

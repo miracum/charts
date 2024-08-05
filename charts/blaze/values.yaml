@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: samply/blaze
-  tag: 0.28.0@sha256:fb9216a1e6a1db8f1a357fb8ed617283aa0b7fc47e78f4066caf4cd36e297e77
+  tag: 0.29.3@sha256:c6f9232cbcacead7c94d9a9220f319ea86a3f8fb1bc5adce90624033b06a0914
   pullPolicy: IfNotPresent
 
 # -- set the server base URL. Evaluated as a template. Equivalent to setting the `BASE_URL` environment variable.
@@ -197,7 +197,7 @@ curl:
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
+    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
 
 # -- configuration for the server persistence
 persistence:

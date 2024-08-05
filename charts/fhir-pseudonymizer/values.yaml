@@ -34,7 +34,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.21.11@sha256:f39519ea6c62964711a62ac12f1a44720e29ab75c258c225db614935ff8d7bcf
+  tag: v2.21.14@sha256:413a2aab3b62e9ca6ff1e0a546f9c1f06dc27a83c9289d746210d0634cb90114
   pullPolicy: IfNotPresent
 
 metrics:
@@ -223,7 +223,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
+    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
 
 # container security context applied to init containers and the Helm test pods
 restrictedContainerSecurityContext: # +doc-gen:ignore
