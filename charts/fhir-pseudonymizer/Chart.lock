@@ -1,9 +1,9 @@
 dependencies:
 - name: vfps
   repository: oci://ghcr.io/miracum/charts
-  version: 2.1.0
+  version: 2.1.1
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 2.20.5
-digest: sha256:439d517fb023acc69976ec9b4259d25111eaf3630e8e6c25bbbf371fe4308844
-generated: "2024-08-05T13:10:58.368817484Z"
+  version: 2.21.0
+digest: sha256:436b6c1d0776b99d1ad0a96fbb9f579c227309181a546d91aca6b3f59a45a5ee
+generated: "2024-08-06T02:26:29.043066397Z"

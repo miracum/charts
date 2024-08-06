@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 2.1.0
+    version: 2.1.1
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.20.5
-version: 0.7.2
+    version: 2.21.0
+version: 0.7.3
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
