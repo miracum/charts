@@ -1,0 +1,16 @@
+apiVersion: v2
+name: test-fixtures
+description: Fixtures for the chart-testing tests
+type: application
+sources:
+  - https://github.com/miracum/charts
+deprecated: false
+kubeVersion: ">= 1.19.0"
+version: 1.0.0
+dependencies:
+  - name: kube-prometheus-stack
+    version: 62.7.0
+    repository: oci://ghcr.io/prometheus-community/charts
+  - name: kyverno
+    repository: oci://ghcr.io/kyverno/charts
+    version: 3.2.6
