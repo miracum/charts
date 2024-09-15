@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.6.2
+version: 0.6.3
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -33,5 +33,3 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: "dependency updates"
-    - kind: changed
-      description: "copy default R libraries from opal base container to persistent volume via init container."
