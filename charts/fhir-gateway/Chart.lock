@@ -1,12 +1,12 @@
 dependencies:
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 15.5.20
+  version: 15.5.31
 - name: fhir-pseudonymizer
   repository: oci://ghcr.io/miracum/charts
-  version: 0.7.2
+  version: 0.7.3
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 2.21.0
-digest: sha256:01e0fdd6e2fa04f5e810437545dfe8c563af5a93095fdd5180d7a26b88ef5359
-generated: "2024-08-06T02:26:40.091299975Z"
+  version: 2.23.0
+digest: sha256:133050cdb257f3649eec4af3f6def06a098b0a29f4f2b6219d3c63295fc7798e
+generated: "2024-09-14T02:16:10.473795559Z"

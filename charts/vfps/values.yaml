@@ -182,7 +182,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r23@sha256:865e341baf49006e32b3e72254a15a81c939178cb9c48fcd9faf1c0ac4b49664
+    tag: 16.4.0-debian-12-r9@sha256:75c5d322fd11bb10a0e4ddebf4ab312aa9ec2bbcf2b64986f7d87127483e2b14
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
@@ -241,7 +241,7 @@ curl:
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
+    tag: 8.10.0@sha256:a3838a5cf24fe940ec63e98fc37ce1dbe1d43286dc2b803c5bc5e9f067c7ad6d
 
 # -- a JSON configuration object which is mounted as `appsettings.Production.json` inside the container.
 # useful to define namespaces to create as part of the application startup.

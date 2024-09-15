@@ -58,7 +58,7 @@ waitForPostgresInitContainer:
   image: # +doc-gen:ignore
     registry: docker.io
     repository: bitnami/postgresql
-    tag: 16.3.0-debian-12-r23@sha256:865e341baf49006e32b3e72254a15a81c939178cb9c48fcd9faf1c0ac4b49664
+    tag: 16.4.0-debian-12-r9@sha256:75c5d322fd11bb10a0e4ddebf4ab312aa9ec2bbcf2b64986f7d87127483e2b14
     pullPolicy: IfNotPresent
 
 # the service used to expose the FHIR GW REST endpoint
@@ -226,7 +226,7 @@ loincConverter:
   image: # +doc-gen:ignore
     registry: ghcr.io
     repository: miracum/loinc-conversion
-    tag: v1.14.10@sha256:45705e91624a2c4d24e988e742870e07f9b9eb34dc16de7a876f58497b1dc846
+    tag: v1.15.0@sha256:0bbbabe444504f22fe32f6ca9bfe1e0e72547faec3e799d84b7cfa7228428a99
     pullPolicy: IfNotPresent
 
   metrics:
@@ -335,7 +335,7 @@ curl: # +doc-gen:ignore
   image:
     registry: docker.io
     repository: curlimages/curl
-    tag: 8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
+    tag: 8.10.0@sha256:a3838a5cf24fe940ec63e98fc37ce1dbe1d43286dc2b803c5bc5e9f067c7ad6d
 
 # container security context applied to init containers used by the query, list, and notify modules.
 # also used by the Helm test job pods

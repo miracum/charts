@@ -7,17 +7,17 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgresql
-    version: 15.5.20
+    version: 15.5.31
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.7.2
+    version: 0.7.3
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.21.0
-version: 6.3.3
+    version: 2.23.0
+version: 6.3.4
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.

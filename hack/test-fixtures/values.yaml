@@ -1,0 +1,11 @@
+kyverno: {}
+
+kube-prometheus-stack:
+  kubeStateMetrics:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  grafana:
+    enabled: false
+  alertmanager:
+    enabled: false
