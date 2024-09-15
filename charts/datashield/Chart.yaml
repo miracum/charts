@@ -33,3 +33,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: "dependency updates"
+    - kind: changed
+      description: "copy default R libraries from opal base container to persistent volume via init container."

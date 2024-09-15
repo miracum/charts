@@ -38,20 +38,17 @@ spec:
           {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
           resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
-          command:
-            - /bin/sh
-            - -c
-            - >
-              mkdir -p /srv/conf &&
-              cp -r /usr/share/rock/conf/* /srv/conf &&
-              /opt/obiba/bin/first_run.sh
+          command: ["/bin/bash", "-c", "/mnt/rock/scripts/init-rock.sh"]
           volumeMounts:
             - name: tmp
               mountPath: /tmp
             - name: srv
               mountPath: /srv
             - name: data
-              mountPath: /var/lib/rock/
+              mountPath: /mnt/var/lib/rock
+            - name: init-script
+              mountPath: /mnt/rock/scripts
+              readOnly: true
           env:
             - name: ROCK_CLUSTER
               value: "{{ tpl .clusterName $ }}"
@@ -186,12 +183,16 @@ spec:
             - name: srv
               mountPath: /srv
             - name: data
-              mountPath: /var/lib/rock/
+              mountPath: /var/lib/rock
       volumes:
         - name: tmp
           emptyDir: {}
         - name: srv
           emptyDir: {}
+        - name: init-script
+          configMap:
+            name: {{ include "datashield.fullname" $ }}-rock-init-script
+            defaultMode: 0777
   {{- if and .persistence.enabled .persistence.existingClaim }}
         - name: data
           persistentVolumeClaim:
