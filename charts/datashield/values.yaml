@@ -243,7 +243,7 @@ rock:
   image:
     registry: docker.io
     repository: datashield/rock-base
-    tag: 6.3.0@sha256:4d5c0993221d121a3e5bc551ef30f37b3642cf1030ca086b278800b74dde5db2
+    tag: 6.3.0@sha256:b04924a9321daf0f7a77e7d43c0365baf7312cd665a39483e9d3a487dc65a15e
     pullPolicy: IfNotPresent
 
   # -- rock cluster name. Evaluated as a template
