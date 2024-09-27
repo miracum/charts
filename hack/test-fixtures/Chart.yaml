@@ -6,10 +6,10 @@ sources:
   - https://github.com/miracum/charts
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.0.0
+version: 1.0.1
 dependencies:
   - name: kube-prometheus-stack
-    version: 62.7.0
+    version: 63.1.0
     repository: oci://ghcr.io/prometheus-community/charts
   - name: kyverno
     repository: oci://ghcr.io/kyverno/charts
