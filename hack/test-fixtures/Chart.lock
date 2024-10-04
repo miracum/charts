@@ -1,9 +1,9 @@
 dependencies:
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 63.1.0
+  version: 65.0.0
 - name: kyverno
   repository: oci://ghcr.io/kyverno/charts
   version: 3.2.6
-digest: sha256:0a9352419abdfb8f2262feb44c2ce453766d784b3cd4d74d548c266f9b7896c7
-generated: "2024-09-27T10:37:22.336749189Z"
+digest: sha256:6d4bcbaef80c7c159b3a29f3346440af115efcbc2afe17c3e03e89d41ed501a6
+generated: "2024-10-04T01:27:15.456268374Z"
