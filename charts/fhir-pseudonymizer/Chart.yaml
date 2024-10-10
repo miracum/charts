@@ -12,8 +12,8 @@ dependencies:
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.23.0
-version: 0.7.5
+    version: 2.24.0
+version: 0.7.6
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
