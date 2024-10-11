@@ -2163,6 +2163,34 @@ entries:
         - kind: changed
           description: "dependency updates"
     apiVersion: v2
+    created: "2024-10-11T07:40:10.849409359Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.7
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.24.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 3b86550d145da0488ee456f79d0f513dcb79c4bdc96eb079063377ad07c8b3d1
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.9/fhir-gateway-6.3.9.tgz
+    version: 6.3.9
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "dependency updates"
+    apiVersion: v2
     created: "2024-10-10T21:54:32.545625024Z"
     dependencies:
     - condition: postgresql.enabled
@@ -4286,6 +4314,36 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "dependency updates"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-10-11T07:40:10.971798849Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.1.5
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.24.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: e3e3f1c2bb0ec8281d2793e7b03799175f13634cdffddb360f8215e04a6c6723
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.7.8/fhir-pseudonymizer-0.7.8.tgz
+    version: 0.7.8
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -9420,4 +9478,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-10T21:54:32.730411841Z"
+generated: "2024-10-11T07:40:10.972422872Z"
