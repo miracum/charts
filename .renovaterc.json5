@@ -1,7 +1,0 @@
-{
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  // to disable the GitHub Renovate App from updating this repo, the default config disables Renovate.
-  // see .github/configs/renovate-config.json for the actual config used by the
-  // renovate GitHub Action
-  enabled: false,
-}
