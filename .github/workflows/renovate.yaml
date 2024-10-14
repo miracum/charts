@@ -34,7 +34,6 @@ jobs:
         uses: renovatebot/github-action@7743ec9e19ceeb61a3862c5d4131e6710195af11 # v40.3.3
         with:
           token: "${{ steps.app-token.outputs.token }}"
-          configurationFile: .github/configs/renovate-config.json
           mount-docker-socket: true
         env:
           LOG_LEVEL: "debug"
