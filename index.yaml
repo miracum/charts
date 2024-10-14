@@ -2163,6 +2163,34 @@ entries:
         - kind: changed
           description: "dependency updates"
     apiVersion: v2
+    created: "2024-10-14T20:41:11.923393713Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.7
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.24.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 44713edd277ba31cf2145617e5f1e85fd2d3a65b6a6acea09b9f00383f3c8d3e
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.10/fhir-gateway-6.3.10.tgz
+    version: 6.3.10
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "dependency updates"
+    apiVersion: v2
     created: "2024-10-11T07:40:10.849409359Z"
     dependencies:
     - condition: postgresql.enabled
@@ -9478,4 +9506,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-11T07:40:10.972422872Z"
+generated: "2024-10-14T20:41:11.924035729Z"
