@@ -1,8 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>miracum/.github//renovate/default", "schedule:daily"],
-  "bumpVersion": "patch",
+  "extends": ["config:best-practices"],
   "gitIgnoredAuthors": ["github-actions"],
+  "postUpgradeTasks": {
+    "commands": [".github/renovate-post-upgrade.sh {{depName}} {{newVersion}}"]
+  },
   "customManagers": [
     {
       "customType": "regex",
@@ -10,7 +12,8 @@
       "fileMatch": [
         "README.md$",
         ".github/workflows/ci.yaml",
-        ".github/workflows/release.yaml"
+        ".github/workflows/release.yaml",
+        ".github/renovate-post-upgrade.sh"
       ],
       "matchStrings": [
         "(?<depName>ghcr.io\\/chgl\\/kube-powertools):(?<currentValue>[a-z0-9.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
@@ -21,16 +24,18 @@
   ],
   "packageRules": [
     {
+      "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"],
-      "extends": ["schedule:monthly"]
-    },
-    {
-      "matchDepNames": ["postgresql", "ghcr.io/chgl/kube-powertools"],
       "extends": ["schedule:monthly"]
     },
     {
       "matchManagers": ["helmv3"],
       "pinDigests": false
+    },
+    {
+      "matchDatasources": ["docker", "helm"],
+      "matchDepNames": ["postgresql", "docker.io/bitnami/postgresql", "minio"],
+      "extends": ["schedule:monthly"]
     }
   ],
   "ignorePaths": ["charts/recruit/**"]
