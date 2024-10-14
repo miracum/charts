@@ -5,6 +5,7 @@ fhir-pseudonymizer:
     postgresql:
       enabled: true
       nameOverride: "vfps-postgres"
+    resourcesPreset: "micro"
 
 metrics:
   serviceMonitor:
