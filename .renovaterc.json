@@ -36,6 +36,11 @@
       "matchDatasources": ["docker", "helm"],
       "matchDepNames": ["postgresql", "docker.io/bitnami/postgresql", "minio"],
       "extends": ["schedule:monthly"]
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ],
   "ignorePaths": ["charts/recruit/**"]
