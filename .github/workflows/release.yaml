@@ -78,6 +78,11 @@ jobs:
           kubescape scan framework nsa --format=html --output=kubescape-reports/nsa.html charts/
           kubescape scan framework mitre --format=html --output=kubescape-reports/mitre.html charts/
 
+      - name: Update gh-pages branch
+        run: |
+          git fetch origin
+          git pull origin gh-pages
+
       - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
         with:
           add: "kubescape-reports/"
