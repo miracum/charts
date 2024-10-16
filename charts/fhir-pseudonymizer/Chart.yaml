@@ -12,8 +12,8 @@ dependencies:
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.24.0
-version: 0.7.8
+    version: 2.26.0
+version: 0.7.13
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -23,6 +23,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "dependency updates"
+      description: "Updated common to 2.26.0"

@@ -8,10 +8,10 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.7.8
+version: 1.7.13
 dependencies:
   - name: common
-    version: 2.24.0
+    version: 2.26.0
     repository: oci://registry-1.docker.io/bitnamicharts
 annotations:
   artifacthub.io/recommendations: |
@@ -19,6 +19,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "dependency updates"
+      description: "Updated common to 2.26.0"
