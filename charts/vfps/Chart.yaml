@@ -20,10 +20,10 @@ dependencies:
     condition: postgresql.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.24.0
+    version: 2.26.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 2.1.5
+version: 2.1.10
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -38,6 +38,8 @@ annotations:
       url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "dependency updates"
+      description: "Updated common to 2.26.0"
