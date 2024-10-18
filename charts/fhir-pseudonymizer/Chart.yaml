@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 2.1.5
+    version: 2.1.10
     repository: oci://ghcr.io/miracum/charts
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.26.0
-version: 0.7.14
+version: 0.7.15
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/fhir-pseudonymizer to v2.22.0"
+      description: "Updated vfps to 2.1.10"
