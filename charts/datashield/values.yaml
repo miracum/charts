@@ -250,7 +250,7 @@ rock:
   clusterName: "default"
 
   # -- sets the value for the `JAVA_OPTS` environment variable
-  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+  javaOpts: "-XX:+UseG1GC"
 
   auth:
     administrator:
