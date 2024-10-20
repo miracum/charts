@@ -20,7 +20,7 @@ dependencies:
     condition: postgresql.enabled
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.6.5
+version: 0.7.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -30,6 +30,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/bitnami/postgresql
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "dependency updates"
+      description: "⚠️ BREAKING CHANGE: Updated docker.io/obiba/opal to 5.0.0 ⚠️"

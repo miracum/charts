@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 4.7.4@sha256:37acba4b52d91d93fd30bba78fd306d96901b33d214f2ba02048e5f29961008e
+    tag: 5.0.0@sha256:95d060c2c4b023dc7dbd66ebd680bd8ace1244a6b10feb9da6589436581c79fe
     pullPolicy: IfNotPresent
 
   auth:
@@ -250,7 +250,7 @@ rock:
   clusterName: "default"
 
   # -- sets the value for the `JAVA_OPTS` environment variable
-  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+  javaOpts: "-XX:+UseG1GC"
 
   auth:
     administrator:
