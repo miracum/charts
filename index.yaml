@@ -1325,6 +1325,45 @@ entries:
     version: 0.1.0
   datashield:
   - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "⚠️ BREAKING CHANGE: Updated docker.io/obiba/opal to 5.0.0 ⚠️"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2024-10-20T18:55:27.053004768Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: afd3f475b35d268bf748ba1dd53e20165b373f8f203cb9fc486b2ba6a1144f3c
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.7.0/datashield-0.7.0.tgz
+    version: 0.7.0
+  - annotations:
       artifacthub.io/changes: |
         - kind: changed
           description: "dependency updates"
@@ -9832,4 +9871,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-20T18:36:46.916341968Z"
+generated: "2024-10-20T18:55:27.053583206Z"
