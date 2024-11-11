@@ -1,7 +1,9 @@
-serviceMonitor:
+metrics:
   enabled: true
-  additionalLabels:
-    release: kube-prom-stack
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prometheus-stack
 
 ingress:
   enabled: true
