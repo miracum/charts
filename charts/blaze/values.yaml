@@ -259,14 +259,6 @@ startupProbe:
   successThreshold: 1
   timeoutSeconds: 10
 
-podDisruptionBudget:
-  # -- create a PodDisruptionBudget resource
-  enabled: false
-  # -- Minimum available instances; ignored if there is no PodDisruptionBudget
-  minAvailable: 1
-  # -- Maximum unavailable instances; ignored if there is no PodDisruptionBudget
-  maxUnavailable: ""
-
 tests:
   automountServiceAccountToken: false
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).

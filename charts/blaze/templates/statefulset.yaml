@@ -13,7 +13,7 @@ spec:
     matchLabels:
       {{- include "blaze.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: server
-  serviceName: {{ include "blaze.fullname" . }}-hl
+  serviceName: {{ include "blaze.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
