@@ -135,6 +135,7 @@ opal:
     runAsNonRoot: true
     runAsUser: 101
     runAsGroup: 65534
+    readOnlyRootFilesystem: false
     seccompProfile:
       type: RuntimeDefault
 
