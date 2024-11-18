@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.27.0
-version: 6.3.35
+version: 6.3.38
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated postgresql to 16.2.1"
+      description: "Updated docker.io/bitnami/postgresql to 17.1.0-debian-12-r0"
