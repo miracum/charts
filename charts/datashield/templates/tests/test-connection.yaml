@@ -15,7 +15,7 @@ spec:
   containers:
     - name: probe-opal-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl", "--fail-with-body", "--max-time", "300"]
+      command: ["curl", "--fail-with-body", "--max-time", "300", "--connect-timeout", "300"]
       args: ["http://{{ include "datashield.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
@@ -34,7 +34,7 @@ spec:
           command: ["true"]
     - name: probe-rock-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl", "--fail-with-body", "--max-time", "300"]
+      command: ["curl", "--fail-with-body", "--max-time", "300", "--connect-timeout", "300"]
       args: ["http://{{ include "datashield.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
