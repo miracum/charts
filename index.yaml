@@ -5,6 +5,42 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.11.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2024-11-18T15:56:36.529599856Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.26.0
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 089bb96fe82a1a4170840cd0ca715062ddc00ae47bc2018a98ce4406be273e14
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.5.16/blaze-0.5.16.tgz
+    version: 0.5.16
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: removed
           description: "Unused PDB and headless service - leftovers from experimenting with multiple replicas"
       artifacthub.io/containsSecurityUpdates: "false"
@@ -1401,6 +1437,48 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.11.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2024-11-18T15:56:36.723277193Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.26.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 1548e1d8ae31d96af27ad6b290ff796f7219e5b723858de74ed520e6ab3d283e
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.7.8/datashield-0.7.8.tgz
+    version: 0.7.8
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:bd39d7ac3f02301aec35d27a633d643770c0c4073c5b8cb588b1680c4f1e84e5"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -2431,6 +2509,36 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.11.0"
+    apiVersion: v2
+    created: "2024-11-18T15:56:36.955768137Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.15
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.26.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 2792e1a7519bd8af8b687c694b07683868d94a95e520e95aee3d2abef8c053d9
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.26/fhir-gateway-6.3.26.tgz
+    version: 6.3.26
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -4825,6 +4933,38 @@ entries:
     - https://github.com/miracum/charts/releases/download/fhir-gateway-3.4.2/fhir-gateway-3.4.2.tgz
     version: 3.4.2
   fhir-pseudonymizer:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.11.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2024-11-18T15:56:37.138615793Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.1.10
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.26.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: f689f5cc298c0a20ba189f831fe1d890e759dcf7bc4d916517c30681bb6f0849
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.7.21/fhir-pseudonymizer-0.7.21.tgz
+    version: 0.7.21
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -8810,6 +8950,53 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.11.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2024-11-18T15:56:37.297860118Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.0.1
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.26.0
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: 5cc349cbf5899159c9b5adf2f8ec30c91bedad8477fa85a453f4f08b959a9740
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-2.1.15/vfps-2.1.15.tgz
+    version: 2.1.15
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated common to 2.26.0"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -10219,4 +10406,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-18T15:00:09.302555195Z"
+generated: "2024-11-18T15:56:37.298888246Z"
