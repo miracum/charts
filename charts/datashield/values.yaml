@@ -42,7 +42,7 @@ opal:
         paths:
           - path: /
             pathType: ImplementationSpecific
-            portName: https
+            portName: http
     # -- TLS configuration
     tls: []
     #  - secretName: chart-example-tls
@@ -135,6 +135,7 @@ opal:
     runAsNonRoot: true
     runAsUser: 101
     runAsGroup: 65534
+    readOnlyRootFilesystem: false
     seccompProfile:
       type: RuntimeDefault
 
@@ -243,7 +244,7 @@ rock:
   image:
     registry: docker.io
     repository: datashield/rock-base
-    tag: 6.3.0@sha256:b04924a9321daf0f7a77e7d43c0365baf7312cd665a39483e9d3a487dc65a15e
+    tag: 6.3.1@sha256:ee04ae43894d8f78ee4c173c0cc474f7b7e823c8fa707ed0a1822ec9ef7e8108
     pullPolicy: IfNotPresent
 
   # -- rock cluster name. Evaluated as a template

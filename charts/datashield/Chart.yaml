@@ -23,7 +23,7 @@ dependencies:
     version: 2.26.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.1
+version: 0.7.2
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,5 +36,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
-      description: "Added missing bitnami/common dependency"
+    - kind: changed
+      description: "Updated docker.io/datashield/rock-base to 6.3.1"

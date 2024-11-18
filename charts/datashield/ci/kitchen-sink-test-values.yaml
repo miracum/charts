@@ -4,7 +4,3 @@ rock:
 opal:
   ingress:
     enabled: true
-
-dsPoll:
-  enabled: true
-  queueServerUrl: "http://localhost/"
