@@ -16,7 +16,7 @@ dependencies:
     version: 2.26.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.11
+version: 0.5.16
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -30,5 +30,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: removed
-      description: "Unused PDB and headless service - leftovers from experimenting with multiple replicas"
+    - kind: changed
+      description: "Updated docker.io/curlimages/curl to 8.11.0"
