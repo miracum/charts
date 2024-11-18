@@ -42,7 +42,7 @@ opal:
         paths:
           - path: /
             pathType: ImplementationSpecific
-            portName: https
+            portName: http
     # -- TLS configuration
     tls: []
     #  - secretName: chart-example-tls
