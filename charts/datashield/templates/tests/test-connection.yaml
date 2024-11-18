@@ -17,7 +17,7 @@ spec:
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl"]
 
-      args: ["--fail-with-body", "-vvv", "--retry-connrefused", "--max-time", "300", "--connect-timeout", "30", "--retry", "10", "--retry-delay", "30", "http://{{ include "datashield.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
+      args: ["--fail-with-body", "-vvv", "http://{{ include "datashield.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -36,7 +36,7 @@ spec:
     - name: probe-rock-endpoint
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl"]
-      args: ["--fail-with-body", "-vvv", "--retry-connrefused", "--max-time", "300", "--connect-timeout", "30", "--retry", "10", "--retry-delay", "30", "http://{{ include "datashield.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
+      args: ["--fail-with-body", "-vvv", "http://{{ include "datashield.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
       {{- with .Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

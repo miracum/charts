@@ -16,5 +16,9 @@ spec:
             matchLabels:
               {{- include "datashield.selectorLabels" . | nindent 14 }}
               app.kubernetes.io/component: opal
+        - podSelector:
+            matchLabels:
+              {{- include "datashield.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: test-connection
       ports:
         - port: http

@@ -10,8 +10,8 @@ sources:
 maintainers:
   - name: miracum
 deprecated: false
-kubeVersion: ">= 1.25.0"
-version: 0.1.2
+kubeVersion: ">= 1.19.0"
+version: 0.1.3
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -23,4 +23,4 @@ annotations:
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: added curl to checked images
+      description: lowered minimum kubeVersion
