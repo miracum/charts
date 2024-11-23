@@ -124,7 +124,7 @@ opal:
 
   # -- the pod security context
   podSecurityContext:
-    fsGroup: 101
+    fsGroup: 100
 
   # @ignored
   securityContext:
@@ -133,7 +133,7 @@ opal:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 101
+    runAsUser: 100
     runAsGroup: 65534
     readOnlyRootFilesystem: false
     seccompProfile:
@@ -345,14 +345,14 @@ rock:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 104
+    runAsUser: 101
     runAsGroup: 65534
     seccompProfile:
       type: RuntimeDefault
 
   # -- pod security context
   podSecurityContext:
-    fsGroup: 104
+    fsGroup: 101
 
   # -- pod node selector
   nodeSelector: {}

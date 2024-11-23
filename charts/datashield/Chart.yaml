@@ -38,3 +38,7 @@ annotations:
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
       description: "Updated docker.io/obiba/opal to 5.0.2"
+    - kind: changed
+      description: "Switched to http port for ingress"
+    - kind: changed
+      description: "updated UIDs"
