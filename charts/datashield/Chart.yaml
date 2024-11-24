@@ -15,7 +15,7 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgresql
-    version: 16.2.1
+    version: 16.2.2
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
   - name: common
@@ -23,7 +23,7 @@ dependencies:
     version: 2.27.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.22
+version: 0.7.25
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,8 +37,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/obiba/opal to 5.0.2"
-    - kind: changed
-      description: "Switched to http port for ingress"
-    - kind: changed
-      description: "updated UIDs"
+      description: "Updated postgresql to 16.2.2"
