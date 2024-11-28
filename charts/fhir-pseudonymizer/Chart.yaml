@@ -12,8 +12,8 @@ dependencies:
     condition: vfps.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.27.0
-version: 0.7.29
+    version: 2.27.2
+version: 0.7.35
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated vfps to 2.1.33"
+      description: "Updated common to 2.27.2"
