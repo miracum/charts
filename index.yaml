@@ -2926,6 +2926,36 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated fhir-pseudonymizer to 0.7.29"
+    apiVersion: v2
+    created: "2024-11-29T13:10:10.391366593Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.2.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.29
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.27.2
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 437847f712eca0bf166097cfcd6507ca1dc9f555cd35afd7efdf321ee54e40dd
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.52/fhir-gateway-6.3.52.tgz
+    version: 6.3.52
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated common to 2.27.2"
     apiVersion: v2
     created: "2024-11-29T11:21:38.353373535Z"
@@ -11492,4 +11522,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-29T11:21:38.923854391Z"
+generated: "2024-11-29T13:10:10.392038406Z"
