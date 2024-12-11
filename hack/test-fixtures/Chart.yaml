@@ -13,4 +13,4 @@ dependencies:
     repository: oci://ghcr.io/prometheus-community/charts
   - name: kyverno
     repository: oci://ghcr.io/kyverno/charts
-    version: 3.3.3
+    version: 3.3.4
