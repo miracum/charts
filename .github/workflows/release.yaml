@@ -107,6 +107,10 @@ jobs:
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: kubescape-reports
+          path: "kubescape-reports/"
+
+      - run: |
+          ls -lsa ./
 
       - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
         with:
