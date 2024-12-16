@@ -14,13 +14,6 @@ helm repo update
 
 ## Development
 
-1. (Optional) Install the [pre-commit](https://pre-commit.com/) hooks
-
-   ```sh
-   pip install pre-commit
-   pre-commit install
-   ```
-
 1. (Optional) Setup a KinD cluster with Nginx ingress support
 
    ```sh
