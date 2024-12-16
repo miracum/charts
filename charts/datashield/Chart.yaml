@@ -38,3 +38,7 @@ annotations:
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
       description: "Updated docker.io/obiba/opal to sha256:9a04a429e5d9b80cb67d0129c487a97068a0a24329b9f1902177c58106f1917b"
+    - kind: changed
+      description: "Ingress backend port switched to https"
+    - kind: changed
+      description: "Removed NGINX-specific annotations from ingress"
