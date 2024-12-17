@@ -1581,6 +1581,48 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/bitnami/postgresql to 17.2.0-debian-12-r3"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2024-12-17T00:18:01.360188605Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.2.2
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.28.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 01d0b8c622491cd3bd44236a2ec749f071f59bc1ffc10353f284ea8709222b15
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.7.51/datashield-0.7.51.tgz
+    version: 0.7.51
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/obiba/opal to sha256:9a04a429e5d9b80cb67d0129c487a97068a0a24329b9f1902177c58106f1917b"
         - kind: changed
           description: "Ingress backend port switched to https"
@@ -3207,6 +3249,36 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/bitnami/postgresql to 17.2.0-debian-12-r3"
+    apiVersion: v2
+    created: "2024-12-17T00:18:01.49656636Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.2.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.49
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.28.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 9f03a08f05b388a5e31807c38712faad8d7eb7952df922522431f917090cf87c
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.68/fhir-gateway-6.3.68.tgz
+    version: 6.3.68
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -10377,6 +10449,53 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/bitnami/postgresql to 17.2.0-debian-12-r3"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2024-12-17T00:18:01.618638884Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.2.2
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.28.0
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: 79f4e931d41b0cf4cb256a3f7008cf2331ad875f8bff04ef9cdde9ef8d04948c
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-2.1.53/vfps-2.1.53.tgz
+    version: 2.1.53
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated common to 2.28.0"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -12209,4 +12328,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-12-16T14:26:14.165649634Z"
+generated: "2024-12-17T00:18:01.61956937Z"
