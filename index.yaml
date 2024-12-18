@@ -6,6 +6,42 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Set default pod-level security context"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 0.x
+    created: "2024-12-18T20:11:09.695486415Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.28.0
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 9d3b698640ed432e84da3eb0463ea336f578d76ed6503521822ef92f953eaa7b
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.5.40/blaze-0.5.40.tgz
+    version: 0.5.40
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated common to 2.28.0"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -1576,6 +1612,48 @@ entries:
     - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.0/cloudera-hue-0.1.0.tgz
     version: 0.1.0
   datashield:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
+          description: "corrected fsGroup in opal pod-level security context"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2024-12-18T20:11:09.834454159Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.2.2
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.28.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: d0b8b9b4e7693fe8929c73af14caf6604f6bd727e0f8dd94f816ea62b544bfe6
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.7.52/datashield-0.7.52.tgz
+    version: 0.7.52
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -12360,4 +12438,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2024-12-18T11:21:06.9569823Z"
+generated: "2024-12-18T20:11:09.835472056Z"
