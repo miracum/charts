@@ -57,8 +57,8 @@ podAnnotations: {}
 
 # -- the pod security context
 podSecurityContext:
-  {}
-  # fsGroup: 2000
+  runAsNonRoot: true
+  fsGroup: 1001
 
 # @ignored
 securityContext:
