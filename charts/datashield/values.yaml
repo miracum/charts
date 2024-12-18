@@ -120,7 +120,8 @@ opal:
 
   # -- the pod security context
   podSecurityContext:
-    fsGroup: 100
+    runAsNonRoot: true
+    fsGroup: 10041
 
   # @ignored
   securityContext:
@@ -348,7 +349,8 @@ rock:
 
   # -- pod security context
   podSecurityContext:
-    fsGroup: 101
+    runAsNonRoot: true
+    fsGroup: 65534
 
   # -- pod node selector
   nodeSelector: {}
