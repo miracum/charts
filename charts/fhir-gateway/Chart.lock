@@ -4,9 +4,9 @@ dependencies:
   version: 16.3.2
 - name: fhir-pseudonymizer
   repository: oci://ghcr.io/miracum/charts
-  version: 0.7.51
+  version: 0.7.58
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.29.0
-digest: sha256:cc9b8ee97bb968a5d549903dcad7e9235274bde9251e9e062bbec784546fc49a
-generated: "2025-01-05T11:17:49.630077229Z"
+digest: sha256:ca707794b1f1f1a2392bae2f73f84fdbf2595a21ce8cc310a6d6af1b81b71195
+generated: "2025-01-10T12:11:52.017240654Z"
