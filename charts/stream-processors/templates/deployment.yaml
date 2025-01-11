@@ -120,6 +120,12 @@ spec:
             {{- if .container.env -}}
             {{- toYaml .container.env | default "" | nindent 12 }}
             {{- end }}
+            {{- with .container.envDict }}
+            {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .container.resources | nindent 12 }}
           volumeMounts:

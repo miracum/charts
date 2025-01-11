@@ -31,6 +31,9 @@ processors:
           value: fhir-raw
         - name: FHIR_URL
           value: ""
+      envDict:
+        TEST: "test"
+        OTHER_VALUE: "other"
       resources:
         requests:
           memory: "512Mi"
