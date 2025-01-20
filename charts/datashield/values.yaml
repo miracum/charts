@@ -342,15 +342,16 @@ rock:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 101
-    runAsGroup: 65534
+    runAsUser: 10041
+    runAsGroup: 10041
     seccompProfile:
       type: RuntimeDefault
 
   # -- pod security context
   podSecurityContext:
     runAsNonRoot: true
-    fsGroup: 65534
+    fsGroup: 10041
+    fsGroupChangePolicy: "OnRootMismatch"
 
   # -- pod node selector
   nodeSelector: {}
