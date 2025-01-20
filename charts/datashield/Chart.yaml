@@ -23,7 +23,7 @@ dependencies:
     version: 2.29.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.62
+version: 0.7.63
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,4 +37,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/busybox to sha256:f1a295688a1cad4f66e7f45484a882a8b45fbdea28fa0a889ac17146775ad1a2"
+      description: "Updated docker.io/datashield/rock-base to sha256:d8940f175aef3b20fcf715bc4038c03c653736329ae1f71579f93530d811d328"

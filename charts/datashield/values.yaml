@@ -241,7 +241,7 @@ rock:
   image:
     registry: docker.io
     repository: datashield/rock-base
-    tag: 6.3.1@sha256:ee04ae43894d8f78ee4c173c0cc474f7b7e823c8fa707ed0a1822ec9ef7e8108
+    tag: 6.3.1@sha256:d8940f175aef3b20fcf715bc4038c03c653736329ae1f71579f93530d811d328
     pullPolicy: IfNotPresent
 
   # -- rock cluster name. Evaluated as a template
@@ -342,15 +342,16 @@ rock:
       drop:
         - ALL
     runAsNonRoot: true
-    runAsUser: 101
-    runAsGroup: 65534
+    runAsUser: 10041
+    runAsGroup: 10041
     seccompProfile:
       type: RuntimeDefault
 
   # -- pod security context
   podSecurityContext:
     runAsNonRoot: true
-    fsGroup: 65534
+    fsGroup: 10041
+    fsGroupChangePolicy: "OnRootMismatch"
 
   # -- pod node selector
   nodeSelector: {}
