@@ -36,8 +36,13 @@
     },
     {
       "matchDatasources": ["docker", "helm"],
-      "matchDepNames": ["postgresql", "docker.io/bitnami/postgresql", "minio"],
-      "extends": ["schedule:monthly"]
+      "matchDepNames": [
+        "postgresql",
+        "docker.io/bitnami/postgresql",
+        "minio",
+        "common"
+      ],
+      "extends": ["schedule:quarterly"]
     },
     {
       "matchUpdateTypes": ["minor", "patch", "digest"],
