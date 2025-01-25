@@ -8,10 +8,10 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.8.0
+version: 1.8.6
 dependencies:
   - name: common
-    version: 2.29.0
+    version: 2.29.1
     repository: oci://registry-1.docker.io/bitnamicharts
 annotations:
   artifacthub.io/recommendations: |
@@ -22,5 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: "Added `container.envDict` to allow setting environment variables as a dictionary."
+    - kind: changed
+      description: "Updated common to 2.29.1"
