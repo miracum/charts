@@ -23,7 +23,7 @@ dependencies:
     version: 2.29.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.71
+version: 0.7.72
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,4 +37,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/datashield/rock-base to sha256:7f975c363b3a1ee78f871d550bd8ad343cf975e04a56b40e3624ee05568d9a7d"
+      description: "Updated docker.io/obiba/opal to 5.1.0"
