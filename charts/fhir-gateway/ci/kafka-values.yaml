@@ -1,0 +1,17 @@
+sinks:
+  postgres:
+    enabled: true
+postgresql:
+  enabled: true
+
+fhir-pseudonymizer:
+  pseudonymizationService: "None"
+
+kafka:
+  enabled: true
+  groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
+  inputTopics:
+    - fhir.input
+  outputTopic: fhir.post-gatway
+  securityProtocol: SSL
+  strimziClusterName: "fixtures-kafka"

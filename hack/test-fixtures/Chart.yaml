@@ -14,3 +14,6 @@ dependencies:
   - name: kyverno
     repository: oci://ghcr.io/kyverno/charts
     version: 3.3.4
+  - name: strimzi-kafka-operator
+    repository: oci://quay.io/strimzi-helm
+    version: 0.45.0
