@@ -5,5 +5,8 @@ dependencies:
 - name: kyverno
   repository: oci://ghcr.io/kyverno/charts
   version: 3.3.4
-digest: sha256:2875cfac04e3471796d1222a31187d12dae25d02cf301b911ab0603a14f9163f
-generated: "2024-12-18T20:12:00.284134152Z"
+- name: strimzi-kafka-operator
+  repository: oci://quay.io/strimzi-helm
+  version: 0.45.0
+digest: sha256:9185627797953ff6b0be2e273f5ebc36d620eff19a2110afd8523e2854fdc4bc
+generated: "2025-02-03T21:26:14.535817654+01:00"
