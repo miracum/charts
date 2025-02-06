@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 5.1.0@sha256:cc639f5c13f0189c84a09abafd79b70112b4ccc173b0095beca331b0fe348058
+    tag: 5.1.1@sha256:eefed01d015a27bf17a2dec21615f3f8801c4f8dda8fcee654ce6ab4de80f999
     pullPolicy: IfNotPresent
 
   auth:
