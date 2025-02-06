@@ -23,7 +23,7 @@ dependencies:
     version: 2.29.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 2.1.69
+version: 2.1.74
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -42,4 +42,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/vfps to v1.3.6"
+      description: "Updated docker.io/curlimages/curl to 8.12.0"
