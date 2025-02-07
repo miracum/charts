@@ -1,3 +1,16 @@
+securityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
 processors:
   nginx:
     replicaCount: 1
@@ -22,8 +35,8 @@ processors:
             - ALL
         readOnlyRootFilesystem: true
         runAsNonRoot: true
-        runAsUser: 65532
-        runAsGroup: 65532
+        runAsUser: 11111
+        runAsGroup: 11111
         seccompProfile:
           type: RuntimeDefault
       env:
@@ -70,8 +83,8 @@ processors:
             drop:
               - ALL
           runAsNonRoot: true
-          runAsUser: 11111
-          runAsGroup: 11111
+          runAsUser: 22222
+          runAsGroup: 22222
           readOnlyRootFilesystem: true
     tolerations:
       - effect: NoSchedule
@@ -104,8 +117,8 @@ processors:
               - ALL
           readOnlyRootFilesystem: true
           runAsNonRoot: true
-          runAsUser: 65532
-          runAsGroup: 65532
+          runAsUser: 33333
+          runAsGroup: 33333
           seccompProfile:
             type: RuntimeDefault
     container:
