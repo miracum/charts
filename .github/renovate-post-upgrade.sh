@@ -16,4 +16,4 @@ fi
 
 echo "Changed dep name is: $depName to $newVersion"
 
-docker run --rm -v "${PWD}:/root/workspace" ghcr.io/chgl/kube-powertools:v2.3.42@sha256:79ff9288a986be573e01e3390260766d94c1005ccc9a61ca001d3694c1bad68f /root/workspace/.github/renovate-bump-version.sh "${depName}" "${newVersion}"
+docker run --rm -v "${PWD}:/root/workspace" ghcr.io/chgl/kube-powertools:v2.3.43@sha256:3c66ded49291d3afe1e616a36db061d6bd2b3be74cc39718d2865872b75678b7 /root/workspace/.github/renovate-bump-version.sh "${depName}" "${newVersion}"
