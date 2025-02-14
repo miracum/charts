@@ -19,11 +19,15 @@ logLevel: "INFO"
 
 # -- built-in terminology service https://samply.github.io/blaze/terminology-service.html
 terminologyService:
+  # -- enable built-in terminology service
   enabled: false
   loinc:
+    # -- enable LOINC code system
     enabled: false
   sct:
+    # -- enable SNOMED CT code system (requires releasePath to be set!)
     enabled: false
+    # -- set releasePath to folder that provides SCT release
     releasePath: ""
 
 # -- sets the value for the `JAVA_TOOL_OPTIONS` environment variable.
