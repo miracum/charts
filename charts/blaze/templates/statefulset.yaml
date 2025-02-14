@@ -78,6 +78,12 @@ spec:
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
+            {{- with .container.envDict }}
+            {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
           volumeMounts:
             - name: data
               mountPath: /app/data
