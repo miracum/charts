@@ -67,6 +67,14 @@ spec:
               value: {{ .Values.enforceReferentialIntegrity | quote }}
             - name: BASE_URL
               value: {{ include "blaze.tplvalues.render" (dict "value" .Values.baseUrl "context" $) }}
+            - name: ENABLE_TERMINOLOGY_SERVICE
+              value: {{ .Values.terminologyService.enabled | quote }}
+            - name: ENABLE_TERMINOLOGY_LOINC
+              value: {{ .Values.terminologyService.loinc.enabled | quote }}
+            - name: ENABLE_TERMINOLOGY_SNOMED_CT
+              value: {{ .Values.terminologyService.sct.enabled | quote }}
+            - name: SNOMED_CT_RELEASE_PATH
+              value: {{ .Values.terminologyService.sct.releasePath | quote }}
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
