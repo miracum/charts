@@ -29,10 +29,25 @@ helm repo update
    docker run --rm -it -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.3.43@sha256:3c66ded49291d3afe1e616a36db061d6bd2b3be74cc39718d2865872b75678b7
    ```
 
+1. Bump the version in the changed Chart.yaml according to SemVer (The `ct lint` step below will complain if you forget to update the version).
+
 1. Run chart-testing and the `chart-powerlint.sh` script to lint the chart
 
    ```sh
    ct lint --config .github/ct/ct.yaml && chart-powerlint.sh
+   ```
+
+   Info: Sometimes for that to work you need to update the commons chart, like e.g. for blaze:
+
+   ```sh
+   helm dependency update charts/blaze
+   ```
+
+   because else it will throw errors like:
+
+   ```sh
+   ==> Linting charts/blaze
+   [ERROR] templates/: template: blaze/templates/tests/test-connection.yaml:25:21: executing "blaze/templates/tests/test-connection.yaml" at <include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset)>: error calling include: template: no template "common.resources.preset" associated with template "gotpl"
    ```
 
 1. (Optional) View the results of the [polaris audit check](https://github.com/FairwindsOps/polaris) in your browser
@@ -49,5 +64,3 @@ helm repo update
    ```sh
    generate-docs.sh
    ```
-
-1. Bump the version in the changed Chart.yaml according to SemVer (The `ct lint` step above will complain if you forget to update the version.)
