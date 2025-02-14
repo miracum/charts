@@ -205,6 +205,9 @@ restrictedContainerSecurityContext:
 # -- extra environment variables to set on the blaze server container
 extraEnv: []
 
+# -- extra environment variables to set on the blaze server container
+envDict: []
+
 # @ignored
 curl:
   image:
