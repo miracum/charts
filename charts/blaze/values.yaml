@@ -17,6 +17,15 @@ enforceReferentialIntegrity: true
 # -- the log level to set. Equivalent to setting the `LOG_LEVEL` environment variable.
 logLevel: "INFO"
 
+# -- built-in terminology service https://samply.github.io/blaze/terminology-service.html
+terminologyService:
+  enabled: false
+  loinc:
+    enabled: false
+  sct:
+    enabled: false
+    releasePath: ""
+
 # -- sets the value for the `JAVA_TOOL_OPTIONS` environment variable.
 javaToolOptions: "-XX:-OmitStackTraceInFastThrow"
 
