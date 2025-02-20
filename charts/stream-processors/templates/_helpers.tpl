@@ -56,3 +56,8 @@ version label value
 {{- $local := dict "first" true -}}
 {{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
 {{- end -}}
+
+{{- define "stream-processors.utils.joinListWithSemicolon" -}}
+{{- $local := dict "first" true -}}
+{{- range $k, $v := . -}}{{- if not $local.first -}};{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
