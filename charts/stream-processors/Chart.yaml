@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.9.0
+version: 1.9.1
 dependencies:
   - name: common
     version: 2.29.1
@@ -23,4 +23,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: added
-      description: "Support for setting the security context per processor container"
+      description: "Support for setting active processor beans per Spring Cloud Stream processor"

@@ -112,6 +112,12 @@ spec:
             - name: KAFKA_TOPIC
               value: {{ include "stream-processors.utils.joinListWithComma" .topics }}
             {{- end }}
+            {{- if .processors }}
+            - name: SPRING_CLOUD_FUNCTION_DEFINITION
+              value: {{ include "stream-processors.utils.joinListWithSemicolon" .processors }}
+            - name: ACTIVE_PROCESSORS
+              value: {{ include "stream-processors.utils.joinListWithSemicolon" .processors }}
+            {{- end }}
             {{- end }}
             {{- if .persistence.enabled }}
             - name: SPRING_KAFKA_STREAMS_STATE_DIR
