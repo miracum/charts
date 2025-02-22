@@ -13,7 +13,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.29.1
-version: 0.7.75
+version: 0.7.76
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated vfps to 2.1.75"
+      description: "Updated ghcr.io/miracum/fhir-pseudonymizer to v2.22.4"
