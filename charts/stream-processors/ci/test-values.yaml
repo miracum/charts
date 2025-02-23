@@ -94,6 +94,11 @@ processors:
     metrics:
       enabled: true
       serviceMonitor:
+        endpoints:
+          - port: "metrics"
+            path: "/metrics"
+            interval: 30s
+            scrapeTimeout: 15s
         additionalLabels:
           release: prom
     replicaCount: 1
@@ -132,6 +137,11 @@ processors:
           mountPath: /etc/ssl/certs/acme-root-ca.crt
           subPath: acme-root-ca.crt
           readOnly: true
+      ports:
+        - name: metrics
+          containerPort: 8080
+        - name: api
+          containerPort: 8081
       env:
         - name: AHD_URL
           value: http://localhost:9999/health-discovery

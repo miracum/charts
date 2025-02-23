@@ -61,12 +61,9 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- end }}
-          {{- with .metrics }}
-          {{- if .enabled }}
+          {{- with .container.ports }}
           ports:
-            - containerPort: {{ .port | default 8080 }}
-              name: "metrics"
-          {{- end }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
             - name: GROUP_ID

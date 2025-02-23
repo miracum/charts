@@ -1,7 +1,6 @@
 {{- range $name, $spec := .Values.processors }}
 {{- with $spec }}
-{{- if .metrics }}
-{{- if .metrics.enabled }}
+{{- if and .container.ports (not (empty .container.ports)) }}
 ---
 apiVersion: v1
 kind: Service
@@ -17,11 +16,14 @@ spec:
     app.kubernetes.io/name: {{ $name }}
     app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
   ports:
-    - protocol: "TCP"
-      port: {{ .metrics.port | default 8080 }}
-      targetPort: "metrics"
-      name: "metrics"
-{{- end }}
+    {{- range $port := .container.ports }}
+    - protocol: {{ $port.protocol | default "TCP" }}
+      port: {{ $port.containerPort }}
+      targetPort: {{ $port.name | default $port.containerPort }}
+      {{- if $port.name }}
+      name: {{ $port.name }}
+      {{- end }}
+    {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
