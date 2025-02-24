@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 2.0.0
+version: 1.10.0
 dependencies:
   - name: common
     version: 2.29.1
@@ -22,9 +22,12 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
+    - kind: added
       description: |-
-        ⚠️ BREAKING CHANGE: Changed the configuration for metrics and service ports, allowing more flexibility.
-        Port 8080 is no longer exposed by default if `metrics.enabled=true`. Instead, a new `stream-processors.*.container.ports`
-        array field is added and all ports under `.container.ports` are exposed as a service by default.
-        `metrics.serviceMonitor.endpoints` must now be explicitly defined to expose the metrics endpoint.
+        Added `.container.ports` for setting a list of ports which are exposed as a service by default.
+    - kind: added
+      description: |-
+        Added `metrics.serviceMonitor.endpoints` for a list of service endpoints to be scraped by prometheus.
+    - kind: chnged
+      description: |-
+        Renamed default metrics service name from `metrics` to `http-metrics` to align with service mesh naming conventions

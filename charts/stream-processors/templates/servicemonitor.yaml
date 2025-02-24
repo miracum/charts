@@ -19,9 +19,21 @@ metadata:
     {{- toYaml .additionalLabels | nindent 4 }}
     {{- end }}
 spec:
+  {{ if .endpoints}}
   {{- with .endpoints }}
   endpoints:
     {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- else -}}
+  endpoints:
+    - port: "http-metrics"
+      path: {{ .path | default "/metrics"}}
+      {{- if .interval }}
+      interval: {{ .interval }}
+      {{- end }}
+      {{- if .scrapeTimeout }}
+      scrapeTimeout: {{ .scrapeTimeout }}
+      {{- end }}
   {{- end }}
   namespaceSelector:
     matchNames:

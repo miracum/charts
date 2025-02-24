@@ -172,6 +172,11 @@ processors:
         initialDelaySeconds: 3
         periodSeconds: 3
   nginx2:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        additionalLabels:
+          release: prom
     replicaCount: 1
     revisionHistoryLimit: 0
     container:
