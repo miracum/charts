@@ -2,7 +2,7 @@
 {{- with $spec }}
 {{- if .metrics }}
 {{- if .metrics.enabled }}
-{{- $serviceMonitor := .metrics.serviceMonitor| default dict }}
+{{- $serviceMonitor := .metrics.serviceMonitor | default dict }}
 {{- with $serviceMonitor }}
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -19,8 +19,14 @@ metadata:
     {{- toYaml .additionalLabels | nindent 4 }}
     {{- end }}
 spec:
+  {{ if .endpoints}}
+  {{- with .endpoints }}
   endpoints:
-    - port: "metrics"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- else -}}
+  endpoints:
+    - port: "http-metrics"
       path: {{ .path | default "/metrics"}}
       {{- if .interval }}
       interval: {{ .interval }}
@@ -28,6 +34,7 @@ spec:
       {{- if .scrapeTimeout }}
       scrapeTimeout: {{ .scrapeTimeout }}
       {{- end }}
+  {{- end }}
   namespaceSelector:
     matchNames:
       - {{ $.Release.Namespace }}
