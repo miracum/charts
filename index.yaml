@@ -11420,6 +11420,40 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: added
+          description: |-
+            Added `.container.ports` for setting a list of ports which are exposed as a service by default.
+        - kind: added
+          description: |-
+            Added `metrics.serviceMonitor.endpoints` for a list of service endpoints to be scraped by prometheus.
+        - kind: chnged
+          description: |-
+            Renamed default metrics service name from `metrics` to `http-metrics` to align with service mesh naming conventions
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2025-02-25T12:12:05.298473363Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.29.1
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: fa64baacedf795931fd9bf811515cb1bd042e18d3333a76db71ea65d66aa0e62
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.10.0/stream-processors-1.10.0.tgz
+    version: 1.10.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: added
           description: "Support for setting active processor beans per Spring Cloud Stream processor"
       artifacthub.io/recommendations: |
         - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -14523,4 +14557,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-02-25T06:27:43.83846809Z"
+generated: "2025-02-25T12:12:05.299431729Z"
