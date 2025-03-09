@@ -34,7 +34,7 @@ gpas:
 image: # +doc-gen:ignore
   registry: ghcr.io
   repository: miracum/fhir-pseudonymizer
-  tag: v2.22.4@sha256:55d9a8f1b4a0cb132300ea09c5ac1271b3fad310e23bc8e86637a9080e4c5f9e
+  tag: v2.22.5@sha256:f678b7d44197fb60dbe1fa69a57917654d51c78a26edbd11a51a029eb9263c30
   pullPolicy: IfNotPresent
 
 metrics:
