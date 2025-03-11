@@ -2,6 +2,8 @@
 
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
+> **:exclamation: This Helm Chart is deprecated!**
+
 A Helm chart for deploying the Opal server and a DataShield rock cluster.
 
 **Homepage:** <https://opaldoc.obiba.org/en/latest/index.html>
