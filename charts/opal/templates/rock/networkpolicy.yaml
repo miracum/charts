@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "opal.fullname" . }}-rock
+  labels:
+    {{- include "opal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: rock
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "opal.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: rock
+  # both opal and the test pods can access the rock pods
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "opal.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: opal
+        - podSelector:
+            matchLabels:
+              {{- include "opal.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: test-connection
+      ports:
+        - port: http

@@ -1,0 +1,6 @@
+rock:
+  replicaCount: 2
+
+opal:
+  ingress:
+    enabled: true

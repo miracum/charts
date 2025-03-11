@@ -1,0 +1,440 @@
+# -- override the release name
+nameOverride: ""
+
+# -- override the full release name
+fullnameOverride: ""
+
+opal:
+  # -- number of replicas. Should be kept as 1 unless ReadWriteMany persistence is used
+  replicaCount: 1
+
+  # @ignored
+  image:
+    registry: docker.io
+    repository: obiba/opal
+    tag: 5.1.2@sha256:892097899a1d1c992672f3ca95cddaf41e142d8402d0889d2edd7740d67cee35
+    pullPolicy: IfNotPresent
+
+  auth:
+    administrator:
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the administrator password.
+        name: ""
+        # -- key inside that existing secret that contains the administrator password
+        key: "opal-administrator-password"
+
+  ingress:
+    # -- create an Ingress for the application
+    enabled: false
+    # -- ingressClassName to use
+    className: ""
+    # -- extra annotations to apply to the Ingress resource
+    annotations: {}
+    # -- list of ingress hosts
+    hosts:
+      - host: opal.127.0.0.1.nip.io
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            portName: http
+    # -- TLS configuration
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+
+  # -- configuration for the server persistence
+  persistence:
+    # -- enable data persistence using PVC
+    enabled: true
+    # -- name of an existing PVC to use
+    existingClaim: ""
+    # -- PVC Storage Class for data volume
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    #   set, choosing the default provisioner.
+    storageClass: ""
+    # -- PVC Access Mode for data volume
+    accessModes:
+      - ReadWriteOnce
+    # -- PVC Storage Request for volume
+    size: 8Gi
+    # -- annotations for the PVC
+    annotations: {}
+    # -- labels for the PVC
+    labels: {}
+    # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
+    # selector:
+    #   matchLabels:
+    #     app: my-app
+    selector: {}
+
+  database:
+    data:
+      # -- database hostname of an external database used to store data. Only used if `postgresql.enabled` is set to `false`.
+      host: "data.host.example.com"
+      # -- port used to connect to the postgres DB
+      port: 5432
+      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      database: "opal_data"
+      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      username: "opal_data_admin"
+      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      password: "opal_data_password"
+      existingSecret:
+        # -- name of an existing secret containing the password to the DB.
+        name: ""
+        # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
+        key: "password"
+    ids:
+      # -- database hostname of an external database used to store ids. Only used if `postgresql.enabled` is set to `false`.
+      host: "data.host.example.com"
+      # -- port used to connect to the postgres DB
+      port: 5432
+      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      database: "opal_ids"
+      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      username: "opal_ids_password"
+      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      password: "opal"
+      existingSecret:
+        # -- name of an existing secret containing the password to the DB.
+        name: ""
+        # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
+        key: "password"
+
+  # -- extra environment variables to set on the opal api container
+  extraEnv: []
+
+  # -- image pull secrets used by the opal container
+  imagePullSecrets: []
+
+  # -- annotations to set on the opal pod
+  podAnnotations: {}
+
+  # -- the pod security context
+  podSecurityContext:
+    runAsNonRoot: true
+    fsGroup: 10041
+
+  # @ignored
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 10041
+    runAsGroup: 10041
+    readOnlyRootFilesystem: false
+    seccompProfile:
+      type: RuntimeDefault
+
+  service:
+    # -- the type of service
+    type: ClusterIP
+    # -- the port for the main web interface
+    port: 8080
+    # -- the port for the TLS-secured interface
+    httpsPort: 8443
+    # -- the port for SSH access
+    sshPort: 8022
+
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
+  # -- resource limits and requests
+  resources:
+    {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  # -- pod node selector
+  nodeSelector: {}
+
+  # -- pod tolerations
+  tolerations: []
+
+  # -- pod affinity
+  affinity: {}
+
+  # -- readiness probe
+  # @ignored
+  readinessProbe:
+    httpGet:
+      path: /ui/index.html
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 20
+
+  # -- liveness probe
+  # @ignored
+  livenessProbe:
+    httpGet:
+      path: /ui/index.html
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 30
+
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
+
+# @ignored
+waitForDatabaseInitContainer:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 17.2.0-debian-12-r3@sha256:4de5c47eb98dd8fe09abdcbc2264984486ee8196e90902fb354f5d2ab97e8921
+    pullPolicy: IfNotPresent
+
+# -- container security context applied to init containers and the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+postgresql:
+  enabled: true
+  auth:
+    database: opal
+
+rock:
+  # -- number of rock instances in the cluster
+  replicaCount: 1
+
+  # @ignored
+  image:
+    registry: docker.io
+    repository: opal/rock-base
+    tag: 6.3.1@sha256:7f975c363b3a1ee78f871d550bd8ad343cf975e04a56b40e3624ee05568d9a7d
+    pullPolicy: IfNotPresent
+
+  # -- rock cluster name. Evaluated as a template
+  clusterName: "default"
+
+  # -- sets the value for the `JAVA_OPTS` environment variable
+  javaOpts: "-XX:+UseG1GC"
+
+  auth:
+    administrator:
+      # -- the user name for the administrator user.
+      name: "administrator"
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the administrator password.
+        name: ""
+        # -- key inside that existing secret that contains the administrator password
+        key: "rock-administrator-password"
+    manager:
+      # -- the user name for the manager user.
+      name: "manager"
+      # -- the password for the manager user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the manager password.
+        name: ""
+        # -- key inside that existing secret that contains the manager password
+        key: "rock-manager-password"
+    user:
+      # -- the user name for the user user.
+      name: "user"
+      # -- the password for the user. If unset and no existing secret is specified, a random one is generated.
+      password: ""
+      existingSecret:
+        # -- name of an existing secret that contains the user password.
+        name: ""
+        # -- key inside that existing secret that contains the user password
+        key: "rock-user-password"
+
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "small"
+
+  # -- resource limits and requests
+  resources: {}
+
+  serviceAccount:
+    # -- Specifies whether a service account should be created.
+    create: false
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- whether to automount the SA token.
+    automountServiceAccountToken: false
+
+  # -- configuration for the server persistence
+  persistence:
+    # -- enable data persistence using PVC
+    enabled: true
+    # -- name of an existing PVC to use
+    existingClaim: ""
+    # -- PVC Storage Class for data volume
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    #   set, choosing the default provisioner.
+    storageClass: ""
+    # -- PVC Access Mode for data volume
+    accessModes:
+      - ReadWriteOnce
+    # -- PVC Storage Request for volume
+    size: 8Gi
+    # -- annotations for the PVC
+    annotations: {}
+    # -- labels for the PVC
+    labels: {}
+    # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
+    # selector:
+    #   matchLabels:
+    #     app: my-app
+    selector: {}
+
+  service:
+    # -- the type of service
+    type: ClusterIP
+    # -- the port for the REST API
+    port: 8085
+
+  # @ignored
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 10041
+    runAsGroup: 10041
+    seccompProfile:
+      type: RuntimeDefault
+
+  # -- pod security context
+  podSecurityContext:
+    runAsNonRoot: true
+    fsGroup: 10041
+    fsGroupChangePolicy: "OnRootMismatch"
+
+  # -- pod node selector
+  nodeSelector: {}
+
+  # -- pod tolerations
+  tolerations: []
+
+  # -- pod affinity
+  affinity: {}
+
+  # -- readiness probe
+  # @ignored
+  readinessProbe:
+    httpGet:
+      path: /_check
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 20
+
+  # -- liveness probe
+  # @ignored
+  livenessProbe:
+    httpGet:
+      path: /_info
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    successThreshold: 1
+    timeoutSeconds: 30
+
+# @ignored
+curl:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.12.1@sha256:94e9e444bcba979c2ea12e27ae39bee4cd10bc7041a472c4727a558e213744e6
+
+tests:
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+logCollectorSidecar:
+  # @ignored
+  image:
+    registry: docker.io
+    repository: library/busybox
+    tag: 1.37.0-uclibc@sha256:204ad6ed80a4a45a622dae3d804dcb837248617dc50c145e526fdaed99d6865f
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the resources used by the log collector sidecar container used to tail the
+  # filesystem-stored log files
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+initContainers:
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the init containers pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

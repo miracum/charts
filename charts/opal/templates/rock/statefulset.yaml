@@ -1,0 +1,240 @@
+{{- with  .Values.rock -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name:  {{ include "opal.fullname" $ }}-rock
+  labels:
+    {{- include "opal.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: rock
+spec:
+  replicas: {{ .replicaCount }}
+  serviceName: {{ include "opal.fullname" $ }}-rock
+  selector:
+    matchLabels:
+      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: rock
+  template:
+    metadata:
+      labels:
+        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: rock
+    spec:
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "opal.rock.serviceAccountName" $ }}
+      automountServiceAccountToken: {{ .serviceAccount.automountServiceAccountToken }}
+      initContainers:
+        - name: first-run
+          image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          command: ["/bin/bash", "-c", "/mnt/rock/scripts/init-rock.sh"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: srv
+              mountPath: /srv
+            - name: data
+              mountPath: /mnt/var/lib/rock
+            - name: init-script
+              mountPath: /mnt/rock/scripts
+              readOnly: true
+          env:
+            - name: ROCK_CLUSTER
+              value: "{{ tpl .clusterName $ }}"
+            - name: ROCK_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ROCK_ADMINISTRATOR_NAME
+              value: {{ .auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_NAME
+              value: {{ .auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_NAME
+              value: {{ .auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.user-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.user-secret-key" $ }}
+      containers:
+        - name: rock-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/rock.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: srv
+              mountPath: /srv
+              readOnly: true
+        - name: rserve-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/Rserve.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: srv
+              mountPath: /srv
+              readOnly: true
+        - name: rock
+          image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          command: [ "/usr/share/rock/bin/rock" ]
+          ports:
+            - name: http
+              containerPort: 8085
+              protocol: TCP
+          {{- with .livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .resources }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          {{- else if ne .resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: JAVA_OPTS
+              value: "{{ $.Values.opal.javaOpts }}"
+            - name: ROCK_CLUSTER
+              value: "{{ tpl .clusterName $ }}"
+            - name: ROCK_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ROCK_ADMINISTRATOR_NAME
+              value: {{ .auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_NAME
+              value: {{ .auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_NAME
+              value: {{ .auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.user-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.user-secret-key" $ }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: srv
+              mountPath: /srv
+            - name: data
+              mountPath: /var/lib/rock
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: srv
+          emptyDir: {}
+        - name: init-script
+          configMap:
+            name: {{ include "opal.fullname" $ }}-rock-init-script
+            defaultMode: 0777
+  {{- if and .persistence.enabled .persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ tpl .persistence.existingClaim $ }}
+  {{- else if not .persistence.enabled }}
+        - name: data
+          emptyDir: {}
+  {{- else }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        {{- with .persistence.annotations  }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .persistence.labels  }}
+        labels:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+        {{- range .persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .persistence.size | quote }}
+        {{- if .persistence.selector }}
+        selector: {{- include "opal.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        {{- end }}
+        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+  {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

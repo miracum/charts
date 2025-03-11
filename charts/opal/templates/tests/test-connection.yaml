@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "opal.fullname" . }}-test-connection"
+  labels:
+    {{- include "opal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test-connection
+  annotations:
+    helm.sh/hook: test
+    polaris.fairwinds.com/topologySpreadConstraint-exempt: "true"
+    polaris.fairwinds.com/priorityClassNotSet-exempt: "true"
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: {{ .Values.tests.automountServiceAccountToken }}
+  containers:
+    - name: probe-opal-endpoint
+      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
+      command: ["curl"]
+
+      args: ["--fail-with-body", "-vvv", "http://{{ include "opal.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
+      {{- with .Values.restrictedContainerSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tests.resources }}
+      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
+      {{- else if ne .Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
+      {{- end }}
+      livenessProbe:
+        exec:
+          command: ["true"]
+      readinessProbe:
+        exec:
+          command: ["true"]
+    - name: probe-rock-endpoint
+      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
+      command: ["curl"]
+      args: ["--fail-with-body", "-vvv", "http://{{ include "opal.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
+      {{- with .Values.restrictedContainerSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tests.resources }}
+      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
+      {{- else if ne .Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
+      {{- end }}
+      livenessProbe:
+        exec:
+          command: ["true"]
+      readinessProbe:
+        exec:
+          command: ["true"]

@@ -1,0 +1,283 @@
+{{- with .Values.opal -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name:  {{ include "opal.fullname" $ }}-opal
+  labels:
+    {{- include "opal.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: opal
+spec:
+  replicas: {{ .replicaCount }}
+  serviceName: {{ include "opal.fullname" $ }}-opal
+  selector:
+    matchLabels:
+      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: opal
+  template:
+    metadata:
+      labels:
+        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: opal
+    spec:
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "opal.opal.serviceAccountName" $ }}
+      automountServiceAccountToken: {{ .serviceAccount.automountServiceAccountToken }}
+      initContainers:
+        - name: wait-for-db
+          image: {{ include "opal.waitForDatabaseInitContainerImage" $ }}
+          imagePullPolicy: {{ $.Values.waitForDatabaseInitContainer.image.pullPolicy }}
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: PGHOST
+              value: {{ include "opal.database.host" $ }}
+            - name: PGPORT
+              value: {{ include "opal.database.port" $ | quote }}
+            - name: PGUSER
+              value: {{ include "opal.database.user" $ }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              until pg_isready; do
+                echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
+                sleep 15;
+              done;
+        - name: wait-for-rock
+          image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: ROCK_URL
+              value: "http://{{ include "opal.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/_check"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              until [ "$(curl -s -o /dev/null -L -w '%{http_code}' "$ROCK_URL")" == "204" ]; do
+                echo "$(date): Waiting for rock cluster @ $ROCK_URL to be up";
+                sleep 15;
+              done;
+      containers:
+        - name: opal-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/opal.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: data
+              mountPath: /srv
+              readOnly: true
+        - name: rest-log-collector
+          image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
+          imagePullPolicy: {{ $.Values.logCollectorSidecar.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /srv/logs/rest.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.logCollectorSidecar.resources }}
+          resources: {{- toYaml $.Values.logCollectorSidecar.resources | nindent 12 }}
+          {{- else if ne $.Values.logCollectorSidecar.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.logCollectorSidecar.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: data
+              mountPath: /srv
+              readOnly: true
+        - name: opal
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.registry }}/{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          command: ["/opt/opal/bin/start.sh"]
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+            - name: ssh
+              containerPort: 8022
+              protocol: TCP
+          startupProbe:
+            exec:
+              command:
+                - test
+                - -f
+                - /opt/opal/bin/first_run.sh.done
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 20
+          {{- with .livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .resources }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          {{- else if ne .resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: JAVA_OPTS
+              value: "{{ $.Values.opal.javaOpts }}"
+            - name: OPAL_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.auth.admin-secret-key" $ }}
+
+            - name: ROCK_HOSTS
+              value: {{ include "opal.rock-hosts" $ }}
+            - name: ROCK_ADMINISTRATOR_USER
+              value: {{ $.Values.rock.auth.administrator.name }}
+            - name: ROCK_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.admin-secret-key" $ }}
+            - name: ROCK_MANAGER_USER
+              value: {{ $.Values.rock.auth.manager.name }}
+            - name: ROCK_MANAGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.manager-secret-key" $ }}
+            - name: ROCK_USER_USER
+              value: {{ $.Values.rock.auth.user.name }}
+            - name: ROCK_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.rock.auth.user-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.user-secret-key" $ }}
+
+            # DB for data
+            - name: POSTGRESDATA_HOST
+              value: {{ include "opal.database.host" $ }}
+            - name: POSTGRESDATA_USER
+              value: {{ include "opal.database.user" $ }}
+            - name: POSTGRESDATA_DATABASE
+              value: {{ include "opal.database.name" $ }}
+            - name: POSTGRESDATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.database.db-secret-name" $ }}
+                  key: {{ include "opal.database.db-secret-key" $ }}
+
+            # DB for ids
+            - name: POSTGRESIDS_HOST
+              value: {{ include "opal.database.ids.host" $ }}
+            - name: POSTGRESIDS_USER
+              value: {{ include "opal.database.ids.user" $ }}
+            - name: POSTGRESIDS_DATABASE
+              value: {{ include "opal.database.ids.name" $ }}
+            - name: POSTGRESIDS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opal.database.ids.db-secret-name" $ }}
+                  key: {{ include "opal.database.ids.db-secret-key" $ }}
+
+            {{- if .ingress.enabled }}
+            # CSRF
+            - name: CSRF_ALLOWED
+              value: {{ include "opal.opal.ingress-hosts" $ }}
+            {{- end }}
+
+            {{- if .extraEnv }}
+            {{- toYaml .extraEnv | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /srv
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+  {{- if and .persistence.enabled .persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ tpl .persistence.existingClaim $ }}
+  {{- else if not .persistence.enabled }}
+        - name: data
+          emptyDir: {}
+  {{- else }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        {{- with .persistence.annotations  }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .persistence.labels  }}
+        labels:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+        {{- range .persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .persistence.size | quote }}
+        {{- if .persistence.selector }}
+        selector: {{- include "opal.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        {{- end }}
+        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+  {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
