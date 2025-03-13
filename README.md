@@ -23,13 +23,13 @@ helm repo update
 
 1. Make changes to the charts
 
+1. Bump the version in the changed Chart.yaml according to SemVer (The `ct lint` step below will complain if you forget to update the version).
+
 1. Mount the folder in the [kube-powertools](https://github.com/chgl/kube-powertools) container to easily run linters and checks
 
    ```sh
    docker run --rm -it -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.3.46@sha256:ccc2a2630dfb0d5f1b6964ac5a78981f183ce6b9255e9df55ff3d23a5f84c320
    ```
-
-1. Bump the version in the changed Chart.yaml according to SemVer (The `ct lint` step below will complain if you forget to update the version).
 
 1. Run chart-testing and the `chart-powerlint.sh` script to lint the chart
 

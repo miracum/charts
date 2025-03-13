@@ -9,7 +9,7 @@ image:
   pullPolicy: IfNotPresent
 
 # -- set the server base URL. Evaluated as a template. Equivalent to setting the `BASE_URL` environment variable.
-baseUrl: 'http://{{ include "blaze.fullname" . }}:{{ .Values.service.port }}'
+baseUrl: 'http://{{ include "blaze.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.port }}'
 
 # -- whether referential integrity should be enforced. Equivalent to setting the `ENFORCE_REFERENTIAL_INTEGRITY` environment variable.
 enforceReferentialIntegrity: true
