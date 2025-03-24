@@ -67,14 +67,20 @@ spec:
               value: {{ .Values.enforceReferentialIntegrity | quote }}
             - name: BASE_URL
               value: {{ include "blaze.tplvalues.render" (dict "value" .Values.baseUrl "context" $) }}
+            {{- if .Values.terminologyService.enabled }}
             - name: ENABLE_TERMINOLOGY_SERVICE
-              value: {{ .Values.terminologyService.enabled | quote }}
+              value: "true"
             - name: ENABLE_TERMINOLOGY_LOINC
               value: {{ .Values.terminologyService.loinc.enabled | quote }}
             - name: ENABLE_TERMINOLOGY_SNOMED_CT
               value: {{ .Values.terminologyService.sct.enabled | quote }}
             - name: SNOMED_CT_RELEASE_PATH
               value: {{ .Values.terminologyService.sct.releasePath | quote }}
+            {{- end }}
+            {{- if or .Values.customSearchParameters.bundle .Values.customSearchParameters.existingConfigmap.name }}
+            - name: DB_SEARCH_PARAM_BUNDLE
+              value: "/app/custom-search-parameters.json"
+            {{- end }}
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
@@ -89,6 +95,12 @@ spec:
               mountPath: /app/data
             - name: tmp-volume
               mountPath: /tmp
+            {{- if or .Values.customSearchParameters.bundle .Values.customSearchParameters.existingConfigmap.name }}
+            - name: custom-search-parameters
+              mountPath: /app/custom-search-parameters.json
+              subPath: {{ include "blaze.customSearchParameters.configMapKey" . }}
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -108,6 +120,11 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+        {{- if or .Values.customSearchParameters.bundle .Values.customSearchParameters.existingConfigmap.name }}
+        - name: custom-search-parameters
+          configMap:
+            name: {{ include "blaze.customSearchParameters.configMapName" . }}
+        {{- end }}
   {{- if and .Values.persistence.enabled .Values.persistence.existingClaim }}
         - name: data
           persistentVolumeClaim:

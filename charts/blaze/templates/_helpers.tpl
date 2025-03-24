@@ -92,3 +92,19 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplva
         {{- tpl (.value | toYaml) .context }}
     {{- end }}
 {{- end -}}
+
+{{- define "blaze.customSearchParameters.configMapName" -}}
+    {{- if .Values.customSearchParameters.existingConfigmap.name }}
+        {{- printf "%s" .Values.customSearchParameters.existingConfigmap.name }}
+    {{- else }}
+        {{- printf "%s-custom-search-parameters" (include "blaze.fullname" .) }}
+    {{- end }}
+{{- end -}}
+
+{{- define "blaze.customSearchParameters.configMapKey" -}}
+    {{- if .Values.customSearchParameters.existingConfigmap.key }}
+        {{- .Values.customSearchParameters.existingConfigmap.key }}
+    {{- else }}
+        {{- printf "custom-search-parameters.json" }}
+    {{- end }}
+{{- end -}}

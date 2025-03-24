@@ -36,3 +36,5 @@ Session.vim
 megalinter-reports/
 
 *.tgz
+
+.helm_ls_cache/

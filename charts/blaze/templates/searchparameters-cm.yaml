@@ -1,0 +1,11 @@
+{{- if and .Values.customSearchParameters.bundle (not .Values.customSearchParameters.existingConfigmap.name) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "blaze.fullname" . }}-custom-search-parameters
+  labels:
+    {{- include "blaze.labels" . | nindent 4 }}
+data:
+  custom-search-parameters.json: |
+{{ .Values.customSearchParameters.bundle | indent 4 }}
+{{ end }}

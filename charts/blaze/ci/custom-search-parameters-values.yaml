@@ -1,0 +1,47 @@
+customSearchParameters:
+  bundle: |
+    {
+      "resourceType": "Bundle",
+      "type": "transaction",
+      "entry": [
+        {
+          "resource": {
+            "resourceType": "SearchParameter",
+            "id": "researchstudy-enrollment-reference",
+            "url": "https://miracum.github.io/recruit/fhir/SearchParameter/researchstudy-enrollment-reference",
+            "name": "researchstudy-enrollment-reference",
+            "description": "Study Enrollment",
+            "base": ["ResearchStudy"],
+            "status": "active",
+            "code": "enrollment",
+            "type": "reference",
+            "expression": "ResearchStudy.enrollment",
+            "xpathUsage": "normal",
+            "target": ["Group"]
+          },
+          "request": {
+            "method": "PUT",
+            "url": "SearchParameter/researchstudy-enrollment-reference"
+          }
+        },
+        {
+          "resource": {
+            "resourceType": "SearchParameter",
+            "id": "group-characteristic-reference",
+            "url": "https://miracum.github.io/recruit/fhir/SearchParameter/group-characteristic-reference",
+            "name": "group-characteristic-reference",
+            "description": "An entity referenced in a characteristic",
+            "base": ["Group"],
+            "status": "active",
+            "code": "characteristic-reference",
+            "type": "reference",
+            "expression": "Group.characteristic.value.ofType(Reference)",
+            "xpathUsage": "normal"
+          },
+          "request": {
+            "method": "PUT",
+            "url": "SearchParameter/group-characteristic-reference"
+          }
+        }
+      ]
+    }

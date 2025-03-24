@@ -9,7 +9,7 @@ image:
   pullPolicy: IfNotPresent
 
 # -- set the server base URL. Evaluated as a template. Equivalent to setting the `BASE_URL` environment variable.
-baseUrl: 'http://{{ include "blaze.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.port }}'
+baseUrl: 'http://{{ include "blaze.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}'
 
 # -- whether referential integrity should be enforced. Equivalent to setting the `ENFORCE_REFERENTIAL_INTEGRITY` environment variable.
 enforceReferentialIntegrity: true
@@ -205,8 +205,17 @@ restrictedContainerSecurityContext:
 # -- extra environment variables to set on the blaze server container
 extraEnv: []
 
-# -- extra environment variables to set on the blaze server container
-envDict: []
+# -- extra environment variables to set on the blaze server container in dictionary form
+envDict: {}
+
+customSearchParameters:
+  # -- a custom search parameter bundle <https://samply.github.io/blaze/deployment/environment-variables.html#db-search-param-bundle>
+  bundle: ""
+  existingConfigmap:
+    # -- name of a config map containing a custom search parameter bundle file. <https://samply.github.io/blaze/deployment/environment-variables.html#db-search-param-bundle>
+    name: ""
+    # -- the key inside the config map referencing the custom search parameter bundle file.
+    key: "custom-search-parameters.json"
 
 # @ignored
 curl:
