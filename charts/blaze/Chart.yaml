@@ -13,10 +13,10 @@ maintainers:
 dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.29.1
+    version: 2.30.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.64
+version: 0.5.65
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -30,5 +30,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: "added namespace to default blaze.baseUrl"
+    - kind: changed
+      description: "Updated common to common"

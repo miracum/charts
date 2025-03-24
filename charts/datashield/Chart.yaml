@@ -20,10 +20,10 @@ dependencies:
     condition: postgresql.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.29.1
+    version: 2.30.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.86
+version: 0.7.87
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,4 +37,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/busybox to sha256:5ea5116fb0855f9c513dac58fabc55509a8da6df6945587cbf9bc206cb9af0eb"
+      description: "Updated common to common"

@@ -8,10 +8,10 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.10.0
+version: 1.10.1
 dependencies:
   - name: common
-    version: 2.29.1
+    version: 2.30.0
     repository: oci://registry-1.docker.io/bitnamicharts
 annotations:
   artifacthub.io/recommendations: |
@@ -22,12 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: |-
-        Added `.container.ports` for setting a list of ports which are exposed as a service by default.
-    - kind: added
-      description: |-
-        Added `metrics.serviceMonitor.endpoints` for a list of service endpoints to be scraped by prometheus.
-    - kind: chnged
-      description: |-
-        Renamed default metrics service name from `metrics` to `http-metrics` to align with service mesh naming conventions
+    - kind: changed
+      description: "Updated common to common"
