@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.30.0
-version: 6.3.103
+version: 6.3.104
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated postgresql to postgresql"
+      description: "Updated docker.io/curlimages/curl to docker.io/curlimages/curl"
