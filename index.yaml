@@ -8204,6 +8204,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/miracum/fhir-pseudonymizer to v2.22.9"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2025-04-09T12:40:55.504326069Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 2.1.80
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.30.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 5cdacd102cd06d8c19c3ed2931c5557cf139216b8451a3de441522b647e28fc8
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.7.86/fhir-pseudonymizer-0.7.86.tgz
+    version: 0.7.86
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated vfps to 2.1.80"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -15881,4 +15913,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-04-07T03:05:18.46357262Z"
+generated: "2025-04-09T12:40:55.505075555Z"
