@@ -1,7 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
-  "gitIgnoredAuthors": ["github-actions"],
+  "extends": [
+    "config:best-practices"
+  ],
+  "gitIgnoredAuthors": [
+    "github-actions"
+  ],
   "postUpgradeTasks": {
     "executionMode": "branch",
     "commands": [
@@ -12,11 +16,11 @@
     {
       "customType": "regex",
       "description": "Update kube-powertools container image",
-      "fileMatch": [
-        "README.md$",
-        ".github/workflows/ci.yaml",
-        ".github/workflows/release.yaml",
-        ".github/renovate-post-upgrade.sh"
+      "managerFilePatterns": [
+        "/README.md$/",
+        "/.github/workflows/ci.yaml/",
+        "/.github/workflows/release.yaml/",
+        "/.github/renovate-post-upgrade.sh/"
       ],
       "matchStrings": [
         "(?<depName>ghcr.io\\/chgl\\/kube-powertools):(?<currentValue>[a-z0-9.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
@@ -28,28 +32,45 @@
   "packageRules": [
     {
       "groupName": "GitHub Actions",
-      "matchManagers": ["github-actions"],
-      "extends": ["schedule:monthly"]
+      "matchManagers": [
+        "github-actions"
+      ],
+      "extends": [
+        "schedule:monthly"
+      ]
     },
     {
-      "matchManagers": ["helmv3"],
+      "matchManagers": [
+        "helmv3"
+      ],
       "pinDigests": false
     },
     {
-      "matchDatasources": ["docker", "helm"],
+      "matchDatasources": [
+        "docker",
+        "helm"
+      ],
       "matchDepNames": [
         "postgresql",
         "docker.io/bitnami/postgresql",
         "minio",
         "common"
       ],
-      "extends": ["schedule:quarterly"]
+      "extends": [
+        "schedule:quarterly"
+      ]
     },
     {
-      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
   ],
-  "ignorePaths": ["charts/recruit/**"]
+  "ignorePaths": [
+    "charts/recruit/**"
+  ]
 }
