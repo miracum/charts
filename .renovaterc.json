@@ -12,11 +12,11 @@
     {
       "customType": "regex",
       "description": "Update kube-powertools container image",
-      "fileMatch": [
-        "README.md$",
-        ".github/workflows/ci.yaml",
-        ".github/workflows/release.yaml",
-        ".github/renovate-post-upgrade.sh"
+      "managerFilePatterns": [
+        "/README.md$/",
+        "/.github/workflows/ci.yaml/",
+        "/.github/workflows/release.yaml/",
+        "/.github/renovate-post-upgrade.sh/"
       ],
       "matchStrings": [
         "(?<depName>ghcr.io\\/chgl\\/kube-powertools):(?<currentValue>[a-z0-9.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
