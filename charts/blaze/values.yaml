@@ -78,7 +78,7 @@ frontend:
   origin: "https://blaze.localhost"
   backendURL: 'http://{{ include "blaze.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}'
   extraEnv: []
-  EnvDict: {}
+  envDict: {}
   service:
     # -- type of service the frontend uses
     type: ClusterIP

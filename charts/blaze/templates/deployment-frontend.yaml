@@ -59,7 +59,7 @@ spec:
           {{- with .Values.frontend.extraEnv }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.frontend.EnvDict }}
+          {{- with .Values.frontend.envDict }}
           {{- range $key, $value := . }}
             - name: {{ $key }}
               value: {{ $value | quote }}
