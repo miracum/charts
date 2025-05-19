@@ -29,7 +29,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.podSecurityContext }}
+      {{- with .Values.frontend.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -42,12 +42,28 @@ spec:
           ports:
             - containerPort: 3000
               name: http
+          livenessProbe:
+            {{- toYaml .Values.frontend.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.frontend.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.frontend.startupProbe | nindent 12 }}
           {{- with .Values.frontend.resources }}
           resources: {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.frontend.env }}
           env:
+            - name: ORIGIN
+              value: {{ .Values.frontend.origin }}
+            - name: BACKEND_BASE_URL
+              value: {{ .Values.frontend.backendURL }}
+          {{- with .Values.frontend.extraEnv }}
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.EnvDict }}
+          {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
           {{- end }}
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:

@@ -1,11 +1,11 @@
-{{- if and .Values.frontend.enabled .Values.frontend.traefik.enabled -}}
+{{- if and .Values.frontend.enabled .Values.frontend.ingressRoute.enabled -}}
 {{- if not .Values.ingress.enabled -}}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "blaze.fullname" . }}
 spec:
-  {{- with .Values.frontend.traefik.entryPoints }}
+  {{- with .Values.frontend.ingressRoute.entryPoints }}
   entryPoints:
     {{- toYaml . | nindent 8 }}
   {{- end }}
@@ -14,46 +14,46 @@ spec:
     - kind: Rule
       # -- matches based on the auth type for the blaze backend. This auth needs to be supplied via middleware.
       match: >-
-        Host(`{{ .Values.frontend.traefik.host }}`) &&
+        Host(`{{ .Values.frontend.ingressRoute.host }}`) &&
         PathPrefix(`/fhir`) &&
-        HeadersRegexp(`Authorization`, `^{{ .Values.frontend.traefik.backendAuthType }}`)
+        HeadersRegexp(`Authorization`, `^{{ .Values.frontend.ingressRoute.backendAuthType }}`)
       services:
         - kind: Service
           name: {{ include "blaze.fullname" . }}
           port: http
-      {{- with .Values.frontend.traefik.middlewares.backend }}
+      {{- with .Values.frontend.ingressRoute.middlewares.backend }}
       middlewares:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     # -- Frontend
     - kind: Rule
       match: >-
-        Host(`{{ .Values.frontend.traefik.host }}`) &&
+        Host(`{{ .Values.frontend.ingressRoute.host }}`) &&
         PathPrefix(`/fhir`)
       services:
         - kind: Service
           name: {{ include "blaze.fullname" . }}-frontend
           port: http
-      {{- with .Values.frontend.traefik.middlewares.frontend }}
+      {{- with .Values.frontend.ingressRoute.middlewares.frontend }}
       middlewares:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     # -- Metrics
     - kind: Rule
       match: >-
-        Host(`{{ .Values.frontend.traefik.host }}`) &&
+        Host(`{{ .Values.frontend.ingressRoute.host }}`) &&
         PathPrefix(`/metrics`)
       services:
         - kind: Service
           name: {{ include "blaze.fullname" . }}
           port: http-metrics
-      {{- with .Values.frontend.traefik.middlewares.metrics }}
+      {{- with .Values.frontend.ingressRoute.middlewares.metrics }}
       middlewares:
         {{- toYaml . | nindent 8 }}
       {{- end }}
   tls:
-    secretName: {{ .Values.frontend.traefik.host }}-tls
+    secretName: {{ .Values.frontend.ingressRoute.host }}-tls
     domains:
-      - main: {{ .Values.frontend.traefik.host }}
+      - main: {{ .Values.frontend.ingressRoute.host }}
 {{- end }}
 {{- end }}
