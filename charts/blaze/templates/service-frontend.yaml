@@ -14,6 +14,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "blaze.labels" . | nindent 4 }}
+    {{- include "blaze.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 {{- end }}
