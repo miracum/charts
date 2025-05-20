@@ -16,7 +16,7 @@ dependencies:
     version: 2.30.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.6.3
+version: 0.7.0
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/samply/blaze to 0.34.0"
+      description: "Added optional blaze frontend"

@@ -1,0 +1,9 @@
+frontend:
+  enabled: true
+  envDict:
+    AUTH_ISSUER: "https://keycloak.localhost/realms/blaze"
+    AUTH_CLIENT_ID: "test"
+    AUTH_CLIENT_SECRET: "1234-5678-9012"
+    AUTH_SECRET: "564ace6270f7bc936e459e7e1448c10356f43605296b83ec70139a63c3b166c4"
+    PROTOCOL_HEADER: "x-forwarded-proto"
+    HOST_HEADER: "x-forwarded-host"

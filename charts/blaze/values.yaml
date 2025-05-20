@@ -33,6 +33,81 @@ terminologyService:
 # -- sets the value for the `JAVA_TOOL_OPTIONS` environment variable.
 javaToolOptions: "-XX:-OmitStackTraceInFastThrow"
 
+frontend:
+  enabled: false
+  replicaCount: 1
+  # -- annotations to set on the frontend deployment's pod
+  podAnnotations: {}
+  image:
+    registry: ghcr.io
+    repository: samply/blaze-frontend
+    tag: 0.34.0@sha256:d56e1793e17ba95ef63e02e3ce52146ef6a341b3314aa59cc6d79301c455976c
+    pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  readinessProbe:
+    httpGet:
+      path: /fhir
+      port: http
+    failureThreshold: 5
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  livenessProbe:
+    httpGet:
+      path: /fhir
+      port: http
+    failureThreshold: 10
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+  startupProbe:
+    httpGet:
+      path: /fhir
+      port: http
+    failureThreshold: 10
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+  # -- configure the resource requests and limits for the frontend pod
+  resources: {}
+  # -- environment variables for configuring the frontend pod
+  # -- origin needs to be set to frontend domain
+  origin: "https://blaze.localhost"
+  backendURL: 'http://{{ include "blaze.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}'
+  extraEnv: []
+  envDict: {}
+  service:
+    # -- type of service the frontend uses
+    type: ClusterIP
+    # -- the port for the main endpoint
+    port: 3000
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    seccompProfile:
+      type: RuntimeDefault
+  # -- for traefik ingress Controller specifically, a traefik ingressRoute can be created and parameterized with this helm chart
+  # -- other ingress controllers would have to make use of additional ingresses and annotations and/or their own CRDs
+  ingressRoute:
+    enabled: false
+    entryPoints: []
+    host: blaze.127.0.0.1.nip.io
+    # -- the traefik router matches based on this auth type for the backend. This auth needs to be supplied via middleware.backend.
+    backendAuthType: "Basic"
+    middlewares:
+      backend: []
+      frontend: []
+      metrics: []
+
 metrics:
   # -- Enable the export of Prometheus metrics
   enabled: true
