@@ -46,7 +46,7 @@ frontend:
   imagePullSecrets: []
   readinessProbe:
     httpGet:
-      path: /
+      path: /fhir
       port: http
     failureThreshold: 5
     initialDelaySeconds: 30
@@ -55,7 +55,7 @@ frontend:
     timeoutSeconds: 5
   livenessProbe:
     httpGet:
-      path: /
+      path: /fhir
       port: http
     failureThreshold: 10
     initialDelaySeconds: 30
@@ -64,7 +64,7 @@ frontend:
     timeoutSeconds: 10
   startupProbe:
     httpGet:
-      path: /
+      path: /fhir
       port: http
     failureThreshold: 10
     initialDelaySeconds: 30
