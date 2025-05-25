@@ -5156,6 +5156,36 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/miracum/fhir-gateway to v3.14.10"
+    apiVersion: v2
+    created: "2025-05-25T22:19:51.675396559Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.6.0
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.86
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.30.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: d91edff5bf3278f279f166597f5e48d48b6623e68b0369341f086b815f6ee05b
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-6.3.111/fhir-gateway-6.3.111.tgz
+    version: 6.3.111
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/fhir-gateway to v3.14.9"
     apiVersion: v2
     created: "2025-05-21T10:41:17.20099558Z"
@@ -16459,4 +16489,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-05-25T20:21:43.772724746Z"
+generated: "2025-05-25T22:19:51.6761872Z"
