@@ -41,7 +41,7 @@ frontend:
   image:
     registry: ghcr.io
     repository: samply/blaze-frontend
-    tag: 0.34.0@sha256:d56e1793e17ba95ef63e02e3ce52146ef6a341b3314aa59cc6d79301c455976c
+    tag: 1.0.1@sha256:9ffaee34c0c8f3ea8222a9aa531133bcf713ee45f0039e079c008959e47c3fb3
     pullPolicy: IfNotPresent
   imagePullSecrets: []
   readinessProbe:
