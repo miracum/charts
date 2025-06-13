@@ -38,10 +38,11 @@ frontend:
   replicaCount: 1
   # -- annotations to set on the frontend deployment's pod
   podAnnotations: {}
+  # @ignored
   image:
     registry: ghcr.io
     repository: samply/blaze-frontend
-    tag: 0.34.0@sha256:d56e1793e17ba95ef63e02e3ce52146ef6a341b3314aa59cc6d79301c455976c
+    tag: 1.0.3@sha256:68f38ecea4252be585ec745df78180116d01d871c87078db286b9535ceb227cf
     pullPolicy: IfNotPresent
   imagePullSecrets: []
   readinessProbe:
