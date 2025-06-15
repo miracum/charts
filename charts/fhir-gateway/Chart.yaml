@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.30.0
-version: 6.3.113
+version: 6.3.114
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated fhir-pseudonymizer to 0.7.87"
+      description: "Updated docker.io/curlimages/curl to docker.io/curlimages/curl"
