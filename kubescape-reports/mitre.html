@@ -108,9 +108,9 @@
         <tr>
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">Applications credentials in configuration files</td>
-          <td class="controlRiskCell numericCell">6</td>
-          <td class="controlRiskCell numericCell">47</td>
-          <td class="controlRiskCell numericCell">13</td>
+          <td class="controlRiskCell numericCell">5</td>
+          <td class="controlRiskCell numericCell">27</td>
+          <td class="controlRiskCell numericCell">19</td>
         </tr>
       </tr>
       
@@ -127,7 +127,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">HostPath mount</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">45</td>
+          <td class="controlRiskCell numericCell">26</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -136,7 +136,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">List Kubernetes secrets</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -145,7 +145,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">Privileged container</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">45</td>
+          <td class="controlRiskCell numericCell">26</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -154,7 +154,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">Writable hostPath mount</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">45</td>
+          <td class="controlRiskCell numericCell">26</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -172,7 +172,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Administrative Roles</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -190,7 +190,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">CoreDNS poisoning</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -199,7 +199,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Delete Kubernetes events</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -208,7 +208,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Mount service principal</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">45</td>
+          <td class="controlRiskCell numericCell">26</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -217,7 +217,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Prevent containers from allowing command execution</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -226,7 +226,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Roles with delete capabilities</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">10</td>
+          <td class="controlRiskCell numericCell">5</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -235,7 +235,7 @@
           <td class="controlSeverityCell">Low</td>
           <td class="controlNameCell">Access Kubernetes dashboard</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">55</td>
+          <td class="controlRiskCell numericCell">31</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -253,7 +253,7 @@
           <td class="controlSeverityCell">Low</td>
           <td class="controlNameCell">SSH server running inside container</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">1</td>
+          <td class="controlRiskCell numericCell">0</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       </tr>
@@ -293,118 +293,91 @@
       </table>
     </div>
     
-    <h3>Name: -postgresql</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgresql</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Applications credentials in configuration files</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -recruit-list</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -recruit-list</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Applications credentials in configuration files</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[1].name</p>  <p>spec.template.spec.containers[0].env[1].value</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -postgresql</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgresql</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Applications credentials in configuration files</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -postgresql</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgresql</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Applications credentials in configuration files</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
     <h3>Name: -vfps-postgres</h3>
       <p>ApiVersion: apps/v1</p>
       <p>Kind: StatefulSet</p>
       <p>Name: -vfps-postgres</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Applications credentials in configuration files</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgresql</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgresql</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Applications credentials in configuration files</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgresql</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgresql</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Applications credentials in configuration files</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[4].name</p>  <p>spec.template.spec.containers[0].env[4].value</p> </td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgresql</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgresql</p>
       <p>Namespace: </p>
       <table>
         <thead>
