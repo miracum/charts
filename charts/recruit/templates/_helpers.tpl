@@ -56,19 +56,26 @@ Extra labels to apply to every pod
 */}}
 {{- define "recruit.podLabels" -}}
 {{ include "recruit.matchLabels" . }}
-{{- if and .Values.fhirserver.enabled .Values.fhirserver.networkPolicy.enabled }}
-{{- $name := default "fhirserver" .Values.fhirserver.nameOverride }}
-{{ printf "%s-%s-client: \"true\"" .Release.Name ($name | trunc 63 | trimSuffix "-") }}
 {{- end -}}
-{{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "recruit.serviceAccountName" -}}
+{{- if .context.serviceAccount.create }}
+{{- default (printf "%s-%s" (include "recruit.fullname" .) .component) .context.serviceAccount.name }}
+{{- else }}
+{{- default "default" .context.serviceAccount.name }}
+{{- end }}
+{{- end }}
 
 {{/*
 Get the FHIR server URL.
 */}}
 {{- define "recruit.fhirserver.url" -}}
 {{- if .Values.fhirserver.enabled }}
-    {{- $name := default "fhirserver" .Values.fhirserver.nameOverride -}}
-    {{- printf "http://%s-%s:%d/fhir" .Release.Name ($name | trunc 63 | trimSuffix "-") 8080 -}}
+    {{- $fullname := include "hapi-fhir-jpaserver.fullname" (index .Subcharts "fhirserver") -}}
+    {{ printf "http://%s:%d/fhir" $fullname 8080 }}
 {{- else -}}
     {{ .Values.externalFhirServer.url | quote }}
 {{- end -}}
@@ -167,7 +174,7 @@ Return the OMOP credentials secret name
     {{- if .Values.query.omop.existingSecret -}}
         {{ printf "%s" (tpl .Values.query.omop.existingSecret $) }}
     {{- else -}}
-        {{ printf "%s-%s" .Release.Name "query-omop-secret" }}
+        {{ printf "%s-%s" (include "recruit.fullname" . ) "query-omop-secret" }}
     {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -227,4 +234,34 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "recruit.postgresql.fullname" -}}
 {{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{/*
+Return the Trino credentials secret name
+*/}}
+{{- define "recruit.trino.secret.name" -}}
+{{- if .Values.queryFhirTrino.trino.auth.existingSecret.name  -}}
+    {{ printf "%s" (tpl .Values.queryFhirTrino.trino.auth.existingSecret.name $) }}
+{{- else -}}
+    {{ printf "%s-%s" (include "recruit.fullname" . ) "query-fhir-trino-secret" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Trino credentials secret key
+*/}}
+{{- define "recruit.trino.secret.key" -}}
+{{- if .Values.queryFhirTrino.trino.auth.existingSecret.name  -}}
+    {{ printf "%s" (tpl .Values.queryFhirTrino.trino.auth.existingSecret.key $) }}
+{{- else -}}
+    {{ printf "%s" "trino-password" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Trino password
+*/}}
+{{- define "recruit.trino.password" -}}
+    {{ printf "%s" (tpl .Values.queryFhirTrino.trino.auth.password $) }}
 {{- end -}}
