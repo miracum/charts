@@ -46,9 +46,9 @@ version label value
 {{- $tagAsString := (toString .container.image.tag) }}
 {{- if contains "@" $tagAsString }}
 {{- $split := regexSplit "@" $tagAsString 2 }}
-    {{- first $split | quote}}
+    {{- $split | first | trunc 63 | quote }}
 {{- else }}
-    {{- $tagAsString | quote }}
+    {{- $tagAsString | trunc 63 | quote }}
 {{- end }}
 {{- end }}
 
