@@ -52,11 +52,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Return the gPAS basic auth credentials
+Return the gPAS basic auth secret name
 */}}
 {{- define "fhir-pseudonymizer.gpasBasicAuthSecretName" -}}
 {{- if .Values.gpas.auth.basic.existingSecret -}}
     {{- printf "%s" (tpl .Values.gpas.auth.basic.existingSecret $) -}}
+{{- else -}}
+    {{ include "fhir-pseudonymizer.fullname" . }}-gpas-auth
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the gPAS basic auth secret key
+*/}}
+{{- define "fhir-pseudonymizer.gpasBasicAuthSecretKey" -}}
+{{- if .Values.gpas.auth.basic.existingSecret -}}
+    {{- printf "%s" (tpl .Values.gpas.auth.basic.existingSecretKey $) -}}
 {{- else -}}
     {{ include "fhir-pseudonymizer.fullname" . }}-gpas-auth
 {{- end -}}

@@ -29,6 +29,8 @@ gpas:
       password: ""
       # read the password from an existing secret from the `GPAS__AUTH__BASIC__PASSWORD` key
       existingSecret: ""
+      # name of the key inside the existing secret named above
+      existingSecretKey: "GPAS__AUTH__BASIC__PASSWORD"
 
 # container image
 image: # +doc-gen:ignore

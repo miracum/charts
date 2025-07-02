@@ -62,7 +62,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ include "fhir-pseudonymizer.gpasBasicAuthSecretName" . }}
-                  key: GPAS__AUTH__BASIC__PASSWORD
+                  key: {{ include "fhir-pseudonymizer.gpasBasicAuthSecretKey" . }}
             {{- end }}
             {{- end }}
             {{- if or (.Files.Glob "files/anonymization.yaml") .Values.anonymizationConfig }}
