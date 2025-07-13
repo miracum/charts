@@ -2445,6 +2445,48 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/obiba/opal to sha256:c437d64e17d425af26356089c46d41a61130050695f501728eb3ed09b3060262"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    apiVersion: v2
+    created: "2025-07-13T10:24:01.329787158Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.15
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.3
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: a84b0a3fa2e063a8a43b6e1d2aa27dfde89125f8147a891271df8b1eda2bfcd1
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: datashield
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/datashield-0.7.109/datashield-0.7.109.tgz
+    version: 0.7.109
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:6c52233239cf6680234f248120e2696de7af93e9d636a08ee762eb2e99ae26a3"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -18066,4 +18108,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-07-04T08:29:29.444671777Z"
+generated: "2025-07-13T10:24:01.330678685Z"
