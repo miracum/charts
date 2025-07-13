@@ -23,7 +23,7 @@ dependencies:
     version: 2.31.3
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.108
+version: 0.7.109
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -37,4 +37,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/busybox to sha256:6c52233239cf6680234f248120e2696de7af93e9d636a08ee762eb2e99ae26a3"
+      description: "Updated docker.io/obiba/opal to sha256:c437d64e17d425af26356089c46d41a61130050695f501728eb3ed09b3060262"
