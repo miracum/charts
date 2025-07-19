@@ -1,9 +1,9 @@
 dependencies:
 - name: prometheus-operator-crds
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 21.0.0
+  version: 22.0.1
 - name: kyverno
   repository: oci://ghcr.io/kyverno/charts
   version: 3.4.4
-digest: sha256:aef5a74e51035c12b85c45ef7f0162c51591222bcd5075fb24bc63eef82a8b36
-generated: "2025-06-26T16:27:11.659029342Z"
+digest: sha256:0db067b318cef183ef0e89ffeb66c86c9ae7aeebb929a31c0143d801ce8cab5b
+generated: "2025-07-19T20:23:35.843154188Z"
