@@ -15,14 +15,14 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgresql
-    version: 16.7.15
+    version: 16.7.21
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.enabled
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
 kubeVersion: ">= 1.19.0"
-version: 0.1.1
+version: 0.1.2
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/bitnami/postgresql to docker.io/bitnami/postgresql"
+      description: "Updated postgresql to postgresql"
