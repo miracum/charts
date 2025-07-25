@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name:  {{ include "datashield.fullname" $ }}-rock
+  name:  {{ include "opal.fullname" $ }}-rock
   labels:
-    {{- include "datashield.labels" $ | nindent 4 }}
+    {{- include "opal.labels" $ | nindent 4 }}
     app.kubernetes.io/component: rock
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ include "datashield.fullname" $ }}-rock
+  serviceName: {{ include "opal.fullname" $ }}-rock
   selector:
     matchLabels:
-      {{- include "datashield.selectorLabels" $ | nindent 6 }}
+      {{- include "opal.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: rock
   template:
     metadata:
       labels:
-        {{- include "datashield.selectorLabels" $ | nindent 8 }}
+        {{- include "opal.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: rock
     spec:
       {{- with .imagePullSecrets }}
@@ -25,7 +25,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
-      serviceAccountName: {{ include "datashield.rock.serviceAccountName" $ }}
+      serviceAccountName: {{ include "opal.rock.serviceAccountName" $ }}
       automountServiceAccountToken: {{ .serviceAccount.automountServiceAccountToken }}
       initContainers:
         - name: first-run
@@ -61,22 +61,22 @@ spec:
             - name: ROCK_ADMINISTRATOR_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.admin-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.admin-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.admin-secret-key" $ }}
             - name: ROCK_MANAGER_NAME
               value: {{ .auth.manager.name }}
             - name: ROCK_MANAGER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.manager-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.manager-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.manager-secret-key" $ }}
             - name: ROCK_USER_NAME
               value: {{ .auth.user.name }}
             - name: ROCK_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.user-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.user-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.user-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.user-secret-key" $ }}
       containers:
         - name: rock-log-collector
           image: "{{ $.Values.logCollectorSidecar.image.registry }}/{{ $.Values.logCollectorSidecar.image.repository }}:{{ $.Values.logCollectorSidecar.image.tag }}"
@@ -161,22 +161,22 @@ spec:
             - name: ROCK_ADMINISTRATOR_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.admin-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.admin-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.admin-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.admin-secret-key" $ }}
             - name: ROCK_MANAGER_NAME
               value: {{ .auth.manager.name }}
             - name: ROCK_MANAGER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.manager-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.manager-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.manager-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.manager-secret-key" $ }}
             - name: ROCK_USER_NAME
               value: {{ .auth.user.name }}
             - name: ROCK_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "datashield.rock.auth.user-secret-name" $ }}
-                  key: {{ include "datashield.rock.auth.user-secret-key" $ }}
+                  name: {{ include "opal.rock.auth.user-secret-name" $ }}
+                  key: {{ include "opal.rock.auth.user-secret-key" $ }}
           volumeMounts:
             - name: tmp
               mountPath: /tmp
@@ -191,7 +191,7 @@ spec:
           emptyDir: {}
         - name: init-script
           configMap:
-            name: {{ include "datashield.fullname" $ }}-rock-init-script
+            name: {{ include "opal.fullname" $ }}-rock-init-script
             defaultMode: 0777
   {{- if and .persistence.enabled .persistence.existingClaim }}
         - name: data
@@ -221,9 +221,9 @@ spec:
           requests:
             storage: {{ .persistence.size | quote }}
         {{- if .persistence.selector }}
-        selector: {{- include "datashield.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
+        selector: {{- include "opal.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "datashield.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
   {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:

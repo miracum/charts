@@ -1,11 +1,11 @@
 {{- if .Values.opal.ingress.enabled -}}
-{{- $fullName := printf "%s-opal" (include "datashield.fullname" .) -}}
+{{- $fullName := printf "%s-opal" (include "opal.fullname" .) -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "datashield.labels" . | nindent 4 }}
+    {{- include "opal.labels" . | nindent 4 }}
   {{- with .Values.opal.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

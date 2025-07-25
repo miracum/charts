@@ -1,5 +1,5 @@
 apiVersion: v2
-name: datashield
+name: opal
 description: A Helm chart for deploying the Opal server and a DataShield rock cluster.
 type: application
 home: https://opaldoc.obiba.org/en/latest/index.html
@@ -21,9 +21,8 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
-deprecated: true
 kubeVersion: ">= 1.19.0"
-version: 1.0.0
+version: 0.1.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,5 +35,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: deprecated
-      description: "This chart has been renamed to opal."
+    - kind: changed
+      description: "First release of the renamed opal chart, previously known as datashield."
