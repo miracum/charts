@@ -1,8 +1,6 @@
-# datashield
+# opal
 
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
-
-> **:exclamation: This Helm Chart is deprecated!**
 
 A Helm chart for deploying the Opal server and a DataShield rock cluster.
 
@@ -11,7 +9,7 @@ A Helm chart for deploying the Opal server and a DataShield rock cluster.
 ## Installation
 
 ```sh
-helm install --create-namespace -n datashield datashield oci://ghcr.io/miracum/charts/datashield
+helm install --create-namespace -n opal opal oci://ghcr.io/miracum/charts/opal
 ```
 
 ## Values
