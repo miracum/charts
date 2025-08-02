@@ -204,6 +204,14 @@ opal:
     # -- whether to automount the SA token.
     automountServiceAccountToken: false
 
+  networkPolicy:
+    # -- whether to create a NetworkPolicy for the rock pods
+    enabled: true
+    # -- add extra ingress rules to the NetworkPolicy. Necessary for e.g. ingress controllers.
+    extraIngress: []
+    # -- add extra egress rules to the NetworkPolicy
+    extraEgress: []
+
 # @ignored
 waitForDatabaseInitContainer:
   image:
@@ -385,6 +393,15 @@ rock:
     periodSeconds: 20
     successThreshold: 1
     timeoutSeconds: 30
+
+  networkPolicy:
+    # -- whether to create a NetworkPolicy for the rock pods
+    enabled: true
+    # -- add extra ingress rules to the NetworkPolicy
+    extraIngress: []
+    # -- Add extra egress rules to the NetworkPolicy
+    # If R packages are to be installed, egress to CRAN is needed and needs to be manually added.
+    extraEgress: []
 
 # @ignored
 curl:
