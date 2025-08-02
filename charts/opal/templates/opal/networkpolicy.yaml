@@ -1,0 +1,63 @@
+{{- if .Values.opal.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "opal.fullname" . }}-opal
+  labels:
+    {{- include "opal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: opal
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "opal.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: opal
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "opal.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: test-connection
+      ports:
+        - port: http
+          protocol: TCP
+  {{- if .Values.opal.networkPolicy.extraIngress }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.opal.networkPolicy.extraIngress "context" .) | nindent 4 }}
+  {{- end }}
+  egress:
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+    # Allow egress to the rock servers
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "opal.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: rock
+      ports:
+        - port: http
+          protocol: TCP
+  {{- if .Values.postgresql.enabled }}
+    # Allow egress to the DB
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: {{ .Release.Name }}
+              app.kubernetes.io/name: postgresql
+              app.kubernetes.io/component: primary
+      ports:
+        - port: 5432
+          protocol: TCP
+  {{- end }}
+  {{- if .Values.opal.networkPolicy.extraEgress }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.opal.networkPolicy.extraEgress "context" .) | nindent 4 }}
+  {{- end }}
+{{- end }}

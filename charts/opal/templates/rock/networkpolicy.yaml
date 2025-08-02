@@ -1,3 +1,4 @@
+{{- if .Values.rock.networkPolicy.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -10,6 +11,9 @@ spec:
     matchLabels:
       {{- include "opal.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: rock
+  policyTypes:
+    - Ingress
+    - Egress
   ingress:
     - from:
         - podSelector:
@@ -22,3 +26,19 @@ spec:
               app.kubernetes.io/component: test-connection
       ports:
         - port: http
+  {{- if .Values.rock.networkPolicy.extraIngress}}
+    {{- include "common.tplvalues.render" (dict "value" .Values.rock.networkPolicy.extraIngress "context" .) | nindent 4 }}
+  {{- end }}
+  egress:
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+  {{- if .Values.rock.networkPolicy.extraEgress }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.rock.networkPolicy.extraEgress "context" .) | nindent 4 }}
+  {{- end }}
+{{- end }}

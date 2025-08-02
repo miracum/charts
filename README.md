@@ -21,6 +21,16 @@ helm repo update
    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
    ```
 
+1. (Optional) With Calico as a CNI to test NetworkPolicy resources
+
+   ```sh
+   kind create cluster --config hack/kind-config-calico.yaml
+   kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/operator-crds.yaml
+   kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/tigera-operator.yaml
+   kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml
+   watch kubectl get pods -l k8s-app=calico-node -A
+   ```
+
 1. Make changes to the charts
 
 1. Bump the version in the changed Chart.yaml according to SemVer (The `ct lint` step below will complain if you forget to update the version).
