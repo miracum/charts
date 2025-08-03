@@ -16,7 +16,7 @@ spec:
     app.kubernetes.io/name: {{ $name }}
     app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
   ports:
-    {{ if .container.ports}}
+    {{ if .container.ports }}
     {{- range $port := .container.ports }}
     - protocol: {{ $port.protocol | default "TCP" }}
       port: {{ $port.containerPort }}

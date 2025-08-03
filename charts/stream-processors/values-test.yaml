@@ -11,6 +11,9 @@ securityContext:
   seccompProfile:
     type: RuntimeDefault
 
+defaultNetworkPolicy:
+  enabled: true
+
 processors:
   nginx:
     replicaCount: 1

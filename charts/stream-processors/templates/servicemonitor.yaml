@@ -19,7 +19,7 @@ metadata:
     {{- toYaml .additionalLabels | nindent 4 }}
     {{- end }}
 spec:
-  {{ if .endpoints}}
+  {{ if .endpoints }}
   {{- with .endpoints }}
   endpoints:
     {{- toYaml . | nindent 4 }}
@@ -27,7 +27,7 @@ spec:
   {{- else -}}
   endpoints:
     - port: "http-metrics"
-      path: {{ .path | default "/metrics"}}
+      path: {{ .path | default "/metrics" }}
       {{- if .interval }}
       interval: {{ .interval }}
       {{- end }}
