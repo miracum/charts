@@ -1,0 +1,62 @@
+{{- if .Values.defaultNetworkPolicy.enabled }}
+{{- range $name, $spec := .Values.processors }}
+{{- with $spec }}
+{{- if (or (not .networkPolicy) (and .networkPolicy .networkPolicy.enabled)) }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/version: {{ include "stream-processors.version-label-value" . }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+  {{- if $.Values.defaultNetworkPolicy.extraIngress }}
+    {{- include "common.tplvalues.render" (dict "value" $.Values.defaultNetworkPolicy.extraIngress "context" .) | nindent 4 }}
+  {{- end }}
+  {{- if (and .networkPolicy .networkPolicy.extraIngress) }}
+    {{- include "common.tplvalues.render" (dict "value" .networkPolicy.extraIngress "context" .) | nindent 4 }}
+  {{- end }}
+  egress:
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # Allow egress to the Kafka components
+    - to:
+        - podSelector:
+            matchLabels:
+              strimzi.io/cluster: "{{ $.Values.strimziClusterName }}"
+      ports:
+        # not ideal to have it hardcoded. Oh well, it's this chart's conventions.
+        - port: 9093
+          protocol: TCP
+        - port: 9092
+          protocol: TCP
+  {{- if $.Values.defaultNetworkPolicy.extraEgress }}
+    {{- include "common.tplvalues.render" (dict "value" $.Values.defaultNetworkPolicy.extraEgress "context" .) | nindent 4 }}
+  {{- end }}
+  {{- if (and .networkPolicy .networkPolicy.extraEgress) }}
+    {{- include "common.tplvalues.render" (dict "value" .networkPolicy.extraEgress "context" .) | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
