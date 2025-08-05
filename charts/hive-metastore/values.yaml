@@ -1,0 +1,302 @@
+# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# @ignored
+image:
+  registry: ghcr.io
+  repository: miracum/util-images/hive-metastore
+  tag: v1.3.0@sha256:4b83eb4b7efd3f3dcd70d255336605e6cc5e028115460016837009664753d021
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# @ignored
+podSecurityContext:
+  runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+# @ignored
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: false
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 9083
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if .resources is set (.resources is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "small"
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/>
+# @ignored
+livenessProbe:
+  tcpSocket:
+    port: 9083
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+readinessProbe:
+  tcpSocket:
+    port: 9083
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- extra environment variables to apply to the container
+extraEnv: []
+# - name: UseSystemTextJsonFhirSerializer
+#   value: "true"
+
+# -- a sidecar container to collect logs from the main container
+hiveLogCollector:
+  # @ignored
+  image:
+    registry: docker.io
+    repository: library/busybox
+    tag: 1.37.0-uclibc@sha256:6c52233239cf6680234f248120e2696de7af93e9d636a08ee762eb2e99ae26a3
+    pullPolicy: IfNotPresent
+  # -- container security context applied to init containers and the Helm test pods
+  # @ignored
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    runAsUser: 65534
+    runAsGroup: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  # -- more information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the container resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- a hive-site.xml template to use for the Hive Metastore config. It's processed by envsubst first.
+hiveSiteXmlTemplate: |
+  <?xml version="1.0"?>
+  <configuration>
+      <property>
+          <name>hive.metastore.warehouse.dir</name>
+          <value>file:///tmp/warehouse</value>
+      </property>
+      <property>
+          <name>javax.jdo.option.ConnectionURL</name>
+          <value>jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}</value>
+      </property>
+      <property>
+          <name>javax.jdo.option.ConnectionUserName</name>
+          <value>${PGUSER}</value>
+      </property>
+      <property>
+          <name>javax.jdo.option.ConnectionPassword</name>
+          <value>${PGPASSWORD}</value>
+      </property>
+      <property>
+          <name>javax.jdo.option.ConnectionDriverName</name>
+          <value>org.postgresql.Driver</value>
+      </property>
+      <property>
+          <name>metastore.storage.schema.reader.impl</name>
+          <value>org.apache.hadoop.hive.metastore.SerDeStorageSchemaReader</value>
+      </property>
+      <property>
+          <name>hive.security.authorization.createtable.owner.grants</name>
+          <value>ALL</value>
+      </property>
+      <property>
+          <name>hive.security.metastore.authorization.auth.reads</name>
+          <value>true</value>
+      </property>
+      <property>
+          <name>hive.users.in.admin.role</name>
+          <value>admin</value>
+      </property>
+      <property>
+          <name>hive.input.format</name>
+          <value>io.delta.hive.HiveInputFormat</value>
+      </property>
+      <property>
+          <name>hive.tez.input.format</name>
+          <value>io.delta.hive.HiveInputFormat</value>
+      </property>
+  </configuration>
+
+# -- container security context applied to init containers and the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+tests:
+  image:
+    registry: docker.io
+    repository: library/busybox
+    tag: 1.37.0-uclibc@sha256:6c52233239cf6680234f248120e2696de7af93e9d636a08ee762eb2e99ae26a3
+    pullPolicy: IfNotPresent
+  automountServiceAccountToken: false
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # configure the test pods resource requests and limits
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+database:
+  # -- database hostname of an external database. Only used if `postgresql.enabled` is set to `false`.
+  host: "host.example.com"
+  # -- port used to connect to the postgres DB
+  port: 5432
+  # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+  database: "hive_metastore"
+  # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+  username: "postgres"
+  # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+  password: "postgres"
+  existingSecret:
+    # -- name of an existing secret containing the password to the DB.
+    name: ""
+    # -- name of the key in the existing secret to use as the password to the DB.
+    key: "postgresql-postgres-password"
+  # -- schema used for the tables.
+  schema: "hive"
+
+# @ignored
+postgresql:
+  enabled: true
+  auth:
+    database: hive_metastore
+
+# @ignored
+waitForDatabaseInitContainer:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 17.5.0-debian-12-r20@sha256:42a8200d35971f931b869ef5252d996e137c6beb4b8f1b6d2181dc7d1b6f62e0
+    pullPolicy: IfNotPresent

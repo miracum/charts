@@ -1,0 +1,17 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.typeBadge" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+## Installation
+
+```sh
+helm install -n hive-metastore --create-namespace hive-metastore oci://ghcr.io/miracum/charts/hive-metastore
+```
+
+{{ template "chart.valuesSection" . }}

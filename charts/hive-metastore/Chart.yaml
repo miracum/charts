@@ -1,0 +1,30 @@
+apiVersion: v2
+name: hive-metastore
+description: A Helm chart for deploying the Hive Metastore
+type: application
+sources:
+  - https://github.com/apache/hive
+home: https://hive.apache.org/
+dependencies:
+  - name: postgresql
+    version: 16.7.21
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: postgresql.enabled
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.31.3
+version: 0.1.0
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
+    - kind: changed
+      description: "First release"
