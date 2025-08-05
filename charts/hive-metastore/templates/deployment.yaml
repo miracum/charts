@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hive-metastore.fullname" . }}
+  labels:
+    {{- include "hive-metastore.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "hive-metastore.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "hive-metastore.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "hive-metastore.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: wait-for-db
+          image: "{{ .Values.waitForDatabaseInitContainer.image.registry }}/{{ .Values.waitForDatabaseInitContainer.image.repository }}:{{ .Values.waitForDatabaseInitContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.waitForDatabaseInitContainer.image.pullPolicy }}
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: PGHOST
+              value: {{ include "hive-metastore.database.host" $ }}
+            - name: PGPORT
+              value: {{ include "hive-metastore.database.port" $ | quote }}
+            - name: PGUSER
+              value: {{ include "hive-metastore.database.user" $ }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              until pg_isready; do
+                echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
+                sleep 15;
+              done;
+      containers:
+        - name: hive-log-collector
+          image: "{{ .Values.hiveLogCollector.image.registry }}/{{ .Values.hiveLogCollector.image.repository }}:{{ .Values.hiveLogCollector.image.tag }}"
+          imagePullPolicy: {{ .Values.hiveLogCollector.image.pullPolicy }}
+          args: [/bin/sh, -c, "tail -n+1 -F /tmp/hive/hive.log"]
+          {{- with $.Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.hiveLogCollector.resources }}
+          resources: {{- toYaml .Values.hiveLogCollector.resources | nindent 12 }}
+          {{- else if ne .Values.hiveLogCollector.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.hiveLogCollector.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["true"]
+          readinessProbe:
+            exec:
+              command: ["true"]
+          volumeMounts:
+            - name: tmp-hive
+              mountPath: /tmp/hive
+              readOnly: true
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/bash", "-c", "/opt/hive/scripts/envsubst-hive-site-config.sh"]
+          env:
+            - name: SERVICE_NAME
+              value: metastore
+            - name: DB_DRIVER
+              value: postgres
+            - name: PGHOST
+              value: {{ include "hive-metastore.database.host" $ }}
+            - name: PGPORT
+              value: {{ include "hive-metastore.database.port" $ | quote }}
+            - name: PGUSER
+              value: {{ include "hive-metastore.database.user" $ }}
+            - name: PGDATABASE
+              value: {{ include "hive-metastore.database.name" $ }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "hive-metastore.database.db-secret-name" . }}
+                  key: {{ include "hive-metastore.database.db-secret-key" . }}
+          ports:
+            - name: tcp-thrift
+              containerPort: 9083
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.resources }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          {{- else if ne .Values.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: tmp-hive
+              mountPath: /tmp/hive
+              readOnly: false
+            - name: config
+              mountPath: /opt/hive/scripts/envsubst-hive-site-config.sh
+              subPath: envsubst-hive-site-config.sh
+              readOnly: true
+            - name: config
+              mountPath: /hive-site.tmpl.xml
+              subPath: hive-site.tmpl.xml
+              readOnly: false
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: "{{ include "hive-metastore.fullname" . }}-config"
+            defaultMode: 0777
+        - name: tmp-hive
+          emptyDir:
+            sizeLimit: 1Gi
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

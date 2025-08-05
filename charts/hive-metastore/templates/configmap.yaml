@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hive-metastore.fullname" . }}-config
+  labels:
+    {{- include "hive-metastore.labels" . | nindent 4 }}
+data:
+{{- (.Files.Glob "files/envsubst-hive-site-config.sh").AsConfig | nindent 2 }}
+  hive-site.tmpl.xml: |
+{{ .Values.hiveSiteXmlTemplate | indent 4 }}
