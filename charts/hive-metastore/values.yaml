@@ -279,10 +279,11 @@ database:
   username: "postgres"
   # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
   password: "postgres"
-  # -- name of an existing secret containing the password to the DB.
-  existingSecret: ""
-  # -- name of the key in `webApi.db.existingSecret` to use as the password to the DB.
-  existingSecretKey: "postgresql-postgres-password"
+  existingSecret:
+    # -- name of an existing secret containing the password to the DB.
+    name: ""
+    # -- name of the key in the existing secret to use as the password to the DB.
+    key: "postgresql-postgres-password"
   # -- schema used for the tables.
   schema: "hive"
 

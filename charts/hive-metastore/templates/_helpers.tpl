@@ -116,11 +116,11 @@ Get the name of the secret containing the DB password
     {{- else -}}
         {{ ( include "hive-metastore.postgresql.fullname" . ) }}
     {{- end -}}
-{{- else if .Values.database.existingSecret -}}
-    {{ .Values.database.existingSecret | quote }}
+{{- else if .Values.database.existingSecret.name -}}
+    {{ .Values.database.existingSecret.name | quote }}
 {{- else -}}
     {{- $fullname := ( include "hive-metastore.fullname" . ) -}}
-    {{ printf "%s-%s" $fullname "db-secret" }}
+    {{ printf "%s-%s" $fullname "db-password" }}
 {{- end -}}
 {{- end -}}
 
@@ -134,8 +134,8 @@ Get the key inside the secret containing the DB user's password
     {{- else -}}
         {{ "postgres-password" }}
     {{- end -}}
-{{- else if .Values.database.existingSecret -}}
-    {{ .Values.database.existingSecretKey | quote }}
+{{- else if .Values.database.existingSecret.name -}}
+    {{ .Values.database.existingSecret.key | quote }}
 {{- else -}}
     {{ "postgres-password" }}
 {{- end -}}
