@@ -3,11 +3,6 @@ common:
   # metadata.annotations to apply to all deployments
   deploymentAnnotations: {}
 
-tracing:
-  # enables tracing for all supported components
-  # by default, the components export traces in Jaeger format to `localhost:16686`
-  enabled: false
-
 # number of replicas. The application is well-suited to scale horizontally if required.
 replicaCount: 1
 
@@ -189,23 +184,26 @@ sinks:
     url: ""
 
 kafka:
-  # if enabled, the FHIR Gateway will read resources from the specified Kafka topic `inputTopic`
+  # if enabled, the FHIR Gateway will read resources from the specified Kafka topics `inputTopics`
   # and write them to `outputTopic`. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
   enabled: false
   # the Kafka consumer group id. Evaluated as a template.
   groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
-  # name of the Kafka topic to read resources from
-  # DEPRECATED: use `kafka.inputTopics` (note the s) instead.
-  inputTopic: fhir-raw
   # list of Kafka topics to read FHIR resources from
   inputTopics:
     - fhir-raw
-  # name of the topic to write processed resources to
-  outputTopic: fhir.post-gatway
   # either PLAINTEXT or SSL
   securityProtocol: PLAINTEXT
   # name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
   strimziClusterName: "my-cluster"
+  generateOutputTopics:
+    # Allows for dynamically generating the Kafka output topic's name based on the input topic.
+    # Set to a regular expression which is applied to the input topic and the first match is replaced
+    # with the value of `kafka.generateOutputTopics.replaceWith`.
+    # You can set this to "^" to add a prefix to the output topic.
+    matchExpression: "^"
+    # value to replace the first regex match with
+    replaceMatchWith: "fhir.post-gateway."
 
 # see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for details
 postgresql:
@@ -324,6 +322,10 @@ fhir-pseudonymizer:
     # sets the pseudonymizer's service port to a fixed one here to be able to use the value
     # within the fhir-gateway's templates.
     port: 8080
+
+  # set the pseudonymization service backend
+  pseudonymizationService: None
+
   vfps:
     nameOverride: gateway-vfps
     postgresql:
