@@ -108,23 +108,15 @@ spec:
               value: "true"
             - name: MANAGEMENT_SERVER_PORT
               value: "8081"
-            - name: OPENTRACING_JAEGER_ENABLED
-              value: {{ .Values.tracing.enabled | quote }}
-            {{- if not .Values.tracing.enabled }}
-            - name: JAEGER_SERVICE_NAME
-              value: "fhir-gateway"
-            {{- end }}
             {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
             - name: SERVICES_KAFKA_ENABLED
               value: {{ .Values.kafka.enabled | quote }}
             - name: INPUT_TOPIC
-              {{- if .Values.kafka.inputTopics }}
               value: {{ include "fhir-gateway.utils.joinListWithComma" .Values.kafka.inputTopics }}
-              {{- else }}
-              value: {{ .Values.kafka.inputTopic | quote }}
-              {{- end }}
-            - name: OUTPUT_TOPIC
-              value: {{ .Values.kafka.outputTopic | quote }}
+            - name: SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION
+              value: {{ .Values.kafka.generateOutputTopics.matchExpression | quote }}
+            - name: SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_REPLACE_WITH
+              value: {{ .Values.kafka.generateOutputTopics.replaceMatchWith | quote }}
             - name: GROUP_ID
               value: {{ include "fhir-gateway.tplvalues.render" (dict "value" .Values.kafka.groupId "context" $) }}
             - name: BOOTSTRAP_SERVERS
@@ -168,15 +160,15 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+          {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
             - name: kafka-certs
               mountPath: "/opt/kafka-certs"
               readOnly: true
-{{- end }}
+          {{- end }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
-{{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+        {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
         - name: kafka-certs
           projected:
             sources:
@@ -196,7 +188,7 @@ spec:
                     path: user.p12
                   - key: user.key
                     path: user.key
-{{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

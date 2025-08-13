@@ -67,10 +67,6 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" .Values.loincConverter.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
-            {{- if .Values.tracing.enabled }}
-            - name: TRACING_ENABLED
-              value: "true"
-            {{- end }}
             {{- if .Values.loincConverter.extraEnv }}
               {{ toYaml .Values.loincConverter.extraEnv | nindent 12 }}
             {{- end }}
