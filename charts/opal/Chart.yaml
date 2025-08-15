@@ -22,7 +22,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
 kubeVersion: ">= 1.19.0"
-version: 0.2.0
+version: 0.2.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Added NetworkPolicy resources for opal and made configuration more flexible"
+      description: "Updated docker.io/library/busybox to docker.io/library/busybox"
