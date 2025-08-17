@@ -1,0 +1,17 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.typeBadge" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+## Installation
+
+```sh
+helm install --create-namespace -n fhir-gateway fhir-gateway oci://ghcr.io/miracum/charts/fhir-gateway
+```
+
+{{ template "chart.valuesSection" . }}
