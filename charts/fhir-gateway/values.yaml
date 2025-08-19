@@ -1,42 +1,42 @@
 # Default values for fhir-gateway.
 common:
-  # metadata.annotations to apply to all deployments
+  # -- metadata.annotations to apply to all deployments
   deploymentAnnotations: {}
 
-tracing:
-  # enables tracing for all supported components
-  # by default, the components export traces in Jaeger format to `localhost:16686`
-  enabled: false
-
-# number of replicas. The application is well-suited to scale horizontally if required.
+# -- number of replicas. The application is well-suited to scale horizontally if required.
 replicaCount: 1
 
-# the container image for the fhir-gateway
-image: # +doc-gen:ignore
+# @ignored
+image:
   registry: ghcr.io
   repository: miracum/fhir-gateway
   tag: v3.14.16@sha256:5f8fe8c6774a9d5961b8fd48a96720281eb5b0de9cf08783c43a786bac737fff
   pullPolicy: IfNotPresent
 
-# image pull secrets for the pod
+# -- image pull secrets for the pod
 imagePullSecrets: []
 
-# String to partially override fullname template (will maintain the release name)
+# -- String to partially override fullname template (will maintain the release name)
 nameOverride: ""
 
-# String to fully override fullname template
+# -- String to fully override fullname template
 fullnameOverride: ""
 
-# annotations to apply to the pod
+# -- annotations to apply to the pod
 podAnnotations: {}
 
-# pod security context
+# @ignored
 podSecurityContext:
-  {}
-  # fsGroup: 2000
+  fsGroup: 65532
+  fsGroupChangePolicy: OnRootMismatch
+  runAsGroup: 65532
+  runAsUser: 65532
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
 
-# container security context
-securityContext: # +doc-gen:ignore
+# @ignored
+securityContext:
   allowPrivilegeEscalation: false
   privileged: false
   capabilities:
@@ -49,49 +49,46 @@ securityContext: # +doc-gen:ignore
   seccompProfile:
     type: RuntimeDefault
 
-# configure the init container used to wait for postgres database connectivity
-# used by the query module to wait for the OMOP database and the notify module
-# to wait for its HA database - if `notify.ha.enabled=true`
 waitForPostgresInitContainer:
-  # image to use for the init container which waits until the database
-  # is ready to accept connections
-  image: # +doc-gen:ignore
+  # @ignored
+  image:
     registry: docker.io
     repository: bitnami/postgresql
     tag: 17.5.0-debian-12-r20@sha256:42a8200d35971f931b869ef5252d996e137c6beb4b8f1b6d2181dc7d1b6f62e0
     pullPolicy: IfNotPresent
 
-# the service used to expose the FHIR GW REST endpoint
-service: # +doc-gen:break
+service:
+  # -- service type
   type: ClusterIP
+  # -- port of the FHIR REST endpoint
   port: 8080
+  # -- port of the actuator/metrics endpoint
   metricsPort: 8081
 
 ingress:
-  # if enabled, create an Ingress to expose the FHIR Gateway outside the cluster
+  # -- if enabled, create an Ingress to expose the FHIR Gateway outside the cluster
   enabled: false
-  # ingress annotations
+  # -- ingress annotations
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # ingressClassName field
+  # -- the ingressClassName
   ingressClassName: ""
-  # configure the hostname
+  # -- configure the hostname
   hosts:
     - host: chart-example.local
       paths: ["/"]
-  # TLS config
+  # -- TLS config
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
-# set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+# -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
 # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
 resourcesPreset: "small"
-# -- configure the resources used by the log collector sidecar container used to tail the
-# filesystem-stored log files
+# -- manually set the resource requests and limits
 resources: {}
 # limits:
 #   cpu: 100m
@@ -100,23 +97,23 @@ resources: {}
 #   cpu: 100m
 #   memory: 128Mi
 
-# node labels for pods assignment
+# -- node labels for pods assignment
 # see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>
 nodeSelector: {}
 
-# tolerations for pods assignment
+# -- tolerations for pods assignment
 # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
 tolerations: []
 
-# affinity for pods assignment
+# -- affinity for pods assignment
 # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
 affinity: {}
 
-# extra environment vars to set on the FHIR gateway container
+# -- extra environment vars to set on the FHIR gateway container
 extraEnv: []
 
-# readiness probe
-readinessProbe: # +doc-gen:ignore
+# @ignored
+readinessProbe:
   enabled: true
   httpGet:
     path: /readyz
@@ -127,8 +124,8 @@ readinessProbe: # +doc-gen:ignore
   successThreshold: 1
   timeoutSeconds: 5
 
-# liveness probe
-livenessProbe: # +doc-gen:ignore
+# @ignored
+livenessProbe:
   enabled: true
   httpGet:
     path: /livez
@@ -141,20 +138,20 @@ livenessProbe: # +doc-gen:ignore
 
 metrics:
   serviceMonitor:
-    # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+    # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
     enabled: false
-    # additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
+    # -- additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
     additionalLabels: {}
     # namespace: monitoring
     # interval: 30s
     # scrapeTimeout: 10s
 
 serviceAccount:
-  # -- Specifies whether a service account should be created.
+  # -- specifies whether a service account should be created.
   create: false
-  # -- Annotations to add to the service account
+  # -- annotations to add to the service account
   annotations: {}
-  # -- The name of the service account to use.
+  # -- the name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
   # -- whether to automount the SA token.
@@ -162,68 +159,71 @@ serviceAccount:
 
 sinks:
   postgres:
-    # if enabled, writes all received FHIR resources to a Postgres DB
+    # -- if enabled, writes all received FHIR resources to a Postgres DB
     # if `postgresql.enabled=true`, then a Postgres DB is started as part of this
     # installation. If `postgresql.enabled=false`, then `sinks.postgres.external.*` is used.
     enabled: true
     external:
-      # host or server name
+      # -- host or server name
       host: ""
-      # port
+      # -- port
       port: "5432"
-      # name of the database to connect to
+      # -- name of the database to connect to
       database: ""
-      # username to authenticate as
+      # -- username to authenticate as
       username: ""
-      # password for the user
+      # -- password for the user
       password: ""
-      # can be used to specify the name of an existing secret containing the PostgreSQL password.
+      # -- can be used to specify the name of an existing secret containing the PostgreSQL password.
       # An alternative to setting the password above.
       existingSecret: ""
-      # the key inside the `existingSecret` containing the password.
+      # -- the key inside the `existingSecret` containing the password.
       existingSecretKey: "postgresql-password"
   fhirServer:
-    # if enabled, sends all received resources to the specified FHIR server
+    # -- if enabled, sends all received resources to the specified FHIR server
     enabled: false
-    # URL of the FHIR server. Support for authentication is not implemented.
+    # -- URL of the FHIR server. Set basic auth parameters via `extraEnv`
     url: ""
 
 kafka:
-  # if enabled, the FHIR Gateway will read resources from the specified Kafka topic `inputTopic`
-  # and write them to `outputTopic`. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
+  # -- if enabled, the FHIR Gateway will read resources from the specified Kafka topics `inputTopics`
+  # and write them to dynamic output topics. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
   enabled: false
-  # the Kafka consumer group id. Evaluated as a template.
+  # -- the Kafka consumer group id. Evaluated as a template.
   groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
-  # name of the Kafka topic to read resources from
-  # DEPRECATED: use `kafka.inputTopics` (note the s) instead.
-  inputTopic: fhir-raw
-  # list of Kafka topics to read FHIR resources from
+  # -- list of Kafka topics to read FHIR resources from
   inputTopics:
     - fhir-raw
-  # name of the topic to write processed resources to
-  outputTopic: fhir.post-gatway
-  # either PLAINTEXT or SSL
+  # -- either PLAINTEXT or SSL
   securityProtocol: PLAINTEXT
-  # name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
+  # -- name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
   strimziClusterName: "my-cluster"
+  generateOutputTopics:
+    # -- Allows for dynamically generating the Kafka output topic's name based on the input topic.
+    # Set to a regular expression which is applied to the input topic and the first match is replaced
+    # with the value of `kafka.generateOutputTopics.replaceWith`.
+    # You can set this to "^" to add a prefix to the output topic.
+    matchExpression: "^"
+    # -- value to replace the first regex match with
+    replaceMatchWith: "fhir.post-gateway."
 
-# see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for details
 postgresql:
-  # enabled the included Postgres DB
+  # -- enabled the included Postgres DB
   # see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for configuration options
   enabled: true
   auth:
-    # name of the database to create
+    # -- name of the database to create
     # see: <https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run>
     database: "fhir_gateway"
-    # Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    # -- assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
     enablePostgresUser: true
 
 loincConverter:
-  # whether to enable the LOINC conversion and harmonization service
+  # -- whether to enable the LOINC conversion and harmonization service
   enabled: true
 
-  image: # +doc-gen:ignore
+  # @ignored
+  image:
     registry: ghcr.io
     repository: miracum/loinc-conversion
     tag: v1.15.9@sha256:15b2e9ee38060b46499f0a412634d6f14a850a6a3d57f667bece5bb44f3359b5
@@ -231,30 +231,35 @@ loincConverter:
 
   metrics:
     serviceMonitor:
-      # if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
+      # -- if enabled, creates a ServiceMonitor instance for Prometheus Operator-based monitoring
       enabled: false
-      # additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
+      # -- additional labels for the ServiceMonitor resource, e.g. `release: prometheus`
       additionalLabels: {}
       # namespace: monitoring
       # interval: 30s
       # scrapeTimeout: 10s
 
-  # if necessary, the service can easily scale horizontally
+  # -- if necessary, the service can easily scale horizontally
   replicaCount: 1
 
-  # credentials to use when pulling the image
+  # -- credentials to use when pulling the image
   imagePullSecrets: []
 
-  # annotations for the pod
+  # -- annotations for the pod
   podAnnotations: {}
 
-  # the pod security context
+  # @ignored
   podSecurityContext:
-    {}
-    # fsGroup: 2000
+    fsGroup: 65532
+    fsGroupChangePolicy: OnRootMismatch
+    runAsGroup: 65532
+    runAsUser: 65532
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 
-  # the container security context
-  securityContext: # +doc-gen:ignore
+  # @ignored
+  securityContext:
     allowPrivilegeEscalation: false
     privileged: false
     capabilities:
@@ -262,20 +267,21 @@ loincConverter:
         - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
-    runAsUser: 65534
-    runAsGroup: 65534
+    runAsUser: 65532
+    runAsGroup: 65532
     seccompProfile:
       type: RuntimeDefault
 
-  # service to expose the application
-  service: # +doc-gen:break
+  service:
+    # -- service type
     type: ClusterIP
+    # -- port for the conversion REST endpoint
     port: 8080
 
-  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
   resourcesPreset: "medium"
-  # configure the init containers pods resource requests and limits
+  # -- configure the resource requests and limits manually
   resources: {}
   # limits:
   #   cpu: 100m
@@ -283,47 +289,54 @@ loincConverter:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-  # node labels for pods assignment
+
+  # -- node labels for pods assignment
   # see: <<https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/>>
   nodeSelector: {}
 
-  # tolerations for pods assignment
+  # -- tolerations for pods assignment
   # see: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
   tolerations: []
 
-  # affinity for pods assignment
+  # -- affinity for pods assignment
   # see: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity>
   affinity: {}
 
-  # readiness probe
-  readinessProbe: # +doc-gen:ignore
+  # @ignored
+  readinessProbe:
     failureThreshold: 3
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
     timeoutSeconds: 5
 
-  # liveness probe
-  livenessProbe: # +doc-gen:ignore
+  # @ignored
+  livenessProbe:
     failureThreshold: 3
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
     timeoutSeconds: 5
 
-  # extra environment variables to set on the
+  # -- extra environment variables to set on the loinc conversion container
   extraEnv: []
 
 fhir-pseudonymizer:
-  # whether to enable the FHIR Pseudonymizer - a thin, FHIR-native wrapper on top of gPAS an Vfps
+  # -- whether to enable the FHIR Pseudonymizer - a thin, FHIR-native wrapper on top of gPAS, Vfps, or entici
   # with additional options for anonymization.
   # if this is set to false, then the FHIR gateway will not attempt to pseudonymize/anonymize
   # the resources.
   enabled: true
-  service: # +doc-gen:ignore
+  # @ignored
+  service:
     # sets the pseudonymizer's service port to a fixed one here to be able to use the value
     # within the fhir-gateway's templates.
     port: 8080
+
+  # -- set the pseudonymization service backend
+  pseudonymizationService: None
+
+  # @ignored
   vfps:
     nameOverride: gateway-vfps
     postgresql:
@@ -331,7 +344,7 @@ fhir-pseudonymizer:
       nameOverride: "vfps-postgres"
 
 # @ignored
-curl: # +doc-gen:ignore
+curl:
   image:
     registry: docker.io
     repository: curlimages/curl
@@ -339,7 +352,8 @@ curl: # +doc-gen:ignore
 
 # container security context applied to init containers used by the query, list, and notify modules.
 # also used by the Helm test job pods
-restrictedContainerSecurityContext: # +doc-gen:ignore
+# @ignored
+restrictedContainerSecurityContext:
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
   privileged: false
@@ -352,6 +366,7 @@ restrictedContainerSecurityContext: # +doc-gen:ignore
   seccompProfile:
     type: RuntimeDefault
 
+# @ignored
 tests:
   automountServiceAccountToken: false
   # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
@@ -367,10 +382,10 @@ tests:
   #   memory: 128Mi
 
 initContainers:
-  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
   resourcesPreset: "nano"
-  # configure the init containers pods resource requests and limits
+  # -- configure the init containers pods resource requests and limits manually
   resources: {}
   # limits:
   #   cpu: 100m

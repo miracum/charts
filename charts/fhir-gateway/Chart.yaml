@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
-version: 6.3.132
+version: 7.0.0
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,12 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/fhir-gateway to v3.14.16"
+      description: "⚠️ BREAKING CHANGE: default `fhir-pseudonymizer.pseudonymizationService` to `None`"
+    - kind: removed
+      description: "⚠️ BREAKING CHANGE: tracing configuration"
+    - kind: removed
+      description: "⚠️ BREAKING CHANGE: deprecated `inputTopic` has been replaced with `inputTopics`"
+    - kind: removed
+      description: "⚠️ BREAKING CHANGE: removed static `outputTopic` config. Will now only work with `SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION`"
+    - kind: added
+      description: "`kafka.generateOutputTopics.matchExpression` and `kafka.generateOutputTopics.replaceMatchWith` for dynamic output topic generation"
