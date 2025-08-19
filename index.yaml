@@ -6039,6 +6039,44 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "⚠️ BREAKING CHANGE: default `fhir-pseudonymizer.pseudonymizationService` to `None`"
+        - kind: removed
+          description: "⚠️ BREAKING CHANGE: tracing configuration"
+        - kind: removed
+          description: "⚠️ BREAKING CHANGE: deprecated `inputTopic` has been replaced with `inputTopics`"
+        - kind: removed
+          description: "⚠️ BREAKING CHANGE: removed static `outputTopic` config. Will now only work with `SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION`"
+        - kind: added
+          description: "`kafka.generateOutputTopics.matchExpression` and `kafka.generateOutputTopics.replaceMatchWith` for dynamic output topic generation"
+    apiVersion: v2
+    created: "2025-08-19T11:36:14.2145575Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.21
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.96
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.3
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: ac4edcc0d1315bf8e48ddd87d1df7ec55dcd078b68c2d7f49b4488a437f34d34
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-7.0.0/fhir-gateway-7.0.0.tgz
+    version: 7.0.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/fhir-gateway to v3.14.16"
     apiVersion: v2
     created: "2025-08-15T16:28:14.135974968Z"
@@ -19134,4 +19172,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-15T16:28:14.136810167Z"
+generated: "2025-08-19T11:36:14.215385537Z"
