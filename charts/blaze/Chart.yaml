@@ -16,7 +16,7 @@ dependencies:
     version: 2.31.3
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.10
+version: 0.7.11
 appVersion: "0.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "git leaks ignore AUTH_SECRET in enable-frontend-values.yaml"
+      description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.1.0"
