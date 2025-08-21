@@ -117,6 +117,12 @@ spec:
               value: {{ .Values.kafka.generateOutputTopics.matchExpression | quote }}
             - name: SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_REPLACE_WITH
               value: {{ .Values.kafka.generateOutputTopics.replaceMatchWith | quote }}
+            - name: SERVICES_KAFKA_CONSUME_ONLY_ENABLED
+              value: {{ .Values.kafka.consumeOnly.enabled | quote }}
+            - name: SERVICES_KAFKA_PRODUCE_FROM_API_ENABLED
+              value: {{ .Values.kafka.produceFromAPI.enabled | quote }}
+            - name: SERVICES_KAFKA_PRODUCE_FROM_API_OUTPUT_TOPIC
+              value: {{ .Values.kafka.produceFromAPI.outputTopic | quote }}
             - name: GROUP_ID
               value: {{ include "fhir-gateway.tplvalues.render" (dict "value" .Values.kafka.groupId "context" $) }}
             - name: BOOTSTRAP_SERVERS
