@@ -6075,6 +6075,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Made resource pipeline and repository beans optional."
+        - kind: added
+          description: "Possibility to produce resources to Kafka that have been received from FHIR API"
+    apiVersion: v2
+    created: "2025-08-21T18:44:48.836965891Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.21
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.96
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.3
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: bc1ab34f27025a4c2976a169bc2df64b624da1477b05ed55b7e5f5700f2a16be
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-7.1.0/fhir-gateway-7.1.0.tgz
+    version: 7.1.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "⚠️ BREAKING CHANGE: default `fhir-pseudonymizer.pseudonymizationService` to `None`"
         - kind: removed
           description: "⚠️ BREAKING CHANGE: tracing configuration"
@@ -19282,4 +19314,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-21T10:23:04.095263459Z"
+generated: "2025-08-21T18:44:48.837870433Z"
