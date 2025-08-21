@@ -10,7 +10,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.14.16@sha256:5f8fe8c6774a9d5961b8fd48a96720281eb5b0de9cf08783c43a786bac737fff
+  tag: v3.15.0@sha256:3043b51a3e7c53449e23678414d9bde563e8da980c5b48052b52a6ec8991de77
   pullPolicy: IfNotPresent
 
 # -- image pull secrets for the pod
@@ -206,6 +206,16 @@ kafka:
     matchExpression: "^"
     # -- value to replace the first regex match with
     replaceMatchWith: "fhir.post-gateway."
+  consumeOnly:
+    # -- if enabled, the FHIR Gateway will only read and process resources from the specified Kafka topics `inputTopics`
+    # but not write them back to Kafka
+    enabled: false
+  produceFromAPI:
+    # -- if enabled, the FHIR Gateway will produce resources received from API to the specified Kafka topic `outputTopic`
+    # after they are processed
+    enabled: false
+    # -- the Kafka topic to produce API received resources to
+    outputTopic: "fhir.post-gateway.api.output"
 
 postgresql:
   # -- enabled the included Postgres DB
