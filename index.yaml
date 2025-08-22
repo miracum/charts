@@ -6075,6 +6075,36 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/miracum/fhir-gateway to v3.15.1"
+    apiVersion: v2
+    created: "2025-08-22T18:30:07.689347677Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.21
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.96
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.3
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 29ba5bbf1799804c783cd517e88bce61b4c053a92175b5f8828a74f184b7cc49
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-7.1.1/fhir-gateway-7.1.1.tgz
+    version: 7.1.1
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Made resource pipeline and repository beans optional."
         - kind: added
           description: "Possibility to produce resources to Kafka that have been received from FHIR API"
@@ -19314,4 +19344,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-21T18:44:48.837870433Z"
+generated: "2025-08-22T18:30:07.690488845Z"
