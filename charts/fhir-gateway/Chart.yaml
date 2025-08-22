@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
-version: 7.1.0
+version: 7.1.1
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,6 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Made resource pipeline and repository beans optional."
-    - kind: added
-      description: "Possibility to produce resources to Kafka that have been received from FHIR API"
+      description: "Updated ghcr.io/miracum/fhir-gateway to v3.15.1"
