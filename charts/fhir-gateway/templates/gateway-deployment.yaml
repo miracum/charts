@@ -108,7 +108,7 @@ spec:
               value: "true"
             - name: MANAGEMENT_SERVER_PORT
               value: "8081"
-            {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+            {{- if .Values.kafka.strimziClusterName }}
             - name: SERVICES_KAFKA_ENABLED
               value: {{ .Values.kafka.enabled | quote }}
             - name: INPUT_TOPIC
