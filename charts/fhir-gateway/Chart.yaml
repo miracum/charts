@@ -17,12 +17,14 @@ dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     version: 2.31.3
-version: 7.1.3
+version: 8.0.0
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
-      description: "Fixed possibility to enable produceFromApi although kafka processor is disabled"
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: Changed Kafka configuration value names in favor of a more intuitive and uniform config"
+    - kind: added
+      description: "Added possibility to run Kafka processor independently from KafkaStore"

@@ -10,7 +10,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v3.15.2@sha256:64a57ba949b62d45a90ac09cf183c86779f09a0193a2931719851042b1cfdcef
+  tag: v4.0.0@sha256:0b26a6e955ce7a1b69b33c936379dcaa036df60c6e8f97581dabe7b218b56553
   pullPolicy: IfNotPresent
 
 # -- image pull secrets for the pod
@@ -186,35 +186,35 @@ sinks:
     url: ""
 
 kafka:
-  # -- if enabled, the FHIR Gateway will read resources from the specified Kafka topics `inputTopics`
-  # and write them to dynamic output topics. Requires the Kafka cluster to be configured using <https://strimzi.io/>.
+  # -- if enabled, the FHIR Gateway is able to use Kafka as input and/or output. Requires the Kafka cluster to be configured using <https://strimzi.io/>
   enabled: false
-  # -- the Kafka consumer group id. Evaluated as a template.
-  groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
-  # -- list of Kafka topics to read FHIR resources from
-  inputTopics:
-    - fhir-raw
   # -- either PLAINTEXT or SSL
   securityProtocol: PLAINTEXT
   # -- name of the Strimzi Kafka CRD this gateway should connect to. This is used to resolve the Kafka bootstrap service.
   strimziClusterName: "my-cluster"
-  generateOutputTopics:
-    # -- Allows for dynamically generating the Kafka output topic's name based on the input topic.
-    # Set to a regular expression which is applied to the input topic and the first match is replaced
-    # with the value of `kafka.generateOutputTopics.replaceWith`.
-    # You can set this to "^" to add a prefix to the output topic.
-    matchExpression: "^"
-    # -- value to replace the first regex match with
-    replaceMatchWith: "fhir.post-gateway."
-  consumeOnly:
-    # -- if enabled, the FHIR Gateway will only read and process resources from the specified Kafka topics `inputTopics`
-    # but not write them back to Kafka
+  processor:
+    # -- if enabled, the FHIR Gateway will read resources from the specified Kafka topics `inputTopics` and write them to dynamic output topics.
     enabled: false
-  produceFromAPI:
-    # -- if enabled, the FHIR Gateway will produce resources received from API to the specified Kafka topic `outputTopic`
+    # -- if enabled, the FHIR Gateway will only read and process resources from the specified Kafka topics `inputTopics` but not write them back to Kafka
+    consumeOnly: false
+    # -- list of Kafka topics to read FHIR resources from
+    inputTopics:
+      - fhir-raw
+    # -- the Kafka consumer group id. Evaluated as a template.
+    groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
+    generateOutputTopics:
+      # -- Allows for dynamically generating the Kafka output topic's name based on the input topic.
+      # Set to a regular expression which is applied to the input topic and the first match is replaced
+      # with the value of `kafka.generateOutputTopics.replaceWith`.
+      # You can set this to "^" to add a prefix to the output topic.
+      matchExpression: "^"
+      # -- value to replace the first regex match with
+      replaceMatchWith: "fhir.post-gateway."
+  storeFromAPI:
+    # -- if enabled, the FHIR Gateway will send resources received from API to the specified Kafka topic `outputTopic`
     # after they are processed
     enabled: false
-    # -- the Kafka topic to produce API received resources to
+    # -- the Kafka topic to send API received resources to
     outputTopic: "fhir.post-gateway.api.output"
 
 postgresql:

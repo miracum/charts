@@ -108,27 +108,13 @@ spec:
               value: "true"
             - name: MANAGEMENT_SERVER_PORT
               value: "8081"
-            {{- if .Values.kafka.strimziClusterName }}
+            {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
             - name: SERVICES_KAFKA_ENABLED
               value: {{ .Values.kafka.enabled | quote }}
-            - name: INPUT_TOPIC
-              value: {{ include "fhir-gateway.utils.joinListWithComma" .Values.kafka.inputTopics }}
-            - name: SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION
-              value: {{ .Values.kafka.generateOutputTopics.matchExpression | quote }}
-            - name: SERVICES_KAFKA_GENERATE_OUTPUT_TOPIC_REPLACE_WITH
-              value: {{ .Values.kafka.generateOutputTopics.replaceMatchWith | quote }}
-            - name: SERVICES_KAFKA_CONSUME_ONLY_ENABLED
-              value: {{ .Values.kafka.consumeOnly.enabled | quote }}
-            - name: SERVICES_KAFKA_PRODUCE_FROM_API_ENABLED
-              value: {{ .Values.kafka.produceFromAPI.enabled | quote }}
-            - name: SERVICES_KAFKA_PRODUCE_FROM_API_OUTPUT_TOPIC
-              value: {{ .Values.kafka.produceFromAPI.outputTopic | quote }}
-            - name: GROUP_ID
-              value: {{ include "fhir-gateway.tplvalues.render" (dict "value" .Values.kafka.groupId "context" $) }}
+            - name: SECURITY_PROTOCOL
+              value: {{ .Values.kafka.securityProtocol | quote }}
             - name: BOOTSTRAP_SERVERS
               value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
-            - name: SECURITY_PROTOCOL
-              value: {{ .Values.kafka.securityProtocol }}
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -139,6 +125,22 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
+            - name: SERVICES_KAFKA_PROCESSOR_ENABLED
+              value: {{ .Values.kafka.processor.enabled | quote }}
+            - name: SERVICES_KAFKA_PROCESSOR_CONSUME_ONLY
+              value: {{ .Values.kafka.processor.consumeOnly | quote }}
+            - name: KAFKA_INPUT_TOPICS
+              value: {{ include "fhir-gateway.utils.joinListWithComma" .Values.kafka.processor.inputTopics }}
+            - name: KAFKA_CONSUMER_GROUP_ID
+              value: {{ include "fhir-gateway.tplvalues.render" (dict "value" .Values.kafka.processor.groupId "context" $) }}
+            - name: SERVICES_KAFKA_PROCESSOR_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION
+              value: {{ .Values.kafka.processor.generateOutputTopics.matchExpression | quote }}
+            - name: SERVICES_KAFKA_PROCESSOR_GENERATE_OUTPUT_TOPIC_REPLACE_WITH
+              value: {{ .Values.kafka.processor.generateOutputTopics.replaceMatchWith | quote }}
+            - name: SERVICES_KAFKA_STORE_FROM_API_ENABLED
+              value: {{ .Values.kafka.storeFromAPI.enabled | quote }}
+            - name: SERVICES_KAFKA_STORE_FROM_API_OUTPUT_TOPIC
+              value: {{ .Values.kafka.storeFromAPI.outputTopic | quote }}
             {{- end }}
             {{- if .Values.extraEnv }}
             {{ toYaml .Values.extraEnv | nindent 12 }}
