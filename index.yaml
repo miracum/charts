@@ -6074,6 +6074,36 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
+          description: "Fixed new kafka bootstrap server env var"
+    apiVersion: v2
+    created: "2025-08-28T17:36:27.150818087Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.21
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.7.96
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.3
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: b8267d162e7a96ba984f28d7e6e6c592190454367745c513237bc0ff01112178
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-8.0.1/fhir-gateway-8.0.1.tgz
+    version: 8.0.1
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "⚠️ BREAKING CHANGE: Changed Kafka configuration value names in favor of a more intuitive and uniform config"
         - kind: added
@@ -19406,4 +19436,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-28T09:45:05.365397657Z"
+generated: "2025-08-28T17:36:27.151723853Z"
