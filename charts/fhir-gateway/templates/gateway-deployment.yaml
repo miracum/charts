@@ -113,7 +113,7 @@ spec:
               value: {{ .Values.kafka.enabled | quote }}
             - name: SECURITY_PROTOCOL
               value: {{ .Values.kafka.securityProtocol | quote }}
-            - name: BOOTSTRAP_SERVERS
+            - name: KAFKA_BOOTSTRAP_SERVERS
               value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
