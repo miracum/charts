@@ -10642,6 +10642,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated vfps to 3.0.1"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2025-08-31T16:24:36.207196247Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/charts
+      version: 3.0.1
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.0
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 2b2fc302e8ea8af7e665fde83dbaa2b4dae5c69e88fd9e452c90f76207620bde
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-0.8.1/fhir-pseudonymizer-0.8.1.tgz
+    version: 0.8.1
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Switched to miracum/charts/common from bitnami/common"
         - kind: changed
           description: "⚠️ BREAKING CHANGE: set `pseudonymizationService` to `None` by default"
@@ -19739,4 +19771,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-31T15:54:16.013067834Z"
+generated: "2025-08-31T16:24:36.209097241Z"
