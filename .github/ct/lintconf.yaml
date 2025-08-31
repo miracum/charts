@@ -30,11 +30,13 @@ rules:
     max-spaces-after: 1
   indentation:
     spaces: consistent
-    indent-sequences: whatever
+    indent-sequences: whatever # - list indentation will handle both indentation and without
     check-multi-line-strings: false
   key-duplicates: enable
-  line-length: disable
+  line-length: disable # Lines can be any length
   new-line-at-end-of-file: enable
+  new-lines:
+    type: unix
   trailing-spaces: enable
   truthy:
     level: warning
