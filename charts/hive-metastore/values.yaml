@@ -311,6 +311,6 @@ postgres:
 waitForDatabaseInitContainer:
   image:
     registry: docker.io
-    repository: bitnami/postgresql
-    tag: 17.5.0-debian-12-r20@sha256:42a8200d35971f931b869ef5252d996e137c6beb4b8f1b6d2181dc7d1b6f62e0
+    repository: library/postgres
+    tag: 17.6@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
     pullPolicy: IfNotPresent
