@@ -8,11 +8,11 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.11.1
+version: 1.11.2
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.0
+    version: 0.1.1
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -23,4 +23,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Switched to miracum/charts/common from bitnami/common"
+      description: "Updated common common common common common common common to 0.1.1"

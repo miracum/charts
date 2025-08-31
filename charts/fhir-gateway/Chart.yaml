@@ -16,8 +16,8 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.0
-version: 9.0.2
+    version: 0.1.1
+version: 9.0.3
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated fhir-pseudonymizer to 0.8.1"
+      description: "Updated common common common common common common common to 0.1.1"
