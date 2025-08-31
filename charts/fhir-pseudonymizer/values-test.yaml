@@ -5,7 +5,7 @@ replicaCount: 3
 vfps:
   enabled: true
   replicaCount: 2
-  postgresql:
+  postgres:
     auth:
       postgresPassword: "postgres"
       database: "vfps"

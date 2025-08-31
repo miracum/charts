@@ -66,7 +66,7 @@ spec:
             - name: ENFORCE_REFERENTIAL_INTEGRITY
               value: {{ .Values.enforceReferentialIntegrity | quote }}
             - name: BASE_URL
-              value: {{ include "blaze.tplvalues.render" (dict "value" .Values.baseUrl "context" $) }}
+              value: {{ include "common.tplvalues.render" (dict "value" .Values.baseUrl "context" $) }}
             {{- if .Values.terminologyService.enabled }}
             - name: ENABLE_TERMINOLOGY_SERVICE
               value: "true"
@@ -153,7 +153,7 @@ spec:
           requests:
             storage: {{ .Values.persistence.size | quote }}
         {{- if .Values.persistence.selector }}
-        selector: {{- include "blaze.tplvalues.render" (dict "value" .Values.persistence.selector "context" $) | nindent 10 }}
+        selector: {{- include "common.tplvalues.render" (dict "value" .Values.persistence.selector "context" $) | nindent 10 }}
         {{- end }}
         {{- include "blaze.storage.class" (dict "persistence" .Values.persistence "global" .Values.global) | nindent 8 }}
   {{- end }}

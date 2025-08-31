@@ -8,7 +8,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 # the type of pseudonymization service to use. One of gPAS, Vfps, None
-pseudonymizationService: gPAS
+pseudonymizationService: None
 
 gpas:
   # the gPAS TTP FHIR Pseudonymizer base URL used to be used by the pseudonymization service.

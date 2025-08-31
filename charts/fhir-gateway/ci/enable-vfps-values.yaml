@@ -2,7 +2,7 @@ fhir-pseudonymizer:
   pseudonymizationService: "Vfps"
   vfps:
     enabled: true
-    postgresql:
+    postgres:
       enabled: true
       nameOverride: "vfps-postgres"
     resourcesPreset: "micro"

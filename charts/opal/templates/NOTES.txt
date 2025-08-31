@@ -1,4 +1,4 @@
-{{- if not .Values.postgresql.enabled }}
+{{- if not .Values.postgres.enabled }}
 {{- if .Values.opal.networkPolicy.enabled }}
 NOTE: You are using an external database with enabled NetworkPolicy. Make sure to add the connection details to opal.networkPolicy.extraEgress.
 {{- end }}

@@ -1,4 +1,4 @@
-postgresql:
+postgres:
   auth:
     postgresPassword: fhir-gateway-password
 

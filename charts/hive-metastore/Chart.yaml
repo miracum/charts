@@ -6,25 +6,27 @@ sources:
   - https://github.com/apache/hive
 home: https://hive.apache.org/
 dependencies:
-  - name: postgresql
-    version: 16.7.21
-    repository: oci://registry-1.docker.io/bitnamicharts
-    condition: postgresql.enabled
+  - name: postgres
+    version: 0.2.1
+    repository: oci://registry-1.docker.io/cloudpirates
+    condition: postgres.enabled
   - name: common
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.31.3
-version: 0.1.2
+    repository: oci://ghcr.io/miracum/charts
+    version: 0.1.0
+version: 0.2.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/operator: "false"
   artifacthub.io/prerelease: "false"
   artifacthub.io/recommendations: |
-    - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "docs update"
+      description: "Switched to miracum/charts/common from bitnami/common"
+    - kind: changed
+      description: "⚠️ BREAKING CHANGE: Switched to cloudpirates/postgres from bitnami/postgresql"

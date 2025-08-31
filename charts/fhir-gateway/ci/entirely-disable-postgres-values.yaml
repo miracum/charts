@@ -1,7 +1,7 @@
 sinks:
   postgres:
     enabled: false
-postgresql:
+postgres:
   enabled: false
 fhir-pseudonymizer:
   pseudonymizationService: "None"

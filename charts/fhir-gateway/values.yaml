@@ -53,8 +53,8 @@ waitForPostgresInitContainer:
   # @ignored
   image:
     registry: docker.io
-    repository: bitnami/postgresql
-    tag: 17.5.0-debian-12-r20@sha256:42a8200d35971f931b869ef5252d996e137c6beb4b8f1b6d2181dc7d1b6f62e0
+    repository: library/postgres
+    tag: 17.6@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
     pullPolicy: IfNotPresent
 
 service:
@@ -160,8 +160,8 @@ serviceAccount:
 sinks:
   postgres:
     # -- if enabled, writes all received FHIR resources to a Postgres DB
-    # if `postgresql.enabled=true`, then a Postgres DB is started as part of this
-    # installation. If `postgresql.enabled=false`, then `sinks.postgres.external.*` is used.
+    # if `postgres.enabled=true`, then a Postgres DB is started as part of this
+    # installation. If `postgres.enabled=false`, then `sinks.postgres.external.*` is used.
     enabled: true
     external:
       # -- host or server name
@@ -217,16 +217,25 @@ kafka:
     # -- the Kafka topic to send API received resources to
     outputTopic: "fhir.post-gateway.api.output"
 
-postgresql:
+postgres:
   # -- enabled the included Postgres DB
-  # see <https://github.com/bitnami/charts/tree/master/bitnami/postgresql> for configuration options
+  # see <https://github.com/CloudPirates-io/helm-charts/tree/main/charts/postgres> for configuration options
   enabled: true
   auth:
     # -- name of the database to create
-    # see: <https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run>
     database: "fhir_gateway"
-    # -- assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
-    enablePostgresUser: true
+    # -- username for the database user
+    username: "fhir_gateway_admin"
+    # -- disable the default postgres user
+    enablePostgresUser: false
+  # @ignored
+  resources: # +doc-gen:ignore
+    requests:
+      memory: 512Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
 
 loincConverter:
   # -- whether to enable the LOINC conversion and harmonization service
@@ -349,7 +358,7 @@ fhir-pseudonymizer:
   # @ignored
   vfps:
     nameOverride: gateway-vfps
-    postgresql:
+    postgres:
       # overrides the chart's postgres server name to avoid conflicts with the fhir-gateway's postgresql
       nameOverride: "vfps-postgres"
 

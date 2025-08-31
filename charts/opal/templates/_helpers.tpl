@@ -65,7 +65,7 @@ Create a default fully qualified postgresql name. TODO: could we use SubChart te
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "opal.postgresql.fullname" -}}
-{{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
+{{- $name := default "postgres" .Values.postgres.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -73,23 +73,23 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.data.host .Values.postgresql.enabled -}}
+{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.data.host .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.port" -}}
-{{- ternary "5432" .Values.opal.database.data.port .Values.postgresql.enabled -}}
+{{- ternary "5432" .Values.opal.database.data.port .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.user" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.username -}}
-        {{ .Values.postgresql.auth.username | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.username -}}
+        {{ .Values.postgres.auth.username | quote }}
     {{- else -}}
         {{ "postgres" }}
     {{- end -}}
@@ -102,16 +102,16 @@ Add environment variables to configure database values
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.name" -}}
-{{- ternary .Values.postgresql.auth.database .Values.opal.database.data.database .Values.postgresql.enabled -}}
+{{- ternary .Values.postgres.auth.database .Values.opal.database.data.database .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
 */}}
 {{- define "opal.database.db-secret-name" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.existingSecret -}}
-        {{ .Values.postgresql.auth.existingSecret | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.existingSecret -}}
+        {{ .Values.postgres.auth.existingSecret | quote }}
     {{- else -}}
         {{ ( include "opal.postgresql.fullname" . ) }}
     {{- end -}}
@@ -127,8 +127,8 @@ Get the name of the secret containing the DB password
 Get the key inside the secret containing the DB user's password
 */}}
 {{- define "opal.database.db-secret-key" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
+{{- if .Values.postgres.enabled -}}
+    {{- if (or .Values.postgres.auth.username .Values.postgres.auth.existingSecret ) -}}
         {{ "password" }}
     {{- else -}}
         {{ "postgres-password" }}
@@ -144,23 +144,23 @@ Get the key inside the secret containing the DB user's password
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.ids.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.ids.host .Values.postgresql.enabled -}}
+{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.ids.host .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.ids.port" -}}
-{{- ternary "5432" .Values.opal.database.ids.port .Values.postgresql.enabled -}}
+{{- ternary "5432" .Values.opal.database.ids.port .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.ids.user" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.username -}}
-        {{ .Values.postgresql.auth.username | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.username -}}
+        {{ .Values.postgres.auth.username | quote }}
     {{- else -}}
         {{ "postgres" }}
     {{- end -}}
@@ -173,16 +173,16 @@ Add environment variables to configure database values
 Add environment variables to configure database values
 */}}
 {{- define "opal.database.ids.name" -}}
-{{- ternary .Values.postgresql.auth.database .Values.opal.database.ids.database .Values.postgresql.enabled -}}
+{{- ternary .Values.postgres.auth.database .Values.opal.database.ids.database .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
 */}}
 {{- define "opal.database.ids.db-secret-name" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.existingSecret -}}
-        {{ .Values.postgresql.auth.existingSecret | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.existingSecret -}}
+        {{ .Values.postgres.auth.existingSecret | quote }}
     {{- else -}}
         {{ ( include "opal.postgresql.fullname" . ) }}
     {{- end -}}
@@ -198,8 +198,8 @@ Get the name of the secret containing the DB password
 Get the key inside the secret containing the DB user's password
 */}}
 {{- define "opal.database.ids.db-secret-key" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
+{{- if .Values.postgres.enabled -}}
+    {{- if (or .Values.postgres.auth.username .Values.postgres.auth.existingSecret ) -}}
         {{ "password" }}
     {{- else -}}
         {{ "postgres-password" }}
@@ -229,18 +229,6 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_stora
       {{- printf "storageClassName: %s" $storageClass -}}
   {{- end -}}
 {{- end -}}
-{{- end -}}
-
-{{/*
-Renders a value that contains template.
-Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl>
-*/}}
-{{- define "opal.tplvalues.render" -}}
-    {{- if typeIs "string" .value }}
-        {{- tpl .value .context }}
-    {{- else }}
-        {{- tpl (.value | toYaml) .context }}
-    {{- end }}
 {{- end -}}
 
 {{- define "opal.rock-hosts" -}}
