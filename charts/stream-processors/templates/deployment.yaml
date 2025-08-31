@@ -220,7 +220,7 @@ spec:
         {{- if .persistence.selector }}
         selector: {{- include "common.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "common.storage.class" (dict "persistence" .persistence) | nindent 8 }}
+        {{- include "stream-processors.storage.class" (dict "persistence" .persistence) | nindent 8 }}
   {{- end }}
 {{- end }}
 {{- end }}
