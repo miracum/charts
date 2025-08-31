@@ -132,7 +132,7 @@ spec:
             - name: KAFKA_INPUT_TOPICS
               value: {{ include "fhir-gateway.utils.joinListWithComma" .Values.kafka.processor.inputTopics }}
             - name: KAFKA_CONSUMER_GROUP_ID
-              value: {{ include "fhir-gateway.tplvalues.render" (dict "value" .Values.kafka.processor.groupId "context" $) }}
+              value: {{ include "common.tplvalues.render" (dict "value" .Values.kafka.processor.groupId "context" $) }}
             - name: SERVICES_KAFKA_PROCESSOR_GENERATE_OUTPUT_TOPIC_MATCH_EXPRESSION
               value: {{ .Values.kafka.processor.generateOutputTopics.matchExpression | quote }}
             - name: SERVICES_KAFKA_PROCESSOR_GENERATE_OUTPUT_TOPIC_REPLACE_WITH
@@ -154,11 +154,11 @@ spec:
               protocol: TCP
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
-            {{- include "fhir-gateway.tplvalues.render" (dict "value" (omit .Values.livenessProbe "enabled") "context" $) | nindent 12 }}
+            {{- include "common.tplvalues.render" (dict "value" (omit .Values.livenessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
-            {{- include "fhir-gateway.tplvalues.render" (dict "value" (omit .Values.readinessProbe "enabled") "context" $) | nindent 12 }}
+            {{- include "common.tplvalues.render" (dict "value" (omit .Values.readinessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}

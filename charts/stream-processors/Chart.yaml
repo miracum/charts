@@ -8,11 +8,11 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.11.0
+version: 1.11.1
 dependencies:
   - name: common
-    version: 2.31.3
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/miracum/charts
+    version: 0.1.0
 annotations:
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
@@ -22,5 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: "default network policy for stream processors and configuraiton options"
+    - kind: changed
+      description: "Switched to miracum/charts/common from bitnami/common"

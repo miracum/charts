@@ -53,9 +53,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Get the name of the secret containing the DB password
 */}}
 {{- define "fhir-gateway.db-secret-name" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.existingSecret -}}
-        {{ .Values.postgresql.auth.existingSecret | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.existingSecret -}}
+        {{ .Values.postgres.auth.existingSecret | quote }}
     {{- else -}}
         {{ ( include "fhir-gateway.postgresql.fullname" . ) }}
     {{- end -}}
@@ -71,8 +71,8 @@ Get the name of the secret containing the DB password
 Get the key inside the secret containing the DB user's password
 */}}
 {{- define "fhir-gateway.db-secret-key" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
+{{- if .Values.postgres.enabled -}}
+    {{- if (or .Values.postgres.auth.username .Values.postgres.auth.existingSecret ) -}}
         {{ "password" }}
     {{- else -}}
         {{ "postgres-password" }}
@@ -89,7 +89,7 @@ Create a default fully qualified postgresql name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "fhir-gateway.postgresql.fullname" -}}
-{{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
+{{- $name := default "postgres" .Values.postgres.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -97,30 +97,30 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Return the hostname of the postgresql database
 */}}
 {{- define "fhir-gateway.postgresql.host" -}}
-{{- ternary (include "fhir-gateway.postgresql.fullname" .) .Values.sinks.postgres.external.host .Values.postgresql.enabled -}}
+{{- ternary (include "fhir-gateway.postgresql.fullname" .) .Values.sinks.postgres.external.host .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Return the database name
 */}}
 {{- define "fhir-gateway.postgresql.database" -}}
-{{- ternary .Values.postgresql.auth.database .Values.sinks.postgres.external.database .Values.postgresql.enabled -}}
+{{- ternary .Values.postgres.auth.database .Values.sinks.postgres.external.database .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Return the database port
 */}}
 {{- define "fhir-gateway.postgresql.port" -}}
-{{- ternary "5432" .Values.sinks.postgres.external.port .Values.postgresql.enabled -}}
+{{- ternary "5432" .Values.sinks.postgres.external.port .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Return the database username
 */}}
 {{- define "fhir-gateway.postgresql.user" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.username -}}
-        {{ .Values.postgresql.auth.username | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.username -}}
+        {{ .Values.postgres.auth.username | quote }}
     {{- else -}}
         {{ "postgres" }}
     {{- end -}}
@@ -162,23 +162,6 @@ Base URL of the fhir-pseudonymizer service.
 {{- $host := (include "fhir-pseudonymizer.fullname" (index .Subcharts "fhir-pseudonymizer")) -}}
 {{- $port := (index .Values "fhir-pseudonymizer" "service" "port") -}}
 {{ printf "http://%s:%d/fhir" $host (int $port) }}
-{{- end -}}
-
-{{/*
-Renders a value that contains template.
-Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl>
-*/}}
-{{- define "fhir-gateway.tplvalues.render" -}}
-{{- $value := typeIs "string" .value | ternary .value (.value | toYaml) }}
-{{- if contains "{{" (toJson .value) }}
-  {{- if .scope }}
-      {{- tpl (cat "{{- with $.RelativeScope -}}" $value "{{- end }}") (merge (dict "RelativeScope" .scope) .context) }}
-  {{- else }}
-    {{- tpl $value .context }}
-  {{- end }}
-{{- else }}
-    {{- $value }}
-{{- end }}
 {{- end -}}
 
 {{/*

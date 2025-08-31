@@ -42,8 +42,8 @@
     {
       "matchDatasources": ["docker", "helm"],
       "matchDepNames": [
-        "postgresql",
-        "docker.io/bitnami/postgresql",
+        "postgres",
+        "docker.io/library/postgres",
         "minio",
         "common"
       ],

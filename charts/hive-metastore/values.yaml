@@ -287,11 +287,25 @@ database:
   # -- schema used for the tables.
   schema: "hive"
 
-# @ignored
-postgresql:
+postgres:
+  # -- enabled the included Postgres DB
+  # see <https://github.com/CloudPirates-io/helm-charts/tree/main/charts/postgres> for configuration options
   enabled: true
   auth:
-    database: hive_metastore
+    # -- name of the database to create
+    database: "hive_metastore"
+    # -- username for the database user
+    username: "hive_metastore_admin"
+    # -- disable the default postgres user
+    enablePostgresUser: false
+  # @ignored
+  resources: # +doc-gen:ignore
+    requests:
+      memory: 512Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
 
 # @ignored
 waitForDatabaseInitContainer:

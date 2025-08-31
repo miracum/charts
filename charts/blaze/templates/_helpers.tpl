@@ -81,18 +81,6 @@ Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_stora
 {{- end -}}
 {{- end -}}
 
-{{/*
-Renders a value that contains template.
-Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl>
-*/}}
-{{- define "blaze.tplvalues.render" -}}
-    {{- if typeIs "string" .value }}
-        {{- tpl .value .context }}
-    {{- else }}
-        {{- tpl (.value | toYaml) .context }}
-    {{- end }}
-{{- end -}}
-
 {{- define "blaze.customSearchParameters.configMapName" -}}
     {{- if .Values.customSearchParameters.existingConfigmap.name }}
         {{- printf "%s" .Values.customSearchParameters.existingConfigmap.name }}

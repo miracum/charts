@@ -3,7 +3,7 @@ dependencies:
   repository: oci://ghcr.io/miracum/charts
   version: 2.1.89
 - name: common
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 2.31.3
-digest: sha256:5897f65b0608ce4b12586c4e39bb73a0d9f72c081b32ab0094361b17d14422f0
-generated: "2025-07-26T01:49:20.619574317Z"
+  repository: oci://ghcr.io/miracum/charts
+  version: 0.1.0
+digest: sha256:42279cab87f2522aeb4508891898755f1e67fb9c643df6e8cdce2282007670b0
+generated: "2025-08-31T15:01:18.856530073+02:00"

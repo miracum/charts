@@ -66,7 +66,7 @@ Create a default fully qualified postgresql name. TODO: could we use SubChart te
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "hive-metastore.postgresql.fullname" -}}
-{{- $name := default "postgresql" .Values.postgresql.nameOverride -}}
+{{- $name := default "postgres" .Values.postgres.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -74,16 +74,16 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Add environment variables to configure database values
 */}}
 {{- define "hive-metastore.database.host" -}}
-{{- ternary (include "hive-metastore.postgresql.fullname" .) .Values.database.host .Values.postgresql.enabled -}}
+{{- ternary (include "hive-metastore.postgresql.fullname" .) .Values.database.host .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "hive-metastore.database.user" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.username -}}
-        {{ .Values.postgresql.auth.username | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.username -}}
+        {{ .Values.postgres.auth.username | quote }}
     {{- else -}}
         {{ "postgres" }}
     {{- end -}}
@@ -96,23 +96,23 @@ Add environment variables to configure database values
 Add environment variables to configure database values
 */}}
 {{- define "hive-metastore.database.name" -}}
-{{- ternary .Values.postgresql.auth.database .Values.database.database .Values.postgresql.enabled -}}
+{{- ternary .Values.postgres.auth.database .Values.database.database .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Add environment variables to configure database values
 */}}
 {{- define "hive-metastore.database.port" -}}
-{{- ternary "5432" .Values.database.port .Values.postgresql.enabled -}}
+{{- ternary "5432" .Values.database.port .Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
 */}}
 {{- define "hive-metastore.database.db-secret-name" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if .Values.postgresql.auth.existingSecret -}}
-        {{ .Values.postgresql.auth.existingSecret | quote }}
+{{- if .Values.postgres.enabled -}}
+    {{- if .Values.postgres.auth.existingSecret -}}
+        {{ .Values.postgres.auth.existingSecret | quote }}
     {{- else -}}
         {{ ( include "hive-metastore.postgresql.fullname" . ) }}
     {{- end -}}
@@ -128,8 +128,8 @@ Get the name of the secret containing the DB password
 Get the key inside the secret containing the DB user's password
 */}}
 {{- define "hive-metastore.database.db-secret-key" -}}
-{{- if .Values.postgresql.enabled -}}
-    {{- if (or .Values.postgresql.auth.username .Values.postgresql.auth.existingSecret ) -}}
+{{- if .Values.postgres.enabled -}}
+    {{- if (or .Values.postgres.auth.username .Values.postgres.auth.existingSecret ) -}}
         {{ "password" }}
     {{- else -}}
         {{ "postgres-password" }}
