@@ -7,3 +7,5 @@ debug: true
 remote: origin
 helm-extra-args: --timeout 600s
 target-branch: master
+excluded-charts:
+  - common
