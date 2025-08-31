@@ -160,8 +160,8 @@ serviceAccount:
 sinks:
   postgres:
     # -- if enabled, writes all received FHIR resources to a Postgres DB
-    # if `postgresql.enabled=true`, then a Postgres DB is started as part of this
-    # installation. If `postgresql.enabled=false`, then `sinks.postgres.external.*` is used.
+    # if `postgres.enabled=true`, then a Postgres DB is started as part of this
+    # installation. If `postgres.enabled=false`, then `sinks.postgres.external.*` is used.
     enabled: true
     external:
       # -- host or server name
@@ -358,7 +358,7 @@ fhir-pseudonymizer:
   # @ignored
   vfps:
     nameOverride: gateway-vfps
-    postgresql:
+    postgres:
       # overrides the chart's postgres server name to avoid conflicts with the fhir-gateway's postgresql
       nameOverride: "vfps-postgres"
 

@@ -202,19 +202,19 @@ restrictedContainerSecurityContext:
     type: RuntimeDefault
 
 database:
-  # -- database hostname of an external database. Only used if `postgresql.enabled` is set to `false`.
+  # -- database hostname of an external database. Only used if `postgres.enabled` is set to `false`.
   host: "host.example.com"
   # -- port used to connect to the postgres DB
   port: 5432
-  # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+  # -- name of the database inside. If postgres.enabled=true, then postgres.auth.database is used
   database: "vfps"
-  # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+  # -- username used to connect to the DB. Note that this name is currently used even if postgres.enabled=true
   username: "postgres"
-  # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+  # -- the database password. Only used if postgres.enabled=false, otherwise the secret created by the postgresql chart is used
   password: "postgres"
   # -- name of an existing secret containing the password to the DB.
   existingSecret: ""
-  # -- name of the key in `webApi.db.existingSecret` to use as the password to the DB.
+  # -- name of the key in `database.existingSecret` to use as the password to the DB.
   existingSecretKey: "postgresql-postgres-password"
   # -- schema used for the tables.
   schema: "vfps"

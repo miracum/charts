@@ -31,7 +31,7 @@ annotations:
   artifacthub.io/operator: "false"
   artifacthub.io/prerelease: "false"
   artifacthub.io/recommendations: |
-    - url: https://artifacthub.io/packages/helm/bitnami/postgresql
+    - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   artifacthub.io/screenshots: |
     - title: Screenshot of the OpenAPI/Swagger UI for the REST API

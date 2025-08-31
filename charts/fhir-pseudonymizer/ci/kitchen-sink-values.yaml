@@ -2,7 +2,7 @@ pseudonymizationService: Vfps
 
 vfps:
   enabled: true
-  postgresql:
+  postgres:
     auth:
       postgresPassword: "postgres"
       database: "vfps"
