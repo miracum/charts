@@ -2547,6 +2547,34 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/cloudera-hue-0.1.0/cloudera-hue-0.1.0.tgz
     version: 0.1.0
+  common:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "First version"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2025-08-31T12:39:47.121633256Z"
+    description: Common logic
+    digest: 84d7694cc02e8f21194e8bc4e4092b20430d8d40a27a60be9bf7b74ede5a7ae1
+    home: https://github.com/miracum/charts/tree/master/charts/common
+    keywords:
+    - common
+    - helper
+    - template
+    - function
+    name: common
+    sources:
+    - https://github.com/miracum/charts/tree/master/charts/common
+    type: library
+    urls:
+    - https://github.com/miracum/charts/releases/download/common-0.1.0/common-0.1.0.tgz
+    version: 0.1.0
   datashield:
   - annotations:
       artifacthub.io/changes: |-
@@ -19436,4 +19464,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-28T17:36:27.151723853Z"
+generated: "2025-08-31T12:39:47.12251915Z"
