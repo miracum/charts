@@ -13,7 +13,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 0.2.2
+version: 0.2.3
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated common common common common common common common to 0.1.1"
+      description: "Lowered default postgres resources to nano level"
