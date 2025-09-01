@@ -7,6 +7,6 @@ dependencies:
   version: 0.8.1
 - name: common
   repository: oci://ghcr.io/miracum/charts
-  version: 0.1.0
-digest: sha256:6d0b49dbff4402dd37153a6fbb776972353207e35f632ba7b991a85a0730b87e
-generated: "2025-08-31T16:26:13.985718107Z"
+  version: 0.1.1
+digest: sha256:1461e7ad24f497af74e1172deac54c848d086c54a36c0a4e4f972e0f4e74c599
+generated: "2025-08-31T20:23:02.436466378Z"

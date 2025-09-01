@@ -13,10 +13,10 @@ maintainers:
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.0
+    version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.12
+version: 0.7.13
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Switched to miracum/charts/common from bitnami/common"
+      description: "Updated common common common common common common common to 0.1.1"
