@@ -23,7 +23,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 3.0.2
+version: 3.0.3
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -42,4 +42,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated common common common common common common common to 0.1.1"
+      description: "Lowered default postgres resources to nano level"

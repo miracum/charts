@@ -301,11 +301,13 @@ postgres:
   # @ignored
   resources: # +doc-gen:ignore
     requests:
-      memory: 512Mi
-      cpu: 250m
+      memory: 128Mi
+      cpu: 100m
+      ephemeral-storage: 50Mi
     limits:
-      memory: 512Mi
-      cpu: 500m
+      memory: 192Mi
+      cpu: 150m
+      ephemeral-storage: 2Gi
 
 # @ignored
 waitForDatabaseInitContainer:
