@@ -9,11 +9,14 @@ webhookTimeoutSeconds: 30
 failurePolicy: Fail
 
 images:
-  - fhir-gateway
-  - fhir-pseudonymizer
-  - loinc-conversion
-  - vfps
-  - obds-to-fhir
-  - ohdsi-cohort-sync
-  - ahd2fhir
-  - kafka-fhir-to-server
+  miracum:
+    - fhir-gateway
+    - fhir-pseudonymizer
+    - loinc-conversion
+    - vfps
+    - ohdsi-cohort-sync
+    - kafka-fhir-to-server
+  bzkf:
+    - obds-to-fhir
+    - onco-analytics-on-fhir/decompose-xmls
+    - onco-analytics-on-fhir/obds-fhir-to-opal

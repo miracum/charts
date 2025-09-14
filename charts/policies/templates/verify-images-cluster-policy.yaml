@@ -23,8 +23,9 @@ spec:
   webhookTimeoutSeconds: {{ .Values.webhookTimeoutSeconds }}
   failurePolicy: {{ .Values.failurePolicy }}
   rules:
-    {{- range $i, $imageName := .Values.images }}
-    - name: check-{{ $imageName }}
+    {{- range $org, $images := .Values.images }}
+    {{- range $i, $imageName := $images }}
+    - name: check-{{ $org }}-{{ $imageName | replace "/" "-" }}
       match:
         any:
           - resources:
@@ -34,7 +35,7 @@ spec:
         # imageReferences sets which images the policy will apply to.
         # Wildcard values are supported.
         - imageReferences:
-            - "ghcr.io/miracum/{{ $imageName }}:v*"
+            - "ghcr.io/{{ $org }}/{{ $imageName }}:v*"
           attestors:
             # This section declares which attestors are accepted. The subject
             # below corresponds to the OIDC identity of the container workflow.
@@ -42,6 +43,7 @@ spec:
             # identity.
             - entries:
                 - keyless:
+                    # currently, both the miracum org images and the bzkf org images are using the same standard-build.yaml workflow
                     subject: "https://github.com/miracum/.github/.github/workflows/standard-build.yaml@*"
                     issuer: "https://token.actions.githubusercontent.com"
                     rekor:
@@ -49,7 +51,7 @@ spec:
                     additionalExtensions:
                       githubWorkflowTrigger: release
                       githubWorkflowName: ci
-                      githubWorkflowRepository: miracum/{{ $imageName }}
+                      githubWorkflowRepository: "{{ $org }}/{{ $imageName }}"
           # This section declares some policy conditions acting on the provenance itself.
           attestations:
             - type: https://slsa.dev/provenance/v0.2
@@ -57,12 +59,12 @@ spec:
                 - all:
                     # This condition verifies that the image was generated from
                     # the source repository we expect.
-                    - key: {{` "{{ invocation.configSource.uri }}" `}}
+                    - key: {{ `"{{ invocation.configSource.uri }}"` }}
                       operator: Equals
-                      value: "git+https://github.com/miracum/{{ $imageName }}@refs/tags/v*"
+                      value: "git+https://github.com/{{ $org }}/{{ $imageName }}@refs/tags/v*"
 
                     # This condition verifies the entrypoint of the workflow.
-                    - key: {{` "{{ invocation.configSource.entryPoint }}" `}}
+                    - key: {{ `"{{ invocation.configSource.entryPoint }}"` }}
                       operator: Equals
                       value: ".github/workflows/ci.yaml"
 
@@ -70,9 +72,10 @@ spec:
                     # expect and trust. The following condition can be used
                     # unmodified. It verifies that the builder is the container
                     # workflow.
-                    - key: {{` "{{ regex_match('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$', '{{ builder.id}}') }}" `}}
+                    - key: {{ `"{{ regex_match('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$', '{{ builder.id}}') }}"` }}
                       operator: Equals
                       value: true
+    {{- end }}
     {{- end }}
     - name: check-curl
       match:
@@ -93,3 +96,23 @@ spec:
                       MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwFTRXl79xRiAFa5ZX4aZ7Vkdqmji
                       5WY0zqc3bd6B08CsNftlYsu2gAqdWm0IlzoQpi2Zi5C437RTg/DgLQ6Bkg==
                       -----END PUBLIC KEY-----
+    - name: check-blaze
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        # imageReferences sets which images the policy will apply to.
+        # Wildcard values are supported.
+        - imageReferences:
+            - "ghcr.io/samply/blaze:*"
+          attestors:
+            - entries:
+                - keyless:
+                    subject: "https://github.com/samply/blaze/.github/workflows/build2.yml@*"
+                    issuer: "https://token.actions.githubusercontent.com"
+                    rekor:
+                      url: https://rekor.sigstore.dev
+                    additionalExtensions:
+                      githubWorkflowRepository: "samply/blaze"

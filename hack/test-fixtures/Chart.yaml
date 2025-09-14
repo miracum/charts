@@ -6,7 +6,7 @@ sources:
   - https://github.com/miracum/charts
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 1.0.3
+version: 1.0.4
 dependencies:
   - name: prometheus-operator-crds
     version: 23.0.0
@@ -14,3 +14,6 @@ dependencies:
   - name: kyverno
     repository: oci://ghcr.io/kyverno/charts
     version: 3.5.1
+  - name: policy-reporter
+    repository: oci://ghcr.io/kyverno/charts
+    version: 3.5.0

@@ -1,1 +1,6 @@
-kyverno: {}
+policy-reporter:
+  ui:
+    enabled: true
+  plugin:
+    kyverno:
+      enabled: true
