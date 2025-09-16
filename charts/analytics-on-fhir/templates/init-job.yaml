@@ -165,7 +165,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url '$PATHLING_URL/$$import'
+              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url '${PATHLING_URL}/$$import'
           volumeMounts:
             - name: init-job-config
               mountPath: /tmp/config
@@ -262,7 +262,7 @@ data:
                     },
                     {
                         "name": "url",
-                        "valueUrl": "s3a://import/Patient.ndjson"
+                        "valueUrl": "s3a://import/fhir/Patient.ndjson"
                     },
                     {
                         "name": "mode",
@@ -279,7 +279,7 @@ data:
                     },
                     {
                         "name": "url",
-                        "valueUrl": "s3a://import/Condition.ndjson"
+                        "valueUrl": "s3a://import/fhir/Condition.ndjson"
                     },
                     {
                         "name": "mode",
@@ -296,7 +296,7 @@ data:
                     },
                     {
                         "name": "url",
-                        "valueUrl": "s3a://import/Observation.ndjson"
+                        "valueUrl": "s3a://import/fhir/Observation.ndjson"
                     },
                     {
                         "name": "mode",
