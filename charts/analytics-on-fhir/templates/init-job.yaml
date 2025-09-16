@@ -165,7 +165,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url "${PATHLING_URL}/fhir/$$import"
+              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url ${PATHLING_URL}/fhir/$$import
           volumeMounts:
             - name: init-job-config
               mountPath: /tmp/config
