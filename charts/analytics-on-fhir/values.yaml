@@ -22,6 +22,8 @@ pathling-server:
       value: "9"
     - name: spark.serializer
       value: "org.apache.spark.serializer.KryoSerializer"
+    - name: spark.driver.memory
+      value: "10g"
 
 hive-metastore:
   postgres:

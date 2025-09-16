@@ -232,13 +232,13 @@ spec:
               type: RuntimeDefault
           resources:
             limits:
-              cpu: 150m
-              ephemeral-storage: 2Gi
-              memory: 192Mi
+              cpu: 2000m
+              ephemeral-storage: 8Gi
+              memory: 8Gi
             requests:
-              cpu: 100m
-              ephemeral-storage: 2Gi
-              memory: 128Mi
+              cpu: 2000m
+              ephemeral-storage: 8Gi
+              memory: 8Gi
       restartPolicy: Never
       volumes:
         - name: downloads
@@ -253,7 +253,7 @@ metadata:
   name: init-job-config
 data:
   spark-defaults.conf: |
-      spark.driver.memory=4g
+      spark.driver.memory=6g
   synthea.properties: |
     exporter.fhir.export = true
     exporter.hospital.fhir.export = true
