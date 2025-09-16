@@ -6,7 +6,7 @@ pathling-server:
   extraEnv:
     - name: JAVA_TOOL_OPTIONS
       value: |
-        -Xmx12g
+        -Xmx8g
         -Xss64m
         -XX:G1HeapRegionSize=32M
         -XX:+ExplicitGCInvokesConcurrent
@@ -37,7 +37,16 @@ pathling-server:
     - name: spark.serializer
       value: "org.apache.spark.serializer.KryoSerializer"
     - name: spark.driver.memory
-      value: "10g"
+      value: "6g"
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 9Gi
+      ephemeral-storage: 4Gi
+    requests:
+      cpu: 2000m
+      memory: 9Gi
+      ephemeral-storage: 4Gi
 
 hive-metastore:
   postgres:
