@@ -6,6 +6,22 @@ pathling-server:
   extraEnv:
     - name: pathling.import.allowableSources
       value: s3a://import/
+    - name: pathling.storage.cacheDatasets
+      value: "false"
+    - name: pathling.query.cacheResults
+      value: "false"
+    - name: pathling.terminology.enabled
+      value: "false"
+    - name: pathling.terminology.serverUrl
+      value: http://localhost:8080/i-dont-exist
+    - name: spark.sql.parquet.compression.codec
+      value: "zstd"
+    - name: spark.io.compression.codec
+      value: "zstd"
+    - name: parquet.compression.codec.zstd.level
+      value: "9"
+    - name: spark.serializer
+      value: "org.apache.spark.serializer.KryoSerializer"
 
 hive-metastore:
   postgres:
