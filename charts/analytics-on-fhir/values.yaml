@@ -3,6 +3,9 @@ pathling-server:
     url: s3://fhir
   minio:
     defaultBucket: fhir
+  extraEnv:
+    - name: pathling.import.allowableSources
+      value: s3a://import/
 
 hive-metastore:
   postgres:
