@@ -127,7 +127,7 @@ spec:
                   key: root-password
           args:
             - |
-              java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 250 -c /tmp/config/synthea.properties
+              java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 100 -c /tmp/config/synthea.properties
               /downloads/mc alias set minio "${AWS_ENDPOINT_URL_S3}" "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}"
               /downloads/mc mb --ignore-existing minio/import
               /downloads/mc cp --recursive /downloads/synthea/ minio/import/
@@ -143,9 +143,9 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: false
-            runAsGroup: 65534
+            runAsGroup: 65532
             runAsNonRoot: true
-            runAsUser: 65534
+            runAsUser: 65532
             seccompProfile:
               type: RuntimeDefault
           resources:
@@ -212,10 +212,10 @@ spec:
               drop:
                 - ALL
             privileged: false
-            readOnlyRootFilesystem: true
-            runAsGroup: 65534
+            readOnlyRootFilesystem: false
+            runAsGroup: 65532
             runAsNonRoot: true
-            runAsUser: 65534
+            runAsUser: 65532
             seccompProfile:
               type: RuntimeDefault
           resources:
