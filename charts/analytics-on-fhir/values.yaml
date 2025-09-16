@@ -1,0 +1,95 @@
+pathling-server:
+  warehouse:
+    url: s3://fhir
+  minio:
+    defaultBucket: fhir
+
+hive-metastore:
+  postgres:
+    nameOverride: "hive-metastore-postgres"
+
+  hiveSiteXmlTemplate: |
+    <?xml version="1.0"?>
+    <configuration>
+        <property>
+            <name>hive.metastore.warehouse.dir</name>
+            <value>s3a://fhir/metastore</value>
+        </property>
+        <property>
+            <name>fs.s3.impl</name>
+            <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        </property>
+        <property>
+            <name>fs.s3n.impl</name>
+            <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        </property>
+        <property>
+            <name>fs.s3a.endpoint</name>
+            <value>${AWS_ENDPOINT_URL_S3}</value>
+        </property>
+        <property>
+            <name>fs.s3a.path.style.access</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionURL</name>
+            <value>jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionUserName</name>
+            <value>${PGUSER}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionPassword</name>
+            <value>${PGPASSWORD}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionDriverName</name>
+            <value>org.postgresql.Driver</value>
+        </property>
+        <property>
+            <name>metastore.storage.schema.reader.impl</name>
+            <value>org.apache.hadoop.hive.metastore.SerDeStorageSchemaReader</value>
+        </property>
+        <property>
+            <name>hive.security.authorization.createtable.owner.grants</name>
+            <value>ALL</value>
+            <description>The set of privileges automatically granted to the owner whenever a table gets
+                created.
+            </description>
+        </property>
+        <property>
+            <name>hive.security.metastore.authorization.auth.reads</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>hive.users.in.admin.role</name>
+            <value>admin</value>
+        </property>
+        <property>
+            <name>hive.input.format</name>
+            <value>io.delta.hive.HiveInputFormat</value>
+        </property>
+        <property>
+            <name>hive.tez.input.format</name>
+            <value>io.delta.hive.HiveInputFormat</value>
+        </property>
+    </configuration>
+
+  extraEnv:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: '{{ include "pathling-server.s3CredentialsSecretName" (index "pathling-server" .Subcharts) }}'
+          key: '{{ include "pathling-server.s3AccessKeySecretKey" (index "pathling-server" .Subcharts) }}'
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: '{{ include "pathling-server.s3CredentialsSecretName" (index "pathling-server" .Subcharts) }}'
+          key: '{{ include "pathling-server.s3SecretKeySecretKey" (index "pathling-server" .Subcharts) }}'
+    - name: AWS_ENDPOINT_URL_S3
+      value: '{{ include "pathling-server.s3Endpoint" (index "pathling-server" .Subcharts) }}'
+
+trino: {}
+
+superset: {}
