@@ -147,8 +147,6 @@ affinity: {}
 
 # -- extra environment variables to apply to the container
 extraEnv: []
-# - name: UseSystemTextJsonFhirSerializer
-#   value: "true"
 
 # -- a sidecar container to collect logs from the main container
 hiveLogCollector:
@@ -184,6 +182,7 @@ hiveLogCollector:
   #   memory: 128Mi
 
 # -- a hive-site.xml template to use for the Hive Metastore config. It's processed by envsubst first.
+# Evaluated as a helm template, so you can use other values from this chart.
 hiveSiteXmlTemplate: |
   <?xml version="1.0"?>
   <configuration>

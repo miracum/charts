@@ -105,6 +105,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "hive-metastore.database.db-secret-name" . }}
                   key: {{ include "hive-metastore.database.db-secret-key" . }}
+          {{- if .Values.extraEnv }}
+            {{- include "common.tplvalues.render" ( dict "value" .Values.extraEnv "context" $) | nindent 12 }}
+          {{- end }}
           ports:
             - name: tcp-thrift
               containerPort: 9083

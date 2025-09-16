@@ -13,7 +13,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 0.2.5
+version: 0.3.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated postgres to 0.2.5"
+      description: "Evaluate hiveSiteXmlTemplate as a helm template so other values can be used within it."

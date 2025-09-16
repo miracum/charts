@@ -7,4 +7,4 @@ metadata:
 data:
 {{- (.Files.Glob "files/envsubst-hive-site-config.sh").AsConfig | nindent 2 }}
   hive-site.tmpl.xml: |
-{{ .Values.hiveSiteXmlTemplate | indent 4 }}
+{{- include "common.tplvalues.render" (dict "value" .Values.hiveSiteXmlTemplate "context" $) | nindent 4 }}
