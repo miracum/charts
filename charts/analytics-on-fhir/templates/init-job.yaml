@@ -109,7 +109,7 @@ spec:
           env:
             - name: SYNTHEA_SEED
               value: "20250916"
-            - name: AWS_ENDPOINT_URL_S3
+            - name: AWS_ENDPOINT_URL
               value: http://aof-minio:9000
             - name: MINIO_UPDATE
               value: "off"
@@ -128,7 +128,7 @@ spec:
           args:
             - |
               java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 100 -c /tmp/config/synthea.properties
-              /downloads/mc alias set minio "${AWS_ENDPOINT_URL_S3}" "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}"
+              /downloads/mc alias set minio "${AWS_ENDPOINT_URL}" "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}"
               /downloads/mc mb --ignore-existing minio/import
               /downloads/mc cp --recursive /downloads/synthea/ minio/import/
           volumeMounts:
@@ -165,7 +165,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url '${PATHLING_URL}/$$import'
+              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url '${PATHLING_URL}/$import'
           volumeMounts:
             - name: init-job-config
               mountPath: /tmp/config
@@ -196,6 +196,18 @@ spec:
           env:
             - name: HIVE_METASTORE_URI
               value: thrift://aof-hive-metastore:9083
+            - name: AWS_ENDPOINT_URL
+              value: http://aof-minio:9000
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aof-minio
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aof-minio
+                  key: root-password
           command: ["/bin/sh", "-c"]
           args:
             - |
