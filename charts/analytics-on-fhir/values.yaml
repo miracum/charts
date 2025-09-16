@@ -4,6 +4,20 @@ pathling-server:
   minio:
     defaultBucket: fhir
   extraEnv:
+    - name: JAVA_TOOL_OPTIONS
+      value: |
+        -Xmx12g
+        -Xss64m
+        -XX:G1HeapRegionSize=32M
+        -XX:+ExplicitGCInvokesConcurrent
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -Duser.timezone=UTC
+        --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
+        --add-opens=java.base/java.net=ALL-UNNAMED
+        --add-opens=java.base/java.nio=ALL-UNNAMED
+        --add-opens=java.base/java.util=ALL-UNNAMED
+        --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
     - name: pathling.import.allowableSources
       value: s3a://import/
     - name: pathling.storage.cacheDatasets
