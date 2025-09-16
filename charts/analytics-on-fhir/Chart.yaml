@@ -16,7 +16,7 @@ dependencies:
     repository: oci://ghcr.io/chgl/charts
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
-    version: 0.2.5
+    version: 0.3.0
   # - name: trino
   #   repository: https://trinodb.github.io/charts
   #   version: 1.40.0

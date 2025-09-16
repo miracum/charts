@@ -76,19 +76,20 @@ hive-metastore:
         </property>
     </configuration>
 
+  # somewhat hard-coded for simplicity - working with including Subchart-templating is tricky...
   extraEnv:
     - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
-          name: '{{ include "pathling-server.s3CredentialsSecretName" (index "pathling-server" .Subcharts) }}'
-          key: '{{ include "pathling-server.s3AccessKeySecretKey" (index "pathling-server" .Subcharts) }}'
+          name: '{{ printf "http://%s-%s" .Release.Name "minio" }}'
+          key: root-user
     - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
-          name: '{{ include "pathling-server.s3CredentialsSecretName" (index "pathling-server" .Subcharts) }}'
-          key: '{{ include "pathling-server.s3SecretKeySecretKey" (index "pathling-server" .Subcharts) }}'
+          name: '{{ printf "http://%s-%s" .Release.Name "minio" }}'
+          key: root-password
     - name: AWS_ENDPOINT_URL_S3
-      value: '{{ include "pathling-server.s3Endpoint" (index "pathling-server" .Subcharts) }}'
+      value: '{{ printf "http://%s-%s:%d" .Release.Name "minio" 9000 }}'
 
 trino: {}
 
