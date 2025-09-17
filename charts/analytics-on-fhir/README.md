@@ -1,48 +1,28 @@
 # analytics-on-fhir
 
-![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a fully-integrated FHIR-based analytics solution.
 
 **Homepage:** <https://github.com/miracum/charts>
 
-## Installation
+## Maintainers
 
-```sh
-helm repo add miracum https://miracum.github.io/charts
-helm repo update
-helm install --create-namespace vfps miracum/vfps -n vfps
-```
+| Name    | Email | Url |
+| ------- | ----- | --- |
+| miracum |       |     |
 
-> **Warning**
-> By default, the included [PostgreSQL Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/postgresql#upgrading)
-> auto-generates a random password for the database which may cause problems when upgrading the chart (see [here for details](https://github.com/bitnami/charts/tree/master/bitnami/postgresql#upgrading)).
+## Source Code
 
-## Usage
+- <https://github.com/miracum/charts>
 
-```sh
-kubectl run --namespace=vfps -i --tty --rm --image=ghcr.io/miracum/vfps-grpc-utils:latest --restart=Never vfps-tester -- bash
+## Requirements
 
-nobody@debug:/$ grpcurl \
-  -plaintext \
-  -import-path=/tmp/protos/ \
-  -proto=Protos/vfps/api/v1/namespaces.proto \
-  -d '{"name": "test", "pseudonymGenerationMethod": "PSEUDONYM_GENERATION_METHOD_SECURE_RANDOM_BASE64URL_ENCODED", "pseudonymLength": 32}' \
-  vfps-headless:8081 \
-  vfps.api.v1.NamespaceService/Create
+Kubernetes: `>= 1.19.0`
 
-nobody@debug:/$ ghz --duration=1m \
-  --connections=3 \
-  --lb-strategy=round_robin \
-  --cpus=3 \
-  --insecure \
-  --enable-compression \
-  --import-paths=/tmp/protos/ \
-  --proto=Protos/vfps/api/v1/pseudonyms.proto \
-  --call=vfps.api.v1.PseudonymService/Create \
-  -d '{"originalValue": "{{ randomString 32 }}", "namespace": "test"}' \
-  dns:///vfps-headless:8081
-```
+| Repository                        | Name     | Version |
+| --------------------------------- | -------- | ------- |
+| https://apache.github.io/superset | superset | 0.15.0  |
 
 ## Values
 
@@ -99,3 +79,7 @@ nobody@debug:/$ ghz --duration=1m \
 | trino.envFrom[0].secretRef.name                        | string | `"{{ printf \"%s-%s\" .Release.Name \"minio\" }}"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |             |
 | trino.envFrom[1].configMapRef.name                     | string | `"{{ printf \"%s-%s\" .Release.Name \"endpoint-config\" }}"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |             |
 | trino.server.workers                                   | int    | `1`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |             |
+
+---
+
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

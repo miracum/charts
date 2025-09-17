@@ -3,6 +3,7 @@ chart-dirs:
 chart-repos:
   - codecentric=https://codecentric.github.io/helm-charts
   - hapifhir=https://hapifhir.github.io/hapi-fhir-jpaserver-starter
+  - trinodb=https://trinodb.github.io/charts
 debug: true
 remote: origin
 helm-extra-args: --timeout 600s

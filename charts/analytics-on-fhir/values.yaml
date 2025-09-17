@@ -173,8 +173,6 @@ trino:
   server:
     workers: 1
 
-superset: {}
-
 # @ignored
 restrictedContainerSecurityContext:
   allowPrivilegeEscalation: false
