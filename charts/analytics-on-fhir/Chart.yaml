@@ -17,9 +17,9 @@ dependencies:
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
     version: 0.3.0
-  # - name: trino
-  #   repository: https://trinodb.github.io/charts
-  #   version: 1.40.0
+  - name: trino
+    repository: https://trinodb.github.io/charts
+    version: 1.40.0
   # - name: superset
   #   repository: https://apache.github.io/superset
   #   version: 0.15.0

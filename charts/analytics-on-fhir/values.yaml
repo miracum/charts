@@ -135,6 +135,56 @@ hive-metastore:
     - name: AWS_ENDPOINT_URL
       value: '{{ printf "http://%s-%s:%d" .Release.Name "minio" 9000 }}'
 
-trino: {}
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+      ephemeral-storage: 2Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+      ephemeral-storage: 2Gi
+
+trino:
+  envFrom:
+    - secretRef:
+        name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+    - configMapRef:
+        name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+
+  additionalCatalogs:
+    fhir: |-
+      connector.name=delta_lake
+      hive.metastore.uri=${ENV:HIVE_METASTORE_URI}
+      hive.metastore-cache-ttl=0s
+      hive.metastore-refresh-interval=5s
+      hive.metastore.username=trino
+      fs.hadoop.enabled=false
+      fs.native-s3.enabled=true
+      s3.endpoint=${ENV:AWS_ENDPOINT_URL}
+      s3.path-style-access=true
+      s3.region=eu-central-1
+      # used from the minio secret. The naming is not really great but,
+      # avoids hard-coding the secret name when using trino.env which isn't templated.
+      s3.aws-access-key=${ENV:root-user}
+      s3.aws-secret-key=${ENV:root-password}
+      delta.compression-codec=ZSTD
+
+  server:
+    workers: 1
 
 superset: {}
+
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
