@@ -146,6 +146,7 @@ hive-metastore:
       ephemeral-storage: 2Gi
 
 trino:
+  enabled: false
   envFrom:
     - secretRef:
         name: '{{ printf "%s-%s" .Release.Name "minio" }}'
