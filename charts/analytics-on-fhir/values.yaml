@@ -3,10 +3,19 @@ pathling-server:
     url: s3://fhir
   minio:
     defaultBucket: fhir
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+        ephemeral-storage: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+        ephemeral-storage: 1Gi
   extraEnv:
     - name: JAVA_TOOL_OPTIONS
       value: |
-        -Xmx8g
+        -Xmx4g
         -Xss64m
         -XX:G1HeapRegionSize=32M
         -XX:+ExplicitGCInvokesConcurrent
@@ -37,15 +46,15 @@ pathling-server:
     - name: spark.serializer
       value: "org.apache.spark.serializer.KryoSerializer"
     - name: spark.driver.memory
-      value: "6g"
+      value: "3g"
   resources:
     limits:
       cpu: 2000m
-      memory: 9Gi
+      memory: 4Gi
       ephemeral-storage: 4Gi
     requests:
       cpu: 500m
-      memory: 9Gi
+      memory: 4Gi
       ephemeral-storage: 4Gi
 
 hive-metastore:
@@ -138,11 +147,11 @@ hive-metastore:
   resources:
     limits:
       cpu: 500m
-      memory: 2Gi
+      memory: 1Gi
       ephemeral-storage: 2Gi
     requests:
       cpu: 100m
-      memory: 2Gi
+      memory: 1Gi
       ephemeral-storage: 2Gi
 
 trino:

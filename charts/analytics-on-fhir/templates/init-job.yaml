@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "analytics-on-fhir.labels" . | nindent 4 }}
   annotations:
-    helm.sh/hook: post-install # ,post-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
   ttlSecondsAfterFinished: 100
   template:
