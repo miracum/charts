@@ -1,0 +1,202 @@
+pathling-server:
+  warehouse:
+    url: s3://fhir
+  minio:
+    defaultBucket: fhir
+    # @ignored
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+        ephemeral-storage: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+        ephemeral-storage: 1Gi
+  extraEnv:
+    - name: JAVA_TOOL_OPTIONS
+      value: |
+        -Xmx4g
+        -Xss64m
+        -XX:G1HeapRegionSize=32M
+        -XX:+ExplicitGCInvokesConcurrent
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -Duser.timezone=UTC
+        --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
+        --add-opens=java.base/java.net=ALL-UNNAMED
+        --add-opens=java.base/java.nio=ALL-UNNAMED
+        --add-opens=java.base/java.util=ALL-UNNAMED
+        --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
+    - name: pathling.import.allowableSources
+      value: s3a://import/
+    - name: pathling.storage.cacheDatasets
+      value: "false"
+    - name: pathling.query.cacheResults
+      value: "false"
+    - name: pathling.terminology.enabled
+      value: "false"
+    - name: pathling.terminology.serverUrl
+      value: http://localhost:8080/i-dont-exist
+    - name: spark.sql.parquet.compression.codec
+      value: "zstd"
+    - name: spark.io.compression.codec
+      value: "zstd"
+    - name: parquet.compression.codec.zstd.level
+      value: "9"
+    - name: spark.serializer
+      value: "org.apache.spark.serializer.KryoSerializer"
+    - name: spark.driver.memory
+      value: "3g"
+
+  # @ignored
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+      ephemeral-storage: 4Gi
+    requests:
+      cpu: 500m
+      memory: 4Gi
+      ephemeral-storage: 4Gi
+
+hive-metastore:
+  postgres:
+    nameOverride: "hive-metastore-postgres"
+
+  hiveSiteXmlTemplate: |
+    <?xml version="1.0"?>
+    <configuration>
+        <property>
+            <name>hive.metastore.warehouse.dir</name>
+            <value>s3a://fhir/metastore</value>
+        </property>
+        <property>
+            <name>fs.s3.impl</name>
+            <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        </property>
+        <property>
+            <name>fs.s3n.impl</name>
+            <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        </property>
+        <property>
+            <name>fs.s3a.endpoint</name>
+            <value>${AWS_ENDPOINT_URL}</value>
+        </property>
+        <property>
+            <name>fs.s3a.path.style.access</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionURL</name>
+            <value>jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionUserName</name>
+            <value>${PGUSER}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionPassword</name>
+            <value>${PGPASSWORD}</value>
+        </property>
+        <property>
+            <name>javax.jdo.option.ConnectionDriverName</name>
+            <value>org.postgresql.Driver</value>
+        </property>
+        <property>
+            <name>metastore.storage.schema.reader.impl</name>
+            <value>org.apache.hadoop.hive.metastore.SerDeStorageSchemaReader</value>
+        </property>
+        <property>
+            <name>hive.security.authorization.createtable.owner.grants</name>
+            <value>ALL</value>
+            <description>The set of privileges automatically granted to the owner whenever a table gets
+                created.
+            </description>
+        </property>
+        <property>
+            <name>hive.security.metastore.authorization.auth.reads</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>hive.users.in.admin.role</name>
+            <value>admin</value>
+        </property>
+        <property>
+            <name>hive.input.format</name>
+            <value>io.delta.hive.HiveInputFormat</value>
+        </property>
+        <property>
+            <name>hive.tez.input.format</name>
+            <value>io.delta.hive.HiveInputFormat</value>
+        </property>
+    </configuration>
+
+  # somewhat hard-coded for simplicity - working with including Subchart-templating is tricky...
+  extraEnv:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+          key: root-user
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+          key: root-password
+    - name: AWS_ENDPOINT_URL
+      value: '{{ printf "http://%s-%s:%d" .Release.Name "minio" 9000 }}'
+
+  # @ignored
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+      ephemeral-storage: 2Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+      ephemeral-storage: 2Gi
+
+trino:
+  enabled: false
+  envFrom:
+    - secretRef:
+        name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+    - configMapRef:
+        name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+
+  additionalCatalogs:
+    fhir: |-
+      connector.name=delta_lake
+      hive.metastore.uri=${ENV:HIVE_METASTORE_URI}
+      hive.metastore-cache-ttl=0s
+      hive.metastore-refresh-interval=5s
+      hive.metastore.username=trino
+      fs.hadoop.enabled=false
+      fs.native-s3.enabled=true
+      s3.endpoint=${ENV:AWS_ENDPOINT_URL}
+      s3.path-style-access=true
+      s3.region=eu-central-1
+      # used from the minio secret. The naming is not really great but,
+      # avoids hard-coding the secret name when using trino.env which isn't templated.
+      s3.aws-access-key=${ENV:root-user}
+      s3.aws-secret-key=${ENV:root-password}
+      delta.compression-codec=ZSTD
+
+  server:
+    workers: 1
+
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault

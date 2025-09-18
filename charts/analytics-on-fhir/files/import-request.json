@@ -1,0 +1,56 @@
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "source",
+      "part": [
+        {
+          "name": "resourceType",
+          "valueCode": "Patient"
+        },
+        {
+          "name": "url",
+          "valueUrl": "s3a://import/fhir/Patient.ndjson"
+        },
+        {
+          "name": "mode",
+          "valueCode": "overwrite"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "part": [
+        {
+          "name": "resourceType",
+          "valueCode": "Condition"
+        },
+        {
+          "name": "url",
+          "valueUrl": "s3a://import/fhir/Condition.ndjson"
+        },
+        {
+          "name": "mode",
+          "valueCode": "overwrite"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "part": [
+        {
+          "name": "resourceType",
+          "valueCode": "Observation"
+        },
+        {
+          "name": "url",
+          "valueUrl": "s3a://import/fhir/Observation.ndjson"
+        },
+        {
+          "name": "mode",
+          "valueCode": "overwrite"
+        }
+      ]
+    }
+  ]
+}

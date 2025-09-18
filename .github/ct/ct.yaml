@@ -13,5 +13,6 @@ release-label: release
 chart-repos:
   - codecentric=https://codecentric.github.io/helm-charts
   - hapifhir=https://hapifhir.github.io/hapi-fhir-jpaserver-starter
+  - trinodb=https://trinodb.github.io/charts
 release-notes-file: CHANGELOG.md
 target-branch: master

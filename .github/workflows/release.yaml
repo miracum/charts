@@ -40,6 +40,7 @@ jobs:
         run: |
           helm repo add codecentric https://codecentric.github.io/helm-charts
           helm repo add hapifhir https://hapifhir.github.io/hapi-fhir-jpaserver-starter
+          helm repo add trinodb https://trinodb.github.io/charts
 
       - name: Update dependencies
         run: find charts/ -maxdepth 1 ! -path charts/ -type d -exec helm dependency update {} \;

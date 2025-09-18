@@ -1,0 +1,227 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "analytics-on-fhir.fullname" . }}-init-job
+  labels:
+    {{- include "analytics-on-fhir.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      automountServiceAccountToken: false
+      initContainers:
+        - name: download-clis
+          image: docker.io/curlimages/curl:8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
+          command: ["/bin/sh", "-c"]
+          workingDir: /downloads
+          args:
+            - |
+              curl -fLsSO https://github.com/synthetichealth/synthea/releases/download/master-branch-latest/synthea-with-dependencies.jar
+              curl -fLsSO https://dl.min.io/client/mc/release/linux-amd64/mc
+              chmod +x mc
+              ls -lsa /downloads
+          volumeMounts:
+            - name: downloads
+              mountPath: /downloads
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 100m
+              ephemeral-storage: 2Gi
+              memory: 32Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 2Gi
+              memory: 32Mi
+        - name: wait-for-pathling-server
+          image: docker.io/curlimages/curl:8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
+          command: ["/bin/sh", "-c"]
+          envFrom:
+            - configMapRef:
+                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+          args:
+            - |
+              until [ "$(curl -s -o /dev/null -L -w "%{http_code}" "${PATHLING_SERVER_URL}/fhir/metadata")" == "200" ]; do
+                  echo "$(date): Waiting for pathling server @ ${PATHLING_SERVER_URL} to be up";
+                  sleep 5;
+              done;
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+        - name: generate-and-upload-resources
+          # might as well use this image since it has java installed
+          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.1@sha256:5dee865c98853782bb61784a041ecd349210b406bd0cd720c73f8c2a29571cad
+          command: ["/bin/sh", "-c"]
+          workingDir: /downloads
+          envFrom:
+            - configMapRef:
+                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+          env:
+            - name: SYNTHEA_SEED
+              value: "20250916"
+            - name: MINIO_UPDATE
+              value: "off"
+            - name: MINIO_CALLHOME_ENABLE
+              value: "off"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-password
+          args:
+            - |
+              java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 100 -c /tmp/config/synthea.properties
+              /downloads/mc alias set minio "${AWS_ENDPOINT_URL}" "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}"
+              /downloads/mc mb --ignore-existing minio/import
+              /downloads/mc cp --recursive /downloads/synthea/ minio/import/
+          volumeMounts:
+            - name: downloads
+              mountPath: /downloads
+            - name: init-job-config
+              mountPath: /tmp/config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            privileged: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 2000m
+              ephemeral-storage: 2Gi
+              memory: 1500Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 2Gi
+              memory: 1500Mi
+        - name: bulk-import
+          image: docker.io/curlimages/curl:8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
+          envFrom:
+            - configMapRef:
+                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url ${PATHLING_SERVER_URL}'/fhir/$import'
+          volumeMounts:
+            - name: init-job-config
+              mountPath: /tmp/config
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+        - name: wait-for-hive-metastore
+          image: ghcr.io/wait4x/wait4x:3.5.1@sha256:52e6791d4d8b8c80b2106e4d4f1e44ee69477c6dd461bdeb1aae2db6ccd5d038
+          args:
+            - tcp
+            - '{{ printf "%s-%s:%d" .Release.Name "hive-metastore" 9083 }}'
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 50Mi
+              memory: 32Mi
+      containers:
+        - name: lakehousekeeper
+          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.1@sha256:5dee865c98853782bb61784a041ecd349210b406bd0cd720c73f8c2a29571cad
+          envFrom:
+            - configMapRef:
+                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+          env:
+            - name: AWS_ALLOW_HTTP
+              value: "1"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-password
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              python3 /app/src/lakehousekeeper.py register --bucket-name=fhir --database-name-prefix=default/ --hive-metastore=${HIVE_METASTORE_URI}
+              python3 /app/src/lakehousekeeper.py optimize --bucket-name=fhir --database-name-prefix=default/
+              python3 /app/src/lakehousekeeper.py vacuum   --bucket-name=fhir --database-name-prefix=default/ --retention-hours=0 --dry-run=false --enforce-retention-duration=false
+          volumeMounts:
+            - name: init-job-config
+              mountPath: /app/spark/conf
+              subPath: spark-defaults.conf
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            privileged: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 2000m
+              ephemeral-storage: 8Gi
+              memory: 4Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 8Gi
+              memory: 4Gi
+      restartPolicy: Never
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: downloads
+          emptyDir: {}
+        - name: init-job-config
+          configMap:
+            name: {{ include "analytics-on-fhir.fullname" . }}-init-job-config

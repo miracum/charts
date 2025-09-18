@@ -1,0 +1,41 @@
+apiVersion: v2
+name: analytics-on-fhir
+description: A Helm chart for deploying a fully-integrated FHIR-based analytics solution.
+type: application
+home: https://github.com/miracum/charts
+keywords:
+  - research
+  - FHIR
+sources:
+  - https://github.com/miracum/charts
+maintainers:
+  - name: miracum
+dependencies:
+  - name: pathling-server
+    version: 0.9.1
+    repository: oci://ghcr.io/chgl/charts
+  - name: hive-metastore
+    repository: oci://ghcr.io/miracum/charts
+    version: 0.3.0
+  - name: trino
+    repository: https://trinodb.github.io/charts
+    version: 1.40.0
+    condition: trino.enabled
+  # - name: superset
+  #   repository: https://apache.github.io/superset
+  #   version: 0.15.0
+deprecated: false
+kubeVersion: ">= 1.19.0"
+version: 0.1.0
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
+    - kind: changed
+      description: "Initial version"
