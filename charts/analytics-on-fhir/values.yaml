@@ -44,7 +44,7 @@ pathling-server:
       memory: 9Gi
       ephemeral-storage: 4Gi
     requests:
-      cpu: 2000m
+      cpu: 500m
       memory: 9Gi
       ephemeral-storage: 4Gi
 
@@ -141,7 +141,7 @@ hive-metastore:
       memory: 2Gi
       ephemeral-storage: 2Gi
     requests:
-      cpu: 500m
+      cpu: 100m
       memory: 2Gi
       ephemeral-storage: 2Gi
 

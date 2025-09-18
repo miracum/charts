@@ -32,11 +32,11 @@ spec:
           {{- end }}
           resources:
             limits:
-              cpu: 150m
+              cpu: 100m
               ephemeral-storage: 2Gi
               memory: 32Mi
             requests:
-              cpu: 100m
+              cpu: 50m
               ephemeral-storage: 2Gi
               memory: 32Mi
         - name: wait-for-pathling-server
@@ -61,7 +61,7 @@ spec:
               ephemeral-storage: 50Mi
               memory: 32Mi
             requests:
-              cpu: 100m
+              cpu: 50m
               ephemeral-storage: 50Mi
               memory: 32Mi
         - name: generate-and-upload-resources
@@ -118,7 +118,7 @@ spec:
               ephemeral-storage: 2Gi
               memory: 2Gi
             requests:
-              cpu: 100m
+              cpu: 50m
               ephemeral-storage: 2Gi
               memory: 2Gi
         - name: bulk-import
@@ -143,7 +143,7 @@ spec:
               ephemeral-storage: 50Mi
               memory: 32Mi
             requests:
-              cpu: 100m
+              cpu: 50m
               ephemeral-storage: 50Mi
               memory: 32Mi
         - name: wait-for-hive-metastore
@@ -161,7 +161,7 @@ spec:
               ephemeral-storage: 50Mi
               memory: 32Mi
             requests:
-              cpu: 100m
+              cpu: 50m
               ephemeral-storage: 50Mi
               memory: 32Mi
       containers:
@@ -213,7 +213,7 @@ spec:
               ephemeral-storage: 8Gi
               memory: 5Gi
             requests:
-              cpu: 2000m
+              cpu: 500m
               ephemeral-storage: 8Gi
               memory: 5Gi
       restartPolicy: Never
