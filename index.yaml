@@ -1,5 +1,46 @@
 apiVersion: v1
 entries:
+  analytics-on-fhir:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Initial version"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2025-09-18T12:22:40.807285733Z"
+    dependencies:
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.9.1
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.3.0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.40.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: 7a1a541d9b8ef9e0f74ef3b7b20ff1e9ddff580689012ad7face474f02a5d604
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.0/analytics-on-fhir-0.1.0.tgz
+    version: 0.1.0
   blaze:
   - annotations:
       artifacthub.io/changes: |-
@@ -21169,4 +21210,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-17T01:26:25.586473725Z"
+generated: "2025-09-18T12:22:40.808619157Z"
