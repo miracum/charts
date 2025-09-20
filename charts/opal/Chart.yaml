@@ -15,14 +15,14 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgres
-    version: 0.2.5
+    version: 0.5.0
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 kubeVersion: ">= 1.19.0"
-version: 0.3.10
+version: 0.3.11
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/obiba/opal to 5.2.2"
+      description: "Updated postgres to 0.5.0"

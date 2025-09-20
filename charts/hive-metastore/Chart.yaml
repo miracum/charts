@@ -7,13 +7,13 @@ sources:
 home: https://hive.apache.org/
 dependencies:
   - name: postgres
-    version: 0.2.5
+    version: 0.5.0
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 0.4.0
+version: 0.4.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,6 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "added startup probe"
-    - kind: changed
-      description: "don't automount the SA by default"
+      description: "Updated postgres to 0.5.0"
