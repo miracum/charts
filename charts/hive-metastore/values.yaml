@@ -20,8 +20,9 @@ fullnameOverride: ""
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
+  # Automatically mount a ServiceAccount's API credentials. Used in ServiceAccount.automountServiceAccountToken
+  # and in Deployment.spec.template.spec.automountServiceAccountToken even if serviceAccount.create=false.
+  automount: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -113,6 +114,16 @@ readinessProbe:
   tcpSocket:
     port: 9083
   failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+startupProbe:
+  tcpSocket:
+    port: 9083
+  failureThreshold: 5
   initialDelaySeconds: 30
   periodSeconds: 10
   successThreshold: 1
