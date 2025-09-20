@@ -1,30 +1,16 @@
 # analytics-on-fhir
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a fully-integrated FHIR-based analytics solution.
 
 **Homepage:** <https://github.com/miracum/charts>
 
-## Maintainers
+## Installation
 
-| Name    | Email | Url |
-| ------- | ----- | --- |
-| miracum |       |     |
-
-## Source Code
-
-- <https://github.com/miracum/charts>
-
-## Requirements
-
-Kubernetes: `>= 1.19.0`
-
-| Repository                       | Name            | Version |
-| -------------------------------- | --------------- | ------- |
-| https://trinodb.github.io/charts | trino           | 1.40.0  |
-| oci://ghcr.io/chgl/charts        | pathling-server | 0.9.1   |
-| oci://ghcr.io/miracum/charts     | hive-metastore  | 0.3.0   |
+```sh
+helm install -n analytics-on-fhir --create-namespace analytics-on-fhir oci://ghcr.io/miracum/charts/analytics-on-fhir
+```
 
 ## Values
 
@@ -69,7 +55,3 @@ Kubernetes: `>= 1.19.0`
 | trino.envFrom[0].secretRef.name                        | string | `"{{ printf \"%s-%s\" .Release.Name \"minio\" }}"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |             |
 | trino.envFrom[1].configMapRef.name                     | string | `"{{ printf \"%s-%s\" .Release.Name \"endpoint-config\" }}"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |             |
 | trino.server.workers                                   | int    | `1`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |             |
-
----
-
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
