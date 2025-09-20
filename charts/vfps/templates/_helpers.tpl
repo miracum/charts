@@ -150,8 +150,8 @@ Get the key inside the secret containing the DB user's password
 */}}
 {{- define "vfps.database.db-secret-key" -}}
 {{- if .Values.postgres.enabled -}}
-    {{- if (or .Values.postgres.auth.username .Values.postgres.auth.existingSecret ) -}}
-        {{ "password" }}
+    {{- if .Values.postgres.auth.existingSecret -}}
+        {{ default "postgres-password" .Values.postgres.auth.secretKeys.passwordKey }}
     {{- else -}}
         {{ "postgres-password" }}
     {{- end -}}
