@@ -1,12 +1,12 @@
 dependencies:
 - name: postgres
   repository: oci://registry-1.docker.io/cloudpirates
-  version: 0.5.0
+  version: 0.7.0
 - name: fhir-pseudonymizer
   repository: oci://ghcr.io/miracum/charts
   version: 0.8.8
 - name: common
   repository: oci://ghcr.io/miracum/charts
   version: 0.1.1
-digest: sha256:b8c2bd8beb281ae40ae3d16b2c31dc8e85a22205bb4f42ee39df0053cf57b50b
-generated: "2025-09-21T08:11:22.329901514Z"
+digest: sha256:b7a517cf663f3bfe7df98397f4dfa986fa81bf91a3d0b0f7ec0c26a77872e864
+generated: "2025-10-01T06:32:49.000920601Z"
