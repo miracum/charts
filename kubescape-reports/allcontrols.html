@@ -518,6 +518,88 @@
     </br>
     
     
+    <h3>Name: -vfps-postgres</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -vfps-postgres</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgres</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgres</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
     <h3>Name: -fhir-gateway-gateway</h3>
       <p>ApiVersion: apps/v1</p>
       <p>Kind: Deployment</p>
@@ -542,10 +624,51 @@
         </tr>
         
         <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -gateway-vfps-migrations-v1-3-6</h3>
+      <p>ApiVersion: batch/v1</p>
+      <p>Kind: Job</p>
+      <p>Name: -gateway-vfps-migrations-v1-3-6</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Configured readiness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
@@ -553,6 +676,309 @@
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Configured liveness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -hive-metastore</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -hive-metastore</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[1].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -pathling-server</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -pathling-server</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Applications credentials in configuration files</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[3].name</p>  <p>spec.template.spec.containers[0].env[3].value</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: trino-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: trino-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Configured readiness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure memory limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure CPU limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Linux hardening</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0055">C-0055</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.seccompProfile=YOUR_VALUE</p>  <p>spec.containers[0].securityContext.seLinuxOptions=YOUR_VALUE</p>  <p>spec.containers[0].securityContext.capabilities.drop[0]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Configured liveness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Non-root containers</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0013">C-0013</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.runAsNonRoot=true</p>  <p>spec.containers[0].securityContext.runAsGroup=1000</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Allow privilege escalation</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0016">C-0016</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.allowPrivilegeEscalation=false</p>  <p>spec.containers[0].securityContext.privileged=false</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -blaze-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -blaze-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -blaze</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -blaze</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         </tbody>
@@ -577,13 +1003,6 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
@@ -596,14 +1015,69 @@
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -fhir-pseudonymizer</h3>
+    <h3>Name: -fhir-pseudonymizer-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -fhir-pseudonymizer-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgres</h3>
       <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -fhir-pseudonymizer</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgres</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -624,10 +1098,44 @@
         </tr>
         
         <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -vfps</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -vfps</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
@@ -635,6 +1143,397 @@
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -gateway-vfps-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -gateway-vfps-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -hive-metastore-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -hive-metastore-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -fhir-gateway-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -fhir-gateway-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -vfps-migrations-v1-3-6</h3>
+      <p>ApiVersion: batch/v1</p>
+      <p>Kind: Job</p>
+      <p>Name: -vfps-migrations-v1-3-6</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Configured readiness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Configured liveness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -gateway-vfps</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -gateway-vfps</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -vfps</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -vfps</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -pathling-server-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -pathling-server-test-connection</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: trino-worker</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: trino-worker</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure memory limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure CPU limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         </tbody>
@@ -675,10 +1574,10 @@
       </table>
     </div>
     
-    <h3>Name: -pathling-server-test-connection</h3>
+    <h3>Name: -vfps-test-connection</h3>
       <p>ApiVersion: v1</p>
       <p>Kind: Pod</p>
-      <p>Name: -pathling-server-test-connection</p>
+      <p>Name: -vfps-test-connection</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -693,23 +1592,9 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
         </tr>
         
         <tr>
@@ -719,14 +1604,28 @@
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -vfps</h3>
+    <h3>Name: -fhir-gateway-loinc-converter</h3>
       <p>ApiVersion: apps/v1</p>
       <p>Kind: Deployment</p>
-      <p>Name: -vfps</p>
+      <p>Name: -fhir-gateway-loinc-converter</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -747,27 +1646,27 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -fhir-pseudonymizer-test-connection</h3>
+    <h3>Name: -hive-metastore-test-connection</h3>
       <p>ApiVersion: v1</p>
       <p>Kind: Pod</p>
-      <p>Name: -fhir-pseudonymizer-test-connection</p>
+      <p>Name: -hive-metastore-test-connection</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -782,23 +1681,9 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
         </tr>
         
         <tr>
@@ -808,14 +1693,28 @@
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -gateway-vfps</h3>
+    <h3>Name: trino-coordinator</h3>
       <p>ApiVersion: apps/v1</p>
       <p>Kind: Deployment</p>
-      <p>Name: -gateway-vfps</p>
+      <p>Name: trino-coordinator</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -836,27 +1735,41 @@
         </tr>
         
         <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure memory limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">High</td>
+          <td class="resourceNameCell">Ensure CPU limits are set</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+        </tr>
+        
+        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
         </tr>
         
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -fhir-gateway-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -fhir-gateway-test-connection</p>
+    <h3>Name: -fhir-pseudonymizer</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: Deployment</p>
+      <p>Name: -fhir-pseudonymizer</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -871,23 +1784,9 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
@@ -895,6 +1794,13 @@
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         </tbody>
@@ -919,16 +1825,16 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
         </tr>
         
         <tr>
@@ -942,10 +1848,10 @@
       </table>
     </div>
     
-    <h3>Name: -blaze-test-connection</h3>
+    <h3>Name: -vfps-test-connection</h3>
       <p>ApiVersion: v1</p>
       <p>Kind: Pod</p>
-      <p>Name: -blaze-test-connection</p>
+      <p>Name: -vfps-test-connection</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -957,13 +1863,6 @@
         </tr>
         </thead>
         <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
@@ -973,51 +1872,17 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -hive-metastore</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -hive-metastore</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[1].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         <tr>
@@ -1025,13 +1890,6 @@
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
         </tbody>
@@ -1090,40 +1948,40 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Immutable container filesystem</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
           <td class="resourceRemediationCell"> <p>spec.template.spec.containers[1].securityContext.readOnlyRootFilesystem=true</p> </td>
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
         </tr>
         
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: trino-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: trino-test-connection</p>
+    <h3>Name: -vfps-migrations-v1-3-6</h3>
+      <p>ApiVersion: batch/v1</p>
+      <p>Kind: Job</p>
+      <p>Name: -vfps-migrations-v1-3-6</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -1137,66 +1995,17 @@
         <tbody>
         
         <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Linux hardening</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0055">C-0055</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.seccompProfile=YOUR_VALUE</p>  <p>spec.containers[0].securityContext.seLinuxOptions=YOUR_VALUE</p>  <p>spec.containers[0].securityContext.capabilities.drop[0]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Non-root containers</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0013">C-0013</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.runAsNonRoot=true</p>  <p>spec.containers[0].securityContext.runAsGroup=1000</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Allow privilege escalation</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0016">C-0016</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].securityContext.allowPrivilegeEscalation=false</p>  <p>spec.containers[0].securityContext.privileged=false</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure CPU limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Configured readiness probe</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
@@ -1204,54 +2013,13 @@
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure memory limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Configured liveness probe</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
-          <td class="resourceRemediationCell"> <p>spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -vfps-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
@@ -1259,54 +2027,6 @@
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -fhir-gateway-loinc-converter</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -fhir-gateway-loinc-converter</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
         </tbody>
@@ -1331,44 +2051,10 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps-postgres</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -vfps-postgres</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
@@ -1378,209 +2064,10 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps-migrations-v1-3-6</h3>
-      <p>ApiVersion: batch/v1</p>
-      <p>Kind: Job</p>
-      <p>Name: -vfps-migrations-v1-3-6</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Configured readiness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Configured liveness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -gateway-vfps-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -gateway-vfps-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -postgres</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgres</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -opal-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -opal-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
         </tbody>
@@ -1605,23 +2092,23 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Configured readiness probe</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
         <tr>
@@ -1632,45 +2119,11 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Configured readiness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Configured liveness probe</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
           <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
         </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -postgres</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgres</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
@@ -1680,168 +2133,10 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps-migrations-v1-3-6</h3>
-      <p>ApiVersion: batch/v1</p>
-      <p>Kind: Job</p>
-      <p>Name: -vfps-migrations-v1-3-6</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Configured readiness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Configured liveness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -hive-metastore-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -hive-metastore-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -hive-metastore-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -hive-metastore-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
         </tbody>
@@ -1872,294 +2167,6 @@
         </tr>
         
         <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -blaze</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -blaze</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -vfps</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -vfps-test-connection</h3>
-      <p>ApiVersion: v1</p>
-      <p>Kind: Pod</p>
-      <p>Name: -vfps-test-connection</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: trino-worker</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: trino-worker</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure CPU limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure memory limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -pathling-server</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: -pathling-server</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Applications credentials in configuration files</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0012">C-0012</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].env[3].name</p>  <p>spec.template.spec.containers[0].env[3].value</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Pods in default namespace</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: -gateway-vfps-migrations-v1-3-6</h3>
-      <p>ApiVersion: batch/v1</p>
-      <p>Kind: Job</p>
-      <p>Name: -gateway-vfps-migrations-v1-3-6</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Configured readiness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0018">C-0018</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].readinessProbe=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Pods in default namespace</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
@@ -2168,9 +2175,9 @@
         
         <tr>
           <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Configured liveness probe</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0056">C-0056</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].livenessProbe=YOUR_VALUE</p> </td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         </tbody>
@@ -2195,16 +2202,57 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Immutable container filesystem</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
           <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
         </tr>
         
         <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Name: -postgres</h3>
+      <p>ApiVersion: apps/v1</p>
+      <p>Kind: StatefulSet</p>
+      <p>Name: -postgres</p>
+      <p>Namespace: </p>
+      <table>
+        <thead>
+        <tr>
+          <th class="resourceSeverityCell">Severity</th>
+          <th class="resourceNameCell">Name</th>
+          <th class="resourceURLCell">Docs</th>
+          <th class="resourceRemediationCell">Assisted Remediation</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
           <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Immutable container filesystem</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
         </tr>
         
         <tr>
@@ -2236,23 +2284,9 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Naked pods</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
           <td class="resourceNameCell">Label usage for resources</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
           <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
         </tr>
         
         <tr>
@@ -2262,14 +2296,28 @@
           <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
         </tr>
         
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Medium</td>
+          <td class="resourceNameCell">Ingress and Egress blocked</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
+          <td class="resourceRemediationCell"></td>
+        </tr>
+        
         </tbody>
       </table>
     </div>
     
-    <h3>Name: -postgres</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: StatefulSet</p>
-      <p>Name: -postgres</p>
+    <h3>Name: -opal-test-connection</h3>
+      <p>ApiVersion: v1</p>
+      <p>Kind: Pod</p>
+      <p>Name: -opal-test-connection</p>
       <p>Namespace: </p>
       <table>
         <thead>
@@ -2284,16 +2332,23 @@
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
+          <td class="resourceNameCell">Label usage for resources</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
+          <td class="resourceNameCell">Pods in default namespace</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0061">C-0061</a></td>
+          <td class="resourceRemediationCell"> <p>metadata.namespace=YOUR_NAMESPACE</p> </td>
+        </tr>
+        
+        <tr>
+          <td class="resourceSeverityCell">Low</td>
+          <td class="resourceNameCell">Naked pods</td>
+          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0073">C-0073</a></td>
+          <td class="resourceRemediationCell"></td>
         </tr>
         
         <tr>
@@ -2301,61 +2356,6 @@
           <td class="resourceNameCell">Ingress and Egress blocked</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
           <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        </tbody>
-      </table>
-    </div>
-    
-    <h3>Name: trino-coordinator</h3>
-      <p>ApiVersion: apps/v1</p>
-      <p>Kind: Deployment</p>
-      <p>Name: trino-coordinator</p>
-      <p>Namespace: </p>
-      <table>
-        <thead>
-        <tr>
-          <th class="resourceSeverityCell">Severity</th>
-          <th class="resourceNameCell">Name</th>
-          <th class="resourceURLCell">Docs</th>
-          <th class="resourceRemediationCell">Assisted Remediation</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Immutable container filesystem</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0017">C-0017</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem=true</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Low</td>
-          <td class="resourceNameCell">Label usage for resources</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0076">C-0076</a></td>
-          <td class="resourceRemediationCell"> <p>metadata.labels[app]=YOUR_VALUE</p>  <p>spec.template.metadata.labels[app]=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">Medium</td>
-          <td class="resourceNameCell">Ingress and Egress blocked</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0030">C-0030</a></td>
-          <td class="resourceRemediationCell"></td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure CPU limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0270">C-0270</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.cpu=YOUR_VALUE</p> </td>
-        </tr>
-        
-        <tr>
-          <td class="resourceSeverityCell">High</td>
-          <td class="resourceNameCell">Ensure memory limits are set</td>
-          <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0271">C-0271</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].resources.limits.memory=YOUR_VALUE</p> </td>
         </tr>
         
         </tbody>
