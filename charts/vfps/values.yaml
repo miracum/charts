@@ -183,7 +183,7 @@ waitForDatabaseInitContainer:
   image:
     registry: docker.io
     repository: library/postgres
-    tag: 17.6@sha256:feff5b24fedd610975a1f5e743c51a4b360437f4dc3a11acf740dcd708f413f6
+    tag: 17.6@sha256:14d1abe0b1c660ec3c7521786d1249157699ebc62b07ea84ab6aad5239f5251f
     pullPolicy: IfNotPresent
 
 # -- container security context applied to init containers and the Helm test pods
