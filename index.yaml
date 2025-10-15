@@ -14987,6 +14987,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/busybox to sha256:34f9fe72626aece25b6dd6eefab9224fb3338ad61cfefcbe480b1e9cb86e3a2c"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2025-10-15T08:30:23.947656743Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Hive Metastore
+    digest: bd8e523bd9ad49a3c77b0f79bf45e116ae841feff4ba6ece905aa17831f03795
+    home: https://hive.apache.org/
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.4.8/hive-metastore-0.4.8.tgz
+    version: 0.4.8
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:5ecf7fcb7a9cf7367626eac389cef8033d9fde2853f707cfe14e1610463cf7d8"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -15593,6 +15625,48 @@ entries:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/library/busybox to sha256:34f9fe72626aece25b6dd6eefab9224fb3338ad61cfefcbe480b1e9cb86e3a2c"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2025-10-15T08:30:24.177513663Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 49f03bc39d9aa319ff0c0bd83faa7dba2cc074827bcb47b3f79557eaefda62ad
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.19/opal-0.3.19.tgz
+    version: 0.3.19
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -22886,4 +22960,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-10-15T01:39:21.068838047Z"
+generated: "2025-10-15T08:30:24.178646394Z"
