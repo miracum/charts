@@ -10,7 +10,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/fhir-gateway
-  tag: v4.0.2@sha256:734e857657365707b68163421988d02737d0a64a41b84919119b9443148587dc
+  tag: v4.0.3@sha256:b285edb464638ad72139a659a35369b3eef2dd09b1daabd8a7d0c317dd5ad39f
   pullPolicy: IfNotPresent
 
 # -- image pull secrets for the pod
