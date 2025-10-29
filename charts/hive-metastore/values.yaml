@@ -165,7 +165,7 @@ hiveLogCollector:
   image:
     registry: docker.io
     repository: library/busybox
-    tag: 1.37.0-uclibc@sha256:34f9fe72626aece25b6dd6eefab9224fb3338ad61cfefcbe480b1e9cb86e3a2c
+    tag: 1.37.0-uclibc@sha256:9348f54a27ae2b25b607c8bc7108d007b7c37739138ba4829c3ff4a59d70ed30
     pullPolicy: IfNotPresent
   # -- container security context applied to init containers and the Helm test pods
   # @ignored
@@ -263,7 +263,7 @@ tests:
   image:
     registry: docker.io
     repository: library/busybox
-    tag: 1.37.0-uclibc@sha256:34f9fe72626aece25b6dd6eefab9224fb3338ad61cfefcbe480b1e9cb86e3a2c
+    tag: 1.37.0-uclibc@sha256:9348f54a27ae2b25b607c8bc7108d007b7c37739138ba4829c3ff4a59d70ed30
     pullPolicy: IfNotPresent
   automountServiceAccountToken: false
   # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
