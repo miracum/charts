@@ -445,7 +445,7 @@ logCollectorSidecar:
   image:
     registry: docker.io
     repository: library/busybox
-    tag: 1.37.0-uclibc@sha256:9348f54a27ae2b25b607c8bc7108d007b7c37739138ba4829c3ff4a59d70ed30
+    tag: 1.37.0-uclibc@sha256:7b5ade1b11f52517f5cdf3b6194588587b9c4b14d3244b6c96ed7f5b0ff31458
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
   resourcesPreset: "nano"
