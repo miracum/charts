@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 kubeVersion: ">= 1.19.0"
-version: 0.3.21
+version: 0.3.22
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/obiba/opal to 5.3.1"
+      description: "Updated docker.io/library/busybox to sha256:9348f54a27ae2b25b607c8bc7108d007b7c37739138ba4829c3ff4a59d70ed30"
