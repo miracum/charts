@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 kubeVersion: ">= 1.19.0"
-version: 0.3.27
+version: 0.3.28
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/datashield/rock-base to sha256:b9be0e93f1fb435ec36cf4fa82b539772d2498badaecfc42465542b9da29aaab"
+      description: "Updated docker.io/library/busybox to sha256:e58014df10240c35c7b1df7ff8e859ad6a54d061bde77c249f96880e15d83049"
