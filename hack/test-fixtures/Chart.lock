@@ -4,6 +4,6 @@ dependencies:
   version: 23.0.0
 - name: kyverno
   repository: oci://ghcr.io/kyverno/charts
-  version: 3.5.2
-digest: sha256:2f8e1e4c2d1eaeae40044be31aa1a1baf242a6dd0c251a6f76e4cc367cad55a7
-generated: "2025-09-18T16:25:31.444494914Z"
+  version: 3.6.1
+digest: sha256:6c836f3c2cdc0457308f36e695b75feb9ea1af226e9323c56f66270bfc3a9ef9
+generated: "2025-12-05T18:31:38.991263407Z"
