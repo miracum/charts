@@ -52,6 +52,8 @@ defaultTolerations: []
 # the default configuration for processors. This config is merged with any specific settings under `processors.*.`
 default:
   persistence:
+    # timezone set to Europe/Berlin to ensure consistency within processors
+    timezone: "Europe/Berlin"
     # Enable persistence. This changes the processor's type from Deployment to a StatefulSet
     enabled: false
     # Name to assign the volume

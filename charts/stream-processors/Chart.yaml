@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.11.2
+version: 1.11.3
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
