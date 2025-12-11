@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.11.2
+version: 1.11.3
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
@@ -22,5 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Updated common common common common common common common to 0.1.1"
+    - kind: added
+      description: "Adds configuration for container timezone (default: Europe/Berlin)"
