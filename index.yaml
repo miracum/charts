@@ -19918,6 +19918,33 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: "Adds configuration for container timezone (default: Europe/Berlin)"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2025-12-11T12:44:11.330098517Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: b05deb6b2299784d3d3289551a99eea5934b681bc1206b29d06dc901d23b426b
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-1.11.3/stream-processors-1.11.3.tgz
+    version: 1.11.3
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "Updated common common common common common common common to 0.1.1"
       artifacthub.io/recommendations: |
@@ -24581,4 +24608,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-12-11T10:07:29.667264294Z"
+generated: "2025-12-11T12:44:11.3312273Z"
