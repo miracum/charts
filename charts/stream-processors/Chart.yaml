@@ -22,5 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Added default timezone Europe/Berlin to processors"
+    - kind: added
+      description: "Adds configuration for container timezone (default: Europe/Berlin)"

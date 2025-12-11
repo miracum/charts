@@ -136,7 +136,7 @@ spec:
             {{- end }}
             {{- end }}
             - name: TZ
-              value: {{ $.Values.timezone | quote }}
+              value: {{ .timezone | quote }}
           resources:
             {{- toYaml .container.resources | nindent 12 }}
           volumeMounts:
