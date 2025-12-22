@@ -527,6 +527,42 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.4.1"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2025-12-22T20:26:30.42568045Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: 363392013cf418b2c200e9226266b3d8c76ecfec6bd7ca283a829ca112b9c42f
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.7.24/blaze-0.7.24.tgz
+    version: 0.7.24
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.4.0"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -24868,4 +24904,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-12-22T14:24:19.329427893Z"
+generated: "2025-12-22T20:26:30.428014483Z"
