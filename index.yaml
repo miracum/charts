@@ -7119,6 +7119,36 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:41fc5342eefba6cc2ccda736aaf034bbbb7c3df0fdb81516eba1ba33f360162c"
+    apiVersion: v2
+    created: "2026-01-01T03:57:05.696371567Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.8.18
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 0564ba13a0463d1b7952d3ca3d3a1e65923b11b87ec9a700041e1775059b8dfe
+    home: https://github.com/miracum/fhir-gateway
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-9.0.36/fhir-gateway-9.0.36.tgz
+    version: 9.0.36
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/loinc-conversion to v1.16.9"
     apiVersion: v2
     created: "2025-12-31T20:26:10.313448325Z"
@@ -16129,6 +16159,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:41fc5342eefba6cc2ccda736aaf034bbbb7c3df0fdb81516eba1ba33f360162c"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-01-01T03:57:05.851205055Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Hive Metastore
+    digest: 35a2b89d2011ae48218ab44ccc4f849b3629330ec0f6de27e5e37c763ae2e40b
+    home: https://hive.apache.org/
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.4.14/hive-metastore-0.4.14.tgz
+    version: 0.4.14
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:48a4462d62e106f6ece30479d2b198714d33cab795b6b1ad365b3f2c04ad360a"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -16927,6 +16989,48 @@ entries:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:41fc5342eefba6cc2ccda736aaf034bbbb7c3df0fdb81516eba1ba33f360162c"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-01-01T03:57:06.026798676Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 8895ccd92d695b5d09a141b882d8e6dcb4dd9a5dd51ac245e1ee005683de640b
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.32/opal-0.3.32.tgz
+    version: 0.3.32
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -21410,6 +21514,53 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:41fc5342eefba6cc2ccda736aaf034bbbb7c3df0fdb81516eba1ba33f360162c"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2026-01-01T03:57:06.219275717Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.0
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: bca0baee45aea647846eb9e463a1604859ed36b933a82c6b8b070b10ad83a11e
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-3.0.16/vfps-3.0.16.tgz
+    version: 3.0.16
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/curlimages/curl to sha256:935d9100e9ba842cdb060de42472c7ca90cfe9a7c96e4dacb55e79e560b3ff40"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -24934,4 +25085,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2025-12-31T20:26:10.314558572Z"
+generated: "2026-01-01T03:57:06.220672976Z"
