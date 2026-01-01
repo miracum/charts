@@ -143,7 +143,7 @@ spec:
               command:
                 - test
                 - -f
-                - /opt/opal/bin/first_run.sh.done
+                - /srv/.first_run.done
             initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 20
