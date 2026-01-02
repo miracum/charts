@@ -113,9 +113,9 @@ opal:
   extraEnv: []
 
   pod:
-    # -- YAML pod spec for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
+    # -- YAML pod specs for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
     # set to `[]` to disable.
-    spec:
+    specs:
       []
       # untested sample:
       # - apiVersion: v1

@@ -366,7 +366,7 @@ Create the name of the service account to use
 The JSON-encoded pod spec for the rock pods when using the Kubernetes pod spawner
 */}}
 {{- define "opal.opal.rock-pod-specs" -}}
-{{- (include "common.tplvalues.render" (dict "value" .Values.opal.pod.spec "context" $)) | fromYamlArray | toJson | toString }}
+{{- (include "common.tplvalues.render" (dict "value" .Values.opal.pod.specs "context" $)) | fromYamlArray | toJson | toString }}
 {{- end }}
 
               
