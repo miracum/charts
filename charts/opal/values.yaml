@@ -12,7 +12,7 @@ opal:
   image:
     registry: docker.io
     repository: obiba/opal
-    tag: 5.3.1@sha256:8dfe35bf4957813057839a6584a45a9d0560b0b8f4d357e4820bbc9ddfe04b95
+    tag: 5.4.0@sha256:2ad1e4dbeefc37a4a121e2dca2cba3df49b56ce3c28b7fbe5e97b33cd1cc0ef4
     pullPolicy: IfNotPresent
 
   auth:
@@ -111,6 +111,36 @@ opal:
 
   # -- extra environment variables to set on the opal api container
   extraEnv: []
+
+  pod:
+    # -- YAML pod specs for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
+    # set to `[]` to disable. ⚠️: Full support for using the K8s pod spawner is not yet implemented and tested, e.g.
+    # the necessary RBAC permissions for the service account are not yet created by this chart.
+    specs:
+      []
+      # untested sample:
+      # - apiVersion: v1
+      #   kind: Pod
+      #   metadata:
+      #     name: rock
+      #     namespace: default
+      #   spec:
+      #     containers:
+      #       - name: rock
+      #         image: docker.io/datashield/rock-base:6.3.4@sha256:a827541597d9d4653c9f5590cf529c73adcbdd8f1a25c9bc9fb7b8811e03b2e9
+      #         ports:
+      #           - name: http
+      #             containerPort: 8085
+      #             protocol: TCP
+      #         resources:
+      #           limits:
+      #             cpu: 150m
+      #             ephemeral-storage: 2Gi
+      #             memory: 192Mi
+      #           requests:
+      #             cpu: 100m
+      #             ephemeral-storage: 50Mi
+      #             memory: 128Mi
 
   # -- image pull secrets used by the opal container
   imagePullSecrets: []
