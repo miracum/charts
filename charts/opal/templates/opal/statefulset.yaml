@@ -225,6 +225,9 @@ spec:
               value: {{ include "opal.opal.ingress-hosts" $ }}
             {{- end }}
 
+            - name: ROCK_POD_SPECS
+              value: {{ include "opal.opal.rock-pod-specs" $ }}
+
             {{- if .extraEnv }}
             {{- toYaml .extraEnv | nindent 12 }}
             {{- end }}

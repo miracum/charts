@@ -112,6 +112,35 @@ opal:
   # -- extra environment variables to set on the opal api container
   extraEnv: []
 
+  pod:
+    # -- YAML pod spec for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
+    # set to `[]` to disable.
+    spec:
+      []
+      # untested sample:
+      # - apiVersion: v1
+      #   kind: Pod
+      #   metadata:
+      #     name: rock
+      #     namespace: default
+      #   spec:
+      #     containers:
+      #       - name: rock
+      #         image: docker.io/datashield/rock-base:6.3.4@sha256:a827541597d9d4653c9f5590cf529c73adcbdd8f1a25c9bc9fb7b8811e03b2e9
+      #         ports:
+      #           - name: http
+      #             containerPort: 8085
+      #             protocol: TCP
+      #         resources:
+      #           limits:
+      #             cpu: 150m
+      #             ephemeral-storage: 2Gi
+      #             memory: 192Mi
+      #           requests:
+      #             cpu: 100m
+      #             ephemeral-storage: 50Mi
+      #             memory: 128Mi
+
   # -- image pull secrets used by the opal container
   imagePullSecrets: []
 
