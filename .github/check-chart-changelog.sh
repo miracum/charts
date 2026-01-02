@@ -1,23 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Detecting changed Helm charts..."
+CT_CONFIG=".github/ct/install.yaml"
 
-CHANGED_CHARTS=$(ct list-changed --config .github/ct/install.yaml)
+echo "Detecting changed Helm charts..."
+CHANGED_CHARTS=$(ct list-changed --config "${CT_CONFIG}")
 
 if [[ -z "${CHANGED_CHARTS}" ]]; then
   echo "No changed charts detected. Skipping changelog check."
   exit 0
 fi
 
-echo "Changed charts:"
-echo "${CHANGED_CHARTS}"
-echo
+# Ensure base branch is available
+git fetch origin "${GITHUB_BASE_REF}"
 
 FAIL=0
-
-# Ensure base branch is available for diff
-git fetch origin "${GITHUB_BASE_REF}"
 
 for CHART in ${CHANGED_CHARTS}; do
   CHART_FILE="${CHART}/Chart.yaml"
@@ -30,19 +27,18 @@ for CHART in ${CHANGED_CHARTS}; do
     continue
   fi
 
-  DIFF=$(git diff "origin/${GITHUB_BASE_REF}...HEAD" -- "${CHART_FILE}")
+  # Extract changelog from base branch
+  BASE_CHANGELOG=$(git show "origin/${GITHUB_BASE_REF}:${CHART_FILE}" 2>/dev/null |
+    yq '.annotations."artifacthub.io/changes" // ""')
 
-  if [[ -z "${DIFF}" ]]; then
-    echo "❌ ${CHART_FILE} was not modified."
+  # Extract changelog from PR
+  PR_CHANGELOG=$(yq '.annotations."artifacthub.io/changes" // ""' "${CHART_FILE}")
+
+  if [[ "${BASE_CHANGELOG}" == "${PR_CHANGELOG}" ]]; then
+    echo "❌ artifacthub.io/changes was not updated."
     FAIL=1
-    continue
-  fi
-
-  if echo "${DIFF}" | grep -q "artifacthub.io/changes"; then
-    echo "✅ Changelog annotation updated."
   else
-    echo "❌ Missing changelog update (artifacthub.io/changes)."
-    FAIL=1
+    echo "✅ Changelog annotation updated."
   fi
 
   echo
@@ -53,4 +49,4 @@ if [[ "${FAIL}" -ne 0 ]]; then
   exit 1
 fi
 
-echo "✅ All changed charts contain changelog updates."
+echo "✅ All changed charts contain updated changelog annotations."
