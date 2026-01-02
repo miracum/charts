@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CT_CONFIG=".github/ct/install.yaml"
-
 echo "Detecting changed Helm charts..."
-CHANGED_CHARTS=$(ct list-changed --config "${CT_CONFIG}")
+CHANGED_CHARTS=$(ct list-changed --config .github/ct/install.yaml)
 
 if [[ -z "${CHANGED_CHARTS}" ]]; then
   echo "No changed charts detected. Skipping changelog check."
