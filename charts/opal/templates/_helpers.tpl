@@ -368,6 +368,3 @@ The JSON-encoded pod spec for the rock pods when using the Kubernetes pod spawne
 {{- define "opal.opal.rock-pod-specs" -}}
 {{- (include "common.tplvalues.render" (dict "value" .Values.opal.pod.specs "context" $)) | fromYamlArray | toJson | toString | quote }}
 {{- end }}
-
-              
-              
