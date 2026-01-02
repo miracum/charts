@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 depName="${1}"
 if [ -z "${depName}" ]; then

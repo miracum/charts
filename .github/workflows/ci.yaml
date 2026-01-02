@@ -46,6 +46,9 @@ jobs:
             exit 1
           fi
 
+      - name: Check if changelogs were updated
+        run: .github/check-chart-changelog.sh
+
       - name: Update dependencies
         run: find charts/ ! -path charts/ -maxdepth 1 -type d -exec helm dependency update {} \;
 
