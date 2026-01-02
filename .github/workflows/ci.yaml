@@ -127,9 +127,12 @@ jobs:
         if: ${{ steps.list-changed.outputs.changed == 'true' }}
         run: |
           helm dependency build hack/test-fixtures/
-          helm upgrade --install test-fixtures hack/test-fixtures/ \
+          helm upgrade \
+            --install \
+            --server-side=true \
             --namespace=fixtures \
-            --create-namespace
+            --create-namespace \
+            test-fixtures hack/test-fixtures/
 
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}
