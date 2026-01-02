@@ -114,7 +114,8 @@ opal:
 
   pod:
     # -- YAML pod specs for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
-    # set to `[]` to disable.
+    # set to `[]` to disable. ⚠️: Full support for using the K8s pod spawner is not yet implemented and tested, e.g.
+    # the necessary RBAC permissions for the service account are not yet created by this chart.
     specs:
       []
       # untested sample:
