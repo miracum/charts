@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # via https://github.com/argoproj/argo-helm/blob/main/scripts/renovate-bump-version.sh
 
