@@ -130,13 +130,11 @@ jobs:
       - name: Install test fixtures chart
         if: ${{ steps.list-changed.outputs.changed == 'true' }}
         run: |
+          kubectl create namespace fixtures
           helm dependency build hack/test-fixtures/
-          helm upgrade \
-            --install \
-            --server-side=true \
+          helm template \
             --namespace=fixtures \
-            --create-namespace \
-            test-fixtures hack/test-fixtures/
+            test-fixtures hack/test-fixtures/ | kubectl apply --server-side=true -f -
 
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}
