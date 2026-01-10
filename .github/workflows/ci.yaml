@@ -141,7 +141,7 @@ jobs:
         run: ct install --config .github/ct/install.yaml
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@4a5ed0cb8f87fe5197b33c2619b3431786e9b6a5 # v1.19.2
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@f6dbe5b4f4be32725ee9bfbca7e7d69c64820467 # v1.19.3
     permissions:
       contents: read
       pull-requests: write
