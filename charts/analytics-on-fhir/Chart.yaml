@@ -19,14 +19,14 @@ dependencies:
     version: 0.4.22
   - name: trino
     repository: https://trinodb.github.io/charts
-    version: 1.41.0
+    version: 1.42.0
     condition: trino.enabled
     # - name: superset
     #   repository: https://apache.github.io/superset
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.1.21
+version: 0.1.22
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -38,4 +38,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated hive-metastore to 0.4.22"
+      description: "Updated trino to 1.42.0"
