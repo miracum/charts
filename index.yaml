@@ -6,6 +6,46 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated hive-metastore to 0.4.23"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-01-27T09:33:18.512165632Z"
+    dependencies:
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.9.9
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.23
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.42.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: b25502c6aa5b077573ec35fb8165faa85eaf8dcb8151d72fca87dfb7bd2f06b2
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.23/analytics-on-fhir-0.1.23.tgz
+    version: 0.1.23
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated trino to 1.42.0"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -27205,4 +27245,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-01-26T12:55:04.959549183Z"
+generated: "2026-01-27T09:33:18.513150918Z"
