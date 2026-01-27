@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 9.0.53
+version: 9.0.54
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated postgres to 0.14.4"
+      description: "Updated ghcr.io/miracum/loinc-conversion to v1.16.14"
