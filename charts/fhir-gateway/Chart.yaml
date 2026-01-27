@@ -7,7 +7,7 @@ sources:
 home: https://github.com/miracum/fhir-gateway
 dependencies:
   - name: postgres
-    version: 0.14.1
+    version: 0.14.4
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: fhir-pseudonymizer
@@ -17,7 +17,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 9.0.52
+version: 9.0.53
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/fhir-gateway to v4.0.11"
+      description: "Updated postgres to 0.14.4"

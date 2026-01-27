@@ -15,7 +15,7 @@ maintainers:
   - name: miracum
 dependencies:
   - name: postgres
-    version: 0.14.1
+    version: 0.14.4
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: common
@@ -23,7 +23,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 3.0.22
+version: 3.0.23
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -42,4 +42,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated postgres to 0.14.1"
+      description: "Updated postgres to 0.14.4"

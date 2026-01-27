@@ -7,13 +7,13 @@ sources:
 home: https://hive.apache.org/
 dependencies:
   - name: postgres
-    version: 0.14.1
+    version: 0.14.4
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 0.4.23
+version: 0.4.24
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,4 +27,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/busybox to sha256:68fb61caa577f233800d50bef8fe0ee1235ed56a641178783032935223630576"
+      description: "Updated postgres to 0.14.4"
