@@ -16,7 +16,7 @@ dependencies:
     repository: oci://ghcr.io/chgl/charts
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
-    version: 0.4.23
+    version: 0.4.24
   - name: trino
     repository: https://trinodb.github.io/charts
     version: 1.42.0
@@ -26,7 +26,7 @@ dependencies:
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.1.23
+version: 0.1.24
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -38,4 +38,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated hive-metastore to 0.4.23"
+      description: "Updated hive-metastore to 0.4.24"
