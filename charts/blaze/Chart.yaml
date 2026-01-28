@@ -16,7 +16,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.25
+version: 0.7.26
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -31,4 +31,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/curlimages/curl to 8.18.0"
+      description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.4.2"
