@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 kubeVersion: ">= 1.19.0"
-version: 0.3.45
+version: 0.3.46
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -36,4 +36,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/busybox to sha256:f44c8b09c244b6555b6a1f55cfd9f9e824c6606a9a651dc05feace7b0181485d"
+      description: "Updated docker.io/library/busybox to sha256:23deb35184aeb204224e6307f9c82a26f87059a5c9f476c797ba28f357e5df6d"
