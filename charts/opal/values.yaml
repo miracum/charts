@@ -203,7 +203,7 @@ opal:
   # @ignored
   readinessProbe:
     httpGet:
-      path: /ui/index.html
+      path: /
       port: http
     failureThreshold: 5
     initialDelaySeconds: 30
@@ -215,7 +215,7 @@ opal:
   # @ignored
   livenessProbe:
     httpGet:
-      path: /ui/index.html
+      path: /
       port: http
     failureThreshold: 5
     initialDelaySeconds: 30
