@@ -1,6 +1,6 @@
 # Charts
 
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/miracum/charts/badge)](https://api.securityscorecards.dev/projects/github.com/miracum/charts)
+[![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/miracum/charts?label=openssf%20scorecard&style=flat)](https://scorecard.dev/viewer/?uri=github.com/miracum/charts)
 
 > A collection of Helm charts
 
