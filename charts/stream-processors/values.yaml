@@ -1,6 +1,5 @@
 # annotations to apply to all deployments
-commonAnnotations:
-  {}
+commonAnnotations: {}
   # sidecar.jaegertracing.io/inject: "jaeger-prod"
 
 # name of the strimzi cluster. Used to construct the bootstrap server URL.
@@ -16,8 +15,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 # PodSecurityContext applied to all deployments
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
 # container security context. secure by default.

@@ -116,8 +116,7 @@ opal:
     # -- YAML pod specs for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
     # set to `[]` to disable. ⚠️: Full support for using the K8s pod spawner is not yet implemented and tested, e.g.
     # the necessary RBAC permissions for the service account are not yet created by this chart.
-    specs:
-      []
+    specs: []
       # untested sample:
       # - apiVersion: v1
       #   kind: Pod
@@ -181,8 +180,7 @@ opal:
   resourcesPreset: "small"
 
   # -- resource limits and requests
-  resources:
-    {}
+  resources: {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi

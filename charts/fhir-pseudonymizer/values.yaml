@@ -70,8 +70,7 @@ imagePullSecrets: []
 podAnnotations: {}
 
 # the pod security context
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
 # the container security context
@@ -118,8 +117,7 @@ ingress:
   # ingressClassName to use
   className: ""
   # extra annotations to apply to the Ingress resource
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   # list of ingress hosts
@@ -176,8 +174,7 @@ extraVolumes: []
 
 # pod topology spread configuration
 # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
-topologySpreadConstraints:
-  []
+topologySpreadConstraints: []
   # - maxSkew: 1
   #   topologyKey: topology.kubernetes.io/zone
   #   whenUnsatisfiable: ScheduleAnyway
