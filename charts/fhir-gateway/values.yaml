@@ -69,8 +69,7 @@ ingress:
   # -- if enabled, create an Ingress to expose the FHIR Gateway outside the cluster
   enabled: false
   # -- ingress annotations
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   # -- the ingressClassName

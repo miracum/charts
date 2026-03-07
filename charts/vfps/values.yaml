@@ -71,8 +71,7 @@ serviceAccount:
 podAnnotations: {}
 
 # -- the pod security context
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
 # @ignored
@@ -104,8 +103,7 @@ ingress:
   # -- ingressClassName to use
   className: ""
   # -- extra annotations to apply to the Ingress resource
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   # -- list of ingress hosts
@@ -168,8 +166,7 @@ affinity: {}
 
 # -- pod topology spread configuration
 # see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
-topologySpreadConstraints:
-  []
+topologySpreadConstraints: []
   # - maxSkew: 1
   #   topologyKey: topology.kubernetes.io/zone
   #   whenUnsatisfiable: ScheduleAnyway
@@ -222,8 +219,7 @@ database:
   additionalConnectionStringParameters: "Timeout=60;Max Auto Prepare=5;"
 
 # -- extra environment variables to set on the vfps api container
-extraEnv:
-  []
+extraEnv: []
   # - name: "Pseudonymization__Caching__Namespaces__IsEnabled"
   #   value: "true"
   # - name: "Pseudonymization__Caching__Namespaces__SizeLimit"
