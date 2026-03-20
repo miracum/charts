@@ -1,9 +1,9 @@
 dependencies:
 - name: vfps
   repository: oci://ghcr.io/miracum/charts
-  version: 3.0.29
+  version: 3.0.30
 - name: common
   repository: oci://ghcr.io/miracum/charts
   version: 0.1.1
-digest: sha256:ccda2ae3a3705d3ca4c5f38ec68791ae9360a770ce2a36006e9a947aba68ba53
-generated: "2026-03-20T14:44:27.475781401Z"
+digest: sha256:8bdcc7db7c47cf68d53a5090814973fd1156bb064282f01c8579a416b4816540
+generated: "2026-03-20T22:32:06.517876874Z"
