@@ -19,7 +19,7 @@ jobs:
     container: ghcr.io/chgl/kube-powertools:v2.5.19@sha256:849ef1608a7d4663f2fd90bff54b9d2aa682253f91e2f3072faa01ca85fdf40e
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
@@ -63,7 +63,7 @@ jobs:
 
       - name: Cache kubeconform schemas
         id: cache-powerlint-kubeconform
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: /tmp
           key: ${{ runner.os }}-powerlint-kubeconform
@@ -93,7 +93,7 @@ jobs:
         k8s-version: [1.33.7, 1.34.3, 1.35.0]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
@@ -141,7 +141,7 @@ jobs:
         run: ct install --config .github/ct/install.yaml
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: read
       pull-requests: write
