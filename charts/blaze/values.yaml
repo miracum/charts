@@ -148,6 +148,9 @@ podAnnotations: {}
 podSecurityContext:
   runAsNonRoot: true
   fsGroup: 1001
+  runAsUser: 1001
+  runAsGroup: 1001
+  fsGroupChangePolicy: "OnRootMismatch"
 
 # @ignored
 securityContext:
