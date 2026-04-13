@@ -38,7 +38,7 @@ helm repo update
 1. Mount the folder in the [kube-powertools](https://github.com/chgl/kube-powertools) container to easily run linters and checks
 
    ```sh
-   docker run --rm -it -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.5.31@sha256:582a835fb40607c72ede6b8422f3ed5f107ce44b62f205c9cdcbde57afb67d30
+   docker run --rm -it -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.5.32@sha256:20c3848f51edca40bc61e4372ceb827c4070098d62bae448464a13d02e54511d
    ```
 
 1. Run chart-testing and the `chart-powerlint.sh` script to lint the chart
@@ -63,7 +63,7 @@ helm repo update
 1. (Optional) View the results of the [polaris audit check](https://github.com/FairwindsOps/polaris) in your browser
 
    ```sh
-   $ docker run --rm -it -p 9090:8080 -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.5.31@sha256:582a835fb40607c72ede6b8422f3ed5f107ce44b62f205c9cdcbde57afb67d30
+   $ docker run --rm -it -p 9090:8080 -v $PWD:/root/workspace ghcr.io/chgl/kube-powertools:v2.5.32@sha256:20c3848f51edca40bc61e4372ceb827c4070098d62bae448464a13d02e54511d
    bash-5.0: helm template charts/fhir-gateway/ | polaris dashboard --config .polaris.yaml --audit-path -
    ```
 
