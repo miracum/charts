@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: samply/blaze
-  tag: 1.6.2@sha256:4148d6cc9daf1f7237270878535d176b1e24b8d4092dcf636d42778c3a49dbc8
+  tag: 1.7.0@sha256:f2e87759605587eaf9cbbf86e229938019a732bb908d4e59f107a2744e73825f
   pullPolicy: IfNotPresent
 
 # -- set the server base URL. Evaluated as a template. Equivalent to setting the `BASE_URL` environment variable.
@@ -42,7 +42,7 @@ frontend:
   image:
     registry: ghcr.io
     repository: samply/blaze-frontend
-    tag: 1.6.2@sha256:df3f98caea26ba81fc6738c4470454679163eca664e43656f27fc4215d551adc
+    tag: 1.7.0@sha256:2d6ecc56e577eccc10e5d964a45049cf83cf29ada185ad8318b8f19eea566978
     pullPolicy: IfNotPresent
   imagePullSecrets: []
   readinessProbe:
