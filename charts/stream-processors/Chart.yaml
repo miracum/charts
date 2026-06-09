@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 1.11.4
+version: 2.0.0
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
@@ -22,5 +22,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: "prettified values.yaml"
+    - kind: changed
+      description: "BREAKING CHANGE: use strimzi v1 apiVersion for KafkaUser"
