@@ -1,5 +1,8 @@
 pseudonymizationService: Vfps
 
+startupProbe:
+  enabled: true
+
 vfps:
   enabled: true
   postgres:
