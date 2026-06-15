@@ -19,7 +19,7 @@ jobs:
     container: ghcr.io/chgl/kube-powertools:v2.5.49@sha256:9911ee815eaf00c366866b215f14b172e32821415d1f942963bc18cdfbab4ff8
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
@@ -30,7 +30,7 @@ jobs:
           git config --global --add safe.directory /__w/charts/charts
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -93,14 +93,14 @@ jobs:
         k8s-version: [1.33.7, 1.34.3, 1.35.0]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
           disable-telemetry: true
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -137,7 +137,7 @@ jobs:
         run: ct install --config .github/ct/install.yaml
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@6c54f95d52ffc2aaddb163da9680a2d63c6accd9 # v1.21.1
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@602a4dd955cee8ab1e7e9c70761b5b4c9d678a95 # v1.21.4
     permissions:
       contents: read
       pull-requests: write
