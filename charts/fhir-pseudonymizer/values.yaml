@@ -147,6 +147,10 @@ affinity: {}
 
 # readiness probe
 readinessProbe: # +doc-gen:ignore
+  enabled: true
+  httpGet:
+    path: /ready
+    port: http
   failureThreshold: 3
   initialDelaySeconds: 30
   periodSeconds: 10
@@ -155,8 +159,23 @@ readinessProbe: # +doc-gen:ignore
 
 # liveness probe
 livenessProbe: # +doc-gen:ignore
+  enabled: true
+  httpGet:
+    path: /live
+    port: http
   failureThreshold: 3
   initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# startup probe
+startupProbe: # +doc-gen:ignore
+  enabled: false
+  httpGet:
+    path: /ready
+    port: http
+  failureThreshold: 30
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
