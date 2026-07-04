@@ -4,16 +4,78 @@
 nameOverride: ""
 fullnameOverride: ""
 
-validationFailureAction: Enforce
-webhookTimeoutSeconds: 30
+webhookConfiguration:
+  timeoutSeconds: 30
 failurePolicy: Fail
+# -- defaults to Audit rather than Deny: images built before the
+# `standard-build.yaml` workflow was updated to emit a SLSA v1 provenance
+# attestation via actions/attest-build-provenance will fail the provenance
+# check (they only carry the old, no-longer-verifiable v0.2 attestation).
+# Switch to Deny once your images have been rebuilt with the updated workflow.
+validationActions:
+  - Audit
 
-images:
-  - fhir-gateway
-  - fhir-pseudonymizer
-  - loinc-conversion
-  - vfps
-  - obds-to-fhir
-  - ohdsi-cohort-sync
-  - ahd2fhir
-  - kafka-fhir-to-server
+# -- Verifies that images published under a given ghcr.io org/registry were
+# built and signed via the miracum GitHub organization's shared,
+# reusable "standard-build.yaml" workflow, and carry a matching SLSA
+# provenance attestation (produced by actions/attest-build-provenance; images
+# built before that workflow change only carry the old, no-longer-verifiable
+# v0.2 attestation and will fail the provenance check below). Unlike a
+# per-image ClusterPolicy, this uses a single ImageValidatingPolicy that
+# derives the expected source repository straight from the image name (the
+# CEL `image(img).repository()` function), so it automatically covers every
+# current and future image published under `registry` without requiring an
+# explicit list of image names.
+miracumImages:
+  enabled: true
+
+  # -- the registry + org prefix all first-party miracum images are expected
+  # to be published under. Only tags starting with "v" are matched, since
+  # only tagged releases go through the full SLSA/signing pipeline.
+  registry: ghcr.io/miracum
+
+  # the reusable workflow that signs every image with a keyless cosign
+  # signature and attests its SLSA provenance. All miracum image repositories
+  # call this same workflow, so its identity is the same for every image and
+  # isn't derived from the image name.
+  buildWorkflow:
+    subjectRegExp: '^https://github\.com/miracum/\.github/\.github/workflows/standard-build\.yaml@.*$'
+    issuer: "https://token.actions.githubusercontent.com"
+
+  # the workflow file expected in each image's own repository which calls the
+  # shared buildWorkflow. This is expected to be the same across all
+  # repositories by convention, and is recorded in the SLSA provenance
+  # attestation as `buildDefinition.externalParameters.workflow.path`.
+  entryPoint: ".github/workflows/ci.yaml"
+
+# -- Additional, fully custom ImageValidatingPolicy specs, e.g. for
+# third-party images that don't follow the miracum standard-build convention
+# and are instead signed with a static key. Each entry's `spec` is used
+# as-is as the spec of its own ImageValidatingPolicy resource.
+extraPolicies: []
+# - name: verify-curl
+#   spec:
+#     webhookConfiguration:
+#       timeoutSeconds: 30
+#     failurePolicy: Fail
+#     validationActions: [Deny]
+#     matchConstraints:
+#       resourceRules:
+#         - apiGroups: [""]
+#           apiVersions: ["v1"]
+#           operations: ["CREATE", "UPDATE"]
+#           resources: ["pods"]
+#     matchImageReferences:
+#       - glob: "docker.io/curlimages/curl:*"
+#     attestors:
+#       - name: curlImageKey
+#         cosign:
+#           key:
+#             data: |-
+#               -----BEGIN PUBLIC KEY-----
+#               ...
+#               -----END PUBLIC KEY-----
+#     validations:
+#       - expression: >-
+#           images.containers.map(img, verifyImageSignatures(img, [attestors.curlImageKey])).all(e, e > 0)
+#         message: failed to verify curl image signature
