@@ -25950,6 +25950,49 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: >-
+            rewrote the chart to use Kyverno's ImageValidatingPolicy instead of a
+            per-image ClusterPolicy. A single policy now verifies the SLSA
+            provenance and cosign signature of all ghcr.io/miracum images by
+            deriving the expected source repository from the image name, instead
+            of requiring an explicit `images` list. Requires Kyverno >= 1.14 and
+            the miracum/.github standard-build.yaml workflow update that switches
+            to actions/attest-build-provenance. validationActions now defaults to
+            Audit instead of Deny, since images built before that workflow change
+            will fail the new provenance check.
+        - kind: removed
+          description: >-
+            removed the `images` values field; ghcr.io/miracum images are now
+            matched automatically via a glob pattern. Use the new `extraPolicies`
+            field to add custom image verification policies for third-party
+            images (e.g. the previous curl example).
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2026-07-04T21:05:40.079913023Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: afba9d1ac80614c90d43763ca4c51c7016ef3054250f642426b162a44d49e65f
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.2.0/policies-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: lowered minimum kubeVersion
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -33633,4 +33676,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-07-03T21:33:33.861070651Z"
+generated: "2026-07-04T21:05:40.081542071Z"
