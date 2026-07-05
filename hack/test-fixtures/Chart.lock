@@ -7,6 +7,6 @@ dependencies:
   version: 3.8.1
 - name: policies
   repository: file://../../charts/policies
-  version: 0.2.0
-digest: sha256:4d2a694ac7bbf26670c83770327deb5b368aa9236ba3b6389dbb93c90349a3f9
-generated: "2026-07-05T11:46:39.172359132+02:00"
+  version: 0.3.0
+digest: sha256:244d538534d848c3454c69a705415e158d8926f31e79e808779379823ac8bd4c
+generated: "2026-07-05T14:29:44.003942087+02:00"
