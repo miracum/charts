@@ -130,7 +130,17 @@ jobs:
           helm dependency build hack/test-fixtures/
           helm template \
             --namespace=fixtures \
-            test-fixtures hack/test-fixtures/ | kubectl apply --server-side=true -f -
+            test-fixtures hack/test-fixtures/ > /tmp/test-fixtures.yaml
+
+          # kubectl resolves the available API types once at the start of an
+          # apply and won't pick up CRDs registered by that same invocation,
+          # so custom resources (e.g. the policies chart's
+          # ImageValidatingPolicy) must be applied only after their CRD is
+          # already established.
+          yq 'select(.kind == "CustomResourceDefinition")' /tmp/test-fixtures.yaml > /tmp/test-fixtures-crds.yaml
+          kubectl apply --server-side=true -f /tmp/test-fixtures-crds.yaml
+          kubectl wait --for=condition=Established --timeout=120s -f /tmp/test-fixtures-crds.yaml
+          kubectl apply --server-side=true -f /tmp/test-fixtures.yaml
 
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}

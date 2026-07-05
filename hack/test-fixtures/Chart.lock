@@ -5,5 +5,8 @@ dependencies:
 - name: kyverno
   repository: oci://ghcr.io/kyverno/charts
   version: 3.8.1
-digest: sha256:4c4fdc8bdbacb79c1cf242c6635e848b21320a7bf137491607e654e3262f34d8
-generated: "2026-06-30T23:15:06.736577829Z"
+- name: policies
+  repository: file://../../charts/policies
+  version: 0.2.0
+digest: sha256:4d2a694ac7bbf26670c83770327deb5b368aa9236ba3b6389dbb93c90349a3f9
+generated: "2026-07-05T11:46:39.172359132+02:00"

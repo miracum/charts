@@ -1,1 +1,8 @@
 kyverno: {}
+
+policies:
+  # enforce (rather than just audit) for CI: a chart under test whose
+  # ghcr.io/miracum image isn't properly signed and attested should fail
+  # ct install, not just get logged.
+  validationActions:
+    - Deny

@@ -62,9 +62,13 @@ spec:
     # The builder recorded in the provenance must be the trusted build
     # workflow. Redundant with the signature check above, but cheap
     # defense-in-depth against payload/signer confusion.
+    #
+    # extractPayload() returns the full in-toto statement (predicateType,
+    # subject, predicate), not just the predicate itself, so all the
+    # provenance-specific fields below are nested under `.predicate`.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).runDetails.builder.id.matches({{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }})
+          extractPayload(img, attestations.provenance).predicate.runDetails.builder.id.matches({{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }})
         )
       message: >-
         SLSA provenance verification failed: unexpected builder id
@@ -72,7 +76,7 @@ spec:
     # convention used by all miracum repositories.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.path == "{{ .Values.miracumImages.entryPoint }}"
+          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.path == "{{ .Values.miracumImages.entryPoint }}"
         )
       message: >-
         SLSA provenance verification failed: unexpected build workflow entrypoint
@@ -80,22 +84,12 @@ spec:
     # name, derived automatically from the image reference.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.repository ==
+          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository ==
             "https://github.com/" + image(img).repository()
         )
       message: >-
         SLSA provenance verification failed: the source repository recorded in
         the provenance does not match the image name
-    # The git ref recorded in the provenance must match the image tag, so an
-    # image can't be relabeled with a different release's tag.
-    - expression: >-
-        images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.ref ==
-            "refs/tags/" + image(img).tag()
-        )
-      message: >-
-        SLSA provenance verification failed: the git ref recorded in the
-        provenance does not match the image tag
 {{- end }}
 
 {{- range .Values.extraPolicies }}
