@@ -127,7 +127,14 @@ jobs:
         if: ${{ steps.list-changed.outputs.changed == 'true' }}
         run: |
           kubectl create namespace fixtures
-          helm dependency build hack/test-fixtures/
+          # NOTE: uses "update" rather than "build" here (unlike other charts in
+          # this repo) because hack/test-fixtures depends on the local
+          # charts/policies chart via a file:// path with an unpinned "*"
+          # version. "build" installs the exact version pinned in Chart.lock,
+          # which goes stale (and fails) every time charts/policies' own
+          # version changes; "update" re-resolves against the "*" constraint
+          # and refreshes the lock instead.
+          helm dependency update hack/test-fixtures/
           helm template \
             --namespace=fixtures \
             test-fixtures hack/test-fixtures/ > /tmp/test-fixtures.yaml

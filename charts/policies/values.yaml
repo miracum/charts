@@ -15,22 +15,29 @@ failurePolicy: Fail
 validationActions:
   - Audit
 
-# -- Verifies that images published under a given ghcr.io org/registry were
-# built and signed via the miracum GitHub organization's shared,
-# reusable "standard-build.yaml" workflow, and carry a matching SLSA
-# provenance attestation (produced by actions/attest-build-provenance; images
-# built before that workflow change only carry the old, no-longer-verifiable
-# v0.2 attestation and will fail the provenance check below). Unlike a
-# per-image ClusterPolicy, this uses a single ImageValidatingPolicy that
-# derives the expected source repository straight from the image name (the
-# CEL `image(img).repository()` function), so it automatically covers every
-# current and future image published under `registry` without requiring an
-# explicit list of image names.
+# -- Verifies that images published under any of the given ghcr.io
+# org/registries were built and signed via the shared, reusable
+# "standard-build.yaml" workflow (owned by the miracum GitHub organization,
+# but also used by other organizations for their own repositories), and
+# carry a matching SLSA provenance attestation (produced by
+# actions/attest-build-provenance; images built before that workflow change
+# only carry the old, no-longer-verifiable v0.2 attestation and will fail the
+# provenance check below). Unlike a per-image ClusterPolicy, this uses a
+# single ImageValidatingPolicy that derives the expected source repository
+# straight from the image name (the CEL `image(img).repository()` function),
+# so it automatically covers every current and future image published under
+# `registries` without requiring an explicit list of image names.
 miracumImages:
-  # -- the registry + org prefix all first-party miracum images are expected
-  # to be published under. Only tags starting with "v" are matched, since
-  # only tagged releases go through the full SLSA/signing pipeline.
-  registry: ghcr.io/miracum
+  # -- the registry + org prefixes images built via the shared
+  # standard-build.yaml workflow are expected to be published under - this
+  # includes miracum's own images as well as those of other organizations
+  # (e.g. diz-uker) that use the same reusable workflow. Only tags starting
+  # with "v" are matched, since only tagged releases go through the full
+  # SLSA/signing pipeline.
+  registries:
+    - ghcr.io/miracum
+    - ghcr.io/diz-uker
+    - ghcr.io/bzkf
 
   # the reusable workflow that signs every image with a keyless cosign
   # signature and attests its SLSA provenance. All miracum image repositories
