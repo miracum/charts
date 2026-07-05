@@ -27,8 +27,6 @@ validationActions:
 # current and future image published under `registry` without requiring an
 # explicit list of image names.
 miracumImages:
-  enabled: true
-
   # -- the registry + org prefix all first-party miracum images are expected
   # to be published under. Only tags starting with "v" are matched, since
   # only tagged releases go through the full SLSA/signing pipeline.
@@ -58,8 +56,6 @@ miracumImages:
 # reported upstream at the time of writing). Keep any additional built-in
 # image checks merged into this same resource until that's fixed.
 blazeImages:
-  enabled: true
-
   # -- the registry + org prefix blaze images are published under.
   registry: ghcr.io/samply
 
@@ -67,47 +63,6 @@ blazeImages:
     subjectRegExp: '^https://github\.com/samply/blaze/.*$'
     issuer: "https://token.actions.githubusercontent.com"
 
-# -- Additional, fully custom ImageValidatingPolicy specs, e.g. for
-# third-party images that don't follow the miracum standard-build convention
-# and are instead signed with a static key or a different keyless identity.
-# Each entry's `spec` is used as-is as the spec of its own
-# ImageValidatingPolicy resource.
-#
-# CAUTION: as of Kyverno 1.18, having more than one ImageValidatingPolicy
-# active in the cluster at the same time (e.g. this and the miracumImages/
-# blazeImages policy) can cause spurious "policy not evaluated" failures on
-# unrelated policies. Prefer merging additional checks into the main
-# policy's `validations` (guarded with a `!img.startsWith(...) ||` check, see
-# templates/verify-images-policy.yaml) over adding entries here, unless
-# miracumImages and blazeImages are both disabled.
-extraPolicies: []
-# - name: verify-curl
-#   spec:
-#     webhookConfiguration:
-#       timeoutSeconds: 30
-#     failurePolicy: Fail
-#     validationActions: [Deny]
-#     matchConstraints:
-#       resourceRules:
-#         - apiGroups: [""]
-#           apiVersions: ["v1"]
-#           operations: ["CREATE", "UPDATE"]
-#           resources: ["pods"]
-#     matchImageReferences:
-#       - glob: "docker.io/curlimages/curl:*"
-#     attestors:
-#       - name: curlImageKey
-#         cosign:
-#           key:
-#             data: |-
-#               -----BEGIN PUBLIC KEY-----
-#               ...
-#               -----END PUBLIC KEY-----
-#     validations:
-#       - expression: >-
-#           images.containers.map(img, verifyImageSignatures(img, [attestors.curlImageKey])).all(e, e > 0)
-#         message: failed to verify curl image signature
-#
 # NOTE: verifying curlimages/curl's static-key signature this way currently
 # crashes the Kyverno admission controller (a nil-pointer panic in its
 # bundled cosign/sigstore-go dependency while checking the transparency log

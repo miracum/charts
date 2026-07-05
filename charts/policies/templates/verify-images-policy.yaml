@@ -1,4 +1,3 @@
-{{- if or .Values.miracumImages.enabled .Values.blazeImages.enabled }}
 apiVersion: policies.kyverno.io/v1
 kind: ImageValidatingPolicy
 metadata:
@@ -30,37 +29,26 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
   matchImageReferences:
-    {{- if .Values.miracumImages.enabled }}
     - glob: "{{ .Values.miracumImages.registry }}/*:v*"
-    {{- end }}
-    {{- if .Values.blazeImages.enabled }}
     - glob: "{{ .Values.blazeImages.registry }}/*"
-    {{- end }}
   attestors:
-    {{- if .Values.miracumImages.enabled }}
     - name: buildWorkflow
       cosign:
         keyless:
           identities:
             - subjectRegExp: {{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }}
               issuer: {{ .Values.miracumImages.buildWorkflow.issuer | quote }}
-    {{- end }}
-    {{- if .Values.blazeImages.enabled }}
     - name: blazeBuildWorkflow
       cosign:
         keyless:
           identities:
             - subjectRegExp: {{ .Values.blazeImages.buildWorkflow.subjectRegExp | quote }}
               issuer: {{ .Values.blazeImages.buildWorkflow.issuer | quote }}
-    {{- end }}
-  {{- if .Values.miracumImages.enabled }}
   attestations:
     - name: provenance
       intoto:
         type: https://slsa.dev/provenance/v1
-  {{- end }}
   validations:
-    {{- if .Values.miracumImages.enabled }}
     # Every miracum image must carry a valid keyless cosign signature
     # produced by the shared miracum build workflow.
     - expression: >-
@@ -115,8 +103,6 @@ spec:
       message: >-
         SLSA provenance verification failed: the source repository recorded in
         the provenance does not match the image name
-    {{- end }}
-    {{- if .Values.blazeImages.enabled }}
     # Every blaze image must carry a valid keyless cosign signature produced
     # by the samply/blaze build.yml workflow.
     - expression: >-
@@ -125,17 +111,3 @@ spec:
           verifyImageSignatures(img, [attestors.blazeBuildWorkflow]) > 0
         )
       message: failed to verify blaze image signature
-    {{- end }}
-{{- end }}
-
-{{- range .Values.extraPolicies }}
----
-apiVersion: policies.kyverno.io/v1
-kind: ImageValidatingPolicy
-metadata:
-  name: {{ include "policies.fullname" $ }}-{{ .name }}
-  labels:
-    {{- include "policies.labels" $ | nindent 4 }}
-spec:
-  {{- toYaml .spec | nindent 4 }}
-{{- end }}
