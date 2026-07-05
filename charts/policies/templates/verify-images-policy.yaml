@@ -102,12 +102,21 @@ spec:
       message: >-
         SLSA provenance verification failed: unexpected build workflow entrypoint
     # The source repository recorded in the provenance must match the image
-    # name, derived automatically from the image reference.
+    # name, derived automatically from the image reference - or the image may
+    # live in a nested path under that source repo, since some source repos
+    # are monorepos that publish multiple images (e.g.
+    # ghcr.io/miracum/recruit/notify is built from github.com/miracum/recruit).
     - expression: >-
         images.containers.all(img,
           {{ $isMiracumImage }} ||
-          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository ==
-            "https://github.com/" + image(img).repository()
+          (
+            image(img).repository() ==
+              extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository.replace("https://github.com/", "")
+            ||
+            image(img).repository().startsWith(
+              extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository.replace("https://github.com/", "") + "/"
+            )
+          )
         )
       message: >-
         SLSA provenance verification failed: the source repository recorded in
