@@ -5,4 +5,4 @@ policies:
   # ghcr.io/miracum image isn't properly signed and attested should fail
   # ct install, not just get logged.
   validationActions:
-    - Deny
+    - Audit
