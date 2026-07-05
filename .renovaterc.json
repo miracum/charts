@@ -54,6 +54,5 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
-  ],
-  "ignorePaths": ["charts/recruit/**"]
+  ]
 }
