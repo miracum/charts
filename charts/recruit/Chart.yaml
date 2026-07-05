@@ -72,4 +72,4 @@ annotations:
       url: https://miracum.github.io/recruit/_img/atlas-first-cohort/mailhog-opened.png
   artifacthub.io/changes: |-
     - kind: changed
-      description: Deprecated the recruit Helm chart. Please use the chart from the upstream: https://github.com/miracum/recruit/pkgs/container/recruit%2Fcharts%2Frecruit
+      description: "Deprecated the recruit Helm chart. Please use the chart from the upstream: https://github.com/miracum/recruit/pkgs/container/recruit%2Fcharts%2Frecruit"
