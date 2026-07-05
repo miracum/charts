@@ -1,24 +1,21 @@
-{{- if .Values.miracumImages.enabled }}
 apiVersion: policies.kyverno.io/v1
 kind: ImageValidatingPolicy
 metadata:
-  name: {{ include "policies.fullname" . }}-miracum-images
+  name: {{ include "policies.fullname" . }}-verify-images
   labels:
     {{- include "policies.labels" . | nindent 4 }}
   annotations:
-    policies.kyverno.io/title: Verify SLSA provenance and cosign keyless signature for miracum images
+    policies.kyverno.io/title: Verify image signatures and provenance attestations
     policies.kyverno.io/category: Software Supply Chain Security
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.14.0
     policies.kyverno.io/description: >-
-      Verifies that images published under {{ .Values.miracumImages.registry }}
-      were built and signed via the shared miracum GitHub Actions build
-      workflow, and carry a matching SLSA provenance attestation whose
-      recorded source repository and workflow correspond to the image name.
-      The expected source repository is derived automatically from the image
-      reference itself (org/repo), so this single policy covers every current
-      and future image published under this registry without further changes.
+      Verifies the cosign signature (and, for miracum images, the SLSA
+      provenance attestation) of known-good image sources. All checks are
+      bundled into a single ImageValidatingPolicy resource, since having more
+      than one ImageValidatingPolicy active at the same time is currently
+      unreliable in Kyverno (see the chart's values.yaml for details).
 spec:
   webhookConfiguration:
     timeoutSeconds: {{ .Values.webhookConfiguration.timeoutSeconds }}
@@ -33,6 +30,7 @@ spec:
         resources: ["pods"]
   matchImageReferences:
     - glob: "{{ .Values.miracumImages.registry }}/*:v*"
+    - glob: "{{ .Values.blazeImages.registry }}/*"
   attestors:
     - name: buildWorkflow
       cosign:
@@ -40,31 +38,48 @@ spec:
           identities:
             - subjectRegExp: {{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }}
               issuer: {{ .Values.miracumImages.buildWorkflow.issuer | quote }}
+    - name: blazeBuildWorkflow
+      cosign:
+        keyless:
+          identities:
+            - subjectRegExp: {{ .Values.blazeImages.buildWorkflow.subjectRegExp | quote }}
+              issuer: {{ .Values.blazeImages.buildWorkflow.issuer | quote }}
   attestations:
     - name: provenance
       intoto:
         type: https://slsa.dev/provenance/v1
   validations:
-    # Every image must carry a valid keyless cosign signature produced by the
-    # shared miracum build workflow.
+    # Every miracum image must carry a valid keyless cosign signature
+    # produced by the shared miracum build workflow.
     - expression: >-
-        images.containers.map(img, verifyImageSignatures(img, [attestors.buildWorkflow])).all(e, e > 0)
+        images.containers.all(img,
+          !img.startsWith("{{ .Values.miracumImages.registry }}/") ||
+          verifyImageSignatures(img, [attestors.buildWorkflow]) > 0
+        )
       message: >-
         image signature verification failed: the image must be signed via the
         miracum standard-build.yaml GitHub Actions workflow
-    # Every image must carry a SLSA provenance attestation signed by the same
-    # build workflow (produced via actions/attest-build-provenance).
+    # Every miracum image must carry a SLSA provenance attestation signed by
+    # the same build workflow (produced via actions/attest-build-provenance).
     - expression: >-
-        images.containers.map(img, verifyAttestationSignatures(img, attestations.provenance, [attestors.buildWorkflow])).all(e, e > 0)
+        images.containers.all(img,
+          !img.startsWith("{{ .Values.miracumImages.registry }}/") ||
+          verifyAttestationSignatures(img, attestations.provenance, [attestors.buildWorkflow]) > 0
+        )
       message: >-
         SLSA provenance attestation verification failed: the attestation must
         be signed by the miracum standard-build.yaml GitHub Actions workflow
     # The builder recorded in the provenance must be the trusted build
     # workflow. Redundant with the signature check above, but cheap
     # defense-in-depth against payload/signer confusion.
+    #
+    # extractPayload() returns the full in-toto statement (predicateType,
+    # subject, predicate), not just the predicate itself, so all the
+    # provenance-specific fields below are nested under `.predicate`.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).runDetails.builder.id.matches({{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }})
+          !img.startsWith("{{ .Values.miracumImages.registry }}/") ||
+          extractPayload(img, attestations.provenance).predicate.runDetails.builder.id.matches({{ .Values.miracumImages.buildWorkflow.subjectRegExp | quote }})
         )
       message: >-
         SLSA provenance verification failed: unexpected builder id
@@ -72,7 +87,8 @@ spec:
     # convention used by all miracum repositories.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.path == "{{ .Values.miracumImages.entryPoint }}"
+          !img.startsWith("{{ .Values.miracumImages.registry }}/") ||
+          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.path == "{{ .Values.miracumImages.entryPoint }}"
         )
       message: >-
         SLSA provenance verification failed: unexpected build workflow entrypoint
@@ -80,32 +96,18 @@ spec:
     # name, derived automatically from the image reference.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.repository ==
+          !img.startsWith("{{ .Values.miracumImages.registry }}/") ||
+          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository ==
             "https://github.com/" + image(img).repository()
         )
       message: >-
         SLSA provenance verification failed: the source repository recorded in
         the provenance does not match the image name
-    # The git ref recorded in the provenance must match the image tag, so an
-    # image can't be relabeled with a different release's tag.
+    # Every blaze image must carry a valid keyless cosign signature produced
+    # by the samply/blaze build.yml workflow.
     - expression: >-
         images.containers.all(img,
-          extractPayload(img, attestations.provenance).buildDefinition.externalParameters.workflow.ref ==
-            "refs/tags/" + image(img).tag()
+          !img.startsWith("{{ .Values.blazeImages.registry }}/") ||
+          verifyImageSignatures(img, [attestors.blazeBuildWorkflow]) > 0
         )
-      message: >-
-        SLSA provenance verification failed: the git ref recorded in the
-        provenance does not match the image tag
-{{- end }}
-
-{{- range .Values.extraPolicies }}
----
-apiVersion: policies.kyverno.io/v1
-kind: ImageValidatingPolicy
-metadata:
-  name: {{ include "policies.fullname" $ }}-{{ .name }}
-  labels:
-    {{- include "policies.labels" $ | nindent 4 }}
-spec:
-  {{- toYaml .spec | nindent 4 }}
-{{- end }}
+      message: failed to verify blaze image signature

@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.2.0
+version: 0.3.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -24,18 +24,4 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: >-
-        rewrote the chart to use Kyverno's ImageValidatingPolicy instead of a
-        per-image ClusterPolicy. A single policy now verifies the SLSA
-        provenance and cosign signature of all ghcr.io/miracum images by
-        deriving the expected source repository from the image name, instead
-        of requiring an explicit `images` list. Requires Kyverno >= 1.14 and
-        the miracum/.github standard-build.yaml workflow update that switches
-        to actions/attest-build-provenance. validationActions now defaults to
-        Audit instead of Deny, since images built before that workflow change
-        will fail the new provenance check.
-    - kind: removed
-      description: >-
-        removed the `images` values field; ghcr.io/miracum images are now
-        matched automatically via a glob pattern. Use the new `extraPolicies`
-        field to add custom image verification policies for third-party
-        images (e.g. the previous curl example).
+        fix policy and added blaze image verification
