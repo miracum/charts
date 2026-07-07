@@ -29,6 +29,14 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  matchConditions:
+    - name: has-miracum-image
+      expression: >-
+        object.spec.containers.exists(c,
+          c.image.startsWith("ghcr.io/miracum/") ||
+          c.image.startsWith("ghcr.io/diz-uker/") ||
+          c.image.startsWith("ghcr.io/bzkf/")
+        )
   matchImageReferences:
     - glob: "ghcr.io/miracum/*:v*"
     - glob: "ghcr.io/diz-uker/*:v*"

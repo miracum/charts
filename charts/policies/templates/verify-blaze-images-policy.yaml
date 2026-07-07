@@ -26,6 +26,10 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  matchConditions:
+    - name: has-samply-image
+      expression: >-
+        object.spec.containers.exists(c, c.image.startsWith("ghcr.io/samply/"))
   matchImageReferences:
     - glob: "ghcr.io/samply/*"
   attestors:
