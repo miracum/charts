@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.6.0
+version: 0.7.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -24,4 +24,4 @@ annotations:
   artifacthub.io/changes: |
     - kind: added
       description: >-
-        dedicated ImageValidatingPolicies for blaze and curl images
+        matchCondition
