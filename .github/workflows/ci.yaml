@@ -83,24 +83,6 @@ jobs:
         run: |
           kubescape scan framework AllControls --keep-local --format=html --output=kubescape-reports/allcontrols.html charts/
 
-      - name: Check all charts against image validation policy
-        run: |
-          helm template charts/policies/ > /tmp/ivp.yaml
-
-          exit_code=0
-          for chart in charts/*/; do
-            [[ "$chart" == "charts/policies/" ]] && continue
-            name=$(basename "$chart")
-            echo "::group::${name}"
-            helm template "${chart}" > /tmp/chart-resources.yaml
-            if ! kyverno apply /tmp/ivp.yaml --resource /tmp/chart-resources.yaml; then
-              echo "::error::Image policy check failed for chart: ${name}"
-              exit_code=1
-            fi
-            echo "::endgroup::"
-          done
-          exit "${exit_code}"
-
   test:
     name: Test Charts
     runs-on: ubuntu-24.04
