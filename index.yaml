@@ -26131,6 +26131,35 @@ entries:
   policies:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: >-
+            dedicated ImageValidatingPolicies for blaze and curl images
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2026-07-07T21:38:23.860424115Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: 753badac2d08da7f08c66a0f07c5b84792b5fab3880f1fcdae9b0e7c20aa24fe
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.6.0/policies-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: >-
             "fix validating nested images"
@@ -34021,4 +34050,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-07-05T15:40:35.552955591Z"
+generated: "2026-07-07T21:38:23.863251802Z"
