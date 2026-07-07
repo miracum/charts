@@ -14,5 +14,3 @@ failurePolicy: Fail
 # Switch to Deny once your images have been rebuilt with the updated workflow.
 validationActions:
   - Deny
-
-
