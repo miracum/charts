@@ -30,7 +30,6 @@ spec:
   attestors:
     - name: curlKey
       cosign:
-        ignoreTlog: true
         key:
           data: |
             -----BEGIN PUBLIC KEY-----
