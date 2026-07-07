@@ -13,66 +13,6 @@ failurePolicy: Fail
 # check (they only carry the old, no-longer-verifiable v0.2 attestation).
 # Switch to Deny once your images have been rebuilt with the updated workflow.
 validationActions:
-  - Audit
+  - Deny
 
-# -- Verifies that images published under any of the given ghcr.io
-# org/registries were built and signed via the shared, reusable
-# "standard-build.yaml" workflow (owned by the miracum GitHub organization,
-# but also used by other organizations for their own repositories), and
-# carry a matching SLSA provenance attestation (produced by
-# actions/attest-build-provenance; images built before that workflow change
-# only carry the old, no-longer-verifiable v0.2 attestation and will fail the
-# provenance check below). Unlike a per-image ClusterPolicy, this uses a
-# single ImageValidatingPolicy that derives the expected source repository
-# straight from the image name (the CEL `image(img).repository()` function),
-# so it automatically covers every current and future image published under
-# `registries` without requiring an explicit list of image names.
-miracumImages:
-  # -- the registry + org prefixes images built via the shared
-  # standard-build.yaml workflow are expected to be published under - this
-  # includes miracum's own images as well as those of other organizations
-  # (e.g. diz-uker) that use the same reusable workflow. Only tags starting
-  # with "v" are matched, since only tagged releases go through the full
-  # SLSA/signing pipeline.
-  registries:
-    - ghcr.io/miracum
-    - ghcr.io/diz-uker
-    - ghcr.io/bzkf
 
-  # the reusable workflow that signs every image with a keyless cosign
-  # signature and attests its SLSA provenance. All miracum image repositories
-  # call this same workflow, so its identity is the same for every image and
-  # isn't derived from the image name.
-  buildWorkflow:
-    subjectRegExp: '^https://github\.com/miracum/\.github/\.github/workflows/standard-build\.yaml@.*$'
-    issuer: "https://token.actions.githubusercontent.com"
-
-  # the workflow file expected in each image's own repository which calls the
-  # shared buildWorkflow. This is expected to be the same across all
-  # repositories by convention, and is recorded in the SLSA provenance
-  # attestation as `buildDefinition.externalParameters.workflow.path`.
-  entryPoint: ".github/workflows/ci.yaml"
-
-# -- Verifies the blaze server and blaze-frontend images (both built from the
-# samply/blaze repository's build.yml workflow), per
-# https://github.com/samply/blaze/blob/main/docs/deployment/README.md. Merged
-# into the same ImageValidatingPolicy resource as miracumImages rather than a
-# separate one: as of Kyverno 1.18, having more than one ImageValidatingPolicy
-# active at the same time causes unrelated policies to spuriously fail with
-# "policy not evaluated" (https://github.com/kyverno/kyverno/issues, not yet
-# reported upstream at the time of writing). Keep any additional built-in
-# image checks merged into this same resource until that's fixed.
-blazeImages:
-  # -- the registry + org prefix blaze images are published under.
-  registry: ghcr.io/samply
-
-  buildWorkflow:
-    subjectRegExp: '^https://github\.com/samply/blaze/.*$'
-    issuer: "https://token.actions.githubusercontent.com"
-
-# NOTE: verifying curlimages/curl's static-key signature this way currently
-# crashes the Kyverno admission controller (a nil-pointer panic in its
-# bundled cosign/sigstore-go dependency while checking the transparency log
-# for that image's new-format signature bundle) - confirmed reproducible as
-# of Kyverno 1.18.1/cosign v3.0.6. Don't enable this until that's fixed
-# upstream.

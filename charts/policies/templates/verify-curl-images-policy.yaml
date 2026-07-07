@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: {{ include "policies.fullname" . }}-verify-curl-images
+  labels:
+    {{- include "policies.labels" . | nindent 4 }}
+  annotations:
+    policies.kyverno.io/title: Verify curl image signatures
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.14.0
+    policies.kyverno.io/description: >-
+      Verifies the cosign signature of curlimages/curl images using the static
+      public key published at https://hub.docker.com/r/curlimages/curl.
+spec:
+  webhookConfiguration:
+    timeoutSeconds: {{ .Values.webhookConfiguration.timeoutSeconds }}
+  failurePolicy: {{ .Values.failurePolicy }}
+  validationActions:
+    {{- toYaml .Values.validationActions | nindent 4 }}
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  matchImageReferences:
+    - glob: "docker.io/curlimages/*"
+  attestors:
+    - name: curlKey
+      cosign:
+        ignoreTlog: true
+        key:
+          data: |
+            -----BEGIN PUBLIC KEY-----
+            MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwFTRXl79xRiAFa5ZX4aZ7Vkdqmji
+            5WY0zqc3bd6B08CsNftlYsu2gAqdWm0IlzoQpi2Zi5C437RTg/DgLQ6Bkg==
+            -----END PUBLIC KEY-----
+  validations:
+    - expression: >-
+        images.containers.all(img,
+          verifyImageSignatures(img, [attestors.curlKey]) > 0
+        )
+      message: failed to verify curl image signature

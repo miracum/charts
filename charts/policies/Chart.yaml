@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.5.0
+version: 0.6.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -22,6 +22,6 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
+    - kind: added
       description: >-
-        "fix validating nested images"
+        dedicated ImageValidatingPolicies for blaze and curl images
