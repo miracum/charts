@@ -118,7 +118,7 @@ jobs:
           name: kubescape-reports
           path: "kubescape-reports/"
 
-      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0
+      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0 # zizmor: ignore[superfluous-actions] upload release assets directly
         with:
           add: "kubescape-reports/"
           message: "docs: updated kubescape reports"
