@@ -1,12 +1,12 @@
 dependencies:
 - name: pathling-server
   repository: oci://ghcr.io/chgl/charts
-  version: 0.9.9
+  version: 0.10.8
 - name: hive-metastore
   repository: oci://ghcr.io/miracum/charts
   version: 0.4.24
 - name: trino
   repository: https://trinodb.github.io/charts
   version: 1.42.2
-digest: sha256:c47e32b66a555a236c6d36fa6da757831b6f184b177e0e0040d95b68b8d17fe0
-generated: "2026-05-01T09:47:49.573164431Z"
+digest: sha256:f085e8170129d7ee30206c915b168a82c0fbc505d306c68b024e4c1d2b3900ef
+generated: "2026-07-08T07:07:07.668119879Z"
