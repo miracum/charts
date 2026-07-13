@@ -190,11 +190,17 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Fail if any required job failed or was cancelled
+        env:
+          CHART_LINT_RESULT: ${{ needs.chart-lint.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
         run: |
-          echo "chart-lint: ${{ needs.chart-lint.result }}"
-          echo "test: ${{ needs.test.result }}"
-          echo "lint: ${{ needs.lint.result }}"
-          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]] || [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
-            echo "One or more required jobs failed or were cancelled."
-            exit 1
-          fi
+          echo "chart-lint: ${CHART_LINT_RESULT}"
+          echo "test: ${TEST_RESULT}"
+          echo "lint: ${LINT_RESULT}"
+          for result in "${CHART_LINT_RESULT}" "${TEST_RESULT}" "${LINT_RESULT}"; do
+            if [[ "${result}" == "failure" || "${result}" == "cancelled" ]]; then
+              echo "One or more required jobs failed or were cancelled."
+              exit 1
+            fi
+          done
