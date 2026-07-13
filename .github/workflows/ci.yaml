@@ -70,7 +70,7 @@ jobs:
 
       - name: Run Powerlint
         env:
-          KUBERNETES_VERSIONS: "1.31.0 1.32.0 1.33.0"
+          KUBERNETES_VERSIONS: "1.34.0 1.35.0 1.36.0"
         run: chart-powerlint.sh
 
       # used to test whether the changelog generation process works
@@ -90,7 +90,7 @@ jobs:
       - chart-lint
     strategy:
       matrix:
-        k8s-version: [1.33.7, 1.34.3, 1.35.0]
+        k8s-version: [1.34.8, 1.35.5, 1.36.1]
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
@@ -167,3 +167,40 @@ jobs:
       enable-verify-base-image-signature: false
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  # A single, stably-named job to point required-status-check rules at.
+  # chart-lint, test, and lint aren't safe to require individually:
+  # - "test" is a matrix job, so its check context name changes every time
+  #   the k8s-version matrix is bumped (which renovate itself does), and its
+  #   steps only run conditionally (ct list-changed), so it can legitimately
+  #   report success without ever exercising anything.
+  # - "lint" calls a reusable workflow, whose own jobs can add/rename check
+  #   contexts independently of this file.
+  # This job runs unconditionally (if: always()) even when a dependency
+  # failed, and fails itself if any dependency failed or was cancelled - so
+  # requiring only this job's context still fails the PR on a genuine test
+  # failure, without needing to track matrix/reusable-workflow check names.
+  required-checks:
+    name: Required Checks
+    if: always()
+    needs:
+      - chart-lint
+      - test
+      - lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fail if any required job failed or was cancelled
+        env:
+          CHART_LINT_RESULT: ${{ needs.chart-lint.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+        run: |
+          echo "chart-lint: ${CHART_LINT_RESULT}"
+          echo "test: ${TEST_RESULT}"
+          echo "lint: ${LINT_RESULT}"
+          for result in "${CHART_LINT_RESULT}" "${TEST_RESULT}" "${LINT_RESULT}"; do
+            if [[ "${result}" == "failure" || "${result}" == "cancelled" ]]; then
+              echo "One or more required jobs failed or were cancelled."
+              exit 1
+            fi
+          done
