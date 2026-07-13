@@ -218,7 +218,7 @@ database:
   # -- additional parameters appended to the connection string
   additionalConnectionStringParameters: "Timeout=60;Max Auto Prepare=5;"
 
-# -- extra environment variables to set on the vfps api container
+# -- extra environment variables to set on the vfps container
 extraEnv: []
   # - name: "Pseudonymization__Caching__Namespaces__IsEnabled"
   #   value: "true"
@@ -226,6 +226,9 @@ extraEnv: []
   #   value: "64"
   # - name: "Pseudonymization__Caching__Namespaces__AbsoluteExpiration"
   #   value: "0.01:23:00"
+
+# -- extra environment variables as a `key:value` dictionary to set on the vfps container
+extraEnvDict: {}
 
 postgres:
   # -- enabled the included Postgres DB

@@ -23,7 +23,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 3.0.41
+version: 3.1.0
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -42,4 +42,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/postgres to sha256:311136771dca6826c3b6e691ebf8cb6e896e165074bc57a728f9619f25f0c4c7"
+      description: "added `extraEnvDict` setting"
