@@ -111,6 +111,12 @@ spec:
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
+            {{- with .Values.extraEnvDict }}
+            {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
           {{- if .Values.appsettings }}
           volumeMounts:
             - name: appsettings
