@@ -167,3 +167,34 @@ jobs:
       enable-verify-base-image-signature: false
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  # A single, stably-named job to point required-status-check rules at.
+  # chart-lint, test, and lint aren't safe to require individually:
+  # - "test" is a matrix job, so its check context name changes every time
+  #   the k8s-version matrix is bumped (which renovate itself does), and its
+  #   steps only run conditionally (ct list-changed), so it can legitimately
+  #   report success without ever exercising anything.
+  # - "lint" calls a reusable workflow, whose own jobs can add/rename check
+  #   contexts independently of this file.
+  # This job runs unconditionally (if: always()) even when a dependency
+  # failed, and fails itself if any dependency failed or was cancelled - so
+  # requiring only this job's context still fails the PR on a genuine test
+  # failure, without needing to track matrix/reusable-workflow check names.
+  required-checks:
+    name: Required Checks
+    if: always()
+    needs:
+      - chart-lint
+      - test
+      - lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fail if any required job failed or was cancelled
+        run: |
+          echo "chart-lint: ${{ needs.chart-lint.result }}"
+          echo "test: ${{ needs.test.result }}"
+          echo "lint: ${{ needs.lint.result }}"
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]] || [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more required jobs failed or were cancelled."
+            exit 1
+          fi
