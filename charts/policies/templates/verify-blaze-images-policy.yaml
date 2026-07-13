@@ -20,6 +20,14 @@ spec:
   failurePolicy: {{ .Values.failurePolicy }}
   validationActions:
     {{- toYaml .Values.validationActions | nindent 4 }}
+  # background scanning of already-existing pods isn't useful here (their
+  # signatures/attestations can't retroactively change), and Kyverno's
+  # CEL-based background scanner emits a "Warning"-type "PolicyViolation"
+  # event for every scanned resource regardless of pass/fail, which is
+  # both noisy and misleading.
+  evaluation:
+    background:
+      enabled: false
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
@@ -29,7 +37,7 @@ spec:
   matchConditions:
     - name: has-samply-image
       expression: >-
-        object.spec.containers.exists(c, c.image.startsWith("ghcr.io/samply/"))
+        object.spec.containers.exists(c, c.image.startsWith("ghcr.io/samply/blaze"))
   matchImageReferences:
     - glob: "ghcr.io/samply/*"
   attestors:
