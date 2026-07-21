@@ -14,3 +14,14 @@ failurePolicy: Fail
 # Switch to Deny once your images have been rebuilt with the updated workflow.
 validationActions:
   - Deny
+
+curlImages:
+  # -- disabled by default: verifying curlimages/curl's static-key signature
+  # currently crashes the Kyverno admission controller (a nil-pointer panic
+  # in its bundled cosign/sigstore-go dependency while checking the
+  # transparency log for new-bundle-format key/certificate attestors).
+  # Tracked upstream at https://github.com/kyverno/kyverno/issues/16435
+  # (fixed, milestoned for Kyverno 1.19.0) and
+  # https://github.com/kyverno/kyverno/issues/16445. Re-enable once your
+  # cluster is running a Kyverno version with that fix.
+  enabled: false

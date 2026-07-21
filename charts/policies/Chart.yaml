@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.8.0
+version: 0.9.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -22,6 +22,9 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: added
+    - kind: fixed
       description: >-
-        disable background scanning of already-existing pods
+        disabled the curlimages/curl verification policy by default (set
+        curlImages.enabled=true to re-enable): it currently crashes the
+        Kyverno admission controller, see
+        https://github.com/kyverno/kyverno/issues/16435
