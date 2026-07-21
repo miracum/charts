@@ -149,6 +149,17 @@ jobs:
           kubectl wait --for=condition=Established --timeout=120s -f /tmp/test-fixtures-crds.yaml
           kubectl apply --server-side=true -f /tmp/test-fixtures.yaml
 
+      - name: Wait for Kyverno to be ready
+        if: ${{ steps.list-changed.outputs.changed == 'true' }}
+        run: |
+          # the policies chart's ImageValidatingPolicy only starts enforcing
+          # once the admission webhook is actually serving, so charts
+          # installed by "ct install" right after this would otherwise race
+          # against Kyverno still starting up.
+          kubectl -n fixtures wait --for=condition=Ready pod \
+            --selector=app.kubernetes.io/component=admission-controller \
+            --timeout=180s
+
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}
         run: ct install --config .github/ct/install.yaml

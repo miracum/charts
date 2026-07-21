@@ -1,3 +1,4 @@
+{{- if .Values.curlImages.enabled }}
 apiVersion: policies.kyverno.io/v1
 kind: ImageValidatingPolicy
 metadata:
@@ -55,3 +56,4 @@ spec:
           verifyImageSignatures(img, [attestors.curlKey]) > 0
         )
       message: failed to verify curl image signature
+{{- end }}
