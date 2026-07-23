@@ -172,7 +172,8 @@ Create the connection string from the host, port and database name.
 {{- $releaseName := (include "vfps.fullname" .) -}}
 {{- $appName := printf "%s" $releaseName -}}
 {{- $additionalConnectionStringParameters := printf "%s" .Values.database.additionalConnectionStringParameters -}}
-{{ (printf "Host=%s:%d;Database=%s;Application Name=%s;%s" $host (int $port) $databaseName $appName $additionalConnectionStringParameters) | quote }}
+{{- $schema := printf "%s" .Values.database.schema -}}
+{{ (printf "Host=%s:%d;Database=%s;Application Name=%s;%s%s" $host (int $port) $databaseName $appName (empty $schema | ternary "" (printf "Search Path=%s;" $schema)) $additionalConnectionStringParameters) | quote }}
 {{- end -}}
 
 {{/*

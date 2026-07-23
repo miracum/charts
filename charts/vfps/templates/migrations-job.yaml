@@ -59,7 +59,7 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" $.Values.migrationsJob.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
-            - name: COMPlus_EnableDiagnostics
+            - name: DOTNET_EnableDiagnostics
               value: "0"
             - name: ConnectionStrings__PostgreSQL
               value: {{ include "vfps.database.connection-string" . }}
@@ -91,7 +91,7 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" $.Values.migrationsJob.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
-            - name: COMPlus_EnableDiagnostics
+            - name: DOTNET_EnableDiagnostics
               value: "0"
             - name: ConnectionStrings__PostgreSQL
               value: {{ include "vfps.database.connection-string" . }}
