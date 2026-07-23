@@ -119,6 +119,44 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# this is to setup the liveness and readiness probes more information can be found here: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/>
+# @ignored
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /readyz
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /livez
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# this is to setup the startup probe more information can be found here: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/>
+# @ignored
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 30
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
 # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
 # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
 resourcesPreset: "medium"
