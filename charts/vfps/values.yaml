@@ -213,8 +213,8 @@ database:
   existingSecret: ""
   # -- name of the key in `database.existingSecret` to use as the password to the DB.
   existingSecretKey: "postgresql-postgres-password"
-  # -- schema used for the tables.
-  schema: "vfps"
+  # -- schema used for the tables. If empty, no `Search Path` is added to the connection string.
+  schema: ""
   # -- additional parameters appended to the connection string
   additionalConnectionStringParameters: "Timeout=60;Max Auto Prepare=5;"
 
