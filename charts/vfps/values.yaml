@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/vfps
-  tag: v1.8.0@sha256:59dce364b9bfa1fe68feca78401a90abdcca7904ca4f851a583b8f516c5e720b
+  tag: v1.8.1@sha256:90f06d768f9e034e17931ad7bd52c3eddf2edcfcf2e9a52deb533617061d3e0d
   pullPolicy: IfNotPresent
 
 migrationsJob:
