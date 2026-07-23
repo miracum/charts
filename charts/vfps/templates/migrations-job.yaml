@@ -44,8 +44,7 @@ spec:
                 echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
                 sleep 15;
               done;
-      containers:
-        - name: {{ include "vfps.fullname" . }}-migrations
+        - name: migrate
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/opt/vfps/efbundle"]
@@ -77,6 +76,72 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
+        - name: migrate-dataprotection
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/opt/vfps/efbundle-dataprotection"]
+          args: ["--verbose"]
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.migrationsJob.resources }}
+          resources: {{- toYaml $.Values.migrationsJob.resources | nindent 12 }}
+          {{- else if ne $.Values.migrationsJob.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.migrationsJob.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: COMPlus_EnableDiagnostics
+              value: "0"
+            - name: ConnectionStrings__PostgreSQL
+              value: {{ include "vfps.database.connection-string" . }}
+            - name: PGUSER
+              value: {{ include "vfps.database.user" . }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "vfps.database.db-secret-name" . }}
+                  key: {{ include "vfps.database.db-secret-key" . }}
+            {{- if .Values.migrationsJob.extraEnv }}
+            {{- toYaml .Values.migrationsJob.extraEnv | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+      containers:
+        - name: {{ include "vfps.fullname" . }}-migrations
+          image: {{ include "vfps.waitForDatabaseInitContainerImage" . }}
+          imagePullPolicy: {{ .Values.waitForDatabaseInitContainer.image.pullPolicy }}
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.initContainers.resources }}
+          resources: {{- toYaml $.Values.initContainers.resources | nindent 12 }}
+          {{- else if ne $.Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: PGHOST
+              value: {{ include "vfps.database.host" $ }}
+            - name: PGPORT
+              value: {{ include "vfps.database.port" $ | quote }}
+            - name: PGUSER
+              value: {{ include "vfps.database.user" $ }}
+            - name: PGDATABASE
+              value: {{ include "vfps.database.name" $ }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "vfps.database.db-secret-name" . }}
+                  key: {{ include "vfps.database.db-secret-key" . }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Schemas in ${PGDATABASE}:";
+              psql -c "\dn";
+              echo "Tables in ${PGDATABASE}:";
+              psql -c "\dt *.*";
       volumes:
         - name: tmp-volume
           emptyDir: {}
