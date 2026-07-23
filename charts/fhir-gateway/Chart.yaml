@@ -12,12 +12,12 @@ dependencies:
     condition: postgres.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.9.7
+    version: 0.9.18
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 12.0.19
+version: 12.0.20
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/library/postgres to sha256:22c89fe0d0f507606260237fd55e51f6137f58b2d5bcf6152242b96d9fe8f9a4"
+      description: "Updated fhir-pseudonymizer to 0.9.18"
