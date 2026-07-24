@@ -106,13 +106,10 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # -- list of ingress hosts
+  # -- list of ingress hosts. `paths` and its fields (`path`, `pathType`, `portName`) are optional per host
+  # and default to `path: /`, `pathType: ImplementationSpecific`, `portName: http` if unset.
   hosts:
     - host: vfps.127.0.0.1.nip.io
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-          portName: http
   # -- TLS configuration
   tls: []
   #  - secretName: chart-example-tls
