@@ -246,7 +246,7 @@ loincConverter:
   image:
     registry: ghcr.io
     repository: miracum/loinc-conversion
-    tag: v1.16.34@sha256:b5f8f225eef90dd923ab4a00412a8e78f8d153b354635195236a0881cae0a1af
+    tag: v1.16.35@sha256:660cda85466563fabb4a0439331e267d2d35ef6392ca9081121ef8c4b071cc81
     pullPolicy: IfNotPresent
 
   metrics:
