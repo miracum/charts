@@ -27,4 +27,4 @@ depName=$(echo "$depName" | tr ' ' '\n' | sort -u | xargs)
 
 echo "Changed dep name is: $depName to $newVersion"
 
-docker run --rm -v "${PWD}:/root/workspace" ghcr.io/chgl/kube-powertools:v2.5.63@sha256:ecf6115043fb9a905de6d00bcec798256389b0a1bce04de7a8250515fe902510 /root/workspace/.github/renovate-bump-version.sh "${depName}" "${newVersion}"
+docker run --rm -v "${PWD}:/root/workspace" ghcr.io/chgl/kube-powertools:v2.5.64@sha256:85b43f02cf382018aa337bba74d71f3446269f03b06052ce87e893c6fde9c1da /root/workspace/.github/renovate-bump-version.sh "${depName}" "${newVersion}"
