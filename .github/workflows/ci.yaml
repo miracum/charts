@@ -174,7 +174,24 @@ jobs:
 
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}
-        run: ct install --config .github/ct/install.yaml
+        run: |
+          # even with the Endpoints wait above confirming the object is
+          # populated, kube-proxy still needs to reprogram this node's
+          # iptables/nft rules for the ClusterIP before the apiserver's
+          # webhook call actually reaches the pod - that dataplane step
+          # isn't observable through any Kubernetes API, so a first attempt
+          # can still race it and fail with "connect: connection refused".
+          # Retrying is simpler and more robust than guessing a long-enough
+          # sleep; ct's own cleanup on failure (uninstalls the release,
+          # deletes the namespace) makes re-running it safe.
+          for i in 1 2 3 4 5; do
+            if ct install --config .github/ct/install.yaml; then
+              exit 0
+            fi
+            echo "ct install failed (attempt ${i}/5), retrying in 10s..."
+            sleep 10
+          done
+          exit 1
 
   lint:
     uses: miracum/.github/.github/workflows/standard-lint.yaml@56f97afca6189a2fafd4e5d7cbabc6c9b83c8a85 # v1.22.4
