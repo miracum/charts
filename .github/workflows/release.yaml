@@ -26,7 +26,7 @@ jobs:
           git config --global --add safe.directory /__w/charts/charts
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: true
@@ -107,7 +107,7 @@ jobs:
           git config --global --add safe.directory /__w/charts/charts
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: gh-pages
           persist-credentials: true
@@ -118,7 +118,7 @@ jobs:
           name: kubescape-reports
           path: "kubescape-reports/"
 
-      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0 # zizmor: ignore[superfluous-actions] upload release assets directly
+      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0 # zizmor: ignore[superfluous-actions,ref-version-mismatch] upload release assets directly
         with:
           add: "kubescape-reports/"
           message: "docs: updated kubescape reports"
