@@ -11,10 +11,10 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.9.0
+version: 0.10.0
 annotations:
   artifacthub.io/license: Apache-2.0
-  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/containsSecurityUpdates: "true"
   artifacthub.io/operator: "false"
   artifacthub.io/prerelease: "false"
   artifacthub.io/recommendations: |
@@ -22,9 +22,21 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
+    - kind: changed
       description: >-
-        disabled the curlimages/curl verification policy by default (set
-        curlImages.enabled=true to re-enable): it currently crashes the
-        Kyverno admission controller, see
-        https://github.com/kyverno/kyverno/issues/16435
+        re-enabled the curlimages/curl verification policy by default now
+        that Kyverno 1.19.0 fixes the admission controller crash tracked at
+        https://github.com/kyverno/kyverno/issues/16435.
+    - kind: security
+      description: >-
+        all three image verification policies now also verify images used in
+        initContainers and ephemeralContainers - previously only regular
+        containers were checked, so an unsigned/unattested image confined to
+        an init or ephemeral container silently skipped verification
+        entirely.
+    - kind: security
+      description: >-
+        verify-images-policy's matchImageReferences no longer requires a
+        ":vX.Y.Z"-style tag: a digest-only image reference (no tag) was
+        previously excluded from signature/provenance verification even
+        though the exact same image referenced by tag+digest was verified.
