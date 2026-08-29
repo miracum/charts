@@ -38,17 +38,24 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
   matchConditions:
+    # checks containers, initContainers, and ephemeralContainers: a miracum
+    # image confined to an init or ephemeral container would otherwise never
+    # trigger this policy at all.
     - name: has-miracum-image
       expression: >-
-        object.spec.containers.exists(c,
-          c.image.startsWith("ghcr.io/miracum/") ||
-          c.image.startsWith("ghcr.io/diz-uker/") ||
-          c.image.startsWith("ghcr.io/bzkf/")
-        )
+        [object.spec.?containers.orValue([]), object.spec.?initContainers.orValue([]), object.spec.?ephemeralContainers.orValue([])]
+          .exists(containers, containers.exists(c,
+            c.image.startsWith("ghcr.io/miracum/") ||
+            c.image.startsWith("ghcr.io/diz-uker/") ||
+            c.image.startsWith("ghcr.io/bzkf/")
+          ))
+  # no ":v*" tag suffix: a bare "ghcr.io/miracum/*" glob also matches
+  # digest-only references (no tag at all), which a tag-anchored glob would
+  # silently skip.
   matchImageReferences:
-    - glob: "ghcr.io/miracum/*:v*"
-    - glob: "ghcr.io/diz-uker/*:v*"
-    - glob: "ghcr.io/bzkf/*:v*"
+    - glob: "ghcr.io/miracum/*"
+    - glob: "ghcr.io/diz-uker/*"
+    - glob: "ghcr.io/bzkf/*"
   attestors:
     - name: buildWorkflow
       cosign:
@@ -60,11 +67,18 @@ spec:
     - name: provenance
       intoto:
         type: https://slsa.dev/provenance/v1
+  # combines containers, initContainers, and ephemeralContainers: validating
+  # images.containers alone would silently skip any miracum image confined to
+  # an init or ephemeral container.
+  variables:
+    - name: allImages
+      expression: >-
+        images.containers + images.initContainers + images.ephemeralContainers
   validations:
     # Every miracum image must carry a valid keyless cosign signature
     # produced by the shared miracum build workflow.
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           verifyImageSignatures(img, [attestors.buildWorkflow]) > 0
         )
       message: >-
@@ -73,7 +87,7 @@ spec:
     # Every miracum image must carry a SLSA provenance attestation signed by
     # the same build workflow (produced via actions/attest-build-provenance).
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           verifyAttestationSignatures(img, attestations.provenance, [attestors.buildWorkflow]) > 0
         )
       message: >-
@@ -87,7 +101,7 @@ spec:
     # subject, predicate), not just the predicate itself, so all the
     # provenance-specific fields below are nested under `.predicate`.
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           extractPayload(img, attestations.provenance).predicate.runDetails.builder.id.matches("^https://github\\.com/miracum/\\.github/\\.github/workflows/standard-build\\.yaml@.*$")
         )
       message: >-
@@ -95,7 +109,7 @@ spec:
     # The workflow entrypoint recorded in the provenance must match the
     # convention used by all miracum repositories.
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.path == ".github/workflows/ci.yaml"
         )
       message: >-
@@ -106,7 +120,7 @@ spec:
     # are monorepos that publish multiple images (e.g.
     # ghcr.io/miracum/recruit/notify is built from github.com/miracum/recruit).
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           (
             image(img).repository() ==
               extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.repository.replace("https://github.com/", "")

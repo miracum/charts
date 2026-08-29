@@ -34,10 +34,13 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
   matchConditions:
+    # checks containers, initContainers, and ephemeralContainers: a curl
+    # image confined to an init or ephemeral container would otherwise never
+    # trigger this policy at all.
     - name: has-curl-image
       expression: >-
-        object.spec.containers.exists(c, c.image.startsWith("docker.io/curlimages/"))
-        || (has(object.spec.initContainers) && object.spec.initContainers.exists(c, c.image.startsWith("docker.io/curlimages/")))
+        [object.spec.?containers.orValue([]), object.spec.?initContainers.orValue([]), object.spec.?ephemeralContainers.orValue([])]
+          .exists(containers, containers.exists(c, c.image.startsWith("docker.io/curlimages/")))
   matchImageReferences:
     - glob: "docker.io/curlimages/*"
   attestors:
@@ -49,9 +52,16 @@ spec:
             MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwFTRXl79xRiAFa5ZX4aZ7Vkdqmji
             5WY0zqc3bd6B08CsNftlYsu2gAqdWm0IlzoQpi2Zi5C437RTg/DgLQ6Bkg==
             -----END PUBLIC KEY-----
+  # combines containers, initContainers, and ephemeralContainers: validating
+  # images.containers alone would silently skip any curl image confined to an
+  # init or ephemeral container.
+  variables:
+    - name: allImages
+      expression: >-
+        images.containers + images.initContainers + images.ephemeralContainers
   validations:
     - expression: >-
-        images.containers.all(img,
+        variables.allImages.all(img,
           verifyImageSignatures(img, [attestors.curlKey]) > 0
         )
       message: failed to verify curl image signature
