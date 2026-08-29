@@ -27885,6 +27885,50 @@ entries:
   policies:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: >-
+            re-enabled the curlimages/curl verification policy by default now
+            that Kyverno 1.19.0 fixes the admission controller crash tracked at
+            https://github.com/kyverno/kyverno/issues/16435.
+        - kind: security
+          description: >-
+            all three image verification policies now also verify images used in
+            initContainers and ephemeralContainers - previously only regular
+            containers were checked, so an unsigned/unattested image confined to
+            an init or ephemeral container silently skipped verification
+            entirely.
+        - kind: security
+          description: >-
+            verify-images-policy's matchImageReferences no longer requires a
+            ":vX.Y.Z"-style tag: a digest-only image reference (no tag) was
+            previously excluded from signature/provenance verification even
+            though the exact same image referenced by tag+digest was verified.
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2026-08-29T22:01:48.317018552Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: e176ee6ea2b24a906ef4ac953af77ca098a4d3baf9a84fb3944f8cc2c45b275f
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.10.0/policies-0.10.0.tgz
+    version: 0.10.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: >-
             disabled the curlimages/curl verification policy by default (set
@@ -37069,4 +37113,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-08-26T20:34:25.027998862Z"
+generated: "2026-08-29T22:01:48.318486716Z"
