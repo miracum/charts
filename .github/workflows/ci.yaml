@@ -160,6 +160,18 @@ jobs:
             --selector=app.kubernetes.io/component=admission-controller \
             --timeout=180s
 
+          # a pod's "Ready" condition only means its own readiness probe
+          # passed - the admission-controller Service's Endpoints being
+          # populated (and kube-proxy programming the routing rules for it)
+          # is a separate, asynchronous step. Installing charts immediately
+          # after the wait above can race against that propagation and hit
+          # the webhook before it's actually reachable, failing with
+          # "connect: connection refused" (seen intermittently across
+          # unrelated PRs, not just ones touching charts/policies).
+          kubectl -n fixtures wait --for=jsonpath='{.subsets[0].addresses[0].ip}' \
+            endpoints/test-fixtures-kyverno-svc \
+            --timeout=60s
+
       - name: Run chart-testing (install)
         if: ${{steps.list-changed.outputs.changed == 'true'}}
         run: ct install --config .github/ct/install.yaml
