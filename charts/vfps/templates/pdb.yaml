@@ -1,4 +1,7 @@
 {{- if .Values.podDisruptionBudget.enabled }}
+{{- if not (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable) }}
+{{- fail "podDisruptionBudget.enabled requires either podDisruptionBudget.minAvailable or podDisruptionBudget.maxUnavailable to be set" }}
+{{- end }}
 kind: PodDisruptionBudget
 apiVersion: policy/v1
 metadata:
@@ -7,10 +10,13 @@ metadata:
     {{- include "vfps.labels" . | nindent 4 }}
     app.kubernetes.io/component: api
 spec:
+  # Kubernetes rejects a PodDisruptionBudget that sets both, so only one is ever emitted.
+  # minAvailable takes precedence because it is the one an explicit user setting would have used
+  # before maxUnavailable gained a default - otherwise adding that default would break upgrades for
+  # anyone who had set minAvailable themselves.
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
-  {{- end }}
-  {{- if .Values.podDisruptionBudget.maxUnavailable }}
+  {{- else }}
   maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
   {{- end }}
   selector:

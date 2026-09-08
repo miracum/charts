@@ -20,3 +20,34 @@
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
+
+{{- $replicas := int .Values.replicaCount }}
+{{- if .Values.autoscaling.enabled }}
+{{- $replicas = int .Values.autoscaling.minReplicas }}
+{{- end }}
+
+{{- if lt $replicas 2 }}
+
+NOTE: vfps is running with a single replica, so every rolling upgrade, node drain and pod
+      eviction is a gap in service. For a highly-available deployment set `replicaCount` to 2 or
+      more, enable `podDisruptionBudget`, and spread the pods with `topologySpreadConstraints`.
+{{- end }}
+
+{{- if and (ge $replicas 2) (eq .Values.service.sessionAffinity "None") }}
+
+NOTE: More than one replica is running but no session affinity is configured. The admin UI is
+      Blazor Server - a browser session is a SignalR circuit held in one replica's memory and
+      cannot be resumed on another - so the UI needs affinity to work reliably. Either add
+      cookie-based affinity annotations to your ingress controller (preferred), or set
+      `service.sessionAffinity=ClientIP`. The gRPC and REST APIs are unaffected.
+{{- end }}
+
+{{- if and .Values.gracefulShutdown.preStopSleepSeconds (not (semverCompare ">=1.30-0" .Capabilities.KubeVersion.Version)) }}
+
+WARNING: `gracefulShutdown.preStopSleepSeconds` is set but this cluster runs Kubernetes
+         {{ .Capabilities.KubeVersion.Version }}, which does not support the native `sleep` preStop
+         handler (added in 1.30). The hook has been SKIPPED, so requests may still be routed to
+         pods that have begun shutting down during a rollout. The vfps image is chiseled and has
+         no shell, so an `exec`-based hook is not an alternative - upgrade the cluster, or accept
+         the dropped requests.
+{{- end }}

@@ -7,7 +7,13 @@ metadata:
     {{- include "vfps.labels" . | nindent 4 }}
     app.kubernetes.io/component: migrations
 spec:
-  backoffLimit: 1
+  backoffLimit: {{ .Values.migrationsJob.backoffLimit }}
+  {{- if gt (int .Values.migrationsJob.activeDeadlineSeconds) 0 }}
+  activeDeadlineSeconds: {{ .Values.migrationsJob.activeDeadlineSeconds }}
+  {{- end }}
+  {{- if ge (int .Values.migrationsJob.ttlSecondsAfterFinished) 0 }}
+  ttlSecondsAfterFinished: {{ .Values.migrationsJob.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     metadata:
       labels:
