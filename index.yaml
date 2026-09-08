@@ -31702,6 +31702,73 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
+          description: "topologySpreadConstraints is now actually rendered - the template read the value from the wrong scope, so it silently did nothing"
+        - kind: fixed
+          description: "The appsettings volume is no longer mounted when the appsettings value is empty, where it referenced a ConfigMap that is not created"
+        - kind: fixed
+          description: "podDisruptionBudget now defaults to maxUnavailable: 1 instead of minAvailable: 1, which was unsatisfiable at replicaCount 1 and blocked node drains"
+        - kind: added
+          description: "Zero-downtime rollout support: preStop drain hook (Kubernetes 1.30+), terminationGracePeriodSeconds, updateStrategy and minReadySeconds"
+        - kind: added
+          description: "service.sessionAffinity, required by the Blazor Server admin UI when running more than one replica"
+        - kind: added
+          description: "extraEnvFrom, so secrets no longer have to be set as plaintext via extraEnv"
+        - kind: added
+          description: "migrationsJob.backoffLimit, activeDeadlineSeconds and ttlSecondsAfterFinished"
+        - kind: added
+          description: "Pod annotation checksumming appsettings, so changing it rolls the pods"
+        - kind: added
+          description: "autoscaling.behavior and priorityClassName"
+        - kind: changed
+          description: "Maximum Pool Size=50 is now set by default in the connection string, since Npgsql's default of 100 is per replica"
+        - kind: changed
+          description: "Updated docker.io/curlimages/curl to 8.22.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2026-09-08T22:47:57.934062999Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.19.7
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: d2adecf1e2072bfa62a5115f55f2f2452ae56d971a14b42ca4730db18d9b90dc
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-3.3.0/vfps-3.3.0.tgz
+    version: 3.3.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "Updated docker.io/curlimages/curl to 8.22.0"
       artifacthub.io/containsSecurityUpdates: "false"
@@ -37624,4 +37691,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-09-08T22:35:19.70935761Z"
+generated: "2026-09-08T22:47:57.93549578Z"
