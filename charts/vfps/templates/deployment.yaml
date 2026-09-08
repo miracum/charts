@@ -14,15 +14,28 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  {{- with .Values.updateStrategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
       {{- include "vfps.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: api
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- if or .Values.appsettings .Values.podAnnotations }}
       annotations:
+        {{- if .Values.appsettings }}
+        # Rolls the pods whenever the mounted appsettings change. Without this, editing
+        # `appsettings` updates the ConfigMap but leaves every running replica on the old
+        # configuration until something else happens to restart it.
+        checksum/appsettings: {{ include (print $.Template.BasePath "/appsettings-cm.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "vfps.selectorLabels" . | nindent 8 }}
@@ -34,6 +47,10 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "vfps.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.gracefulShutdown.terminationGracePeriodSeconds }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
@@ -83,6 +100,18 @@ spec:
             - name: http-metrics
               containerPort: 8082
               protocol: TCP
+          {{- if and .Values.gracefulShutdown.preStopSleepSeconds (semverCompare ">=1.30-0" .Capabilities.KubeVersion.Version) }}
+          # Endpoint removal and SIGTERM race each other: without this pause the container can stop
+          # accepting connections while kube-proxy and the ingress are still routing to it, so
+          # in-flight and newly-arriving requests fail on every rollout and every node drain. This
+          # needs the native `sleep` handler (beta and enabled by default since Kubernetes 1.30) -
+          # the runtime image is chiseled and has no shell, so an `exec` handler running `sleep`
+          # is not an option here. On older clusters the hook is skipped entirely; see NOTES.txt.
+          lifecycle:
+            preStop:
+              sleep:
+                seconds: {{ .Values.gracefulShutdown.preStopSleepSeconds }}
+          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- include "common.tplvalues.render" (dict "value" (omit .Values.livenessProbe "enabled") "context" $) | nindent 12 }}
@@ -112,6 +141,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "vfps.database.db-secret-name" . }}
                   key: {{ include "vfps.database.db-secret-key" . }}
+            {{- with .Values.gracefulShutdown.shutdownTimeout }}
+            - name: ShutdownTimeout
+              value: {{ . | quote }}
+            {{- end }}
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
@@ -121,6 +154,10 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
             {{- end }}
+          {{- with .Values.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
           {{- if .Values.appsettings }}
             - name: appsettings
@@ -132,9 +169,11 @@ spec:
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
           {{- end }}
       volumes:
+        {{- if .Values.appsettings }}
         - name: appsettings
           configMap:
             name: {{ include "vfps.fullname" . }}-appsettings
+        {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
@@ -150,7 +189,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .topologySpreadConstraints }}
+      {{- with .Values.topologySpreadConstraints }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}

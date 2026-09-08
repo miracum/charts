@@ -47,4 +47,65 @@ nobody@debug:/$ ghz --duration=1m \
 ```
 
 
+## High availability
+
+vfps keeps no durable state of its own outside PostgreSQL, so replicas are interchangeable. A
+production deployment wants at least:
+
+```yaml
+replicaCount: 3
+
+podDisruptionBudget:
+  enabled: true
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: vfps
+        app.kubernetes.io/component: api
+
+# the admin UI is Blazor Server and needs affinity - prefer cookie affinity on your ingress
+service:
+  sessionAffinity: ClientIP
+
+# the bundled PostgreSQL is a single instance; point at an HA database instead
+postgres:
+  enabled: false
+database:
+  host: my-ha-postgres.example.com
+  existingSecret: vfps-db
+```
+
+A few things are worth knowing beyond turning those on:
+
+- **The admin UI needs session affinity; the APIs don't.** Each browser session is a Blazor Server
+  circuit held in one replica's memory and can't be resumed on another. Cookie-based affinity at
+  the ingress is better than `service.sessionAffinity=ClientIP`, which is coarse when clients share
+  a NAT. Auth cookies and antiforgery tokens *are* portable across replicas, since vfps persists
+  the ASP.NET Data Protection key ring to PostgreSQL.
+- **gRPC clients pin to one replica.** A gRPC client opens a single long-lived HTTP/2 connection and
+  a ClusterIP Service balances connections, not requests. Point clients at the headless Service with
+  client-side load balancing - `dns:///vfps-headless:8081` plus a `round_robin` policy, as in the
+  Usage example above - or terminate gRPC at a proxy that balances per request.
+- **Size the connection pool for the replica count.** `Maximum Pool Size` in
+  `database.additionalConnectionStringParameters` is per replica, so budget roughly
+  `replicaCount x Maximum Pool Size` (plus CSV job workers) against your PostgreSQL's
+  `max_connections`, and add PgBouncer if that doesn't fit.
+- **Draining needs Kubernetes 1.30+.** `gracefulShutdown.preStopSleepSeconds` uses the native
+  `sleep` preStop handler so that Service endpoint removal wins its race against shutdown. The vfps
+  image is chiseled and has no shell, so there's no `exec` fallback - on older clusters the hook is
+  skipped and the install notes say so. Keep the ordering
+  `terminationGracePeriodSeconds` > `preStopSleepSeconds` + `shutdownTimeout`.
+- **Migrations run while the previous version is still serving.** The migrations Job is applied
+  alongside the Deployment update rather than as a pre-upgrade hook, which is what makes an upgrade
+  non-disruptive - but it only works if each migration is backwards-compatible with the running
+  version. Note also that a `CREATE INDEX CONCURRENTLY` which fails leaves an `INVALID` index that
+  must be dropped by hand before the migration can be retried.
+- **The bundled PostgreSQL is a single instance** with modest resource limits, intended for getting
+  started. Any restart of it is a full outage, softened only by the application's connection retry
+  budget. For real availability use an external HA PostgreSQL or an operator such as CloudNativePG.
+
 {{ template "chart.valuesSection" . }}
