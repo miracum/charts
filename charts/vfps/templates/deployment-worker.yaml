@@ -1,56 +1,56 @@
+{{- if .Values.worker.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "vfps.fullname" . }}
+  name: {{ include "vfps.fullname" . }}-worker
   labels:
     {{- include "vfps.labels" . | nindent 4 }}
-    app.kubernetes.io/component: api
+    app.kubernetes.io/component: worker
   annotations:
     polaris.fairwinds.com/automountServiceAccountToken-exempt: "true"
     {{- with .Values.deploymentAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
-  {{- with .Values.updateStrategy }}
+  replicas: {{ .Values.worker.replicaCount }}
+  {{- with .Values.worker.updateStrategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
       {{- include "vfps.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: api
+      app.kubernetes.io/component: worker
   template:
     metadata:
-      {{- if or .Values.appsettings .Values.podAnnotations }}
+      {{- if or .Values.appsettings .Values.worker.podAnnotations }}
       annotations:
         {{- if .Values.appsettings }}
-        # Rolls the pods whenever the mounted appsettings change. Without this, editing
-        # `appsettings` updates the ConfigMap but leaves every running replica on the old
-        # configuration until something else happens to restart it.
         checksum/appsettings: {{ include (print $.Template.BasePath "/appsettings-cm.yaml") . | sha256sum }}
         {{- end }}
-        {{- with .Values.podAnnotations }}
+        {{- with .Values.worker.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- end }}
       labels:
         {{- include "vfps.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: api
+        app.kubernetes.io/component: worker
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      # The same ServiceAccount as the API pods: it is what the wait-for-migrations-job init
+      # container's RBAC is bound to, and the workers run that same init container.
       serviceAccountName: {{ include "vfps.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
-      {{- with .Values.priorityClassName }}
+      {{- with .Values.worker.priorityClassName }}
       priorityClassName: {{ . }}
       {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.gracefulShutdown.terminationGracePeriodSeconds }}
+      # Much longer than the API pods' equivalent, and the reason the workers are a separate
+      # Deployment at all: a CSV job that is killed has to be re-dispatched and reprocessed, so it
+      # is worth waiting for one to finish - which is not a wait you want on every API pod rollout.
+      terminationGracePeriodSeconds: {{ .Values.worker.terminationGracePeriodSeconds }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
@@ -60,6 +60,11 @@ spec:
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.initContainers.resources }}
+          resources: {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          {{- else if ne .Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: PGHOST
@@ -85,33 +90,21 @@ spec:
           {{- end }}
         {{- end }}
       containers:
-        - name: vfps
+        - name: vfps-worker
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # No gRPC port: nothing routes API traffic here (the Services select
+          # app.kubernetes.io/component: api). http is kept for the probes, http-metrics for the
+          # ServiceMonitor.
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-            - name: grpc
-              containerPort: 8081
-              protocol: TCP
             - name: http-metrics
               containerPort: 8082
               protocol: TCP
-          {{- if and .Values.gracefulShutdown.preStopSleepSeconds (semverCompare ">=1.30-0" .Capabilities.KubeVersion.Version) }}
-          # Endpoint removal and SIGTERM race each other: without this pause the container can stop
-          # accepting connections while kube-proxy and the ingress are still routing to it, so
-          # in-flight and newly-arriving requests fail on every rollout and every node drain. This
-          # needs the native `sleep` handler (beta and enabled by default since Kubernetes 1.30) -
-          # the runtime image is chiseled and has no shell, so an `exec` handler running `sleep`
-          # is not an option here. On older clusters the hook is skipped entirely; see NOTES.txt.
-          lifecycle:
-            preStop:
-              sleep:
-                seconds: {{ .Values.gracefulShutdown.preStopSleepSeconds }}
-          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- include "common.tplvalues.render" (dict "value" (omit .Values.livenessProbe "enabled") "context" $) | nindent 12 }}
@@ -124,10 +117,10 @@ spec:
           startupProbe:
             {{- include "common.tplvalues.render" (dict "value" (omit .Values.startupProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
-          {{- if .Values.resources }}
-          resources: {{- toYaml .Values.resources | nindent 12 }}
-          {{- else if ne .Values.resourcesPreset "none" }}
-          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
+          {{- if .Values.worker.resources }}
+          resources: {{- toYaml .Values.worker.resources | nindent 12 }}
+          {{- else if ne .Values.worker.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.worker.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: DOTNET_EnableDiagnostics
@@ -145,14 +138,11 @@ spec:
             - name: ShutdownTimeout
               value: {{ . | quote }}
             {{- end }}
-            {{- if .Values.worker.enabled }}
-            # Jobs are processed by the worker Deployment instead. Enqueueing them and the Hangfire
-            # dashboard both keep working here - neither needs a local job server. Placed before
-            # the user-supplied variables so it can still be overridden deliberately, since
-            # Kubernetes lets the last occurrence of a duplicated name win.
+            # This is what makes these pods the workers. Placed before the user-supplied variables
+            # so it can still be overridden deliberately, since Kubernetes lets the last occurrence
+            # of a duplicated name win.
             - name: CsvProcessing__ProcessJobs
-              value: "false"
-            {{- end }}
+              value: "true"
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
@@ -161,6 +151,9 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- end }}
+            {{- if .Values.worker.extraEnv }}
+            {{- toYaml .Values.worker.extraEnv | nindent 12 }}
             {{- end }}
           {{- with .Values.extraEnvFrom }}
           envFrom:
@@ -185,19 +178,20 @@ spec:
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.worker.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.worker.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.worker.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.topologySpreadConstraints }}
+      {{- with .Values.worker.topologySpreadConstraints }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}

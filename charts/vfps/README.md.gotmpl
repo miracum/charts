@@ -104,6 +104,15 @@ A few things are worth knowing beyond turning those on:
   non-disruptive - but it only works if each migration is backwards-compatible with the running
   version. Note also that a `CREATE INDEX CONCURRENTLY` which fails leaves an `INVALID` index that
   must be dropped by hand before the migration can be retried.
+- **CSV jobs can be moved out of the API pods.** By default every replica processes jobs. Setting
+  `worker.enabled: true` runs them in a separate Deployment instead and switches the API pods to
+  accept-only (`CsvProcessing__ProcessJobs=false`) - enqueueing and the Hangfire dashboard keep
+  working there, since neither needs a local job server. Worth doing once job load competes with
+  API latency, or when you want jobs to drain slowly on shutdown while API pods roll quickly: a
+  single Deployment can only have one `terminationGracePeriodSeconds` and one resource budget,
+  which is why `worker.terminationGracePeriodSeconds` defaults to 600 against the API pods' 60.
+  The workers need the same S3 and database configuration, so put anything shared in the top-level
+  `extraEnv`/`extraEnvDict`/`extraEnvFrom` rather than under `worker.extraEnv`.
 - **The bundled PostgreSQL is a single instance** with modest resource limits, intended for getting
   started. Any restart of it is a full outage, softened only by the application's connection retry
   budget. For real availability use an external HA PostgreSQL or an operator such as CloudNativePG.

@@ -51,3 +51,19 @@ WARNING: `gracefulShutdown.preStopSleepSeconds` is set but this cluster runs Kub
          no shell, so an `exec`-based hook is not an alternative - upgrade the cluster, or accept
          the dropped requests.
 {{- end }}
+
+{{- if .Values.worker.enabled }}
+{{- if lt (int .Values.worker.replicaCount) 1 }}
+
+WARNING: worker.enabled is set but worker.replicaCount is {{ .Values.worker.replicaCount }}. The
+         API pods have been switched to accept-only, so with no worker replicas running, nothing
+         processes CSV jobs at all - they will queue indefinitely with no error.
+{{- else }}
+
+NOTE: CSV pseudonymization jobs run in the separate "{{ include "vfps.fullname" . }}-worker"
+      Deployment; the API pods accept and display jobs but no longer process them. This only does
+      anything if CSV jobs are enabled in the first place (S3__IsEnabled=true via extraEnv) - the
+      chart cannot check that for you. Watch the Hangfire dashboard's Servers page to confirm the
+      workers have registered.
+{{- end }}
+{{- end }}

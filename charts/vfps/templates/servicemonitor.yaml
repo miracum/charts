@@ -27,5 +27,14 @@ spec:
   selector:
     matchLabels:
       {{- include "vfps.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: api
+    # matchExpressions rather than a component label, so the worker Deployment's metrics Service is
+    # scraped too - otherwise enabling workers would silently lose their metrics entirely.
+    matchExpressions:
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - api
+          {{- if .Values.worker.enabled }}
+          - worker
+          {{- end }}
 {{- end }}

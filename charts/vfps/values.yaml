@@ -332,6 +332,59 @@ database:
   # both this and the server's `max_connections` together (or put PgBouncer in front).
   additionalConnectionStringParameters: "Timeout=60;Max Auto Prepare=5;Maximum Pool Size=50;"
 
+worker:
+  # -- run CSV pseudonymization jobs in a dedicated Deployment instead of in the API pods.
+  # Only meaningful when CSV jobs are enabled at all (`S3__IsEnabled=true`, set via `extraEnv`),
+  # which this chart cannot verify for you.
+  #
+  # Worth turning on once job load starts competing with API latency, or when you want jobs to
+  # drain slowly on shutdown while API pods roll quickly - a single Deployment can only have one
+  # shutdown window and one resource budget. When enabled, the API pods are automatically switched
+  # to accept-only (`CsvProcessing__ProcessJobs=false`); enqueueing and the Hangfire dashboard keep
+  # working there, since neither needs a local job server.
+  enabled: false
+  # -- number of worker replicas. Hangfire coordinates through the database, so replicas pick up
+  # jobs independently with no further configuration.
+  replicaCount: 1
+  # -- how long Kubernetes waits after `SIGTERM` before `SIGKILL`. Deliberately much longer than
+  # the API pods': a CSV job that is cut short has to be re-dispatched and reprocessed, so it is
+  # worth waiting for one to finish. Keep it above `CsvProcessing__JobServerShutdownTimeout`.
+  terminationGracePeriodSeconds: 600
+  # -- update strategy for the worker Deployment. `maxUnavailable: 0` avoids taking job capacity
+  # down to nothing mid-rollout.
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  podDisruptionBudget:
+    # -- create a PodDisruptionBudget for the workers
+    enabled: false
+    # -- Minimum available worker instances; takes precedence over `maxUnavailable` when set
+    minAvailable: ""
+    # -- Maximum unavailable worker instances
+    maxUnavailable: 1
+  # -- annotations to set on the worker pods
+  podAnnotations: {}
+  # -- extra environment variables for the worker container, appended after the shared `extraEnv`.
+  # The workers need the same S3 and database configuration as the API pods, so put anything shared
+  # in the top-level `extraEnv`/`extraEnvDict`/`extraEnvFrom` rather than here.
+  extraEnv: []
+  # -- worker node selector
+  nodeSelector: {}
+  # -- worker tolerations
+  tolerations: []
+  # -- worker affinity
+  affinity: {}
+  # -- worker pod topology spread configuration
+  topologySpreadConstraints: []
+  # -- priorityClassName for the worker pods
+  priorityClassName: ""
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if worker.resources is set.
+  resourcesPreset: "medium"
+  # -- configure the worker container's resource requests and limits
+  resources: {}
+
 # -- extra environment variables to set on the vfps container
 extraEnv: []
   # - name: "Pseudonymization__Caching__Namespaces__IsEnabled"
