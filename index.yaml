@@ -31735,6 +31735,57 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: fixed
+          description: "The database password Secret is now actually created - with an external database and no existingSecret, every pod referenced a Secret the chart never rendered and failed with CreateContainerConfigError, making database.password unusable"
+        - kind: added
+          description: "First-class s3.* configuration for CSV pseudonymization jobs, with credentials held in a Secret (chart-created or existing) instead of plaintext extraEnv"
+        - kind: added
+          description: "worker.enabled runs CSV pseudonymization jobs in a dedicated Deployment, switching the API pods to accept-only so the two can have different shutdown windows and resource budgets"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      artifacthub.io/screenshots: |
+        - title: Screenshot of the OpenAPI/Swagger UI for the REST API
+          url: https://raw.githubusercontent.com/miracum/vfps/master/docs/img/openapi.png
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2026-09-09T09:03:32.043363783Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.19.7
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying VFPS, a very fast and resource-efficient
+      pseudonym service.
+    digest: eaa018048394fc3d9b5be39b9e7280309f880e57dd6ff0677dd7208068493072
+    home: https://github.com/miracum/vfps
+    keywords:
+    - grpc
+    - pseudonymization
+    - research
+    - data protection
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: vfps
+    sources:
+    - https://github.com/miracum/vfps
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/vfps-3.5.0/vfps-3.5.0.tgz
+    version: 3.5.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: fixed
           description: "topologySpreadConstraints is now actually rendered - the template read the value from the wrong scope, so it silently did nothing"
         - kind: fixed
           description: "The appsettings volume is no longer mounted when the appsettings value is empty, where it referenced a ConfigMap that is not created"
@@ -37723,4 +37774,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-09-08T22:58:26.089230431Z"
+generated: "2026-09-09T09:03:32.045447813Z"
