@@ -332,6 +332,102 @@ database:
   # both this and the server's `max_connections` together (or put PgBouncer in front).
   additionalConnectionStringParameters: "Timeout=60;Max Auto Prepare=5;Maximum Pool Size=50;"
 
+s3:
+  # -- enable CSV pseudonymization jobs, which store their input and output files in
+  # S3-compatible object storage. Also requires a database (Hangfire reuses the same one for its
+  # job storage). When this is off, the CSV jobs feature is disabled entirely and the admin UI
+  # hides it.
+  enabled: false
+  # -- S3-compatible endpoint URL, e.g. a MinIO instance or a real AWS/S3-compatible endpoint
+  serviceUrl: ""
+  # -- bucket CSV job input/output files are stored in. Use a bucket dedicated to vfps: the
+  # application replaces the bucket's entire lifecycle and CORS configuration on startup.
+  bucket: ""
+  # -- region passed to the S3 client. Not cosmetic even against a non-AWS endpoint - it forms
+  # part of the SigV4 credential scope embedded in every signed request and presigned URL.
+  region: "eu-central-1"
+  # -- path-style addressing (`https://host/bucket/key`) rather than virtual-hosted-style.
+  # Required for MinIO and most non-AWS S3-compatible stores.
+  forcePathStyle: true
+  # -- how long presigned upload/download URLs remain valid
+  presignedUrlExpiry: "0.00:15:00"
+  # -- days before a lifecycle rule expires a job's input/output objects. Job records themselves
+  # are never deleted, so without this the original, unpseudonymized input would live in the
+  # bucket forever. Set to `0` to leave the bucket's lifecycle configuration untouched.
+  objectRetentionDays: 30
+  # -- origins allowed to PUT/GET objects directly against the bucket via presigned URLs, applied
+  # as a bucket CORS rule on startup. The browser talks to the bucket on a different origin than
+  # vfps itself, so without the admin UI's own origin here (e.g. `https://vfps.example.org`, the
+  # host from `ingress.hosts`) the browser blocks uploads with a CORS error.
+  allowedOrigins: []
+  # -- access key for the bucket. Ignored when `existingSecret` is set. Stored in a chart-created
+  # Secret rather than inline in the pod spec, but still passes through the Helm release - prefer
+  # `existingSecret` in production.
+  accessKey: ""
+  # -- secret key for the bucket. Ignored when `existingSecret` is set.
+  secretKey: ""
+  existingSecret:
+    # -- name of an existing secret holding the S3 credentials. Takes precedence over `accessKey`
+    # and `secretKey`.
+    name: ""
+    # -- key within the secret holding the access key id
+    accessKeyIdKey: "AWS_ACCESS_KEY_ID"
+    # -- key within the secret holding the secret access key
+    secretAccessKeyKey: "AWS_SECRET_ACCESS_KEY"
+
+worker:
+  # -- run CSV pseudonymization jobs in a dedicated Deployment instead of in the API pods.
+  # Only meaningful when CSV jobs are enabled at all (`S3__IsEnabled=true`, set via `extraEnv`),
+  # which this chart cannot verify for you.
+  #
+  # Worth turning on once job load starts competing with API latency, or when you want jobs to
+  # drain slowly on shutdown while API pods roll quickly - a single Deployment can only have one
+  # shutdown window and one resource budget. When enabled, the API pods are automatically switched
+  # to accept-only (`CsvProcessing__ProcessJobs=false`); enqueueing and the Hangfire dashboard keep
+  # working there, since neither needs a local job server.
+  enabled: false
+  # -- number of worker replicas. Hangfire coordinates through the database, so replicas pick up
+  # jobs independently with no further configuration.
+  replicaCount: 1
+  # -- how long Kubernetes waits after `SIGTERM` before `SIGKILL`. Deliberately much longer than
+  # the API pods': a CSV job that is cut short has to be re-dispatched and reprocessed, so it is
+  # worth waiting for one to finish. Keep it above `CsvProcessing__JobServerShutdownTimeout`.
+  terminationGracePeriodSeconds: 600
+  # -- update strategy for the worker Deployment. `maxUnavailable: 0` avoids taking job capacity
+  # down to nothing mid-rollout.
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  podDisruptionBudget:
+    # -- create a PodDisruptionBudget for the workers
+    enabled: false
+    # -- Minimum available worker instances; takes precedence over `maxUnavailable` when set
+    minAvailable: ""
+    # -- Maximum unavailable worker instances
+    maxUnavailable: 1
+  # -- annotations to set on the worker pods
+  podAnnotations: {}
+  # -- extra environment variables for the worker container, appended after the shared `extraEnv`.
+  # The workers need the same S3 and database configuration as the API pods, so put anything shared
+  # in the top-level `extraEnv`/`extraEnvDict`/`extraEnvFrom` rather than here.
+  extraEnv: []
+  # -- worker node selector
+  nodeSelector: {}
+  # -- worker tolerations
+  tolerations: []
+  # -- worker affinity
+  affinity: {}
+  # -- worker pod topology spread configuration
+  topologySpreadConstraints: []
+  # -- priorityClassName for the worker pods
+  priorityClassName: ""
+  # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if worker.resources is set.
+  resourcesPreset: "medium"
+  # -- configure the worker container's resource requests and limits
+  resources: {}
+
 # -- extra environment variables to set on the vfps container
 extraEnv: []
   # - name: "Pseudonymization__Caching__Namespaces__IsEnabled"

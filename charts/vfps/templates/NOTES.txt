@@ -51,3 +51,34 @@ WARNING: `gracefulShutdown.preStopSleepSeconds` is set but this cluster runs Kub
          no shell, so an `exec`-based hook is not an alternative - upgrade the cluster, or accept
          the dropped requests.
 {{- end }}
+
+{{- if .Values.worker.enabled }}
+{{- if lt (int .Values.worker.replicaCount) 1 }}
+
+WARNING: worker.enabled is set but worker.replicaCount is {{ .Values.worker.replicaCount }}. The
+         API pods have been switched to accept-only, so with no worker replicas running, nothing
+         processes CSV jobs at all - they will queue indefinitely with no error.
+{{- else }}
+
+NOTE: CSV pseudonymization jobs run in the separate "{{ include "vfps.fullname" . }}-worker"
+      Deployment; the API pods accept and display jobs but no longer process them. Watch the
+      Hangfire dashboard's Servers page to confirm the workers have registered.
+{{- end }}
+{{- end }}
+
+{{- if and .Values.worker.enabled (not .Values.s3.enabled) }}
+
+WARNING: worker.enabled is set but s3.enabled is not, so the CSV jobs feature is off and the
+         workers have nothing to do. If you are still configuring S3 through extraEnv, this is
+         expected - otherwise set s3.enabled and its serviceUrl/bucket/credentials.
+{{- end }}
+
+{{- if and .Values.s3.enabled .Values.ingress.enabled (not .Values.s3.allowedOrigins) }}
+
+NOTE: s3.allowedOrigins is empty. The admin UI uploads CSV files straight to object storage from
+      the browser, on a different origin than vfps itself, so the browser will block those uploads
+      with a CORS error until the UI's own origin is listed. For this release that is:
+{{- range $host := .Values.ingress.hosts }}
+        http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}
+{{- end }}
+{{- end }}
