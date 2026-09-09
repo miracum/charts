@@ -47,6 +47,32 @@ nobody@debug:/$ ghz --duration=1m \
 ```
 
 
+## CSV pseudonymization jobs
+
+Off by default. Enabling them needs object storage for the input/output files, and a database
+(Hangfire reuses the same one for its job storage):
+
+```yaml
+s3:
+  enabled: true
+  serviceUrl: https://minio.example.org
+  bucket: vfps-csv-jobs
+  existingSecret: vfps-s3
+  # the admin UI uploads straight to the bucket from the browser, so its own origin has to be
+  # allowed or the browser blocks the upload with a CORS error
+  allowedOrigins:
+    - https://vfps.example.org
+```
+
+Use a bucket dedicated to vfps: on startup the application replaces that bucket's entire lifecycle
+and CORS configuration. `s3.objectRetentionDays` (30 by default) is what eventually deletes the
+uploaded files - job records are kept, so without it the original, unpseudonymized input would stay
+in the bucket indefinitely.
+
+Credentials can also be given inline as `s3.accessKey`/`s3.secretKey`, which the chart puts into a
+Secret rather than the pod spec - but they still pass through the Helm release, so
+`s3.existingSecret` is the better choice in production.
+
 ## High availability
 
 vfps keeps no durable state of its own outside PostgreSQL, so replicas are interchangeable. A

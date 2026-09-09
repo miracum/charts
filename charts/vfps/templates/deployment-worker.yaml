@@ -138,6 +138,7 @@ spec:
             - name: ShutdownTimeout
               value: {{ . | quote }}
             {{- end }}
+            {{- include "vfps.s3.env" . | nindent 12 }}
             # This is what makes these pods the workers. Placed before the user-supplied variables
             # so it can still be overridden deliberately, since Kubernetes lets the last occurrence
             # of a duplicated name win.

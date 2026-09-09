@@ -190,3 +190,74 @@ get the name of the migrations Job resource
 {{- define "vfps.migrationsJob.resourceName" -}}
 {{ include "vfps.fullname" . }}-migrations-{{ include "vfps.migrationsJob.versionIdentifier" . }}
 {{- end -}}
+
+{{/*
+Name of the secret holding the S3 credentials
+*/}}
+{{- define "vfps.s3.secret-name" -}}
+{{- if .Values.s3.existingSecret -}}
+{{ .Values.s3.existingSecret }}
+{{- else -}}
+{{ include "vfps.fullname" . }}-s3-secret
+{{- end -}}
+{{- end -}}
+
+{{/*
+Keys within the S3 credentials secret. The configurable names apply only to an existing secret -
+the chart-created one always uses accessKey/secretKey, so those two settings can't accidentally
+point at keys that were never written.
+*/}}
+{{- define "vfps.s3.access-key-key" -}}
+{{- ternary .Values.s3.existingSecretAccessKeyKey "accessKey" (not (empty .Values.s3.existingSecret)) -}}
+{{- end -}}
+
+{{- define "vfps.s3.secret-key-key" -}}
+{{- ternary .Values.s3.existingSecretSecretKeyKey "secretKey" (not (empty .Values.s3.existingSecret)) -}}
+{{- end -}}
+
+{{/*
+S3 configuration as environment variables, shared by the API and worker Deployments (the
+migrations job never touches object storage). Emits nothing at all when s3.enabled is false, so a
+deployment still configuring S3 through extraEnv keeps working unchanged.
+*/}}
+{{- define "vfps.s3.env" -}}
+{{- if .Values.s3.enabled -}}
+{{- if not .Values.s3.bucket }}
+{{- fail "s3.enabled requires s3.bucket to be set" }}
+{{- end }}
+{{- if not .Values.s3.serviceUrl }}
+{{- fail "s3.enabled requires s3.serviceUrl to be set (the S3-compatible endpoint URL)" }}
+{{- end }}
+{{- if not (or .Values.s3.existingSecret (and .Values.s3.accessKey .Values.s3.secretKey)) }}
+{{- fail "s3.enabled requires either s3.existingSecret, or both s3.accessKey and s3.secretKey" }}
+{{- end }}
+- name: S3__IsEnabled
+  value: "true"
+- name: S3__ServiceUrl
+  value: {{ .Values.s3.serviceUrl | quote }}
+- name: S3__Bucket
+  value: {{ .Values.s3.bucket | quote }}
+- name: S3__Region
+  value: {{ .Values.s3.region | quote }}
+- name: S3__ForcePathStyle
+  value: {{ .Values.s3.forcePathStyle | quote }}
+- name: S3__PresignedUrlExpiry
+  value: {{ .Values.s3.presignedUrlExpiry | quote }}
+- name: S3__ObjectRetentionDays
+  value: {{ .Values.s3.objectRetentionDays | quote }}
+{{- range $index, $origin := .Values.s3.allowedOrigins }}
+- name: S3__AllowedOrigins__{{ $index }}
+  value: {{ $origin | quote }}
+{{- end }}
+- name: S3__AccessKey
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "vfps.s3.secret-name" . }}
+      key: {{ include "vfps.s3.access-key-key" . }}
+- name: S3__SecretKey
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "vfps.s3.secret-name" . }}
+      key: {{ include "vfps.s3.secret-key-key" . }}
+{{- end -}}
+{{- end -}}

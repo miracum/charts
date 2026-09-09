@@ -145,6 +145,7 @@ spec:
             - name: ShutdownTimeout
               value: {{ . | quote }}
             {{- end }}
+            {{- include "vfps.s3.env" . | nindent 12 }}
             {{- if .Values.worker.enabled }}
             # Jobs are processed by the worker Deployment instead. Enqueueing them and the Hangfire
             # dashboard both keep working here - neither needs a local job server. Placed before
