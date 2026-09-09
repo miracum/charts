@@ -54,7 +54,8 @@ s3:
   enabled: true
   serviceUrl: https://minio.example.org
   bucket: vfps-csv-jobs
-  existingSecret: vfps-s3
+  existingSecret:
+    name: vfps-s3
   # the admin UI uploads straight to the bucket from the browser, so its own origin has to be
   # allowed or the browser blocks the upload with a CORS error
   allowedOrigins:
@@ -68,7 +69,7 @@ in the bucket indefinitely.
 
 Credentials can also be given inline as `s3.accessKey`/`s3.secretKey`, which the chart puts into a
 Secret rather than the pod spec - but they still pass through the Helm release, so
-`s3.existingSecret` is the better choice in production.
+`s3.existingSecret.name` is the better choice in production.
 
 ## High availability
 
@@ -210,9 +211,9 @@ A few things are worth knowing beyond turning those on:
 | s3.allowedOrigins | list | `[]` | origins allowed to PUT/GET objects directly against the bucket via presigned URLs, applied as a bucket CORS rule on startup. The browser talks to the bucket on a different origin than vfps itself, so without the admin UI's own origin here (e.g. `https://vfps.example.org`, the host from `ingress.hosts`) the browser blocks uploads with a CORS error. |
 | s3.bucket | string | `""` | bucket CSV job input/output files are stored in. Use a bucket dedicated to vfps: the application replaces the bucket's entire lifecycle and CORS configuration on startup. |
 | s3.enabled | bool | `false` | enable CSV pseudonymization jobs, which store their input and output files in S3-compatible object storage. Also requires a database (Hangfire reuses the same one for its job storage). When this is off, the CSV jobs feature is disabled entirely and the admin UI hides it. |
-| s3.existingSecret | string | `""` | name of an existing secret holding the S3 credentials. Takes precedence over `accessKey` and `secretKey`. |
-| s3.existingSecretAccessKeyKey | string | `"accessKey"` | key in `existingSecret` holding the access key |
-| s3.existingSecretSecretKeyKey | string | `"secretKey"` | key in `existingSecret` holding the secret key |
+| s3.existingSecret.accessKeyIdKey | string | `"AWS_ACCESS_KEY_ID"` | key within the secret holding the access key id |
+| s3.existingSecret.name | string | `""` | name of an existing secret holding the S3 credentials. Takes precedence over `accessKey` and `secretKey`. |
+| s3.existingSecret.secretAccessKeyKey | string | `"AWS_SECRET_ACCESS_KEY"` | key within the secret holding the secret access key |
 | s3.forcePathStyle | bool | `true` | path-style addressing (`https://host/bucket/key`) rather than virtual-hosted-style. Required for MinIO and most non-AWS S3-compatible stores. |
 | s3.objectRetentionDays | int | `30` | days before a lifecycle rule expires a job's input/output objects. Job records themselves are never deleted, so without this the original, unpseudonymized input would live in the bucket forever. Set to `0` to leave the bucket's lifecycle configuration untouched. |
 | s3.presignedUrlExpiry | string | `"0.00:15:00"` | how long presigned upload/download URLs remain valid |

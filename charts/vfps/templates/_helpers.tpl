@@ -195,24 +195,25 @@ get the name of the migrations Job resource
 Name of the secret holding the S3 credentials
 */}}
 {{- define "vfps.s3.secret-name" -}}
-{{- if .Values.s3.existingSecret -}}
-{{ .Values.s3.existingSecret }}
+{{- if .Values.s3.existingSecret.name -}}
+{{ .Values.s3.existingSecret.name }}
 {{- else -}}
 {{ include "vfps.fullname" . }}-s3-secret
 {{- end -}}
 {{- end -}}
 
 {{/*
-Keys within the S3 credentials secret. The configurable names apply only to an existing secret -
-the chart-created one always uses accessKey/secretKey, so those two settings can't accidentally
-point at keys that were never written.
+Keys within the S3 credentials secret. The configurable names apply only to an existing secret; the
+chart-created one always uses the defaults, so these settings can't accidentally point at keys that
+were never written. Both paths use the same names, so a secret shaped like the one this chart
+creates works as an existing secret with no further configuration.
 */}}
 {{- define "vfps.s3.access-key-key" -}}
-{{- ternary .Values.s3.existingSecretAccessKeyKey "accessKey" (not (empty .Values.s3.existingSecret)) -}}
+{{- ternary .Values.s3.existingSecret.accessKeyIdKey "AWS_ACCESS_KEY_ID" (not (empty .Values.s3.existingSecret.name)) -}}
 {{- end -}}
 
 {{- define "vfps.s3.secret-key-key" -}}
-{{- ternary .Values.s3.existingSecretSecretKeyKey "secretKey" (not (empty .Values.s3.existingSecret)) -}}
+{{- ternary .Values.s3.existingSecret.secretAccessKeyKey "AWS_SECRET_ACCESS_KEY" (not (empty .Values.s3.existingSecret.name)) -}}
 {{- end -}}
 
 {{/*
@@ -228,8 +229,8 @@ deployment still configuring S3 through extraEnv keeps working unchanged.
 {{- if not .Values.s3.serviceUrl }}
 {{- fail "s3.enabled requires s3.serviceUrl to be set (the S3-compatible endpoint URL)" }}
 {{- end }}
-{{- if not (or .Values.s3.existingSecret (and .Values.s3.accessKey .Values.s3.secretKey)) }}
-{{- fail "s3.enabled requires either s3.existingSecret, or both s3.accessKey and s3.secretKey" }}
+{{- if not (or .Values.s3.existingSecret.name (and .Values.s3.accessKey .Values.s3.secretKey)) }}
+{{- fail "s3.enabled requires either s3.existingSecret.name, or both s3.accessKey and s3.secretKey" }}
 {{- end }}
 - name: S3__IsEnabled
   value: "true"

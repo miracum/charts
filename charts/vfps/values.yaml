@@ -366,13 +366,14 @@ s3:
   accessKey: ""
   # -- secret key for the bucket. Ignored when `existingSecret` is set.
   secretKey: ""
-  # -- name of an existing secret holding the S3 credentials. Takes precedence over `accessKey`
-  # and `secretKey`.
-  existingSecret: ""
-  # -- key in `existingSecret` holding the access key
-  existingSecretAccessKeyKey: "accessKey"
-  # -- key in `existingSecret` holding the secret key
-  existingSecretSecretKeyKey: "secretKey"
+  existingSecret:
+    # -- name of an existing secret holding the S3 credentials. Takes precedence over `accessKey`
+    # and `secretKey`.
+    name: ""
+    # -- key within the secret holding the access key id
+    accessKeyIdKey: "AWS_ACCESS_KEY_ID"
+    # -- key within the secret holding the secret access key
+    secretAccessKeyKey: "AWS_SECRET_ACCESS_KEY"
 
 worker:
   # -- run CSV pseudonymization jobs in a dedicated Deployment instead of in the API pods.
