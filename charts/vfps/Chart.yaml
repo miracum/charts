@@ -23,7 +23,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 3.5.0
+version: 3.5.1
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -41,9 +41,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: fixed
-      description: "The database password Secret is now actually created - with an external database and no existingSecret, every pod referenced a Secret the chart never rendered and failed with CreateContainerConfigError, making database.password unusable"
-    - kind: added
-      description: "First-class s3.* configuration for CSV pseudonymization jobs, with credentials held in a Secret (chart-created or existing) instead of plaintext extraEnv"
-    - kind: added
-      description: "worker.enabled runs CSV pseudonymization jobs in a dedicated Deployment, switching the API pods to accept-only so the two can have different shutdown windows and resource budgets"
+    - kind: changed
+      description: "Updated ghcr.io/miracum/vfps to v1.12.0"
