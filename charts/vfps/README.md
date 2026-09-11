@@ -2,6 +2,10 @@
 
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
+> **:exclamation: This Helm Chart is deprecated!**
+
+Moved to <https://github.com/miracum/vfps/pkgs/container/vfps%2Fcharts%2Fvfps>
+
 A Helm chart for deploying VFPS, a very fast and resource-efficient pseudonym service.
 
 **Homepage:** <https://github.com/miracum/vfps>

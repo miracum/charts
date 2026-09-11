@@ -21,9 +21,9 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-deprecated: false
+deprecated: true
 kubeVersion: ">= 1.19.0"
-version: 3.5.3
+version: 4.0.0
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -41,5 +41,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Updated ghcr.io/miracum/vfps to v1.13.1"
+    - kind: deprecated
+      description: "Moved to https://github.com/miracum/vfps/pkgs/container/vfps%2Fcharts%2Fvfps"
