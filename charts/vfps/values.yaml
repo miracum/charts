@@ -36,7 +36,7 @@ gracefulShutdown:
 image:
   registry: ghcr.io
   repository: miracum/vfps
-  tag: v1.13.1@sha256:a33402141eab120d5e5f0c7b99e781af78150d1680d691f3aecf16e86daf0f0a
+  tag: v1.13.2@sha256:3f7453a44569d0d8d9d29bd56b75e9dfd79043b6494e1c2acd3c5bf408e7c0b2
   pullPolicy: IfNotPresent
 
 migrationsJob:
