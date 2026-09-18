@@ -270,6 +270,56 @@ externalVfps:
   # Use `dns:///example:8081` to enable dns-based round-robin client-side load-balancing.
   address: ""
 
+# configure reading FHIR resources directly from Kafka, in addition to the HTTP API.
+# See <https://github.com/miracum/fhir-pseudonymizer#reading-directly-from-kafka> and
+# [README.md](README.md#reading-from-kafka) for details.
+kafka:
+  # master switch for all Kafka integration: consuming from `kafka.topics` and publishing
+  # provenance bundles to `kafka.provenanceTopic`. Requires `kafka.bootstrapServers` to be set.
+  enabled: false
+  # comma-separated list of `host:port` Kafka brokers to bootstrap from, e.g. `kafka:9092`
+  bootstrapServers: ""
+  # list of input topics to consume FHIR resources/bundles from, e.g. `["fhir.patient", "fhir.observation"]`.
+  # Each entry is evaluated as a template. Left empty, nothing is consumed from Kafka and only
+  # provenance for resources pseudonymized via the REST API is published, if `kafka.provenanceTopic` is set.
+  topics: []
+  # regular expression matched against each input topic's name to derive the output topic the
+  # pseudonymized resource is written to. Together with `kafka.outputTopicReplacement`, the
+  # default prepends `pseudonymized.` to every input topic, turning `fhir.test` into
+  # `pseudonymized.fhir.test`.
+  outputTopicPattern: "^"
+  # the string every match of `kafka.outputTopicPattern` is replaced with
+  outputTopicReplacement: "pseudonymized."
+  # if set, a Bundle containing a FHIR Provenance resource documenting the pseudonymization is
+  # published to this topic for every successfully pseudonymized resource - including those
+  # pseudonymized via the REST API. Evaluated as a template.
+  provenanceTopic: ""
+  # the number of workers anonymizing messages concurrently. Left empty, this defaults to the
+  # number of CPU cores visible to the container.
+  workerCount: ""
+  # the maximum number of messages buffered per worker before the consumer pauses fetching
+  # new ones (backpressure). Left empty, this defaults to 100.
+  workerChannelCapacity: ""
+  # settings shared by the consumer and the producer, set as `Kafka__Client__<key>` environment
+  # variables. Any property of `Confluent.Kafka.ClientConfig` can be set here, e.g.
+  # `securityProtocol: SaslSsl`, `saslMechanism: ScramSha512`, or `saslUsername: fhir-pseudonymizer`.
+  # Set the brokers via `kafka.bootstrapServers` instead of here. Since these end up in the pod
+  # spec in plaintext, set credentials via `extraEnv` with a `secretKeyRef` instead.
+  client: {}
+  consumer:
+    # the Kafka consumer group id. Evaluated as a template. Note that it is also part of the name
+    # of the dead letter topic failed messages are sent to: `error.<input-topic>.<group-id>`.
+    groupId: '{{ include "fhir-pseudonymizer.fullname" . }}'
+    # consumer-only settings layered on top of `kafka.client`, set as `Kafka__Consumer__<key>`
+    # environment variables. Any property of `Confluent.Kafka.ConsumerConfig` can be set here,
+    # e.g. `sessionTimeoutMs: "45000"`.
+    config: {}
+  producer:
+    # producer-only settings layered on top of `kafka.client`, set as `Kafka__Producer__<key>`
+    # environment variables. Any property of `Confluent.Kafka.ProducerConfig` can be set here,
+    # e.g. `lingerMs: "100"`.
+    config: {}
+
 tests:
   automountServiceAccountToken: false
   # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).

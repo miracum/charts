@@ -117,3 +117,66 @@ anonymizationConfig: |
 
 The FHIR Pseudonymizer supports both gPAS and Vfps as a pseudonymization backend service. gPAS is set as the default.
 To switch to Vfps, set `pseudonymizationService=Vfps` and optionally set `vfps.enabled=true` to start an included version of the Vfps chart.
+
+## Reading from Kafka
+
+In addition to the HTTP API, the FHIR Pseudonymizer can consume FHIR resources/bundles directly from one or more Kafka topics,
+pseudonymize them, and produce the result to a per-topic output topic. Set `kafka.enabled=true`, point `kafka.bootstrapServers`
+at your brokers, and list the input topics as an array:
+
+```yaml
+kafka:
+  enabled: true
+  bootstrapServers: "kafka:9092"
+  topics:
+    - fhir.patient
+    - fhir.observation
+```
+
+The output topic is derived from the input topic by a regular expression match-and-replace. The default prepends
+`pseudonymized.` to every input topic, so `fhir.patient` becomes `pseudonymized.fhir.patient`. To instead insert it after a
+common prefix, turning `fhir.patient` into `fhir.pseudonymized.patient`:
+
+```yaml
+kafka:
+  outputTopicPattern: '^fhir\.'
+  outputTopicReplacement: "fhir.pseudonymized."
+```
+
+Every entry of `kafka.topics`, as well as `kafka.provenanceTopic` and `kafka.consumer.groupId`, is evaluated as a template.
+The consumer group id defaults to the release's fullname; note that it is also part of the name of the dead letter topic that
+messages which could not be pseudonymized are sent to: `error.<input-topic>.<group-id>`.
+
+Settings not exposed as a dedicated value can be set through the `kafka.client`, `kafka.consumer.config`, and
+`kafka.producer.config` maps. Their keys are the property names of `Confluent.Kafka.ClientConfig`, `ConsumerConfig`, and
+`ProducerConfig` respectively, and they are passed to the container as `Kafka__Client__<key>`, `Kafka__Consumer__<key>`, and
+`Kafka__Producer__<key>` environment variables:
+
+```yaml
+kafka:
+  client:
+    securityProtocol: SaslSsl
+    saslMechanism: ScramSha512
+    saslUsername: fhir-pseudonymizer
+  consumer:
+    config:
+      sessionTimeoutMs: "45000"
+```
+
+Since these end up in the pod spec in plaintext, set credentials via `extraEnv` with a `secretKeyRef` instead:
+
+```yaml
+extraEnv:
+  - name: Kafka__Client__SaslPassword
+    valueFrom:
+      secretKeyRef:
+        name: fhir-pseudonymizer-kafka-user
+        key: password
+```
+
+If the brokers use TLS with a private CA, mount the CA certificate using `extraVolumes`/`extraVolumeMounts` and point
+`kafka.client.sslCaLocation` at it.
+
+Note that the application exposes no Kafka health check: a pod that cannot reach its brokers still reports itself as ready,
+and only logs connection errors. Use the `fhirpseudonymizer_kafka_messages_total` metric and the consumer group's lag to
+monitor whether messages are actually being processed.
