@@ -1,0 +1,25 @@
+# NOTE: there's no Kafka broker in the chart-testing cluster, so this only smoke-tests
+# that the chart renders and that the container starts up and stays healthy with the
+# Kafka integration enabled. The app registers no Kafka health check, so the pod becomes
+# ready even though the broker below is unresolvable; librdkafka just logs connection errors.
+pseudonymizationService: None
+
+kafka:
+  enabled: true
+  bootstrapServers: "kafka.fixtures.svc.cluster.local:9092"
+  topics:
+    - fhir.patient
+    - fhir.observation
+  outputTopicPattern: '^fhir\.'
+  outputTopicReplacement: "fhir.pseudonymized."
+  provenanceTopic: "fhir.provenance"
+  workerCount: 2
+  workerChannelCapacity: 50
+  client:
+    securityProtocol: Plaintext
+  consumer:
+    config:
+      sessionTimeoutMs: "45000"
+  producer:
+    config:
+      lingerMs: "100"

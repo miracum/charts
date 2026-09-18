@@ -112,3 +112,22 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Validate the Kafka configuration, turning misconfigurations that would otherwise only result in
+an idle - but healthy looking - pod into render-time errors.
+*/}}
+{{- define "fhir-pseudonymizer.kafka.validateValues" -}}
+{{- if .Values.kafka.enabled -}}
+{{- if not .Values.kafka.bootstrapServers -}}
+{{- fail "kafka.enabled is set, but kafka.bootstrapServers is empty. Set it to the Kafka bootstrap servers, e.g. 'kafka:9092'." -}}
+{{- end -}}
+{{- range $key, $_ := .Values.kafka.client -}}
+{{- if eq (lower $key) "bootstrapservers" -}}
+{{- fail "Set the Kafka bootstrap servers via kafka.bootstrapServers, not via kafka.client." -}}
+{{- end -}}
+{{- end -}}
+{{- else if .Values.kafka.topics -}}
+{{- fail "kafka.topics is set, but kafka.enabled is false, so no topics would be consumed." -}}
+{{- end -}}
+{{- end -}}
