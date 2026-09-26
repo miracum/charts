@@ -12,12 +12,12 @@ dependencies:
     condition: postgres.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.10.10
+    version: 0.10.15
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 12.0.36
+version: 12.0.37
 annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
@@ -25,4 +25,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/loinc-conversion to v1.16.38"
+      description: "Updated fhir-pseudonymizer to 0.10.15"
