@@ -1,9 +1,9 @@
 dependencies:
 - name: postgres
   repository: oci://registry-1.docker.io/cloudpirates
-  version: 0.19.7
+  version: 0.20.6
 - name: common
   repository: oci://ghcr.io/miracum/charts
   version: 0.1.1
-digest: sha256:291bf3a67be038222f259d435ebc41f30771d27fbd7d5f7f82fb311d3d10ec9a
-generated: "2026-07-13T20:31:31.868608638Z"
+digest: sha256:e0cd17c2e5569d7da6d6d1e9a960b48152ce631f0a0f99d31e9ba9be4c00f6c1
+generated: "2026-10-02T18:02:02.516944879Z"
