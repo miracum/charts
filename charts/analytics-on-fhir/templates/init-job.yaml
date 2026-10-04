@@ -13,15 +13,13 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-        - name: download-clis
+        - name: download-synthea
           image: docker.io/curlimages/curl:8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
           command: ["/bin/sh", "-c"]
           workingDir: /downloads
           args:
             - |
               curl -fLsSO https://github.com/synthetichealth/synthea/releases/download/master-branch-latest/synthea-with-dependencies.jar
-              curl -fLsSO https://dl.min.io/client/mc/release/linux-amd64/mc
-              chmod +x mc
               ls -lsa /downloads
           volumeMounts:
             - name: downloads
@@ -64,37 +62,17 @@ spec:
               cpu: 50m
               ephemeral-storage: 50Mi
               memory: 32Mi
-        - name: generate-and-upload-resources
+        - name: generate-resources
           # might as well use this image since it has java installed
           image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.1@sha256:5dee865c98853782bb61784a041ecd349210b406bd0cd720c73f8c2a29571cad
           command: ["/bin/sh", "-c"]
           workingDir: /downloads
-          envFrom:
-            - configMapRef:
-                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
           env:
             - name: SYNTHEA_SEED
               value: "20250916"
-            - name: MINIO_UPDATE
-              value: "off"
-            - name: MINIO_CALLHOME_ENABLE
-              value: "off"
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
-                  key: root-user
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
-                  key: root-password
           args:
             - |
               java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 100 -c /tmp/config/synthea.properties
-              /downloads/mc alias set minio "${AWS_ENDPOINT_URL}" "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}"
-              /downloads/mc mb --ignore-existing minio/import
-              /downloads/mc cp --recursive /downloads/synthea/ minio/import/
           volumeMounts:
             - name: downloads
               mountPath: /downloads
@@ -121,6 +99,50 @@ spec:
               cpu: 50m
               ephemeral-storage: 2Gi
               memory: 1500Mi
+        - name: upload-resources
+          image: docker.io/amazon/aws-cli:2.37.9@sha256:92de75724b6a746951f0e8b915d86bbccd7cb55aff96cd0cb4f7017272160780
+          command: ["/bin/sh", "-c"]
+          envFrom:
+            - configMapRef:
+                name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
+          env:
+            - name: HOME
+              value: /tmp
+            - name: AWS_REGION
+              value: us-east-1
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ printf "%s-%s" .Release.Name "minio" }}'
+                  key: root-password
+          args:
+            - |
+              aws s3api head-bucket --bucket import 2>/dev/null || aws s3api create-bucket --bucket import
+              aws s3 cp --recursive --no-progress /downloads/synthea/ s3://import/
+          volumeMounts:
+            - name: downloads
+              mountPath: /downloads
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 50Mi
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 50Mi
+              memory: 256Mi
         - name: bulk-import
           image: docker.io/curlimages/curl:8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
           envFrom:
