@@ -1,56 +1,18 @@
 {
-  "resourceType": "Parameters",
-  "parameter": [
+  "inputFormat": "application/fhir+ndjson",
+  "input": [
     {
-      "name": "source",
-      "part": [
-        {
-          "name": "resourceType",
-          "valueCode": "Patient"
-        },
-        {
-          "name": "url",
-          "valueUrl": "s3a://import/fhir/Patient.ndjson"
-        },
-        {
-          "name": "mode",
-          "valueCode": "overwrite"
-        }
-      ]
+      "type": "Patient",
+      "url": "s3a://import/fhir/Patient.ndjson"
     },
     {
-      "name": "source",
-      "part": [
-        {
-          "name": "resourceType",
-          "valueCode": "Condition"
-        },
-        {
-          "name": "url",
-          "valueUrl": "s3a://import/fhir/Condition.ndjson"
-        },
-        {
-          "name": "mode",
-          "valueCode": "overwrite"
-        }
-      ]
+      "type": "Condition",
+      "url": "s3a://import/fhir/Condition.ndjson"
     },
     {
-      "name": "source",
-      "part": [
-        {
-          "name": "resourceType",
-          "valueCode": "Observation"
-        },
-        {
-          "name": "url",
-          "valueUrl": "s3a://import/fhir/Observation.ndjson"
-        },
-        {
-          "name": "mode",
-          "valueCode": "overwrite"
-        }
-      ]
+      "type": "Observation",
+      "url": "s3a://import/fhir/Observation.ndjson"
     }
-  ]
+  ],
+  "saveMode": "overwrite"
 }
