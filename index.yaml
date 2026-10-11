@@ -23921,6 +23921,38 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/miracum/util-images/hive-metastore to v1.4.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-11T18:00:51.515172646Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.19.7
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Hive Metastore
+    digest: 8a27dcf251a7bbbf89b8d2396bbbbce0941d0f5d34aa1330cf3aa701dd574290
+    home: https://hive.apache.org/
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.4.48/hive-metastore-0.4.48.tgz
+    version: 0.4.48
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:297dda192bda2157ddf40abb47a45a1090caff1864db9cfb9ce4b901ba318a3c"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -29709,6 +29741,56 @@ entries:
     - https://github.com/miracum/charts/releases/download/opal-0.1.0/opal-0.1.0.tgz
     version: 0.1.0
   policies:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: >-
+            verify-images-policy now also accepts ".github/workflows/on-release.yaml"
+            as the build workflow entrypoint in the SLSA provenance, since
+            miracum/util-images images (e.g. hive-metastore v1.4.0) are built from
+            that workflow instead of ci.yaml.
+        - kind: changed
+          description: >-
+            re-enabled the curlimages/curl verification policy by default now
+            that Kyverno 1.19.0 fixes the admission controller crash tracked at
+            https://github.com/kyverno/kyverno/issues/16435.
+        - kind: security
+          description: >-
+            all three image verification policies now also verify images used in
+            initContainers and ephemeralContainers - previously only regular
+            containers were checked, so an unsigned/unattested image confined to
+            an init or ephemeral container silently skipped verification
+            entirely.
+        - kind: security
+          description: >-
+            verify-images-policy's matchImageReferences no longer requires a
+            ":vX.Y.Z"-style tag: a digest-only image reference (no tag) was
+            previously excluded from signature/provenance verification even
+            though the exact same image referenced by tag+digest was verified.
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2026-10-11T18:00:51.727129862Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: 9289420200824d4feb7bf2dd9f7d7273a204a10fba0c4efa40334370e71013ca
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.10.1/policies-0.10.1.tgz
+    version: 0.10.1
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -39341,4 +39423,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-04T16:46:34.651567254Z"
+generated: "2026-10-11T18:00:51.730140314Z"
