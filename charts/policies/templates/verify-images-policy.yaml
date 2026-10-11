@@ -107,10 +107,11 @@ spec:
       message: >-
         SLSA provenance verification failed: unexpected builder id
     # The workflow entrypoint recorded in the provenance must match the
-    # convention used by all miracum repositories.
+    # convention used by miracum repositories: ci.yaml, or on-release.yaml
+    # for repos like miracum/util-images that build images from release tags.
     - expression: >-
         variables.allImages.all(img,
-          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.path == ".github/workflows/ci.yaml"
+          extractPayload(img, attestations.provenance).predicate.buildDefinition.externalParameters.workflow.path in [".github/workflows/ci.yaml", ".github/workflows/on-release.yaml"]
         )
       message: >-
         SLSA provenance verification failed: unexpected build workflow entrypoint
