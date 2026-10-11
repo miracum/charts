@@ -6,6 +6,54 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated pathling-server to 0.10.14, which replaces the no longer available docker.io/minio/minio image with docker.io/cloudpirates/image-minio"
+        - kind: changed
+          description: "Updated hive-metastore to 0.4.49 (Hive 4.1) and fhir-to-lakehouse to v1.13.16, both of which publish SLSA provenance attestations"
+        - kind: fixed
+          description: "Pathling 3.x compatibility: use s3a:// for the warehouse URL and the asynchronous JSON manifest format for the $import request"
+        - kind: fixed
+          description: "Mount the init job's spark-defaults.conf as a file inside SPARK_CONF_DIR instead of replacing the directory, and configure Spark's Hive client for the Hive 4.1 metastore"
+        - kind: fixed
+          description: "Use the AWS CLI instead of the no longer available MinIO client download to upload the generated resources"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-11T19:41:37.219603284Z"
+    dependencies:
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.14
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.49
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.42.2
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: c49bd8511f40ea0ff89983d8c2ca9a9e84e8cc94a73b646fb7e98fdd0b4e8845
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.28/analytics-on-fhir-0.1.28.tgz
+    version: 0.1.28
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated trino to 1.42.2"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -39705,4 +39753,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-11T19:12:57.745005356Z"
+generated: "2026-10-11T19:41:37.221256008Z"
