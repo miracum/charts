@@ -64,7 +64,7 @@ spec:
               memory: 32Mi
         - name: generate-resources
           # might as well use this image since it has java installed
-          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.1@sha256:5dee865c98853782bb61784a041ecd349210b406bd0cd720c73f8c2a29571cad
+          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.16@sha256:6dc63a645b48523eb0696a2aff94072a70274b256b8698e5682765941f287c17
           command: ["/bin/sh", "-c"]
           workingDir: /downloads
           env:
@@ -188,7 +188,7 @@ spec:
               memory: 32Mi
       containers:
         - name: lakehousekeeper
-          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.1@sha256:5dee865c98853782bb61784a041ecd349210b406bd0cd720c73f8c2a29571cad
+          image: ghcr.io/bzkf/fhir-to-lakehouse:v1.13.16@sha256:6dc63a645b48523eb0696a2aff94072a70274b256b8698e5682765941f287c17
           envFrom:
             - configMapRef:
                 name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
