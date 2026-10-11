@@ -1,6 +1,6 @@
 pathling-server:
   warehouse:
-    url: s3://fhir
+    url: s3a://fhir
   minio:
     defaultBucket: fhir
     # @ignored
