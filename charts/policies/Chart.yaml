@@ -11,7 +11,7 @@ maintainers:
   - name: miracum
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.10.0
+version: 0.10.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "true"
@@ -22,6 +22,12 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
+    - kind: fixed
+      description: >-
+        verify-images-policy now also accepts ".github/workflows/on-release.yaml"
+        as the build workflow entrypoint in the SLSA provenance, since
+        miracum/util-images images (e.g. hive-metastore v1.4.0) are built from
+        that workflow instead of ci.yaml.
     - kind: changed
       description: >-
         re-enabled the curlimages/curl verification policy by default now
