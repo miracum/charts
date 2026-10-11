@@ -233,7 +233,7 @@ spec:
               python3 /app/src/lakehousekeeper.py vacuum   --bucket-name=fhir --database-name-prefix=default/ --retention-hours=0 --dry-run=false --enforce-retention-duration=false
           volumeMounts:
             - name: init-job-config
-              mountPath: /app/spark/conf
+              mountPath: /app/spark/conf/spark-defaults.conf
               subPath: spark-defaults.conf
             - name: tmp
               mountPath: /tmp
