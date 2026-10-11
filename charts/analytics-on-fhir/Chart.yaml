@@ -12,7 +12,7 @@ maintainers:
   - name: miracum
 dependencies:
   - name: pathling-server
-    version: 0.9.10
+    version: 0.10.14
     repository: oci://ghcr.io/chgl/charts
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
@@ -38,6 +38,6 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated pathling-server to 0.9.10, which replaces the no longer available docker.io/minio/minio image with docker.io/cloudpirates/image-minio"
+      description: "Updated pathling-server to 0.10.14, which replaces the no longer available docker.io/minio/minio image with docker.io/cloudpirates/image-minio"
     - kind: fixed
       description: "Use the AWS CLI instead of the no longer available MinIO client download to upload the generated resources"
