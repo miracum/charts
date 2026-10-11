@@ -19,14 +19,14 @@ dependencies:
     version: 0.4.49
   - name: trino
     repository: https://trinodb.github.io/charts
-    version: 1.42.2
+    version: 1.44.0
     condition: trino.enabled
     # - name: superset
     #   repository: https://apache.github.io/superset
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.1.28
+version: 0.1.29
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -38,12 +38,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated pathling-server to 0.10.14, which replaces the no longer available docker.io/minio/minio image with docker.io/cloudpirates/image-minio"
-    - kind: changed
-      description: "Updated hive-metastore to 0.4.49 (Hive 4.1) and fhir-to-lakehouse to v1.13.16, both of which publish SLSA provenance attestations"
-    - kind: fixed
-      description: "Pathling 3.x compatibility: use s3a:// for the warehouse URL and the asynchronous JSON manifest format for the $import request"
-    - kind: fixed
-      description: "Mount the init job's spark-defaults.conf as a file inside SPARK_CONF_DIR instead of replacing the directory, and configure Spark's Hive client for the Hive 4.1 metastore"
-    - kind: fixed
-      description: "Use the AWS CLI instead of the no longer available MinIO client download to upload the generated resources"
+      description: "Updated trino to 1.44.0"
