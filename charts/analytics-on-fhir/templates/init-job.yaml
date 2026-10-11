@@ -151,7 +151,27 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              curl --fail -X POST --header 'Content-Type: application/fhir+json' --data @/tmp/config/import-request.json --url ${PATHLING_SERVER_URL}'/fhir/$import'
+              # Pathling's $import operation is asynchronous-only: kick it off, then poll the status URL until it completes.
+              status_url=$(curl --fail --silent --show-error --dump-header - --output /dev/null \
+                -X POST \
+                --header 'Content-Type: application/json' \
+                --header 'Prefer: respond-async' \
+                --data @/tmp/config/import-request.json \
+                --url ${PATHLING_SERVER_URL}'/fhir/$import' |
+                tr -d '\r' | awk 'tolower($1) == "content-location:" { print $2 }')
+              echo "Import status URL: ${status_url}"
+              [ -n "${status_url}" ] || exit 1
+              while true; do
+                http_code=$(curl --silent --output /dev/null --write-out '%{http_code}' --url "${status_url}")
+                echo "Import status: HTTP ${http_code}"
+                if [ "${http_code}" = "200" ]; then
+                  break
+                elif [ "${http_code}" != "202" ]; then
+                  curl --silent --url "${status_url}"
+                  exit 1
+                fi
+                sleep 5
+              done
           volumeMounts:
             - name: init-job-config
               mountPath: /tmp/config
