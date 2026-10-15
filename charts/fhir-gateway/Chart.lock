@@ -4,9 +4,9 @@ dependencies:
   version: 0.21.2
 - name: fhir-pseudonymizer
   repository: oci://ghcr.io/miracum/charts
-  version: 0.10.24
+  version: 0.10.27
 - name: common
   repository: oci://ghcr.io/miracum/charts
   version: 0.1.1
-digest: sha256:91fa787a1816343d9f53c12f8f595e562d574cdb5764b2d08bf2eea6acc8806c
-generated: "2026-10-13T20:18:36.83417741Z"
+digest: sha256:cab663f8bd5edfd4db6c7d2a812ca0a07bc60e84f3edf53722765141a0c6bf90
+generated: "2026-10-15T22:55:56.881324026Z"
