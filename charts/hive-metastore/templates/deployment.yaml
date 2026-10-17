@@ -57,29 +57,6 @@ spec:
                 sleep 15;
               done;
       containers:
-        - name: hive-log-collector
-          image: "{{ .Values.hiveLogCollector.image.registry }}/{{ .Values.hiveLogCollector.image.repository }}:{{ .Values.hiveLogCollector.image.tag }}"
-          imagePullPolicy: {{ .Values.hiveLogCollector.image.pullPolicy }}
-          args: [/bin/sh, -c, "tail -n+1 -F /tmp/hive/hive.log"]
-          {{- with $.Values.restrictedContainerSecurityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- if .Values.hiveLogCollector.resources }}
-          resources: {{- toYaml .Values.hiveLogCollector.resources | nindent 12 }}
-          {{- else if ne .Values.hiveLogCollector.resourcesPreset "none" }}
-          resources: {{- include "common.resources.preset" (dict "type" .Values.hiveLogCollector.resourcesPreset) | nindent 12 }}
-          {{- end }}
-          livenessProbe:
-            exec:
-              command: ["true"]
-          readinessProbe:
-            exec:
-              command: ["true"]
-          volumeMounts:
-            - name: tmp-hive
-              mountPath: /tmp/hive
-              readOnly: true
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
           securityContext:
@@ -131,9 +108,6 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: tmp-hive
-              mountPath: /tmp/hive
-              readOnly: false
             - name: config
               mountPath: /opt/hive/scripts/envsubst-hive-site-config.sh
               subPath: envsubst-hive-site-config.sh
@@ -150,9 +124,6 @@ spec:
           configMap:
             name: "{{ include "hive-metastore.fullname" . }}-config"
             defaultMode: 0777
-        - name: tmp-hive
-          emptyDir:
-            sizeLimit: 1Gi
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}

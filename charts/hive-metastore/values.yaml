@@ -157,39 +157,6 @@ affinity: {}
 # -- extra environment variables to apply to the container
 extraEnv: []
 
-# -- a sidecar container to collect logs from the main container
-hiveLogCollector:
-  # @ignored
-  image:
-    registry: docker.io
-    repository: library/busybox
-    tag: 1.38.0-uclibc@sha256:b699b0c739b2d039afd8e2488a3ccfc0b9a86301d87633448d4a93c57bee8c76
-    pullPolicy: IfNotPresent
-  # -- container security context applied to init containers and the Helm test pods
-  # @ignored
-  securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    privileged: false
-    capabilities:
-      drop:
-        - ALL
-    runAsNonRoot: true
-    runAsUser: 65534
-    runAsGroup: 65534
-    seccompProfile:
-      type: RuntimeDefault
-  # -- more information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
-  resourcesPreset: "nano"
-  # -- configure the container resource requests and limits
-  resources: {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
 # -- a hive-site.xml template to use for the Hive Metastore config. It's processed by envsubst first.
 # Evaluated as a helm template, so you can use other values from this chart.
 hiveSiteXmlTemplate: |
