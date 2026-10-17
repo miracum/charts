@@ -100,7 +100,7 @@ spec:
               value: "http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1"
             - name: SERVICES_FHIRSERVER_ENABLED
               value: {{ .Values.sinks.fhirServer.enabled | quote }}
-            {{- if .Values.sinks.fhirServer.enabled -}}
+            {{- if .Values.sinks.fhirServer.enabled }}
             - name: SERVICES_FHIRSERVER_URL
               value: {{ .Values.sinks.fhirServer.url }}
             {{- end }}
