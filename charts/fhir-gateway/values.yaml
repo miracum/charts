@@ -112,6 +112,18 @@ affinity: {}
 extraEnv: []
 
 # @ignored
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /livez
+    port: http
+  failureThreshold: 30
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
 readinessProbe:
   enabled: true
   httpGet:
@@ -144,6 +156,14 @@ metrics:
     # namespace: monitoring
     # interval: 30s
     # scrapeTimeout: 10s
+
+podDisruptionBudget:
+  # -- create a PodDisruptionBudget for the FHIR Gateway. Only useful when running more than one replica.
+  enabled: false
+  # -- minimum number of pods that must remain available. Takes precedence over `maxUnavailable` if set.
+  minAvailable: ""
+  # -- maximum number of pods that can be unavailable
+  maxUnavailable: 1
 
 serviceAccount:
   # -- specifies whether a service account should be created.
@@ -261,6 +281,14 @@ loincConverter:
 
   # -- if necessary, the service can easily scale horizontally
   replicaCount: 1
+
+  podDisruptionBudget:
+    # -- create a PodDisruptionBudget for the LOINC converter. Only useful when running more than one replica.
+    enabled: false
+    # -- minimum number of pods that must remain available. Takes precedence over `maxUnavailable` if set.
+    minAvailable: ""
+    # -- maximum number of pods that can be unavailable
+    maxUnavailable: 1
 
   # -- credentials to use when pulling the image
   imagePullSecrets: []

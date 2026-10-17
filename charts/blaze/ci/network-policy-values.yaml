@@ -1,0 +1,22 @@
+networkPolicy:
+  enabled: true
+  allowExternal: false
+  metrics:
+    allowExternal: false
+  # the helm test pods are not labeled as clients, so allow them explicitly
+  extraIngress:
+    - ports:
+        - port: http
+        - port: http-metrics
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: test-connection
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/component: server

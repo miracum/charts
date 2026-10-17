@@ -17,9 +17,15 @@ spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- $managesSearchParametersConfigMap := and .Values.customSearchParameters.bundle (not .Values.customSearchParameters.existingConfigmap.name) }}
+      {{- if or $managesSearchParametersConfigMap .Values.podAnnotations }}
       annotations:
+        {{- if $managesSearchParametersConfigMap }}
+        checksum/custom-search-parameters: {{ include (print $.Template.BasePath "/searchparameters-cm.yaml") . | sha256sum | quote }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "blaze.selectorLabels" . | nindent 8 }}
@@ -38,6 +44,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           ports:
@@ -113,7 +120,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .topologySpreadConstraints }}
+      {{- with .Values.topologySpreadConstraints }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -155,5 +162,5 @@ spec:
         {{- if .Values.persistence.selector }}
         selector: {{- include "common.tplvalues.render" (dict "value" .Values.persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "blaze.storage.class" (dict "persistence" .Values.persistence "global" .Values.global) | nindent 8 }}
+        {{- include "common.storage.class" (dict "persistence" .Values.persistence "global" .Values.global) | nindent 8 }}
   {{- end }}

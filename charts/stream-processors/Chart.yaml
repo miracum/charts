@@ -8,19 +8,30 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 2.0.0
+kubeVersion: ">= 1.23.0-0"
+version: 2.0.1
+maintainers:
+  - name: miracum
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: added
+      description: "NOTES.txt"
     - kind: changed
-      description: "BREAKING CHANGE: use strimzi v1 apiVersion for KafkaUser"
+      description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+    - kind: added
+      description: "`default.container.resourcesPreset` (and per-processor `container.resourcesPreset`) to pick a resources preset when `container.resources` is not set. Defaults to `none`."
+    - kind: fixed
+      description: "no longer renders `resources: null` for processors without `container.resources`"

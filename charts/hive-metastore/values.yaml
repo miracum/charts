@@ -63,23 +63,6 @@ service:
   # This sets the ports more information can be found here: <https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports>
   port: 9083
 
-# This block is for setting up the ingress for more information can be found here: <https://kubernetes.io/docs/concepts/services-networking/ingress/>
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
 # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if .resources is set (.resources is recommended for production).
 # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
 resourcesPreset: "small"
@@ -126,6 +109,14 @@ startupProbe:
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
+
+podDisruptionBudget:
+  # -- create a PodDisruptionBudget for the Hive Metastore. Only useful when running more than one replica.
+  enabled: false
+  # -- minimum number of pods that must remain available. Takes precedence over `maxUnavailable` if set.
+  minAvailable: ""
+  # -- maximum number of pods that can be unavailable
+  maxUnavailable: 1
 
 # This section is for setting up autoscaling more information can be found here: <https://kubernetes.io/docs/concepts/workloads/autoscaling/>
 autoscaling:
@@ -244,15 +235,15 @@ tests:
   #   memory: 128Mi
 
 database:
-  # -- database hostname of an external database. Only used if `postgresql.enabled` is set to `false`.
+  # -- database hostname of an external database. Only used if `postgres.enabled` is set to `false`.
   host: "host.example.com"
   # -- port used to connect to the postgres DB
   port: 5432
-  # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+  # -- name of the database inside. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.database` is used
   database: "hive_metastore"
-  # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+  # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
   username: "postgres"
-  # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+  # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
   password: "postgres"
   existingSecret:
     # -- name of an existing secret containing the password to the DB.
@@ -283,6 +274,19 @@ postgres:
       memory: 192Mi
       cpu: 150m
       ephemeral-storage: 2Gi
+
+initContainers:
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `initContainers.resources` is set (`initContainers.resources` is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the init containers' resource requests and limits manually
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 # @ignored
 waitForDatabaseInitContainer:

@@ -21,8 +21,8 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-kubeVersion: ">= 1.19.0"
-version: 0.3.92
+kubeVersion: ">= 1.23.0-0"
+version: 0.3.93
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -32,8 +32,16 @@ annotations:
     - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: "set `imagePullPolicy` on the `wait-for-rock` init container"
+    - kind: fixed
+      description: "corrected the default `opal.database.ids.username` and `opal.database.ids.password` placeholder values. Only relevant when using an external database with the default values."
     - kind: changed
-      description: "Updated docker.io/curlimages/curl to 8.23.0"
+      description: "roll the Opal pod when the database passwords Secret changes and the Rock pods when the init script ConfigMap changes"
+    - kind: changed
+      description: "documented that auto-generated passwords are not stable under `helm template` or Argo CD, which cannot use `lookup`"
+    - kind: changed
+      description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+    - kind: changed
+      description: "corrected the descriptions of the `opal.database.*` values, which referred to the old `postgresql.*` keys and claimed `username` is used even with `postgres.enabled=true`"

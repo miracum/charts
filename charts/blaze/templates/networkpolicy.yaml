@@ -32,7 +32,7 @@ spec:
       {{- if not .Values.networkPolicy.allowExternal }}
         - podSelector:
             matchLabels:
-              {{ template "common.names.fullname" . }}-client: "true"
+              {{ include "blaze.fullname" . }}-client: "true"
       {{- end }}
       {{- if .Values.networkPolicy.ingressNSMatchLabels }}
         - namespaceSelector:
@@ -55,7 +55,7 @@ spec:
       {{- if not .Values.networkPolicy.metrics.allowExternal }}
         - podSelector:
             matchLabels:
-              {{ template "common.names.fullname" . }}-client: "true"
+              {{ include "blaze.fullname" . }}-client: "true"
       {{- end }}
       {{- if .Values.networkPolicy.metrics.ingressNSMatchLabels }}
         - namespaceSelector:

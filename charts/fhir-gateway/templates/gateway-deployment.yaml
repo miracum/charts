@@ -17,10 +17,16 @@ spec:
       app.kubernetes.io/component: fhir-gateway
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+      {{- $createsPostgresSecret := and (not .Values.postgres.enabled) (not .Values.sinks.postgres.external.existingSecret) .Values.sinks.postgres.enabled }}
+      {{- if or $createsPostgresSecret .Values.podAnnotations }}
       annotations:
+        {{- if $createsPostgresSecret }}
+        checksum/postgres-secret: {{ include (print $.Template.BasePath "/postgres-sink-secret.yaml") . | sha256sum | quote }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+        {{- end }}
+      {{- end }}
       labels:
         {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
         app.kubernetes.io/component: fhir-gateway
@@ -100,7 +106,7 @@ spec:
               value: "http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1"
             - name: SERVICES_FHIRSERVER_ENABLED
               value: {{ .Values.sinks.fhirServer.enabled | quote }}
-            {{- if .Values.sinks.fhirServer.enabled -}}
+            {{- if .Values.sinks.fhirServer.enabled }}
             - name: SERVICES_FHIRSERVER_URL
               value: {{ .Values.sinks.fhirServer.url }}
             {{- end }}
@@ -115,6 +121,7 @@ spec:
               value: {{ .Values.kafka.securityProtocol | quote }}
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
+            {{- if eq .Values.kafka.securityProtocol "SSL" }}
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -125,6 +132,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
+            {{- end }}
             - name: SERVICES_KAFKA_PROCESSOR_ENABLED
               value: {{ .Values.kafka.processor.enabled | quote }}
             - name: SERVICES_KAFKA_PROCESSOR_CONSUME_ONLY
@@ -152,6 +160,10 @@ spec:
             - name: http-metrics
               containerPort: 8081
               protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            {{- include "common.tplvalues.render" (dict "value" (omit .Values.startupProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- include "common.tplvalues.render" (dict "value" (omit .Values.livenessProbe "enabled") "context" $) | nindent 12 }}
@@ -168,7 +180,7 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-          {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+          {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName (eq .Values.kafka.securityProtocol "SSL") }}
             - name: kafka-certs
               mountPath: "/opt/kafka-certs"
               readOnly: true
@@ -176,7 +188,7 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
-        {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+        {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName (eq .Values.kafka.securityProtocol "SSL") }}
         - name: kafka-certs
           projected:
             sources:
