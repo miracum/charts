@@ -11,76 +11,28 @@ spec:
   restartPolicy: Never
   automountServiceAccountToken: {{ .Values.tests.automountServiceAccountToken }}
   containers:
-    - name: probe-health-endpoint
+    {{- $baseUrl := printf "http://%s" (include "blaze.fullname" .) }}
+    {{- $probes := list
+      (dict "name" "probe-health-endpoint" "url" (printf "%s:%v/health" $baseUrl .Values.service.port))
+      (dict "name" "probe-metrics-endpoint" "url" (printf "%s:%v/metrics" $baseUrl .Values.service.metricsPort))
+      (dict "name" "probe-patient-endpoint" "url" (printf "%s:%v/fhir/Patient?_count=1" $baseUrl .Values.service.port))
+    }}
+    {{- if .Values.frontend.enabled }}
+    {{- $probes = append $probes (dict "name" "probe-frontend" "url" (printf "%s-frontend:%v/fhir" $baseUrl .Values.frontend.service.port)) }}
+    {{- end }}
+    {{- range $probes }}
+    - name: {{ .name }}
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl", "-vvv", "--fail-with-body"]
-      args: ["http://{{ include "blaze.fullname" . }}:{{ .Values.service.port }}/health"]
-      {{- with .Values.restrictedContainerSecurityContext }}
+      args: [{{ .url | quote }}]
+      {{- with $.Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
-      {{- end }}
-      livenessProbe:
-        exec:
-          command: ["true"]
-      readinessProbe:
-        exec:
-          command: ["true"]
-    - name: probe-metrics-endpoint
-      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl", "-vvv", "--fail-with-body"]
-      args: ["http://{{ include "blaze.fullname" . }}:{{ .Values.service.metricsPort }}/metrics"]
-      {{- with .Values.restrictedContainerSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
-      {{- end }}
-      livenessProbe:
-        exec:
-          command: ["true"]
-      readinessProbe:
-        exec:
-          command: ["true"]
-    - name: probe-patient-endpoint
-      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl", "-vvv", "--fail-with-body"]
-      args: ['http://{{ include "blaze.fullname" . }}:{{ .Values.service.port }}/fhir/Patient?_count=1']
-      {{- with .Values.restrictedContainerSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
-      {{- end }}
-      livenessProbe:
-        exec:
-          command: ["true"]
-      readinessProbe:
-        exec:
-          command: ["true"]
-    {{ if .Values.frontend.enabled }}
-    - name: probe-frontend
-      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl", "-vvv", "--fail-with-body"]
-      args: ['http://{{ include "blaze.fullname" . }}-frontend:{{ .Values.frontend.service.port }}/fhir']
-      {{- with .Values.restrictedContainerSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
+      {{- if $.Values.tests.resources }}
+      resources: {{- toYaml $.Values.tests.resources | nindent 10 }}
+      {{- else if ne $.Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" $.Values.tests.resourcesPreset) | nindent 10 }}
       {{- end }}
       livenessProbe:
         exec:

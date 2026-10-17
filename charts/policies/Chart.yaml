@@ -10,7 +10,7 @@ sources:
 maintainers:
   - name: miracum
 deprecated: false
-kubeVersion: ">= 1.19.0"
+kubeVersion: ">= 1.23.0-0"
 version: 0.10.2
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -24,3 +24,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: fixed
       description: "corrected the documentation of `validationActions`, which claimed the default is `Audit` although it is `Deny`"
+    - kind: changed
+      description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."

@@ -77,15 +77,15 @@ opal:
 
   database:
     data:
-      # -- database hostname of an external database used to store data. Only used if `postgresql.enabled` is set to `false`.
+      # -- database hostname of an external database used to store data. Only used if `postgres.enabled` is set to `false`.
       host: "data.host.example.com"
       # -- port used to connect to the postgres DB
       port: 5432
-      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      # -- name of the database inside. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.database` is used
       database: "opal_data"
-      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
       username: "opal_data_admin"
-      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
       password: "opal_data_password"
       existingSecret:
         # -- name of an existing secret containing the password to the DB.
@@ -93,15 +93,15 @@ opal:
         # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
         key: "password"
     ids:
-      # -- database hostname of an external database used to store ids. Only used if `postgresql.enabled` is set to `false`.
+      # -- database hostname of an external database used to store ids. Only used if `postgres.enabled` is set to `false`.
       host: "data.host.example.com"
       # -- port used to connect to the postgres DB
       port: 5432
-      # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
+      # -- name of the database inside. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.database` is used
       database: "opal_ids"
-      # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
+      # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
       username: "opal_ids_admin"
-      # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
+      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
       password: "opal_ids_password"
       existingSecret:
         # -- name of an existing secret containing the password to the DB.

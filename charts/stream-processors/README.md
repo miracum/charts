@@ -14,7 +14,7 @@ This chart deploys the Kafka Stream Processors on a [Kubernetes](http://kubernet
 
 ## Prerequisites
 
-- Kubernetes v1.16+
+- Kubernetes v1.23+
 - Helm v3
 - Strimzi Kafka Operator installed
 
@@ -73,6 +73,7 @@ The following table lists the configurable parameters of the `stream-processors`
 | defaultReplicaCount                                                  | sets the replicas value for all processor deployments unless overridden on a per-processor level as `.replicaCount`                                                                                                                                                                                                      | <code>1</code>                        |
 | defaultRevisionHistoryLimit                                          | sets the revisionHistoryLimit value for all processor deployments unless overridden on a per-processor level as `.revisionHistoryLimit`                                                                                                                                                                                  | <code>10</code>                       |
 | default.timezone                                                     | Set container timezone                                                                                                                                                                                                                                                                                                   | <code>"Europe/Berlin"</code>          |
+| default.container.resourcesPreset                                    | set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if the processor sets `container.resources`, which is recommended for production.                                                                                     | <code>"none"</code>                   |
 | default.persistence.enabled                                          | Enable persistence. This changes the processor's type from Deployment to a StatefulSet                                                                                                                                                                                                                                   | <code>false</code>                    |
 | default.persistence.volumeName                                       | Name to assign the volume                                                                                                                                                                                                                                                                                                | <code>"data"</code>                   |
 | default.persistence.existingClaim                                    | Name of an existing PVC to use                                                                                                                                                                                                                                                                                           | <code>""</code>                       |

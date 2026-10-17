@@ -121,6 +121,7 @@ spec:
               value: {{ .Values.kafka.securityProtocol | quote }}
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: {{ .Values.kafka.strimziClusterName }}-kafka-bootstrap:{{ (eq .Values.kafka.securityProtocol "SSL") | ternary "9093" "9092" }}
+            {{- if eq .Values.kafka.securityProtocol "SSL" }}
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -131,6 +132,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.kafka.strimziClusterName }}-cluster-ca-cert
                   key: ca.password
+            {{- end }}
             - name: SERVICES_KAFKA_PROCESSOR_ENABLED
               value: {{ .Values.kafka.processor.enabled | quote }}
             - name: SERVICES_KAFKA_PROCESSOR_CONSUME_ONLY
@@ -178,7 +180,7 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-          {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+          {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName (eq .Values.kafka.securityProtocol "SSL") }}
             - name: kafka-certs
               mountPath: "/opt/kafka-certs"
               readOnly: true
@@ -186,7 +188,7 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
-        {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName }}
+        {{- if and .Values.kafka.enabled .Values.kafka.strimziClusterName (eq .Values.kafka.securityProtocol "SSL") }}
         - name: kafka-certs
           projected:
             sources:

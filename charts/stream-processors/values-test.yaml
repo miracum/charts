@@ -183,6 +183,7 @@ processors:
     replicaCount: 1
     revisionHistoryLimit: 0
     container:
+      resourcesPreset: nano
       image:
         registry: docker.io
         repository: nginx
