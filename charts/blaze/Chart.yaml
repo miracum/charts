@@ -16,7 +16,7 @@ dependencies:
     version: 0.1.1
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.7.46
+version: 0.7.47
 appVersion: "1.x"
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -27,8 +27,10 @@ annotations:
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Updated docker.io/curlimages/curl to 8.23.0"
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: "the NetworkPolicy no longer fails to render when `networkPolicy.allowExternal=false`"
+    - kind: fixed
+      description: "`topologySpreadConstraints` is now actually applied to the StatefulSet"
+    - kind: fixed
+      description: "`image.pullPolicy` is now applied to the main container"

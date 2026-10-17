@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
 kubeVersion: ">= 1.19.0"
-version: 0.3.92
+version: 0.3.93
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -32,8 +32,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Updated docker.io/curlimages/curl to 8.23.0"
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: "set `imagePullPolicy` on the `wait-for-rock` init container"
+    - kind: fixed
+      description: "corrected the default `opal.database.ids.username` and `opal.database.ids.password` placeholder values. Only relevant when using an external database with the default values."

@@ -100,13 +100,13 @@ opal:
       # -- name of the database inside. If postgresql.enabled=true, then postgresql.postgresqlDatabase is used
       database: "opal_ids"
       # -- username used to connect to the DB. Note that this name is currently used even if postgresql.enabled=true
-      username: "opal_ids_password"
+      username: "opal_ids_admin"
       # -- the database password. Only used if postgresql.enabled=false, otherwise the secret created by the postgresql chart is used
-      password: "opal"
+      password: "opal_ids_password"
       existingSecret:
         # -- name of an existing secret containing the password to the DB.
         name: ""
-        # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
+        # -- name of the key in `database.ids.existingSecret.name` to use as the password to the DB.
         key: "password"
 
   # -- extra environment variables to set on the opal api container
@@ -453,6 +453,7 @@ curl:
     registry: docker.io
     repository: curlimages/curl
     tag: 8.23.0@sha256:a134550be58ab783810e613ae96fd253c38f7bdd16d9bf9be350700c7a29ac06
+    pullPolicy: IfNotPresent
 
 tests:
   automountServiceAccountToken: false

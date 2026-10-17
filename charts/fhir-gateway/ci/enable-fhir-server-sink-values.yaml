@@ -1,0 +1,8 @@
+sinks:
+  fhirServer:
+    enabled: true
+    url: http://fhir-server.example.com:8080/fhir
+postgres:
+  enabled: true
+fhir-pseudonymizer:
+  pseudonymizationService: "None"
