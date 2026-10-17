@@ -1,0 +1,16 @@
+{{- if .Values.processors }}
+Deployed {{ len .Values.processors }} stream processor(s): {{ keys .Values.processors | sortAlpha | join ", " }}.
+
+Each processor connects to the Strimzi Kafka cluster "{{ .Values.strimziClusterName }}" ({{ .Values.securityProtocol }}) and authenticates using a KafkaUser named "{{ include "stream-processors.fullname" . }}-<processor>-user". Make sure the Strimzi Kafka cluster exists in this namespace and that the Strimzi User Operator is running.
+
+Check the status of the processors with:
+
+  kubectl --namespace {{ .Release.Namespace }} get pods -l app.kubernetes.io/instance={{ .Release.Name }}-<processor>
+  kubectl --namespace {{ .Release.Namespace }} get kafkauser
+{{- if .Values.defaultNetworkPolicy.enabled }}
+
+NOTE: defaultNetworkPolicy is enabled. By default, all ingress is denied and egress is limited to DNS and the Kafka cluster. Use defaultNetworkPolicy.extraIngress/extraEgress, or the per-processor networkPolicy.extraIngress/extraEgress, to allow additional traffic (e.g. from Prometheus).
+{{- end }}
+{{- else }}
+No processors are configured. Add entries under `processors` in your values.
+{{- end }}

@@ -37,3 +37,7 @@ annotations:
       description: "set `imagePullPolicy` on the `wait-for-rock` init container"
     - kind: fixed
       description: "corrected the default `opal.database.ids.username` and `opal.database.ids.password` placeholder values. Only relevant when using an external database with the default values."
+    - kind: changed
+      description: "roll the Opal pod when the database passwords Secret changes and the Rock pods when the init script ConfigMap changes"
+    - kind: changed
+      description: "documented that auto-generated passwords are not stable under `helm template` or Argo CD, which cannot use `lookup`"

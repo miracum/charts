@@ -34,3 +34,5 @@ annotations:
       description: "`topologySpreadConstraints` is now actually applied to the StatefulSet"
     - kind: fixed
       description: "`image.pullPolicy` is now applied to the main container"
+    - kind: changed
+      description: "roll the StatefulSet's pod when the chart-managed custom search parameters ConfigMap changes (`checksum/custom-search-parameters` pod annotation)"

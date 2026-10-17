@@ -17,7 +17,7 @@ opal:
 
   auth:
     administrator:
-      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated. It is kept across `helm upgrade` by looking up the existing Secret, but `lookup` returns nothing under `helm template` and GitOps tools that render with it (e.g. Argo CD), so a new password is generated on every sync. In that case set this value or use an existing secret.
       password: ""
       existingSecret:
         # -- name of an existing secret that contains the administrator password.
@@ -306,7 +306,7 @@ rock:
     administrator:
       # -- the user name for the administrator user.
       name: "administrator"
-      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated.
+      # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated. It is kept across `helm upgrade` by looking up the existing Secret, but `lookup` returns nothing under `helm template` and GitOps tools that render with it (e.g. Argo CD), so a new password is generated on every sync. In that case set this value or use an existing secret.
       password: ""
       existingSecret:
         # -- name of an existing secret that contains the administrator password.
@@ -316,7 +316,7 @@ rock:
     manager:
       # -- the user name for the manager user.
       name: "manager"
-      # -- the password for the manager user. If unset and no existing secret is specified, a random one is generated.
+      # -- the password for the manager user. If unset and no existing secret is specified, a random one is generated. It is kept across `helm upgrade` by looking up the existing Secret, but `lookup` returns nothing under `helm template` and GitOps tools that render with it (e.g. Argo CD), so a new password is generated on every sync. In that case set this value or use an existing secret.
       password: ""
       existingSecret:
         # -- name of an existing secret that contains the manager password.
@@ -326,7 +326,7 @@ rock:
     user:
       # -- the user name for the user user.
       name: "user"
-      # -- the password for the user. If unset and no existing secret is specified, a random one is generated.
+      # -- the password for the user. If unset and no existing secret is specified, a random one is generated. It is kept across `helm upgrade` by looking up the existing Secret, but `lookup` returns nothing under `helm template` and GitOps tools that render with it (e.g. Argo CD), so a new password is generated on every sync. In that case set this value or use an existing secret.
       password: ""
       existingSecret:
         # -- name of an existing secret that contains the user password.
