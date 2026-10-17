@@ -5,6 +5,8 @@ type: application
 sources:
   - https://github.com/apache/hive
 home: https://hive.apache.org/
+maintainers:
+  - name: miracum
 dependencies:
   - name: postgres
     version: 0.21.2
@@ -13,6 +15,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
+kubeVersion: ">= 1.23.0-0"
 version: 0.5.1
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -32,3 +35,9 @@ annotations:
       description: "optional PodDisruptionBudget (`podDisruptionBudget.*`), disabled by default"
     - kind: changed
       description: "roll the pod when the database password Secret changes"
+    - kind: changed
+      description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+    - kind: removed
+      description: "removed the `ingress` template and values. The Hive Metastore speaks Thrift over plain TCP, which an HTTP Ingress cannot route. Use the Service (`ClusterIP`/`NodePort`/`LoadBalancer`) instead."
+    - kind: changed
+      description: "corrected the descriptions of the `database.*` values, which referred to the old `postgresql.*` keys"
