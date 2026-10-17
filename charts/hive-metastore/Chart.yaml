@@ -13,7 +13,7 @@ dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 0.5.0
+version: 0.5.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -23,8 +23,12 @@ annotations:
     - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |
     - kind: changed
-      description: "removed log collector side car, everything is stdout logged now"
+      description: "the pod template now only carries the stable selector labels. Previously `helm.sh/chart` and `app.kubernetes.io/version` changed with every chart release and rolled the pods unnecessarily. This causes a one-time restart on upgrade."
+    - kind: added
+      description: "set resource requests/limits on the `wait-for-db` init container (`initContainers.resourcesPreset`/`initContainers.resources`), so pods are admitted in namespaces with a ResourceQuota"
+    - kind: added
+      description: "optional PodDisruptionBudget (`podDisruptionBudget.*`), disabled by default"
+    - kind: changed
+      description: "roll the pod when the database password Secret changes"

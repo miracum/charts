@@ -8,7 +8,7 @@ keywords:
   - kafka
   - strimzi kafka operator
   - stream processing
-version: 2.0.0
+version: 2.0.1
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
@@ -19,8 +19,6 @@ annotations:
     - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "BREAKING CHANGE: use strimzi v1 apiVersion for KafkaUser"
+  artifacthub.io/changes: |
+    - kind: added
+      description: "NOTES.txt"

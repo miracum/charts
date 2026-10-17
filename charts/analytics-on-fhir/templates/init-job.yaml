@@ -8,7 +8,8 @@ metadata:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
-  ttlSecondsAfterFinished: 100
+  backoffLimit: {{ .Values.initJob.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.initJob.activeDeadlineSeconds }}
   template:
     spec:
       automountServiceAccountToken: false

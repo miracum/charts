@@ -127,6 +127,14 @@ startupProbe:
   successThreshold: 1
   timeoutSeconds: 5
 
+podDisruptionBudget:
+  # -- create a PodDisruptionBudget for the Hive Metastore. Only useful when running more than one replica.
+  enabled: false
+  # -- minimum number of pods that must remain available. Takes precedence over `maxUnavailable` if set.
+  minAvailable: ""
+  # -- maximum number of pods that can be unavailable
+  maxUnavailable: 1
+
 # This section is for setting up autoscaling more information can be found here: <https://kubernetes.io/docs/concepts/workloads/autoscaling/>
 autoscaling:
   enabled: false
@@ -283,6 +291,19 @@ postgres:
       memory: 192Mi
       cpu: 150m
       ephemeral-storage: 2Gi
+
+initContainers:
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `initContainers.resources` is set (`initContainers.resources` is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the init containers' resource requests and limits manually
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 # @ignored
 waitForDatabaseInitContainer:

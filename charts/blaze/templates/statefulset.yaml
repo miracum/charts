@@ -17,9 +17,15 @@ spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- $managesSearchParametersConfigMap := and .Values.customSearchParameters.bundle (not .Values.customSearchParameters.existingConfigmap.name) }}
+      {{- if or $managesSearchParametersConfigMap .Values.podAnnotations }}
       annotations:
+        {{- if $managesSearchParametersConfigMap }}
+        checksum/custom-search-parameters: {{ include (print $.Template.BasePath "/searchparameters-cm.yaml") . | sha256sum | quote }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "blaze.selectorLabels" . | nindent 8 }}

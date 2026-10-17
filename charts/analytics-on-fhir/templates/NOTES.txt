@@ -1,0 +1,21 @@
+{{- $release := .Release.Name }}
+Thank you for installing {{ .Chart.Name }}.
+
+A post-install/upgrade job loads synthetic FHIR data into the Pathling server and registers the resulting tables in the Hive Metastore.
+Watch its progress with:
+
+  kubectl --namespace {{ .Release.Namespace }} get job,pods -l job-name={{ include "analytics-on-fhir.fullname" . }}-init-job
+  kubectl --namespace {{ .Release.Namespace }} logs job/{{ include "analytics-on-fhir.fullname" . }}-init-job --all-containers --follow
+
+If the job fails, it is kept (not deleted) so its logs remain available. It is retried at most {{ .Values.initJob.backoffLimit }} time(s) and terminated after {{ .Values.initJob.activeDeadlineSeconds }}s.
+
+Access the Pathling FHIR server locally:
+
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ $release }}-pathling-server 8080:8080
+  curl http://127.0.0.1:8080/fhir/metadata
+{{- if .Values.trino.enabled }}
+
+Trino is enabled. Access it locally:
+
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ $release }}-trino 8081:8080
+{{- end }}

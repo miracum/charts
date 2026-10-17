@@ -24,3 +24,9 @@ annotations:
   artifacthub.io/changes: |
     - kind: fixed
       description: "fix invalid YAML being rendered when `sinks.fhirServer.enabled=true`"
+    - kind: added
+      description: "optional PodDisruptionBudgets for the gateway (`podDisruptionBudget.*`) and the LOINC converter (`loincConverter.podDisruptionBudget.*`), disabled by default"
+    - kind: added
+      description: "`startupProbe` for the gateway so the liveness/readiness probes don't need to wait out the slow Spring Boot startup"
+    - kind: changed
+      description: "roll the gateway's pod when the chart-managed external Postgres password Secret changes"
