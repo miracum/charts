@@ -2,6 +2,50 @@ apiVersion: v1
 entries:
   analytics-on-fhir:
   - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: "`initJob.backoffLimit` and `initJob.activeDeadlineSeconds` to bound the init job's retries and runtime"
+        - kind: changed
+          description: "the init job is no longer deleted 100s after it finishes, so the logs of a failed job stay available. Successful jobs are still deleted by the hook delete policy."
+        - kind: added
+          description: "NOTES.txt"
+        - kind: changed
+          description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-18T12:45:41.474624266Z"
+    dependencies:
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.15
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.54
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: aa32e6516d5e6119fd6014c8f5fe82a8af07960e7fd03aa81ba89ba777597f77
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.35/analytics-on-fhir-0.1.35.tgz
+    version: 0.1.35
+  - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
@@ -1370,6 +1414,48 @@ entries:
     - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.0/analytics-on-fhir-0.1.0.tgz
     version: 0.1.0
   blaze:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "the NetworkPolicy no longer fails to render when `networkPolicy.allowExternal=false`"
+        - kind: fixed
+          description: "`topologySpreadConstraints` is now actually applied to the StatefulSet"
+        - kind: fixed
+          description: "`image.pullPolicy` is now applied to the main container"
+        - kind: changed
+          description: "roll the StatefulSet's pod when the chart-managed custom search parameters ConfigMap changes (`checksum/custom-search-parameters` pod annotation)"
+        - kind: changed
+          description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 1.x
+    created: "2026-10-18T12:45:41.680110445Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: eedab09e14e11272cc58faf7b0c41640ba8191747a24cdeb68cbac8161d0abaf
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.7.47/blaze-0.7.47.tgz
+    version: 0.7.47
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -8754,6 +8840,51 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "fix invalid YAML being rendered when `sinks.fhirServer.enabled=true`"
+        - kind: added
+          description: "optional PodDisruptionBudgets for the gateway (`podDisruptionBudget.*`) and the LOINC converter (`loincConverter.podDisruptionBudget.*`), disabled by default"
+        - kind: added
+          description: "`startupProbe` for the gateway so the liveness/readiness probes don't need to wait out the slow Spring Boot startup"
+        - kind: changed
+          description: "roll the gateway's pod when the chart-managed external Postgres password Secret changes"
+        - kind: changed
+          description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+        - kind: changed
+          description: "the Kafka TLS resources (KafkaUser, certificate volume and `SSL_*` environment variables) are now only created when `kafka.securityProtocol` is `SSL`. With `PLAINTEXT` they were created but unused."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-18T12:45:41.927764118Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.10.24
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 33a2ee659314fb4ef2e290fd07b81f5932fce8f16fd2639b47bff88cea35cec7
+    home: https://github.com/miracum/fhir-gateway
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-12.0.46/fhir-gateway-12.0.46.tgz
+    version: 12.0.46
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -24647,6 +24778,51 @@ entries:
     version: 0.1.0
   hive-metastore:
   - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "the pod template now only carries the stable selector labels. Previously `helm.sh/chart` and `app.kubernetes.io/version` changed with every chart release and rolled the pods unnecessarily. This causes a one-time restart on upgrade."
+        - kind: added
+          description: "set resource requests/limits on the `wait-for-db` init container (`initContainers.resourcesPreset`/`initContainers.resources`), so pods are admitted in namespaces with a ResourceQuota"
+        - kind: added
+          description: "optional PodDisruptionBudget (`podDisruptionBudget.*`), disabled by default"
+        - kind: changed
+          description: "roll the pod when the database password Secret changes"
+        - kind: changed
+          description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+        - kind: removed
+          description: "removed the `ingress` template and values. The Hive Metastore speaks Thrift over plain TCP, which an HTTP Ingress cannot route. Use the Service (`ClusterIP`/`NodePort`/`LoadBalancer`) instead."
+        - kind: changed
+          description: "corrected the descriptions of the `database.*` values, which referred to the old `postgresql.*` keys"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-18T12:45:42.142864537Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Hive Metastore
+    digest: 80312b9fe5be29e22f3dea145702938fae9465f19528963351abff99a6fb6482
+    home: https://hive.apache.org/
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.5.1/hive-metastore-0.5.1.tgz
+    version: 0.5.1
+  - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
@@ -26793,6 +26969,56 @@ entries:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "set `imagePullPolicy` on the `wait-for-rock` init container"
+        - kind: fixed
+          description: "corrected the default `opal.database.ids.username` and `opal.database.ids.password` placeholder values. Only relevant when using an external database with the default values."
+        - kind: changed
+          description: "roll the Opal pod when the database passwords Secret changes and the Rock pods when the init script ConfigMap changes"
+        - kind: changed
+          description: "documented that auto-generated passwords are not stable under `helm template` or Argo CD, which cannot use `lookup`"
+        - kind: changed
+          description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+        - kind: changed
+          description: "corrected the descriptions of the `opal.database.*` values, which referred to the old `postgresql.*` keys and claimed `username` is used even with `postgres.enabled=true`"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-18T12:45:42.317396869Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: d313da62a0764d3de9d75f94f54f6adb03edc07eb5ca4677e786efce04e72e6e
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.93/opal-0.3.93.tgz
+    version: 0.3.93
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -30908,6 +31134,36 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
+          description: "corrected the documentation of `validationActions`, which claimed the default is `Audit` although it is `Deny`"
+        - kind: changed
+          description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/kyverno/kyverno
+    apiVersion: v2
+    created: "2026-10-18T12:45:42.48750612Z"
+    description: A Helm chart for deploying Kyverno policies verifying images of the
+      github.com/miracum organization.
+    digest: f479a5dba824042e3b7ed94486cb60b10a35741e2d9adb06c4fa1f0a349e4312
+    home: https://github.com/miracum/charts
+    keywords:
+    - kyverno
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: policies
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/policies-0.10.2/policies-0.10.2.tgz
+    version: 0.10.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
           description: >-
             verify-images-policy now also accepts ".github/workflows/on-release.yaml"
             as the build workflow entrypoint in the SLSA provenance, since
@@ -33087,6 +33343,44 @@ entries:
     - https://github.com/miracum/charts/releases/download/recruit-9.0.0/recruit-9.0.0.tgz
     version: 9.0.0
   stream-processors:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: "NOTES.txt"
+        - kind: changed
+          description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+        - kind: added
+          description: "`default.container.resourcesPreset` (and per-processor `container.resourcesPreset`) to pick a resources preset when `container.resources` is not set. Defaults to `none`."
+        - kind: fixed
+          description: "no longer renders `resources: null` for processors without `container.resources`"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2026-10-18T12:45:42.633231749Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: d5ca8a1cf00feab670dd533485d053851ef366f32b4deb0dcb787054f712b859
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-2.0.1/stream-processors-2.0.1.tgz
+    version: 2.0.1
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -40587,4 +40881,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-18T08:50:27.18763179Z"
+generated: "2026-10-18T12:45:42.635538568Z"
