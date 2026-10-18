@@ -7,13 +7,13 @@ sources:
 home: https://github.com/miracum/fhir-pseudonymizer
 dependencies:
   - name: vfps
-    version: 1.25.0
+    version: 1.25.1
     repository: oci://ghcr.io/miracum/vfps/charts
     condition: vfps.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.1.1
-version: 1.0.0
+version: 1.0.1
 deprecated: true
 annotations:
   artifacthub.io/license: Apache-2.0
@@ -27,5 +27,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: deprecated
-      description: "Use the chart hosted within the source repo instead: <https://github.com/miracum/fhir-pseudonymizer/tree/master/charts/fhir-pseudonymizer>"
+    - kind: changed
+      description: "Updated vfps to 1.25.1"
