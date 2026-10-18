@@ -17574,6 +17574,39 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated vfps to 1.25.1"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2026-10-18T03:38:15.972119633Z"
+    dependencies:
+    - condition: vfps.enabled
+      name: vfps
+      repository: oci://ghcr.io/miracum/vfps/charts
+      version: 1.25.1
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.1.1
+    deprecated: true
+    description: A Helm chart for deploying the MIRACUM FHIR Pseudonymizer
+    digest: 8c4222aa161c1fe0c0724aa9f5533ea9d2c134777c0d15dc7aa8a821869b7ceb
+    home: https://github.com/miracum/fhir-pseudonymizer
+    name: fhir-pseudonymizer
+    sources:
+    - https://github.com/miracum/fhir-pseudonymizer
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-pseudonymizer-1.0.1/fhir-pseudonymizer-1.0.1.tgz
+    version: 1.0.1
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: deprecated
           description: "Use the chart hosted within the source repo instead: <https://github.com/miracum/fhir-pseudonymizer/tree/master/charts/fhir-pseudonymizer>"
       artifacthub.io/containsSecurityUpdates: "false"
@@ -40514,4 +40547,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-17T12:57:02.563815795Z"
+generated: "2026-10-18T03:38:15.974012029Z"
