@@ -7,6 +7,6 @@ dependencies:
   version: 0.4.54
 - name: trino
   repository: https://trinodb.github.io/charts
-  version: 1.44.0
-digest: sha256:d77ee82dfe354da8a83590a582683202be08a040ef0626d7b21c44ea2037f40e
-generated: "2026-10-17T12:38:19.783782799Z"
+  version: 1.45.0
+digest: sha256:add004c8e41708515c2c4913087d50243a81b976fe2fb9b7aa57754cc7f0cc76
+generated: "2026-10-18T08:38:39.792617556Z"
