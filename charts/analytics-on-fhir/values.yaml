@@ -214,7 +214,7 @@ initJob:
     image:
       registry: ghcr.io
       repository: wait4x/wait4x
-      tag: 3.5.1@sha256:52e6791d4d8b8c80b2106e4d4f1e44ee69477c6dd461bdeb1aae2db6ccd5d038
+      tag: 3.7.2@sha256:2337e64637e1aa9d5d638de6d877914806be6c5156a7221ea40f11911ea4071a
   # @ignored
   fhirToLakehouse:
     image:
