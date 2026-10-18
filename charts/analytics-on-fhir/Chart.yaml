@@ -43,6 +43,6 @@ annotations:
     - kind: changed
       description: "the init job's container images are now configurable via `initJob.*.image` and are updated by Renovate"
     - kind: security
-      description: "the `generate-resources` and `lakehousekeeper` containers of the init job now use a read-only root filesystem"
+      description: "the `generate-resources` container of the init job now uses a read-only root filesystem"
     - kind: changed
       description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The `app.kubernetes.io/name` label of the init job and its ConfigMaps is now the chart name."

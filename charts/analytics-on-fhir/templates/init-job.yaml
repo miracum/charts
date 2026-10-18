@@ -35,15 +35,16 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          # the page cache from writing the Synthea jar counts towards the limit, 32Mi was getting OOMKilled
           resources:
             limits:
               cpu: 100m
               ephemeral-storage: 2Gi
-              memory: 32Mi
+              memory: 128Mi
             requests:
               cpu: 50m
               ephemeral-storage: 2Gi
-              memory: 32Mi
+              memory: 128Mi
         - name: wait-for-pathling-server
           image: "{{ .Values.initJob.curl.image.registry }}/{{ .Values.initJob.curl.image.repository }}:{{ .Values.initJob.curl.image.tag }}"
           command: ["/bin/sh", "-c"]
@@ -246,12 +247,11 @@ spec:
               subPath: spark-defaults.conf
             - name: tmp
               mountPath: /tmp
-            # Spark's Ivy dependency resolution caches in the user's home directory
-            - name: home
-              mountPath: /home/nonroot
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # Spark resolves its dependencies from the Ivy cache baked into the image at /home/nonroot/.ivy2.5.2.
+            # Mounting a volume over it hides that cache and forces a download from Maven Central.
+            readOnlyRootFilesystem: false
             privileged: false
             capabilities:
               drop:
@@ -275,8 +275,6 @@ spec:
         - name: tmp
           emptyDir: {}
         - name: downloads
-          emptyDir: {}
-        - name: home
           emptyDir: {}
         - name: init-job-config
           configMap:
