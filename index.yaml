@@ -5264,6 +5264,33 @@ entries:
     version: 0.1.0
   common:
   - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: "`common.names.name`, `common.names.fullname` and `common.names.chart` helpers"
+        - kind: added
+          description: "`common.labels.standard` and `common.labels.matchLabels` helpers for the Kubernetes recommended labels"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-18T13:47:26.408936019Z"
+    description: Common logic
+    digest: 015cab7d6274204fc23ea3463e3f4be384f1d448db2370b4337aaf8fa7cf6fa3
+    home: https://github.com/miracum/charts/tree/master/charts/common
+    keywords:
+    - common
+    - helper
+    - template
+    - function
+    name: common
+    sources:
+    - https://github.com/miracum/charts/tree/master/charts/common
+    type: library
+    urls:
+    - https://github.com/miracum/charts/releases/download/common-0.2.0/common-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
@@ -40881,4 +40908,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-18T12:45:42.635538568Z"
+generated: "2026-10-18T13:47:26.411248192Z"
