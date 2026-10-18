@@ -10,14 +10,14 @@ keywords:
   - template
   - function
 home: https://github.com/miracum/charts/tree/master/charts/common
-version: 0.1.1
+version: 0.2.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/operator: "false"
   artifacthub.io/prerelease: "false"
-  artifacthub.io/changes: |-
-    # When using the list of objects option the valid supported kinds are
-    # added, changed, deprecated, removed, fixed and security.
-    - kind: changed
-      description: "Prettier fix"
+  artifacthub.io/changes: |
+    - kind: added
+      description: "`common.names.name`, `common.names.fullname` and `common.names.chart` helpers"
+    - kind: added
+      description: "`common.labels.standard` and `common.labels.matchLabels` helpers for the Kubernetes recommended labels"
