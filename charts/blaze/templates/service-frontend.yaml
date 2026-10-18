@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "blaze.fullname" . }}-frontend
+  name: {{ include "common.names.fullname" . }}-frontend
   labels:
-    {{- include "blaze.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 spec:
   type: {{ .Values.frontend.service.type }}
@@ -14,6 +14,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "blaze.selectorLabels" . | nindent 4 }}
+    {{- include "common.labels.matchLabels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 {{- end }}

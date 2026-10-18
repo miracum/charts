@@ -2,9 +2,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "hive-metastore.fullname" . }}
+  name: {{ include "common.names.fullname" . }}
   labels:
-    {{- include "hive-metastore.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
@@ -13,5 +13,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "hive-metastore.selectorLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
 {{- end }}

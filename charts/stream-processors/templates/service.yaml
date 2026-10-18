@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-metrics
+  name: {{ include "common.names.fullname" $ }}-{{ $name }}-metrics
   labels:
     {{- include "stream-processors.labels" $ | nindent 4 }}
     app.kubernetes.io/version: {{ include "stream-processors.version-label-value" . }}

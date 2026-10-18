@@ -2,9 +2,9 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: {{ include "blaze.fullname" . }}
+  name: {{ include "common.names.fullname" . }}
   labels:
-    {{- include "blaze.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: server
   {{- if .Values.commonAnnotations }}
   annotations:
@@ -13,7 +13,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      {{- include "blaze.selectorLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: server
   policyTypes:
     - Ingress
@@ -32,7 +32,7 @@ spec:
       {{- if not .Values.networkPolicy.allowExternal }}
         - podSelector:
             matchLabels:
-              {{ include "blaze.fullname" . }}-client: "true"
+              {{ include "common.names.fullname" . }}-client: "true"
       {{- end }}
       {{- if .Values.networkPolicy.ingressNSMatchLabels }}
         - namespaceSelector:
@@ -55,7 +55,7 @@ spec:
       {{- if not .Values.networkPolicy.metrics.allowExternal }}
         - podSelector:
             matchLabels:
-              {{ include "blaze.fullname" . }}-client: "true"
+              {{ include "common.names.fullname" . }}-client: "true"
       {{- end }}
       {{- if .Values.networkPolicy.metrics.ingressNSMatchLabels }}
         - namespaceSelector:

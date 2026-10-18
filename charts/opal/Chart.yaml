@@ -20,9 +20,11 @@ dependencies:
     condition: postgres.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.1
+    version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
 version: 0.3.94
+# renovate: datasource=docker depName=docker.io/obiba/opal
+appVersion: "5.7.6"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -39,3 +41,7 @@ annotations:
       description: "the Rock init script ConfigMap is mounted with mode `0555` instead of `0777`"
     - kind: security
       description: "BREAKING CHANGE: `opal.database.data.password` and `opal.database.ids.password` no longer have default values. They must be set (or the respective `existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The DB password Secret is no longer created when `postgres.enabled=true`."
+    - kind: changed
+      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`opal.fullname`, ...) were removed."
+    - kind: changed
+      description: "set `appVersion` to the Opal version (updated by Renovate)"

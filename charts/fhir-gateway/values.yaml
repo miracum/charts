@@ -220,7 +220,7 @@ kafka:
     inputTopics:
       - fhir-raw
     # -- the Kafka consumer group id. Evaluated as a template.
-    groupId: '{{ include "fhir-gateway.fullname" . }}-gateway'
+    groupId: '{{ include "common.names.fullname" . }}-gateway'
     generateOutputTopics:
       # -- Allows for dynamically generating the Kafka output topic's name based on the input topic.
       # Set to a regular expression which is applied to the input topic and the first match is replaced

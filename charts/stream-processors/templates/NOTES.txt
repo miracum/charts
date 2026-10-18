@@ -1,7 +1,7 @@
 {{- if .Values.processors }}
 Deployed {{ len .Values.processors }} stream processor(s): {{ keys .Values.processors | sortAlpha | join ", " }}.
 
-Each processor connects to the Strimzi Kafka cluster "{{ .Values.strimziClusterName }}" ({{ .Values.securityProtocol }}) and authenticates using a KafkaUser named "{{ include "stream-processors.fullname" . }}-<processor>-user". Make sure the Strimzi Kafka cluster exists in this namespace and that the Strimzi User Operator is running.
+Each processor connects to the Strimzi Kafka cluster "{{ .Values.strimziClusterName }}" ({{ .Values.securityProtocol }}) and authenticates using a KafkaUser named "{{ include "common.names.fullname" . }}-<processor>-user". Make sure the Strimzi Kafka cluster exists in this namespace and that the Strimzi User Operator is running.
 
 Check the status of the processors with:
 

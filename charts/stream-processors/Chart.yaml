@@ -15,7 +15,7 @@ maintainers:
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.1
+    version: 0.2.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -29,3 +29,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: added
       description: "optional PodDisruptionBudget per processor (`default.podDisruptionBudget.*` or `processors.<name>.podDisruptionBudget.*`), disabled by default"
+    - kind: changed
+      description: "use the shared name helpers of the `common` chart 0.2.0. The chart-specific `stream-processors.name`, `.fullname` and `.chart` helper templates were removed."

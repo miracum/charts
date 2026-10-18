@@ -5,7 +5,7 @@
 apiVersion: apps/v1
 kind: {{ ternary "StatefulSet" "Deployment" .persistence.enabled }}
 metadata:
-  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  name: {{ include "common.names.fullname" $ }}-{{ $name }}
   labels:
     {{- include "stream-processors.labels" $ | nindent 4 }}
     app.kubernetes.io/version: {{ include "stream-processors.version-label-value" . }}
@@ -19,7 +19,7 @@ spec:
   replicas: {{ default $.Values.defaultReplicaCount .replicaCount }}
   revisionHistoryLimit: {{ default $.Values.defaultRevisionHistoryLimit .revisionHistoryLimit }}
   {{- if .persistence.enabled }}
-  serviceName: {{ include "stream-processors.fullname" $ }}-{{ $name }}
+  serviceName: {{ include "common.names.fullname" $ }}-{{ $name }}
   {{- end }}
   selector:
     matchLabels:
@@ -87,12 +87,12 @@ spec:
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
+                  name: {{ include "common.names.fullname" $ }}-{{ $name }}-user
                   key: user.password
             - name: KAFKA_SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
+                  name: {{ include "common.names.fullname" $ }}-{{ $name }}-user
                   key: user.password
             - name: SSL_TRUST_STORE_PASSWORD
               valueFrom:
@@ -178,7 +178,7 @@ spec:
                   - key: ca.p12
                     path: ca.p12
             - secret:
-                name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
+                name: {{ include "common.names.fullname" $ }}-{{ $name }}-user
                 items:
                   - key: user.crt
                     path: user.crt

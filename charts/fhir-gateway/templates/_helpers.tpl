@@ -1,53 +1,4 @@
 {{/* vim: set filetype=mustache: */}}
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "fhir-gateway.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "fhir-gateway.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "fhir-gateway.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "fhir-gateway.labels" -}}
-helm.sh/chart: {{ include "fhir-gateway.chart" . }}
-app.kubernetes.io/name: {{ include "fhir-gateway.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Labels to use on deploy.spec.selector.matchLabels and svc.spec.selector
-*/}}
-{{- define "fhir-gateway.matchLabels" -}}
-app.kubernetes.io/name: {{ include "fhir-gateway.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
 
 {{/*
 Get the name of the secret containing the DB password
@@ -62,7 +13,7 @@ Get the name of the secret containing the DB password
 {{- else if .Values.sinks.postgres.external.existingSecret -}}
     {{ .Values.sinks.postgres.external.existingSecret | quote }}
 {{- else -}}
-    {{- $fullname := ( include "fhir-gateway.fullname" . ) -}}
+    {{- $fullname := ( include "common.names.fullname" . ) -}}
     {{ printf "%s-%s" $fullname "postgres-secret" }}
 {{- end -}}
 {{- end -}}
@@ -133,7 +84,7 @@ Return the database username
 Create the JDBC URL from the host, port and database name.
 */}}
 {{- define "fhir-gateway.sinks.postgresql.jdbcUrl" -}}
-{{- $appName := printf "%s-fhir-gateway" (include "fhir-gateway.fullname" .) -}}
+{{- $appName := printf "%s-fhir-gateway" (include "common.names.fullname" .) -}}
 {{- $databaseName := (include "fhir-gateway.postgresql.database" .) -}}
 {{- $host := (include "fhir-gateway.postgresql.host" .) -}}
 {{- $port := (include "fhir-gateway.postgresql.port" .) -}}
@@ -169,7 +120,7 @@ Create the name of the service account to use
 */}}
 {{- define "fhir-gateway.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "fhir-gateway.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "common.names.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

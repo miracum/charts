@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hive-metastore.fullname" . }}
+  name: {{ include "common.names.fullname" . }}
   labels:
-    {{- include "hive-metastore.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "hive-metastore.selectorLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "hive-metastore.selectorLabels" . | nindent 8 }}
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -128,7 +128,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: "{{ include "hive-metastore.fullname" . }}-config"
+            name: "{{ include "common.names.fullname" . }}-config"
             defaultMode: 0777
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}

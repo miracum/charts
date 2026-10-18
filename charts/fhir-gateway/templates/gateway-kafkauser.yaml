@@ -2,7 +2,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaUser
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-kafka-user
+  name: {{ include "common.names.fullname" . }}-kafka-user
   labels:
     strimzi.io/cluster: {{ .Values.kafka.strimziClusterName }}
 spec:

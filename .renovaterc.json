@@ -11,6 +11,14 @@
   "customManagers": [
     {
       "customType": "regex",
+      "description": "Update the appVersion in Chart.yaml. Annotate the line above with '# renovate: datasource=docker depName=<image> [extractVersion=<regex>]'",
+      "managerFilePatterns": ["/^charts/[^/]+/Chart\\.yaml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+)(?: extractVersion=(?<extractVersion>\\S+))?\\nappVersion: \"?(?<currentValue>[^\"\\s]+)\"?"
+      ]
+    },
+    {
+      "customType": "regex",
       "description": "Update kube-powertools container image",
       "managerFilePatterns": [
         "/README.md$/",

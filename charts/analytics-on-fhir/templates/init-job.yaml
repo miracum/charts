@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "analytics-on-fhir.fullname" . }}-init-job
+  name: {{ include "common.names.fullname" . }}-init-job
   labels:
-    {{- include "analytics-on-fhir.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
@@ -280,4 +280,4 @@ spec:
           emptyDir: {}
         - name: init-job-config
           configMap:
-            name: {{ include "analytics-on-fhir.fullname" . }}-init-job-config
+            name: {{ include "common.names.fullname" . }}-init-job-config

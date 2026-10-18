@@ -13,11 +13,12 @@ maintainers:
 dependencies:
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.1
+    version: 0.2.0
 deprecated: false
 kubeVersion: ">= 1.23.0-0"
-version: 0.7.47
-appVersion: "1.x"
+version: 0.8.0
+# renovate: datasource=docker depName=ghcr.io/samply/blaze
+appVersion: "1.11.0"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -28,13 +29,11 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "the NetworkPolicy no longer fails to render when `networkPolicy.allowExternal=false`"
-    - kind: fixed
-      description: "`topologySpreadConstraints` is now actually applied to the StatefulSet"
-    - kind: fixed
-      description: "`image.pullPolicy` is now applied to the main container"
     - kind: changed
-      description: "roll the StatefulSet's pod when the chart-managed custom search parameters ConfigMap changes (`checksum/custom-search-parameters` pod annotation)"
+      description: "BREAKING CHANGE: the pod and Service selector label `app.kubernetes.io/name` is now the chart name (e.g. `blaze`) instead of the full release name, like in all other charts. Selectors are immutable, so see the upgrade notes in the README before upgrading."
     - kind: changed
-      description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`blaze.fullname`, `blaze.labels`, ...) were removed; custom values that include them (e.g. `baseUrl`) must switch to `common.names.fullname`."
+    - kind: changed
+      description: "set `appVersion` to the Blaze version (updated by Renovate). It is also used for the `app.kubernetes.io/version` label."
+    - kind: fixed
+      description: "`frontend.backendURL` is now evaluated as a template. Previously the frontend received the literal, unrendered string."

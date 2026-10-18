@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  name: {{ include "common.names.fullname" . }}-loinc-converter
   labels:
-    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: loinc-converter
   {{- with .Values.common.deploymentAnnotations }}
   annotations:
@@ -14,7 +14,7 @@ spec:
   replicas: {{ .Values.loincConverter.replicaCount }}
   selector:
     matchLabels:
-      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: loinc-converter
   template:
     metadata:
@@ -23,7 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
         app.kubernetes.io/component: loinc-converter
     spec:
       automountServiceAccountToken: false
