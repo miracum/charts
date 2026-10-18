@@ -9085,6 +9085,44 @@ entries:
     version: 0.1.0
   fhir-gateway:
   - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated fhir-pseudonymizer to 0.10.27"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 6.1.9
+    created: "2026-10-18T18:16:04.711638265Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.10.27
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: 96fb1890d595fa453b539e7f32b1667a139c0f82024a028f04cee2edad9b0f4e
+    home: https://github.com/miracum/fhir-gateway
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-12.0.48/fhir-gateway-12.0.48.tgz
+    version: 12.0.48
+  - annotations:
       artifacthub.io/changes: |
         - kind: changed
           description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`fhir-gateway.fullname`, ...) were removed; custom values that include them must switch to `common.names.fullname`."
@@ -41285,4 +41323,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-18T18:03:26.651075595Z"
+generated: "2026-10-18T18:16:04.713285579Z"
