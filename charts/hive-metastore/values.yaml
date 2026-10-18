@@ -243,8 +243,9 @@ database:
   database: "hive_metastore"
   # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
   username: "postgres"
-  # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
-  password: "postgres"
+  # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used.
+  # Must be set when using an external database, unless `database.existingSecret.name` is set.
+  password: ""
   existingSecret:
     # -- name of an existing secret containing the password to the DB.
     name: ""

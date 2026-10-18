@@ -85,8 +85,9 @@ opal:
       database: "opal_data"
       # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
       username: "opal_data_admin"
-      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
-      password: "opal_data_password"
+      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used.
+      # Must be set when using an external database, unless `existingSecret.name` is set.
+      password: ""
       existingSecret:
         # -- name of an existing secret containing the password to the DB.
         name: ""
@@ -101,8 +102,9 @@ opal:
       database: "opal_ids"
       # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
       username: "opal_ids_admin"
-      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used
-      password: "opal_ids_password"
+      # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used.
+      # Must be set when using an external database, unless `existingSecret.name` is set.
+      password: ""
       existingSecret:
         # -- name of an existing secret containing the password to the DB.
         name: ""
@@ -161,7 +163,7 @@ opal:
     runAsNonRoot: true
     runAsUser: 10041
     runAsGroup: 10041
-    readOnlyRootFilesystem: false
+    readOnlyRootFilesystem: true
     seccompProfile:
       type: RuntimeDefault
 

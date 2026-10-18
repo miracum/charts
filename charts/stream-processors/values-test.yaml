@@ -182,6 +182,8 @@ processors:
           release: prom
     replicaCount: 1
     revisionHistoryLimit: 0
+    podDisruptionBudget:
+      enabled: true
     container:
       resourcesPreset: nano
       image:

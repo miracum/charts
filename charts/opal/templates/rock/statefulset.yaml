@@ -194,7 +194,7 @@ spec:
         - name: init-script
           configMap:
             name: {{ include "opal.fullname" $ }}-rock-init-script
-            defaultMode: 0777
+            defaultMode: 0555
   {{- if and .persistence.enabled .persistence.existingClaim }}
         - name: data
           persistentVolumeClaim:

@@ -2,8 +2,14 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ include "hive-metastore.fullname" . }}-test-connection"
+  # deliberately does not use the selector labels: the test pod must not be matched by
+  # the Service or Deployment selector, otherwise it would receive traffic or be adopted.
   labels:
-    {{- include "hive-metastore.labels" . | nindent 4 }}
+    helm.sh/chart: {{ include "hive-metastore.chart" . }}
+    app.kubernetes.io/name: {{ include "hive-metastore.name" . }}-test-connection
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: test-connection
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
     helm.sh/hook: test
     polaris.fairwinds.com/topologySpreadConstraint-exempt: "true"
