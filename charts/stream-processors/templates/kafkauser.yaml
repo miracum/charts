@@ -3,7 +3,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaUser
 metadata:
-  name: {{ include "stream-processors.fullname" $ }}-{{ $name }}-user
+  name: {{ include "common.names.fullname" $ }}-{{ $name }}-user
   labels:
     strimzi.io/cluster: {{ $.Values.strimziClusterName }}
 spec:

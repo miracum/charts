@@ -14,4 +14,23 @@
 helm install blaze oci://ghcr.io/miracum/charts/blaze -n blaze
 ```
 
+## Upgrading
+
+### From 0.x to 1.0.0
+
+The `app.kubernetes.io/name` label used in the pod and Service selectors is now the chart name (`blaze`) instead of the full release name (e.g. `my-release-blaze`), matching the other charts in this repository. Kubernetes does not allow changing the selector of an existing StatefulSet or Deployment, so `helm upgrade` fails until they are recreated. Persistent volume claims are kept by default.
+
+```sh
+# the Blaze server. Its PVC (data-<release>-blaze-0) is retained and re-attached to the new StatefulSet.
+kubectl delete statefulset <release>-blaze -n <namespace>
+# only needed if frontend.enabled=true
+kubectl delete deployment <release>-blaze-frontend -n <namespace>
+
+helm upgrade <release> oci://ghcr.io/miracum/charts/blaze --version 1.0.0 -n <namespace>
+```
+
+Blaze is unavailable between deleting the StatefulSet and the upgrade completing.
+
+If you set values that include the removed `blaze.fullname`, `blaze.labels`, ... templates (for example a custom `baseUrl`), replace them with `common.names.fullname`, `common.labels.standard` and so on.
+
 {{ template "chart.valuesSection" . }}

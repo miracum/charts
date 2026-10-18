@@ -1,56 +1,4 @@
 {{/*
-Expand the name of the chart.
-*/}}
-{{- define "opal.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "opal.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "opal.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "opal.labels" -}}
-helm.sh/chart: {{ include "opal.chart" . }}
-{{ include "opal.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "opal.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "opal.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
 Get the container image for the wait-for-db init container
 */}}
 {{- define "opal.waitForDatabaseInitContainerImage" -}}
@@ -118,7 +66,7 @@ Get the name of the secret containing the DB password
 {{- else if .Values.opal.database.data.existingSecret.name -}}
     {{ .Values.opal.database.data.existingSecret.name | quote }}
 {{- else -}}
-    {{- $fullname := ( include "opal.fullname" . ) -}}
+    {{- $fullname := ( include "common.names.fullname" . ) -}}
     {{ printf "%s-%s" $fullname "db-secret" }}
 {{- end -}}
 {{- end -}}
@@ -189,7 +137,7 @@ Get the name of the secret containing the DB password
 {{- else if .Values.opal.database.ids.existingSecret.name -}}
     {{ .Values.opal.database.ids.existingSecret.name | quote }}
 {{- else -}}
-    {{- $fullname := ( include "opal.fullname" . ) -}}
+    {{- $fullname := ( include "common.names.fullname" . ) -}}
     {{ printf "%s-%s" $fullname "db-secret" }}
 {{- end -}}
 {{- end -}}
@@ -212,7 +160,7 @@ Get the key inside the secret containing the DB user's password
 {{- end -}}
 
 {{- define "opal.rock-hosts" -}}
-{{- $rockServiceName := printf "%s-rock" (include "opal.fullname" .) -}}
+{{- $rockServiceName := printf "%s-rock" (include "common.names.fullname" .) -}}
 {{- $rock := list -}}
 {{- range int .Values.rock.replicaCount | until -}}
 {{- $rock = printf "%s-%d.%s:%d" $rockServiceName . $rockServiceName (int $.Values.rock.service.port) | append $rock -}}
@@ -225,7 +173,7 @@ Get the name of the secret containing the admin password
 */}}
 {{- define "opal.auth.admin-secret-name" -}}
 {{- if empty .Values.opal.auth.administrator.existingSecret.name -}}
-    {{- $secretName := printf "%s-opal-administrator" (include "opal.fullname" .) -}}
+    {{- $secretName := printf "%s-opal-administrator" (include "common.names.fullname" .) -}}
     {{ $secretName }}
 {{- else -}}
     {{ .Values.opal.auth.administrator.existingSecret.name }}
@@ -248,7 +196,7 @@ Get the name of the secret containing the rock admin password
 */}}
 {{- define "opal.rock.auth.admin-secret-name" -}}
 {{- if empty .Values.rock.auth.administrator.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "opal.fullname" .) -}}
+    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
     {{ $secretName }}
 {{- else -}}
     {{ .Values.rock.auth.administrator.existingSecret.name }}
@@ -271,7 +219,7 @@ Get the name of the secret containing the rock manager password
 */}}
 {{- define "opal.rock.auth.manager-secret-name" -}}
 {{- if empty .Values.rock.auth.manager.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "opal.fullname" .) -}}
+    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
     {{ $secretName }}
 {{- else -}}
     {{ .Values.rock.auth.manager.existingSecret.name }}
@@ -294,7 +242,7 @@ Get the name of the secret containing the rock user password
 */}}
 {{- define "opal.rock.auth.user-secret-name" -}}
 {{- if empty .Values.rock.auth.user.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "opal.fullname" .) -}}
+    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
     {{ $secretName }}
 {{- else -}}
     {{ .Values.rock.auth.user.existingSecret.name }}
@@ -325,7 +273,7 @@ Create the name of the service account to use
 */}}
 {{- define "opal.opal.serviceAccountName" -}}
 {{- if .Values.opal.serviceAccount.create }}
-{{- default (include "opal.fullname" .) .Values.opal.serviceAccount.name }}
+{{- default (include "common.names.fullname" .) .Values.opal.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.opal.serviceAccount.name }}
 {{- end }}
@@ -336,7 +284,7 @@ Create the name of the service account to use
 */}}
 {{- define "opal.rock.serviceAccountName" -}}
 {{- if .Values.rock.serviceAccount.create }}
-{{- default (include "opal.fullname" .) .Values.rock.serviceAccount.name }}
+{{- default (include "common.names.fullname" .) .Values.rock.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.rock.serviceAccount.name }}
 {{- end }}

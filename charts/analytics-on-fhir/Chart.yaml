@@ -11,6 +11,9 @@ sources:
 maintainers:
   - name: miracum
 dependencies:
+  - name: common
+    repository: oci://ghcr.io/miracum/charts
+    version: 0.2.0
   - name: pathling-server
     version: 0.10.15
     repository: oci://ghcr.io/chgl/charts
@@ -26,7 +29,7 @@ dependencies:
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.1.36
+version: 0.1.37
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -35,11 +38,11 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: added
-      description: "`initJob.backoffLimit` and `initJob.activeDeadlineSeconds` to bound the init job's retries and runtime"
+    - kind: security
+      description: "the init job now downloads a pinned Synthea release (`initJob.synthea.version`) and verifies its SHA-256 checksum instead of downloading the unpinned `master-branch-latest` build"
     - kind: changed
-      description: "the init job is no longer deleted 100s after it finishes, so the logs of a failed job stay available. Successful jobs are still deleted by the hook delete policy."
-    - kind: added
-      description: "NOTES.txt"
+      description: "the init job's container images are now configurable via `initJob.*.image` and are updated by Renovate"
+    - kind: security
+      description: "the `generate-resources` container of the init job now uses a read-only root filesystem"
     - kind: changed
-      description: "`kubeVersion` is now `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
+      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The `app.kubernetes.io/name` label of the init job and its ConfigMaps is now the chart name."

@@ -192,6 +192,35 @@ initJob:
   backoffLimit: 2
   # -- maximum duration in seconds the init job may run for, across all retries, before it is terminated and marked as failed
   activeDeadlineSeconds: 3600
+  # -- the Synthea release used to generate the synthetic patients. The downloaded jar is verified against `sha256`,
+  # so both values need to be updated together.
+  synthea:
+    version: v4.0.0
+    sha256: ed43c20ad40ba5c3bc724503a5af032715fe3c491620b766148e7c2361e6ecc1
+  # @ignored
+  curl:
+    image:
+      registry: docker.io
+      repository: curlimages/curl
+      tag: 8.23.0@sha256:a134550be58ab783810e613ae96fd253c38f7bdd16d9bf9be350700c7a29ac06
+  # @ignored
+  awsCli:
+    image:
+      registry: docker.io
+      repository: amazon/aws-cli
+      tag: 2.37.9@sha256:92de75724b6a746951f0e8b915d86bbccd7cb55aff96cd0cb4f7017272160780
+  # @ignored
+  wait4x:
+    image:
+      registry: ghcr.io
+      repository: wait4x/wait4x
+      tag: 3.5.1@sha256:52e6791d4d8b8c80b2106e4d4f1e44ee69477c6dd461bdeb1aae2db6ccd5d038
+  # @ignored
+  fhirToLakehouse:
+    image:
+      registry: ghcr.io
+      repository: bzkf/fhir-to-lakehouse
+      tag: v1.13.16@sha256:6dc63a645b48523eb0696a2aff94072a70274b256b8698e5682765941f287c17
 
 # @ignored
 restrictedContainerSecurityContext:

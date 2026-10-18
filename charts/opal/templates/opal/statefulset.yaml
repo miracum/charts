@@ -2,23 +2,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name:  {{ include "opal.fullname" $ }}-opal
+  name:  {{ include "common.names.fullname" $ }}-opal
   labels:
-    {{- include "opal.labels" $ | nindent 4 }}
+    {{- include "common.labels.standard" $ | nindent 4 }}
     app.kubernetes.io/component: opal
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ include "opal.fullname" $ }}-opal
+  serviceName: {{ include "common.names.fullname" $ }}-opal
   selector:
     matchLabels:
-      {{- include "opal.selectorLabels" $ | nindent 6 }}
+      {{- include "common.labels.matchLabels" $ | nindent 6 }}
       app.kubernetes.io/component: opal
   template:
     metadata:
       annotations:
         checksum/db-passwords: {{ include (print $.Template.BasePath "/opal/db-secret.yaml") $ | sha256sum | quote }}
       labels:
-        {{- include "opal.selectorLabels" $ | nindent 8 }}
+        {{- include "common.labels.matchLabels" $ | nindent 8 }}
         app.kubernetes.io/component: opal
     spec:
       {{- with .imagePullSecrets }}
@@ -70,7 +70,7 @@ spec:
           {{- end }}
           env:
             - name: ROCK_URL
-              value: "http://{{ include "opal.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/_check"
+              value: "http://{{ include "common.names.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/_check"
           command: ["/bin/sh", "-c"]
           args:
             - |

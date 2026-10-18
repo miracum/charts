@@ -4,8 +4,8 @@ Thank you for installing {{ .Chart.Name }}.
 A post-install/upgrade job loads synthetic FHIR data into the Pathling server and registers the resulting tables in the Hive Metastore.
 Watch its progress with:
 
-  kubectl --namespace {{ .Release.Namespace }} get job,pods -l job-name={{ include "analytics-on-fhir.fullname" . }}-init-job
-  kubectl --namespace {{ .Release.Namespace }} logs job/{{ include "analytics-on-fhir.fullname" . }}-init-job --all-containers --follow
+  kubectl --namespace {{ .Release.Namespace }} get job,pods -l job-name={{ include "common.names.fullname" . }}-init-job
+  kubectl --namespace {{ .Release.Namespace }} logs job/{{ include "common.names.fullname" . }}-init-job --all-containers --follow
 
 If the job fails, it is kept (not deleted) so its logs remain available. It is retried at most {{ .Values.initJob.backoffLimit }} time(s) and terminated after {{ .Values.initJob.activeDeadlineSeconds }}s.
 

@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  name: {{ include "common.names.fullname" . }}-loinc-converter
   labels:
-    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: loinc-converter
 spec:
   type: {{ .Values.loincConverter.service.type }}
@@ -14,6 +14,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "fhir-gateway.matchLabels" . | nindent 4 }}
+    {{- include "common.labels.matchLabels" . | nindent 4 }}
     app.kubernetes.io/component: loinc-converter
 {{- end -}}

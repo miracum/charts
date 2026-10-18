@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "blaze.fullname" . }}-frontend
+  name: {{ include "common.names.fullname" . }}-frontend
   labels:
-    {{- include "blaze.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: frontend
   {{- if .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "blaze.selectorLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: frontend
   replicas: {{ .Values.frontend.replicaCount }}
   template:
@@ -22,7 +22,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "blaze.selectorLabels" . | nindent 8 }}
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
         app.kubernetes.io/component: frontend
     spec:
       {{- with .Values.frontend.imagePullSecrets }}
@@ -55,7 +55,7 @@ spec:
             - name: ORIGIN
               value: {{ .Values.frontend.origin }}
             - name: BACKEND_BASE_URL
-              value: {{ .Values.frontend.backendURL }}
+              value: {{ include "common.tplvalues.render" (dict "value" .Values.frontend.backendURL "context" $) | quote }}
           {{- with .Values.frontend.extraEnv }}
             {{- toYaml . | nindent 12 }}
           {{- end }}

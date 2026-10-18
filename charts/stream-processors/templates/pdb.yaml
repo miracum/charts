@@ -1,0 +1,26 @@
+{{- range $name, $processor := .Values.processors }}
+{{- $spec := mustMergeOverwrite (deepCopy $.Values.default) $processor -}}
+{{- with $spec.podDisruptionBudget }}
+{{- if .enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "common.names.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "stream-processors.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+spec:
+  {{- if .minAvailable }}
+  minAvailable: {{ .minAvailable }}
+  {{- else }}
+  maxUnavailable: {{ .maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $name }}
+{{- end }}
+{{- end }}
+{{- end }}

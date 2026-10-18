@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "blaze.fullname" . }}
+  name: {{ include "common.names.fullname" . }}
   labels:
-    {{- include "blaze.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: server
 spec:
   type: {{ .Values.service.type }}
@@ -19,5 +19,5 @@ spec:
       name: http-metrics
     {{- end }}
   selector:
-    {{- include "blaze.selectorLabels" . | nindent 4 }}
+    {{- include "common.labels.matchLabels" . | nindent 4 }}
     app.kubernetes.io/component: server

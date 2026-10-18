@@ -2,12 +2,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-gateway
+  name: {{ include "common.names.fullname" . }}-gateway
   {{- if .Values.metrics.serviceMonitor.namespace }}
   namespace: {{ .Values.metrics.serviceMonitor.namespace }}
   {{- end }}
   labels:
-    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway
     {{- if .Values.metrics.serviceMonitor.additionalLabels }}
     {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
@@ -27,6 +27,6 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "fhir-gateway.matchLabels" $ | nindent 6 }}
+      {{- include "common.labels.matchLabels" $ | nindent 6 }}
       app.kubernetes.io/component: fhir-gateway
 {{- end }}

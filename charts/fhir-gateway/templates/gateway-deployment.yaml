@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-gateway
+  name: {{ include "common.names.fullname" . }}-gateway
   labels:
-    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway
   {{- with .Values.common.deploymentAnnotations }}
   annotations:
@@ -13,7 +13,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: fhir-gateway
   template:
     metadata:
@@ -28,7 +28,7 @@ spec:
         {{- end }}
       {{- end }}
       labels:
-        {{- include "fhir-gateway.matchLabels" . | nindent 8 }}
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
         app.kubernetes.io/component: fhir-gateway
     spec:
       serviceAccountName: {{ include "fhir-gateway.serviceAccountName" . }}
@@ -103,7 +103,7 @@ spec:
             - name: SERVICES_LOINC_CONVERSIONS_ENABLED
               value: {{ .Values.loincConverter.enabled | quote }}
             - name: SERVICES_LOINC_CONVERSIONS_URL
-              value: "http://{{ include "fhir-gateway.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1"
+              value: "http://{{ include "common.names.fullname" . }}-loinc-converter:{{ .Values.loincConverter.service.port }}/api/v1"
             - name: SERVICES_FHIRSERVER_ENABLED
               value: {{ .Values.sinks.fhirServer.enabled | quote }}
             {{- if .Values.sinks.fhirServer.enabled }}
@@ -125,7 +125,7 @@ spec:
             - name: SSL_KEY_STORE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "fhir-gateway.fullname" . }}-kafka-user
+                  name: {{ include "common.names.fullname" . }}-kafka-user
                   key: user.password
             - name: SSL_TRUST_STORE_PASSWORD
               valueFrom:
@@ -200,7 +200,7 @@ spec:
                   - key: ca.p12
                     path: ca.p12
             - secret:
-                name: {{ include "fhir-gateway.fullname" . }}-kafka-user
+                name: {{ include "common.names.fullname" . }}-kafka-user
                 items:
                   - key: user.crt
                     path: user.crt

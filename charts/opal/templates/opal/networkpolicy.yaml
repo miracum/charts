@@ -2,14 +2,14 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "opal.fullname" . }}-opal
+  name: {{ include "common.names.fullname" . }}-opal
   labels:
-    {{- include "opal.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: opal
 spec:
   podSelector:
     matchLabels:
-      {{- include "opal.selectorLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: opal
   policyTypes:
     - Ingress
@@ -18,7 +18,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              {{- include "opal.selectorLabels" . | nindent 14 }}
+              {{- include "common.labels.matchLabels" . | nindent 14 }}
               app.kubernetes.io/component: test-connection
       ports:
         - port: http
@@ -40,7 +40,7 @@ spec:
     - to:
         - podSelector:
             matchLabels:
-              {{- include "opal.selectorLabels" . | nindent 14 }}
+              {{- include "common.labels.matchLabels" . | nindent 14 }}
               app.kubernetes.io/component: rock
       ports:
         - port: http

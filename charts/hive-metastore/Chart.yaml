@@ -14,9 +14,9 @@ dependencies:
     condition: postgres.enabled
   - name: common
     repository: oci://ghcr.io/miracum/charts
-    version: 0.1.1
+    version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 0.5.1
+version: 0.6.0
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -27,17 +27,11 @@ annotations:
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
+    - kind: security
+      description: "the config ConfigMap is mounted with mode `0555` instead of `0777` and `hive-site.tmpl.xml` is mounted read-only"
+    - kind: security
+      description: "BREAKING CHANGE: `database.password` no longer defaults to `postgres`. It must be set (or `database.existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The password Secret is no longer created when `postgres.enabled=true`."
+    - kind: fixed
+      description: "the Helm test pod no longer carries the selector labels of the Deployment and Service, so it can't receive traffic or be adopted"
     - kind: changed
-      description: "the pod template now only carries the stable selector labels. Previously `helm.sh/chart` and `app.kubernetes.io/version` changed with every chart release and rolled the pods unnecessarily. This causes a one-time restart on upgrade."
-    - kind: added
-      description: "set resource requests/limits on the `wait-for-db` init container (`initContainers.resourcesPreset`/`initContainers.resources`), so pods are admitted in namespaces with a ResourceQuota"
-    - kind: added
-      description: "optional PodDisruptionBudget (`podDisruptionBudget.*`), disabled by default"
-    - kind: changed
-      description: "roll the pod when the database password Secret changes"
-    - kind: changed
-      description: "`kubeVersion` is now set to `>= 1.23.0-0`. The `-0` suffix allows pre-release-tagged versions such as `v1.30.1-eks-abc` or `v1.30.1-gke.100`, which `>= 1.19.0` did not match."
-    - kind: removed
-      description: "removed the `ingress` template and values. The Hive Metastore speaks Thrift over plain TCP, which an HTTP Ingress cannot route. Use the Service (`ClusterIP`/`NodePort`/`LoadBalancer`) instead."
-    - kind: changed
-      description: "corrected the descriptions of the `database.*` values, which referred to the old `postgresql.*` keys"
+      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`hive-metastore.fullname`, ...) were removed."

@@ -3,7 +3,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "blaze.fullname" . }}
+  name: {{ include "common.names.fullname" . }}
 spec:
   {{- with .Values.frontend.ingressRoute.entryPoints }}
   entryPoints:
@@ -19,7 +19,7 @@ spec:
         HeadersRegexp(`Authorization`, `^{{ .Values.frontend.ingressRoute.backendAuthType }}`)
       services:
         - kind: Service
-          name: {{ include "blaze.fullname" . }}
+          name: {{ include "common.names.fullname" . }}
           port: http
       {{- with .Values.frontend.ingressRoute.middlewares.backend }}
       middlewares:
@@ -32,7 +32,7 @@ spec:
         PathPrefix(`/fhir`)
       services:
         - kind: Service
-          name: {{ include "blaze.fullname" . }}-frontend
+          name: {{ include "common.names.fullname" . }}-frontend
           port: http
       {{- with .Values.frontend.ingressRoute.middlewares.frontend }}
       middlewares:
@@ -45,7 +45,7 @@ spec:
         PathPrefix(`/metrics`)
       services:
         - kind: Service
-          name: {{ include "blaze.fullname" . }}
+          name: {{ include "common.names.fullname" . }}
           port: http-metrics
       {{- with .Values.frontend.ingressRoute.middlewares.metrics }}
       middlewares:

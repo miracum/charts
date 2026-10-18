@@ -2,9 +2,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "fhir-gateway.fullname" . }}-gateway
+  name: {{ include "common.names.fullname" . }}-gateway
   labels:
-    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: fhir-gateway
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
@@ -14,6 +14,6 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: fhir-gateway
 {{- end }}

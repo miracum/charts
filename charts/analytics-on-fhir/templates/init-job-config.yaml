@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "analytics-on-fhir.fullname" . }}-init-job-config
+  name: {{ include "common.names.fullname" . }}-init-job-config
   labels:
-    {{- include "analytics-on-fhir.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
 data:
   spark-defaults.conf: |
     {{ .Files.Get "files/spark-defaults.conf" | nindent 4 }}

@@ -4,7 +4,7 @@ metadata:
   # would usually use fullname here, but this is incompatible with the envFrom templat rendering used by the trino sub-chart
   name: '{{ printf "%s-%s" .Release.Name "endpoint-config" }}'
   labels:
-    {{- include "analytics-on-fhir.labels" . | nindent 4 }}
+    {{- include "common.labels.standard" . | nindent 4 }}
 data:
   PATHLING_SERVER_URL: '{{ printf "http://%s-%s:%d" .Release.Name "pathling-server" 8080 }}'
   AWS_ENDPOINT_URL: '{{ printf "http://%s-%s:%d" .Release.Name "minio" 9000 }}'
