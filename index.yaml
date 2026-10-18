@@ -3,6 +3,53 @@ entries:
   analytics-on-fhir:
   - annotations:
       artifacthub.io/changes: |
+        - kind: security
+          description: "the init job now downloads a pinned Synthea release (`initJob.synthea.version`) and verifies its SHA-256 checksum instead of downloading the unpinned `master-branch-latest` build"
+        - kind: changed
+          description: "the init job's container images are now configurable via `initJob.*.image` and are updated by Renovate"
+        - kind: security
+          description: "the `generate-resources` container of the init job now uses a read-only root filesystem"
+        - kind: changed
+          description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The `app.kubernetes.io/name` label of the init job and its ConfigMaps is now the chart name."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-18T17:38:49.565504728Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.15
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.4.54
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: f047aaf9638bffe3f5e3b555167451db574a2d5d50c18c8fc26b426802569018
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.37/analytics-on-fhir-0.1.37.tgz
+    version: 0.1.37
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: "`initJob.backoffLimit` and `initJob.activeDeadlineSeconds` to bound the init job's retries and runtime"
         - kind: changed
@@ -1458,6 +1505,46 @@ entries:
     - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.1.0/analytics-on-fhir-0.1.0.tgz
     version: 0.1.0
   blaze:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "BREAKING CHANGE: the pod and Service selector label `app.kubernetes.io/name` is now the chart name (e.g. `blaze`) instead of the full release name, like in all other charts. Selectors are immutable, so see the upgrade notes in the README before upgrading."
+        - kind: changed
+          description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`blaze.fullname`, `blaze.labels`, ...) were removed; custom values that include them (e.g. `baseUrl`) must switch to `common.names.fullname`."
+        - kind: changed
+          description: "set `appVersion` to the Blaze version (updated by Renovate). It is also used for the `app.kubernetes.io/version` label."
+        - kind: fixed
+          description: "`frontend.backendURL` is now evaluated as a template. Previously the frontend received the literal, unrendered string."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    appVersion: 1.11.0
+    created: "2026-10-18T17:38:49.741646265Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying Blaze, a FHIR® Server with internal, fast
+      CQL Evaluation Engine.
+    digest: d1e77a7eafdc83126e65e036be9543d249c47fc554cc75303039345e2ade0881
+    home: https://github.com/samply/blaze
+    keywords:
+    - FHIR
+    - CQL
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: blaze
+    sources:
+    - https://github.com/samply/blaze
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/blaze-0.8.0/blaze-0.8.0.tgz
+    version: 0.8.0
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
@@ -8911,6 +8998,44 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`fhir-gateway.fullname`, ...) were removed; custom values that include them must switch to `common.names.fullname`."
+        - kind: changed
+          description: "set `appVersion` to the FHIR Gateway version (updated by Renovate)"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 6.1.9
+    created: "2026-10-18T17:38:49.93193126Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.10.24
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: daa094c701ef4e4e953257806641a87770ac45e14011482275e37fa445fc7bf1
+    home: https://github.com/miracum/fhir-gateway
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-12.0.47/fhir-gateway-12.0.47.tgz
+    version: 12.0.47
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
@@ -24850,6 +24975,45 @@ entries:
   hive-metastore:
   - annotations:
       artifacthub.io/changes: |
+        - kind: security
+          description: "the config ConfigMap is mounted with mode `0555` instead of `0777` and `hive-site.tmpl.xml` is mounted read-only"
+        - kind: security
+          description: "BREAKING CHANGE: `database.password` no longer defaults to `postgres`. It must be set (or `database.existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The password Secret is no longer created when `postgres.enabled=true`."
+        - kind: fixed
+          description: "the Helm test pod no longer carries the selector labels of the Deployment and Service, so it can't receive traffic or be adopted"
+        - kind: changed
+          description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`hive-metastore.fullname`, ...) were removed."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-18T17:38:50.096985799Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Hive Metastore
+    digest: eec38650db328414ecb191d53bc99747b7eaa9c96566dbb774cb4050f407b91c
+    home: https://hive.apache.org/
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.6.0/hive-metastore-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: "the pod template now only carries the stable selector labels. Previously `helm.sh/chart` and `app.kubernetes.io/version` changed with every chart release and rolled the pods unnecessarily. This causes a one-time restart on upgrade."
         - kind: added
@@ -27040,6 +27204,55 @@ entries:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: security
+          description: "the Opal server container now runs with a read-only root filesystem"
+        - kind: security
+          description: "the Rock init script ConfigMap is mounted with mode `0555` instead of `0777`"
+        - kind: security
+          description: "BREAKING CHANGE: `opal.database.data.password` and `opal.database.ids.password` no longer have default values. They must be set (or the respective `existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The DB password Secret is no longer created when `postgres.enabled=true`."
+        - kind: changed
+          description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`opal.fullname`, ...) were removed."
+        - kind: changed
+          description: "set `appVersion` to the Opal version (updated by Renovate)"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 5.7.6
+    created: "2026-10-18T17:38:50.305965049Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 0f7429bd230947321ad1529850c87239868cf3e9096a4a87fd6475bc615c5246
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.94/opal-0.3.94.tgz
+    version: 0.3.94
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
@@ -33414,6 +33627,40 @@ entries:
     - https://github.com/miracum/charts/releases/download/recruit-9.0.0/recruit-9.0.0.tgz
     version: 9.0.0
   stream-processors:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: "optional PodDisruptionBudget per processor (`default.podDisruptionBudget.*` or `processors.<name>.podDisruptionBudget.*`), disabled by default"
+        - kind: changed
+          description: "use the shared name helpers of the `common` chart 0.2.0. The chart-specific `stream-processors.name`, `.fullname` and `.chart` helper templates were removed."
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    apiVersion: v2
+    created: "2026-10-18T17:38:50.56503021Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying a set of Kafka stream processing apps
+    digest: c06eed3d0fbe0373ee9b55c2082baf00b27ce1a68a188c6f7f9b7702e733811c
+    home: https://github.com/miracum/charts
+    keywords:
+    - kafka
+    - strimzi kafka operator
+    - stream processing
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: stream-processors
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/stream-processors-2.0.2/stream-processors-2.0.2.tgz
+    version: 2.0.2
   - annotations:
       artifacthub.io/changes: |
         - kind: added
@@ -40952,4 +41199,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-18T14:08:21.396533449Z"
+generated: "2026-10-18T17:38:50.567538027Z"
