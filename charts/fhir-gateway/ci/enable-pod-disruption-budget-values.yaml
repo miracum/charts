@@ -1,9 +1,7 @@
-replicaCount: 2
 podDisruptionBudget:
   enabled: true
   maxUnavailable: 1
 loincConverter:
-  replicaCount: 2
   podDisruptionBudget:
     enabled: true
     minAvailable: 1
