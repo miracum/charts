@@ -1,0 +1,19 @@
+{{- if and .Values.loincConverter.enabled .Values.loincConverter.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "fhir-gateway.fullname" . }}-loinc-converter
+  labels:
+    {{- include "fhir-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loinc-converter
+spec:
+  {{- if .Values.loincConverter.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.loincConverter.podDisruptionBudget.minAvailable }}
+  {{- else }}
+  maxUnavailable: {{ .Values.loincConverter.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fhir-gateway.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: loinc-converter
+{{- end }}

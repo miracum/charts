@@ -183,12 +183,14 @@ jobs:
           # can still race it and fail with "connect: connection refused".
           # Retrying is simpler and more robust than guessing a long-enough
           # sleep; ct's own cleanup on failure (uninstalls the release,
-          # deletes the namespace) makes re-running it safe.
-          for i in 1 2 3 4 5; do
+          # deletes the namespace) makes re-running it safe. Every attempt
+          # reinstalls all changed charts, so a genuine failure is retried
+          # only once to keep the feedback loop short.
+          for i in 1 2; do
             if ct install --config .github/ct/install.yaml; then
               exit 0
             fi
-            echo "ct install failed (attempt ${i}/5), retrying in 10s..."
+            echo "ct install failed (attempt ${i}/2), retrying in 10s..."
             sleep 10
           done
           exit 1

@@ -15,6 +15,8 @@ spec:
       app.kubernetes.io/component: rock
   template:
     metadata:
+      annotations:
+        checksum/init-script: {{ include (print $.Template.BasePath "/rock/init-script-cm.yaml") $ | sha256sum | quote }}
       labels:
         {{- include "opal.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: rock
@@ -223,7 +225,7 @@ spec:
         {{- if .persistence.selector }}
         selector: {{- include "common.tplvalues.render" (dict "value" .persistence.selector "context" $) | nindent 10 }}
         {{- end }}
-        {{- include "opal.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
+        {{- include "common.storage.class" (dict "persistence" .persistence "global" $.Values.global) | nindent 8 }}
   {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:

@@ -187,6 +187,12 @@ trino:
   server:
     workers: 1
 
+initJob:
+  # -- number of retries before the post-install/upgrade init job that loads the synthetic data is marked as failed
+  backoffLimit: 2
+  # -- maximum duration in seconds the init job may run for, across all retries, before it is terminated and marked as failed
+  activeDeadlineSeconds: 3600
+
 # @ignored
 restrictedContainerSecurityContext:
   allowPrivilegeEscalation: false

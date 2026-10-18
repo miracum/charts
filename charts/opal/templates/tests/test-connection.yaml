@@ -13,19 +13,23 @@ spec:
   restartPolicy: Never
   automountServiceAccountToken: {{ .Values.tests.automountServiceAccountToken }}
   containers:
-    - name: probe-opal-endpoint
+    {{- $probes := list
+      (dict "name" "probe-opal-endpoint" "url" (printf "http://%s-opal:%v/" (include "opal.fullname" .) .Values.opal.service.port))
+      (dict "name" "probe-rock-endpoint" "url" (printf "http://%s-rock:%v/_check" (include "opal.fullname" .) .Values.rock.service.port))
+    }}
+    {{- range $probes }}
+    - name: {{ .name }}
       image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
       command: ["curl"]
-
-      args: ["--fail-with-body", "-vvv", "http://{{ include "opal.fullname" . }}-opal:{{ .Values.opal.service.port }}/"]
-      {{- with .Values.restrictedContainerSecurityContext }}
+      args: ["--fail-with-body", "-vvv", {{ .url | quote }}]
+      {{- with $.Values.restrictedContainerSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
+      {{- if $.Values.tests.resources }}
+      resources: {{- toYaml $.Values.tests.resources | nindent 10 }}
+      {{- else if ne $.Values.tests.resourcesPreset "none" }}
+      resources: {{- include "common.resources.preset" (dict "type" $.Values.tests.resourcesPreset) | nindent 10 }}
       {{- end }}
       livenessProbe:
         exec:
@@ -33,22 +37,4 @@ spec:
       readinessProbe:
         exec:
           command: ["true"]
-    - name: probe-rock-endpoint
-      image: "{{ $.Values.curl.image.registry }}/{{ $.Values.curl.image.repository }}:{{ $.Values.curl.image.tag }}"
-      command: ["curl"]
-      args: ["--fail-with-body", "-vvv", "http://{{ include "opal.fullname" . }}-rock:{{ .Values.rock.service.port }}/_check"]
-      {{- with .Values.restrictedContainerSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.tests.resources }}
-      resources: {{- toYaml .Values.tests.resources | nindent 10 }}
-      {{- else if ne .Values.tests.resourcesPreset "none" }}
-      resources: {{- include "common.resources.preset" (dict "type" .Values.tests.resourcesPreset) | nindent 10 }}
-      {{- end }}
-      livenessProbe:
-        exec:
-          command: ["true"]
-      readinessProbe:
-        exec:
-          command: ["true"]
+    {{- end }}

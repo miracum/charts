@@ -211,26 +211,6 @@ Get the key inside the secret containing the DB user's password
 {{- end -}}
 {{- end -}}
 
-{{/*
-Return  the proper Storage Class
-Via <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_storage.tpl>
-*/}}
-{{- define "opal.storage.class" -}}
-{{- $storageClass := .persistence.storageClass -}}
-{{- if .global -}}
-    {{- if .global.storageClass -}}
-        {{- $storageClass = .global.storageClass -}}
-    {{- end -}}
-{{- end -}}
-{{- if $storageClass -}}
-  {{- if (eq "-" $storageClass) -}}
-      {{- printf "storageClassName: \"\"" -}}
-  {{- else }}
-      {{- printf "storageClassName: %s" $storageClass -}}
-  {{- end -}}
-{{- end -}}
-{{- end -}}
-
 {{- define "opal.rock-hosts" -}}
 {{- $rockServiceName := printf "%s-rock" (include "opal.fullname" .) -}}
 {{- $rock := list -}}

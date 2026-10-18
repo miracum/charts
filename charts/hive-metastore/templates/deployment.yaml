@@ -15,11 +15,12 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
+        checksum/db-password: {{ include (print $.Template.BasePath "/db-password-secret.yaml") . | sha256sum | quote }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "hive-metastore.labels" . | nindent 8 }}
+        {{- include "hive-metastore.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -41,6 +42,11 @@ spec:
           {{- with .Values.restrictedContainerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.initContainers.resources }}
+          resources: {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          {{- else if ne .Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
             - name: PGHOST

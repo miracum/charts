@@ -11,7 +11,7 @@ chart:
   values: "-- generate from values file --"
   valuesExample: "-- generate from values file --"
 prerequisites:
-  - "Kubernetes v1.16+"
+  - "Kubernetes v1.23+"
   - "Helm v3"
   - "Strimzi Kafka Operator installed"
 release:

@@ -51,6 +51,10 @@ defaultTolerations: []
 default:
   # Set container timezone
   timezone: "Europe/Berlin"
+  container:
+    # set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge).
+    # This is ignored if the processor sets `container.resources`, which is recommended for production.
+    resourcesPreset: "none"
   persistence:
     # Enable persistence. This changes the processor's type from Deployment to a StatefulSet
     enabled: false
