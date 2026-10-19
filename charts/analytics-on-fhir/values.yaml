@@ -220,7 +220,7 @@ initJob:
     image:
       registry: ghcr.io
       repository: bzkf/fhir-to-lakehouse
-      tag: v1.13.16@sha256:6dc63a645b48523eb0696a2aff94072a70274b256b8698e5682765941f287c17
+      tag: v1.14.0@sha256:3f3b3a38648eb9d4c725c011a3733aeb9c643a92d8878c3bb68ab16fb0f91323
 
 # @ignored
 restrictedContainerSecurityContext:
