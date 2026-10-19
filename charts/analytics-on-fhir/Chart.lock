@@ -7,9 +7,9 @@ dependencies:
   version: 0.10.15
 - name: hive-metastore
   repository: oci://ghcr.io/miracum/charts
-  version: 0.6.0
+  version: 0.6.1
 - name: trino
   repository: https://trinodb.github.io/charts
   version: 1.45.0
-digest: sha256:e3c0422ef528ee5d63c9a4e112e4ca45d86639fc358a849161d0b440e3e72a23
-generated: "2026-10-18T18:03:54.583325353Z"
+digest: sha256:ca9f6395e2f5e3009543604f21c0b122783f606e35f214892d694a86cd786a30
+generated: "2026-10-19T19:55:35.572765893Z"
