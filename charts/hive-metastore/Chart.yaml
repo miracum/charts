@@ -16,7 +16,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 0.6.0
+version: 0.6.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -26,12 +26,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
-    - kind: security
-      description: "the config ConfigMap is mounted with mode `0555` instead of `0777` and `hive-site.tmpl.xml` is mounted read-only"
-    - kind: security
-      description: "BREAKING CHANGE: `database.password` no longer defaults to `postgres`. It must be set (or `database.existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The password Secret is no longer created when `postgres.enabled=true`."
-    - kind: fixed
-      description: "the Helm test pod no longer carries the selector labels of the Deployment and Service, so it can't receive traffic or be adopted"
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`hive-metastore.fullname`, ...) were removed."
+      description: "Updated ghcr.io/miracum/util-images/hive-metastore to v1.4.3"
