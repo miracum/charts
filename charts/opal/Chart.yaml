@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 0.3.94
+version: 0.3.95
 # renovate: datasource=docker depName=docker.io/obiba/opal
 appVersion: "5.7.6"
 annotations:
@@ -34,14 +34,8 @@ annotations:
     - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
   # When using the list of objects option the valid supported kinds are
   # added, changed, deprecated, removed, fixed and security.
-  artifacthub.io/changes: |
-    - kind: security
-      description: "the Opal server container now runs with a read-only root filesystem"
-    - kind: security
-      description: "the Rock init script ConfigMap is mounted with mode `0555` instead of `0777`"
-    - kind: security
-      description: "BREAKING CHANGE: `opal.database.data.password` and `opal.database.ids.password` no longer have default values. They must be set (or the respective `existingSecret.name` be used) when `postgres.enabled=false`; the chart fails to render otherwise. The DB password Secret is no longer created when `postgres.enabled=true`."
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "use the shared helpers of the `common` chart 0.2.0 for names and labels. The chart-specific helper templates (`opal.fullname`, ...) were removed."
-    - kind: changed
-      description: "set `appVersion` to the Opal version (updated by Renovate)"
+      description: "Updated docker.io/curlimages/curl to sha256:11e64e28c5f58c8d93ee95fcf22ac055f48b0bc440e0ce7d8013bbb5ad6aa8ac"
