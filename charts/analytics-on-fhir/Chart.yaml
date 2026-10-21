@@ -19,7 +19,7 @@ dependencies:
     repository: oci://ghcr.io/chgl/charts
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
-    version: 0.6.1
+    version: 0.6.2
   - name: trino
     repository: https://trinodb.github.io/charts
     version: 1.45.0
@@ -29,7 +29,7 @@ dependencies:
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.2.1
+version: 0.2.2
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -41,4 +41,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/ig-build-tools to v2.4.3"
+      description: "Updated hive-metastore to 0.6.2"
