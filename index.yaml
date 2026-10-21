@@ -5,6 +5,55 @@ entries:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: "Optionally load the generated patients into a FHIR server (`initJob.fhirServer.url`), with the same resource ids as in the lakehouse"
+        - kind: added
+          description: "Made the Synthea seed, reference date, and population configurable (`initJob.synthea.*`)"
+        - kind: changed
+          description: "Use the Synthea CLI from the ghcr.io/miracum/ig-build-tools image instead of downloading it at runtime. Removed `initJob.synthea.version` and `initJob.synthea.sha256`"
+        - kind: changed
+          description: "Increased the CPU and memory resources of the init job's Synthea container"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-21T15:00:42.518358091Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.15
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.1
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: 9e86ac06789a561e7e24069e0e1cf3a8cf32cef5d38ada2bb7057eb495fc5e4c
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.2.0/analytics-on-fhir-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
         - kind: changed
           description: "Updated docker.io/curlimages/curl to sha256:11e64e28c5f58c8d93ee95fcf22ac055f48b0bc440e0ce7d8013bbb5ad6aa8ac"
       artifacthub.io/containsSecurityUpdates: "false"
@@ -9421,6 +9470,44 @@ entries:
     - https://github.com/miracum/charts/releases/download/datashield-0.1.0/datashield-0.1.0.tgz
     version: 0.1.0
   fhir-gateway:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 6.1.9
+    created: "2026-10-21T15:00:42.839755683Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - condition: fhir-pseudonymizer.enabled
+      name: fhir-pseudonymizer
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.10.27
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the MIRACUM FHIR Gateway
+    digest: d1a3c040e7c053d6513e5d8472e5e63be08d38014f432fd9a31c59cab793223e
+    home: https://github.com/miracum/fhir-gateway
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: fhir-gateway
+    sources:
+    - https://github.com/miracum/fhir-gateway
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/fhir-gateway-12.0.50/fhir-gateway-12.0.50.tgz
+    version: 12.0.50
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -25477,6 +25564,41 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-21T15:00:43.171769875Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Hive Metastore
+    digest: 7448ab7ada95f3513b060c0f3ec595e8999b0c2e57b23eff5fd18bc361b515e4
+    home: https://hive.apache.org/
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.6.2/hive-metastore-0.6.2.tgz
+    version: 0.6.2
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/util-images/hive-metastore to v1.4.3"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -27738,6 +27860,49 @@ entries:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/library/postgres to sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 5.7.6
+    created: "2026-10-21T15:00:43.384617085Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: cacb1dd19847395ea34f342c54558643b53b33ab4b9088ff060e65245986b198
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.96/opal-0.3.96.tgz
+    version: 0.3.96
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -41776,4 +41941,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-20T23:41:57.853404674Z"
+generated: "2026-10-21T15:00:43.387041127Z"
