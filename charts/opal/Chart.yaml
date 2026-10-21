@@ -22,7 +22,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 0.3.95
+version: 0.3.96
 # renovate: datasource=docker depName=docker.io/obiba/opal
 appVersion: "5.7.6"
 annotations:
@@ -38,4 +38,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/curlimages/curl to sha256:11e64e28c5f58c8d93ee95fcf22ac055f48b0bc440e0ce7d8013bbb5ad6aa8ac"
+      description: "Updated docker.io/library/postgres to sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32"
