@@ -206,9 +206,6 @@ jobs:
     with:
       enable-validate-gradle-wrapper: false
       enable-codeql: false
-      enable-verify-base-image-signature: false
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   # A single, stably-named job to point required-status-check rules at.
   # chart-lint, test, and lint aren't safe to require individually:
