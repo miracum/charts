@@ -6,6 +6,49 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated hive-metastore to 0.6.2"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-21T15:44:48.22375351Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.15
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.2
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: ddc6ae15383a1b3dc0b0a539f20094e9fa1ea0415d90338a8e55b8f0746f39f1
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.2.2/analytics-on-fhir-0.2.2.tgz
+    version: 0.2.2
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/ig-build-tools to v2.4.3"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -41984,4 +42027,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-21T15:28:19.964489497Z"
+generated: "2026-10-21T15:44:48.225266589Z"
