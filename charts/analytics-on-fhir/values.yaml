@@ -192,11 +192,27 @@ initJob:
   backoffLimit: 2
   # -- maximum duration in seconds the init job may run for, across all retries, before it is terminated and marked as failed
   activeDeadlineSeconds: 3600
-  # -- the Synthea release used to generate the synthetic patients. The downloaded jar is verified against `sha256`,
-  # so both values need to be updated together.
   synthea:
-    version: v4.0.0
-    sha256: ed43c20ad40ba5c3bc724503a5af032715fe3c491620b766148e7c2361e6ecc1
+    # -- seed for Synthea's random number generators. The same seed (and Synthea version) always generates the same
+    # patients with the same resource ids.
+    seed: "20250916"
+    # -- date (YYYYMMDD) the patients' records are generated up to. Fixed, so their ages and the resources don't change
+    # depending on when the job runs.
+    referenceDate: "20250916"
+    # -- number of living synthetic patients to generate
+    population: 100
+  fhirServer:
+    # -- base URL of a FHIR server to additionally load the generated patients into, e.g. `http://my-fhir-server:8080/fhir`.
+    # The resources keep the same ids as the ones in the lakehouse, so query results can be looked up in the FHIR server.
+    # Rendered as a template, so it can refer to other resources of the release, e.g.
+    # `http://{{ .Release.Name }}-fhirserver:8080/fhir`. Leave empty to only load the patients into the lakehouse.
+    url: ""
+  # @ignored
+  igBuildTools:
+    image:
+      registry: ghcr.io
+      repository: miracum/ig-build-tools
+      tag: v2.4.0@sha256:d3ceba57f7d3cb6ea77e00a05fc0eef4f8970f704e8bb9def650c458eddf963f
   # @ignored
   curl:
     image:
