@@ -46,6 +46,10 @@ spec:
           env:
             - name: HOME
               value: /tmp
+            # the JVM defaults to a max heap of only 25% of the container's memory limit. Keeps the image's own
+            # file encoding setting, which this replaces.
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Dfile.encoding=UTF-8 -XX:MaxRAMPercentage=75"
             - name: SYNTHEA_SEED
               value: {{ .Values.initJob.synthea.seed | quote }}
             - name: SYNTHEA_REFERENCE_DATE
@@ -87,15 +91,16 @@ spec:
             runAsGroup: 65532
             seccompProfile:
               type: RuntimeDefault
+          # Synthea generates the patients in parallel, one thread per core, and runs twice if a FHIR server is set
           resources:
             limits:
-              cpu: 2000m
+              cpu: 4000m
               ephemeral-storage: 2Gi
-              memory: 1500Mi
+              memory: 3Gi
             requests:
-              cpu: 50m
+              cpu: 500m
               ephemeral-storage: 2Gi
-              memory: 1500Mi
+              memory: 3Gi
         {{- if .Values.initJob.fhirServer.url }}
         - name: load-into-fhir-server
           image: "{{ .Values.initJob.igBuildTools.image.registry }}/{{ .Values.initJob.igBuildTools.image.repository }}:{{ .Values.initJob.igBuildTools.image.tag }}"

@@ -46,3 +46,5 @@ annotations:
       description: "Made the Synthea seed, reference date, and population configurable (`initJob.synthea.*`)"
     - kind: changed
       description: "Use the Synthea CLI from the ghcr.io/miracum/ig-build-tools image instead of downloading it at runtime. Removed `initJob.synthea.version` and `initJob.synthea.sha256`"
+    - kind: changed
+      description: "Increased the CPU and memory resources of the init job's Synthea container"
