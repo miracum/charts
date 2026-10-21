@@ -29,7 +29,7 @@ dependencies:
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.2.0
+version: 0.2.1
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -40,11 +40,5 @@ annotations:
   artifacthub.io/changes: |-
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
-    - kind: added
-      description: "Optionally load the generated patients into a FHIR server (`initJob.fhirServer.url`), with the same resource ids as in the lakehouse"
-    - kind: added
-      description: "Made the Synthea seed, reference date, and population configurable (`initJob.synthea.*`)"
     - kind: changed
-      description: "Use the Synthea CLI from the ghcr.io/miracum/ig-build-tools image instead of downloading it at runtime. Removed `initJob.synthea.version` and `initJob.synthea.sha256`"
-    - kind: changed
-      description: "Increased the CPU and memory resources of the init job's Synthea container"
+      description: "Updated ghcr.io/miracum/ig-build-tools to v2.4.3"
