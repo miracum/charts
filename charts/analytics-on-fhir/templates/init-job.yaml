@@ -14,37 +14,6 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-        - name: download-synthea
-          image: "{{ .Values.initJob.curl.image.registry }}/{{ .Values.initJob.curl.image.repository }}:{{ .Values.initJob.curl.image.tag }}"
-          command: ["/bin/sh", "-c"]
-          workingDir: /downloads
-          env:
-            - name: SYNTHEA_VERSION
-              value: {{ .Values.initJob.synthea.version | quote }}
-            - name: SYNTHEA_SHA256
-              value: {{ .Values.initJob.synthea.sha256 | quote }}
-          args:
-            - |
-              curl -fLsSO "https://github.com/synthetichealth/synthea/releases/download/${SYNTHEA_VERSION}/synthea-with-dependencies.jar"
-              echo "${SYNTHEA_SHA256}  synthea-with-dependencies.jar" | sha256sum -c -
-              ls -lsa /downloads
-          volumeMounts:
-            - name: downloads
-              mountPath: /downloads
-          {{- with .Values.restrictedContainerSecurityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          # the page cache from writing the Synthea jar counts towards the limit, 32Mi was getting OOMKilled
-          resources:
-            limits:
-              cpu: 100m
-              ephemeral-storage: 2Gi
-              memory: 128Mi
-            requests:
-              cpu: 50m
-              ephemeral-storage: 2Gi
-              memory: 128Mi
         - name: wait-for-pathling-server
           image: "{{ .Values.initJob.curl.image.registry }}/{{ .Values.initJob.curl.image.repository }}:{{ .Values.initJob.curl.image.tag }}"
           command: ["/bin/sh", "-c"]
@@ -71,19 +40,41 @@ spec:
               ephemeral-storage: 50Mi
               memory: 32Mi
         - name: generate-resources
-          # might as well use this image since it has java installed
-          image: "{{ .Values.initJob.fhirToLakehouse.image.registry }}/{{ .Values.initJob.fhirToLakehouse.image.repository }}:{{ .Values.initJob.fhirToLakehouse.image.tag }}"
-          command: ["/bin/sh", "-c"]
-          workingDir: /downloads
+          image: "{{ .Values.initJob.igBuildTools.image.registry }}/{{ .Values.initJob.igBuildTools.image.repository }}:{{ .Values.initJob.igBuildTools.image.tag }}"
+          command: ["/bin/bash", "-c"]
+          workingDir: /data
           env:
+            - name: HOME
+              value: /tmp
+            # the JVM defaults to a max heap of only 25% of the container's memory limit. Keeps the image's own
+            # file encoding setting, which this replaces.
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Dfile.encoding=UTF-8 -XX:MaxRAMPercentage=75"
             - name: SYNTHEA_SEED
-              value: "20250916"
+              value: {{ .Values.initJob.synthea.seed | quote }}
+            - name: SYNTHEA_REFERENCE_DATE
+              value: {{ .Values.initJob.synthea.referenceDate | quote }}
+            - name: SYNTHEA_POPULATION
+              value: {{ .Values.initJob.synthea.population | quote }}
           args:
             - |
-              java -jar /downloads/synthea-with-dependencies.jar -s $SYNTHEA_SEED -cs $SYNTHEA_SEED -r $SYNTHEA_SEED -p 100 -c /tmp/config/synthea.properties
+              set -euo pipefail
+              synthea() {
+                java -jar /usr/local/bin/synthea.jar -s "${SYNTHEA_SEED}" -cs "${SYNTHEA_SEED}" -r "${SYNTHEA_REFERENCE_DATE}" \
+                  -p "${SYNTHEA_POPULATION}" -c /tmp/config/synthea.properties "$@"
+              }
+              # bulk export as NDJSON for the lakehouse
+              synthea
+              {{- if .Values.initJob.fhirServer.url }}
+              # Synthea can only export either NDJSON or transaction bundles per run. Using the same seed and
+              # configuration generates the exact same resources with the same ids again, just as transaction
+              # bundles for loading into the FHIR server.
+              synthea --exporter.fhir.bulk_data=false --exporter.fhir.transaction_bundle=true \
+                --exporter.baseDirectory=./synthea-transactions/
+              {{- end }}
           volumeMounts:
-            - name: downloads
-              mountPath: /downloads
+            - name: data
+              mountPath: /data
             - name: tmp
               mountPath: /tmp
             - name: init-job-config
@@ -100,15 +91,58 @@ spec:
             runAsGroup: 65532
             seccompProfile:
               type: RuntimeDefault
+          # Synthea generates the patients in parallel, one thread per core, and runs twice if a FHIR server is set
           resources:
             limits:
-              cpu: 2000m
+              cpu: 4000m
               ephemeral-storage: 2Gi
-              memory: 1500Mi
+              memory: 3Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 2Gi
+              memory: 3Gi
+        {{- if .Values.initJob.fhirServer.url }}
+        - name: load-into-fhir-server
+          image: "{{ .Values.initJob.igBuildTools.image.registry }}/{{ .Values.initJob.igBuildTools.image.repository }}:{{ .Values.initJob.igBuildTools.image.tag }}"
+          command: ["/bin/bash", "-c"]
+          workingDir: /data/synthea-transactions/fhir
+          env:
+            - name: FHIR_SERVER_URL
+              value: {{ tpl .Values.initJob.fhirServer.url . | quote }}
+          args:
+            - |
+              set -euo pipefail
+              until [ "$(curl -s -o /dev/null -L -w "%{http_code}" "${FHIR_SERVER_URL}/metadata")" = "200" ]; do
+                echo "$(date): Waiting for FHIR server @ ${FHIR_SERVER_URL} to be up";
+                sleep 5;
+              done;
+              # the hospital and practitioner bundles go first: the patient bundles reference their resources
+              for file in hospitalInformation*.json practitionerInformation*.json *_*.json; do
+                echo "Sending ${file}"
+                # Synthea creates all resources via POST, which makes the FHIR server assign new ids. Rewrite them
+                # to PUTs to keep the generated ids, so the resources match the ones loaded into the lakehouse.
+                jq '.entry |= map(.request = {method: "PUT", url: "\(.resource.resourceType)/\(.resource.id)"})' "${file}" |
+                  curl -sS --fail-with-body -o /dev/null --retry 5 --retry-delay 5 --retry-connrefused --retry-all-errors \
+                    -X POST -H "Content-Type: application/fhir+json" --data-binary @- "${FHIR_SERVER_URL}"
+              done
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: true
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 50Mi
+              memory: 256Mi
             requests:
               cpu: 50m
-              ephemeral-storage: 2Gi
-              memory: 1500Mi
+              ephemeral-storage: 50Mi
+              memory: 256Mi
+        {{- end }}
         - name: upload-resources
           image: "{{ .Values.initJob.awsCli.image.registry }}/{{ .Values.initJob.awsCli.image.repository }}:{{ .Values.initJob.awsCli.image.tag }}"
           command: ["/bin/sh", "-c"]
@@ -133,10 +167,10 @@ spec:
           args:
             - |
               aws s3api head-bucket --bucket import 2>/dev/null || aws s3api create-bucket --bucket import
-              aws s3 cp --recursive --no-progress /downloads/synthea/ s3://import/
+              aws s3 cp --recursive --no-progress /data/synthea/ s3://import/
           volumeMounts:
-            - name: downloads
-              mountPath: /downloads
+            - name: data
+              mountPath: /data
               readOnly: true
             - name: tmp
               mountPath: /tmp
@@ -274,7 +308,7 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
-        - name: downloads
+        - name: data
           emptyDir: {}
         - name: init-job-config
           configMap:
