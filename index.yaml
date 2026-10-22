@@ -6,6 +6,49 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/bzkf/fhir-to-lakehouse to v1.15.0"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-10-22T23:13:54.976429156Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.15
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.2
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: eac7443422da90adca23ca51338f2503b3e2983d84a2c05fee9fceee2358d971
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.2.6/analytics-on-fhir-0.2.6.tgz
+    version: 0.2.6
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/amazon/aws-cli to 2.38.5"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -42192,4 +42235,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-22T20:12:18.0603074Z"
+generated: "2026-10-22T23:13:54.979416606Z"
