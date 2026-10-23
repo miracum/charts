@@ -15,7 +15,7 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
   - name: pathling-server
-    version: 0.10.15
+    version: 0.10.17
     repository: oci://ghcr.io/chgl/charts
   - name: hive-metastore
     repository: oci://ghcr.io/miracum/charts
@@ -29,7 +29,7 @@ dependencies:
     #   version: 0.15.0
 deprecated: false
 kubeVersion: ">= 1.19.0"
-version: 0.2.7
+version: 0.2.8
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -41,4 +41,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/wait4x/wait4x to 3.7.3"
+      description: "Updated pathling-server to 0.10.17"
