@@ -25,9 +25,13 @@ for CHART in ${CHANGED_CHARTS}; do
     continue
   fi
 
-  # Extract changelog from base branch
-  BASE_CHANGELOG=$(git show "origin/${GITHUB_BASE_REF}:${CHART_FILE}" 2>/dev/null |
-    yq '.annotations."artifacthub.io/changes" // ""')
+  # Extract changelog from base branch. A chart added in this PR doesn't exist there yet,
+  # and `git show` failing would abort the script due to `set -e` and `pipefail`.
+  BASE_CHANGELOG=""
+  if git cat-file -e "origin/${GITHUB_BASE_REF}:${CHART_FILE}" 2>/dev/null; then
+    BASE_CHANGELOG=$(git show "origin/${GITHUB_BASE_REF}:${CHART_FILE}" |
+      yq '.annotations."artifacthub.io/changes" // ""')
+  fi
 
   # Extract changelog from PR
   PR_CHANGELOG=$(yq '.annotations."artifacthub.io/changes" // ""' "${CHART_FILE}")

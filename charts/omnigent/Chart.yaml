@@ -1,0 +1,42 @@
+apiVersion: v2
+name: omnigent
+description: A Helm chart for deploying the Omnigent server, the control plane that coordinates AI coding agents running on connected hosts.
+type: application
+home: https://github.com/omnigent-ai/omnigent
+keywords:
+  - AI
+  - agents
+  - LLM
+sources:
+  - https://github.com/omnigent-ai/omnigent
+  - https://github.com/miracum/charts/tree/master/charts/omnigent
+maintainers:
+  - name: miracum
+dependencies:
+  - name: postgres
+    version: 0.21.2
+    repository: oci://registry-1.docker.io/cloudpirates
+    condition: postgres.enabled
+  - name: common
+    repository: oci://ghcr.io/miracum/charts
+    version: 0.2.0
+deprecated: false
+kubeVersion: ">= 1.23.0-0"
+version: 0.1.0
+# the Omnigent version contained in the default image (ghcr.io/miracum/util-images/omnigent-server).
+# Update it together with `image.tag` in values.yaml.
+appVersion: "0.19.1"
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+  # When using the list of objects option the valid supported kinds are
+  # added, changed, deprecated, removed, fixed and security.
+  artifacthub.io/changes: |-
+    # When using the list of objects option the valid supported kinds are
+    # added, changed, deprecated, removed, fixed and security.
+    - kind: added
+      description: "Initial release of the Omnigent server chart"

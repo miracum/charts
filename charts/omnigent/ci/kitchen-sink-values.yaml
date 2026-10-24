@@ -1,0 +1,22 @@
+ingress:
+  enabled: true
+
+networkPolicy:
+  enabled: true
+  allowExternal: false
+
+features: ""
+
+config:
+  admins:
+    - admin@example.com
+
+envDict:
+  OMNIGENT_ACCOUNTS_SESSION_TTL_HOURS: "4"
+
+extraEnv:
+  - name: OMNIGENT_ACCOUNTS_INVITE_TTL_HOURS
+    value: "24"
+
+podAnnotations:
+  example.com/annotation: "true"

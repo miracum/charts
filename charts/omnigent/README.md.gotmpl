@@ -1,0 +1,294 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.typeBadge" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+Based on the upstream [Kubernetes manifests](https://github.com/omnigent-ai/omnigent/tree/main/deploy/kubernetes). The chart deploys a single server replica together with an optional PostgreSQL database.
+Agents don't run inside the server: they run on hosts which connect to it, see [Next steps: connect a host](https://github.com/omnigent-ai/omnigent/tree/main/deploy/kubernetes#next-steps-connect-a-host).
+
+## Installation
+
+```sh
+helm install omnigent oci://ghcr.io/miracum/charts/omnigent -n omnigent --create-namespace \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0].host=omnigent.example.com \
+  --set ingress.hosts[0].paths[0].path=/
+```
+
+With the default `accounts` authentication provider, the first visitor of the web UI claims the instance and becomes its admin.
+
+## Configuration
+
+### Environment variables
+
+The server is configured almost entirely via environment variables. The most common ones are exposed as dedicated values,
+everything else can be set via `extraEnv`, `envDict`, or `extraEnvFrom`. See the upstream
+[docker-compose.yaml](https://github.com/omnigent-ai/omnigent/blob/main/deploy/docker/docker-compose.yaml) and
+[deployment docs](https://github.com/omnigent-ai/omnigent/blob/main/deploy/README.md) for the available settings.
+
+For example, to use single sign-on via OIDC, store the secrets in a Kubernetes secret:
+
+```sh
+kubectl create secret generic omnigent-oidc -n omnigent \
+  --from-literal=OMNIGENT_OIDC_CLIENT_SECRET=<client-secret> \
+  --from-literal=OMNIGENT_OIDC_COOKIE_SECRET=$(openssl rand -hex 32)
+```
+
+and reference it:
+
+```yaml
+baseUrl: https://omnigent.example.com
+envDict:
+  OMNIGENT_OIDC_ISSUER: https://login.example.com/realms/example
+  OMNIGENT_OIDC_CLIENT_ID: omnigent
+  OMNIGENT_OIDC_REDIRECT_URI: https://omnigent.example.com/auth/callback
+extraEnvFrom:
+  - secretRef:
+      name: omnigent-oidc
+```
+
+### Security
+
+The server runs as an unprivileged user (UID `65532`) with a read-only root filesystem, all capabilities dropped,
+and the `RuntimeDefault` seccomp profile, which is compatible with the `restricted` Pod Security Standard.
+Anonymous product usage analytics are disabled by default (`usageAnalytics.enabled=false`).
+
+### Image
+
+The chart uses [ghcr.io/miracum/util-images/omnigent-server](https://github.com/miracum/util-images/tree/master/images/omnigent-server),
+which is built on top of the official `ghcr.io/omnigent-ai/omnigent-server` image. It adds the `s3`, `tracing`, `kubernetes`, and `openshell` extras,
+which are required for [metrics](#metrics), an [S3 artifact store](#running-without-a-data-volume), and [managed sandboxes](#managed-sandboxes),
+and runs as UID `65532` by default. Its version is independent of the Omnigent version: `v1.1.1` contains Omnigent `0.19.1`, which is also the `appVersion` of this chart.
+
+To use the official image instead, e.g. to run a newer Omnigent release before the image above is updated:
+
+```yaml
+image:
+  registry: ghcr.io
+  repository: omnigent-ai/omnigent-server
+  tag: v0.19.1@sha256:b211b81fb739a7be9b326603d54511cc1f1e2f91f311b85ac2ea144c85129d56
+```
+
+The official image lacks those extras: metrics aren't exported, the server fails to start if `artifactStore.s3.uri` is set,
+and managed sandboxes need the matching upstream variant, e.g. `ghcr.io/omnigent-ai/omnigent-server-kubernetes`.
+
+### Metrics
+
+The server doesn't expose a Prometheus endpoint, it pushes OpenTelemetry metrics, traces, and logs via OTLP instead:
+
+```yaml
+metrics:
+  enabled: true
+  otlp:
+    endpoint: http://otel-collector.monitoring.svc:4317
+```
+
+This requires the OpenTelemetry SDK included in the default [image](#image). With the official upstream image, the server only logs an error at startup
+and doesn't export anything.
+
+### External database
+
+```yaml
+postgres:
+  enabled: false
+database:
+  host: postgres.example.com
+  database: omnigent
+  username: omnigent
+  existingSecret:
+    name: omnigent-db
+    key: password
+  options: sslmode=require
+```
+
+The password is passed via the `PGPASSWORD` environment variable, so it doesn't need to be URL-encoded.
+
+### Running without a data volume
+
+By default, the server stores data on a `ReadWriteOnce` volume mounted at `/data`, which pins the pod to wherever that volume can be attached.
+The volume holds:
+
+| Data                                                 | Alternative                                       |
+| ---------------------------------------------------- | ------------------------------------------------- |
+| artifacts, i.e. uploaded files and agent bundles     | an S3-compatible object store (`artifactStore.s3`) |
+| the generated `accounts` session cookie secret       | an existing secret (`auth.accounts.cookieSecret`) |
+| admins and allowed sign-in domains                   | the server config file (`config`)                 |
+| sharing settings changed via the web UI              | none, see below                                   |
+
+To run without a volume, create a bucket and the secrets:
+
+```sh
+kubectl create secret generic omnigent-s3 -n omnigent \
+  --from-literal=AWS_ACCESS_KEY_ID=<access-key-id> \
+  --from-literal=AWS_SECRET_ACCESS_KEY=<secret-access-key>
+
+kubectl create secret generic omnigent-cookie-secret -n omnigent \
+  --from-literal=cookie-secret=$(openssl rand -hex 32)
+```
+
+and install the chart with:
+
+```yaml
+persistence:
+  enabled: false
+artifactStore:
+  s3:
+    uri: s3://omnigent/artifacts
+    # only needed for non-AWS providers, e.g. MinIO
+    endpoint: http://minio.minio.svc:9000
+    region: us-east-1
+    existingSecret:
+      name: omnigent-s3
+auth:
+  accounts:
+    cookieSecret:
+      existingSecret:
+        name: omnigent-cookie-secret
+config:
+  admins:
+    - alice
+```
+
+The S3 artifact store requires `boto3`, which is included in the default [image](#image). The official upstream image fails to start
+with `ImportError: S3ArtifactStore requires 'boto3'`.
+
+Sharing settings changed in the web UI (Settings > Sharing) are still written to `/data`, which is now an `emptyDir`, so they're reset whenever the pod restarts.
+Set their defaults using the `OMNIGENT_SHARING_MODE`, `OMNIGENT_PUBLIC_SHARING`, and `OMNIGENT_DEFAULT_PUBLIC_SESSIONS` environment variables instead.
+If `networkPolicy.enabled=true`, also allow egress to the object store via `networkPolicy.extraEgress`.
+
+Running without a volume doesn't make it possible to run more than one replica: hosts keep their WebSocket connections open to a single server pod,
+and requests concerning a host have to reach that pod. See the experimental upstream
+[multi-replica setup](https://github.com/omnigent-ai/omnigent/tree/main/deploy/kubernetes/multi_replica).
+
+### Managed sandboxes
+
+By default, agents run on hosts that users connect via `omnigent host --server <url>`. With managed sandboxes, the server instead
+launches a runner pod per session in a separate namespace, which connects back to the server.
+See the upstream [sandbox runners guide](https://github.com/omnigent-ai/omnigent/blob/main/deploy/kubernetes/overlays/sandbox-runners/README.md).
+There are two providers:
+
+| Provider        | Runs each sandbox as                                                            | Lifetime                                                                  |
+| --------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `kubernetes`    | a `batch/v1` Job                                                                | fixed, at most 7 days                                                     |
+| `agent_sandbox` | an [agent-sandbox](https://github.com/kubernetes-sigs/agent-sandbox) `Sandbox` | suspended once idle for `keep_warm_s`, resumed on the next message        |
+
+Requirements:
+
+- an image containing the `kubernetes` extra, such as the default [image](#image)
+- an auth provider other than `accounts`, which rejects the runner's connection back to the server: `oidc`, `header`, or `auth.enabled=false`
+- `serviceAccount.automountServiceAccountToken=true`
+- for `agent_sandbox`: the agent-sandbox controller
+
+The agent-sandbox controller's Helm chart isn't published to a chart repository, so install it from a checkout of the release tag.
+The chart creates its own namespace, which conflicts with `--create-namespace` unless `namespace.create=false` is set.
+`controller.extensions=true` adds the warm pool resources:
+
+```sh
+git clone --depth 1 --branch v1.0.8 https://github.com/kubernetes-sigs/agent-sandbox.git
+helm install agent-sandbox ./agent-sandbox/helm \
+  --namespace agent-sandbox-system --create-namespace \
+  --set namespace.create=false \
+  --set image.tag=v1.0.8 \
+  --set controller.extensions=true
+```
+
+Alternatively, apply the release manifest: `kubectl apply --server-side -f https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.8/sandbox-with-extensions.yaml`.
+
+Create the runner namespace, a runner service account without any permissions, and a Role allowing the server to manage runners
+in that namespace only. The RoleBinding's subject is the chart's service account, by default `<release>-omnigent`:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: omnigent-sandboxes
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: omnigent-runner
+  namespace: omnigent-sandboxes
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: omnigent-sandbox-manager
+  namespace: omnigent-sandboxes
+rules:
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["create", "get", "delete"]
+  - apiGroups: ["agents.x-k8s.io"]
+    resources: ["sandboxes"]
+    verbs: ["create", "get", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "list", "get", "delete"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: omnigent-sandbox-manager
+  namespace: omnigent-sandboxes
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: omnigent-sandbox-manager
+subjects:
+  - kind: ServiceAccount
+    name: omnigent
+    namespace: omnigent
+```
+
+Store the credentials of the LLM providers and git hosts the agents use in a secret in the runner namespace:
+
+```sh
+kubectl create secret generic omnigent-creds -n omnigent-sandboxes \
+  --from-literal=ANTHROPIC_API_KEY=<key> \
+  --from-literal=GIT_TOKEN=<token>
+```
+
+and configure the chart:
+
+```yaml
+serviceAccount:
+  automountServiceAccountToken: true
+config:
+  sandbox:
+    provider: agent_sandbox
+    # http://<fullname>.<namespace>.svc:<service.port>
+    server_url: http://omnigent.omnigent.svc:8000
+    keep_warm_s: 300
+    kubernetes:
+      namespace: omnigent-sandboxes
+      secret_name: omnigent-creds
+      service_account: omnigent-runner
+      # defaults to the `latest` tag
+      image: ghcr.io/omnigent-ai/omnigent-host:v0.19.1
+      # the host image is several GB, so the first pull on a node takes longer than the default of 90s
+      pod_ready_timeout_s: 300
+# plus the OIDC configuration, see above
+```
+
+New sessions then offer a managed host in the web UI. Deleting a session deletes its sandbox.
+If `networkPolicy.enabled=true`, allow ingress from the runner namespace via `networkPolicy.ingressNSMatchLabels`
+(e.g. `kubernetes.io/metadata.name: omnigent-sandboxes`) and egress to the Kubernetes API server via `networkPolicy.extraEgress`.
+
+{{ template "chart.valuesSection" . }}
