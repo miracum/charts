@@ -22,7 +22,7 @@ dependencies:
     version: 0.2.0
 deprecated: false
 kubeVersion: ">= 1.23.0-0"
-version: 0.1.0
+version: 0.2.0
 # the Omnigent version contained in the default image (ghcr.io/miracum/util-images/omnigent-server).
 # Update it together with `image.tag` in values.yaml.
 appVersion: "0.19.1"
@@ -39,4 +39,8 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: added
-      description: "Initial release of the Omnigent server chart"
+      description: "`sandbox.rbac.create` to create the runner service account and the Role + RoleBinding required by managed sandboxes"
+    - kind: added
+      description: "`sandbox.namespace.create` to create the runner namespace enforcing the restricted Pod Security Standard"
+    - kind: changed
+      description: "`config.sandbox.server_url` defaults to the URL of the release's service"

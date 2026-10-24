@@ -181,7 +181,7 @@ Requirements:
 
 - an image containing the `kubernetes` extra, such as the default [image](#image)
 - an auth provider other than `accounts`, which rejects the runner's connection back to the server: `oidc`, `header`, or `auth.enabled=false`
-- `serviceAccount.automountServiceAccountToken=true`
+- RBAC allowing the server to manage runners in the runner namespace, created by the chart if `sandbox.rbac.create=true`
 - for `agent_sandbox`: the agent-sandbox controller
 
 The agent-sandbox controller's Helm chart isn't published to a chart repository, so install it from a checkout of the release tag.
@@ -199,67 +199,31 @@ helm install agent-sandbox ./agent-sandbox/helm \
 
 Alternatively, apply the release manifest: `kubectl apply --server-side -f https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.8/sandbox-with-extensions.yaml`.
 
-Create the runner namespace, a runner service account without any permissions, and a Role allowing the server to manage runners
-in that namespace only. The RoleBinding's subject is the chart's service account, by default `<release>-omnigent`:
+With `sandbox.rbac.create=true`, the chart creates the runner service account and a Role + RoleBinding allowing its server to manage
+runners in the runner namespace, but not to read its secrets or exec into pods. It also mounts the server's service account token,
+and defaults `config.sandbox.server_url` to the URL of its service. `sandbox.namespace.create=true` additionally creates the runner namespace,
+enforcing the `restricted` Pod Security Standard. Deleting the release then also deletes the namespace and all running sandboxes.
+If your installer can't create RBAC, render the objects for a cluster admin:
+`helm template ... --set sandbox.rbac.create=true --show-only templates/sandbox-rbac.yaml`.
 
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: omnigent-sandboxes
-  labels:
-    pod-security.kubernetes.io/enforce: restricted
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: omnigent-runner
-  namespace: omnigent-sandboxes
-automountServiceAccountToken: false
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: omnigent-sandbox-manager
-  namespace: omnigent-sandboxes
-rules:
-  - apiGroups: ["batch"]
-    resources: ["jobs"]
-    verbs: ["create", "get", "delete"]
-  - apiGroups: ["agents.x-k8s.io"]
-    resources: ["sandboxes"]
-    verbs: ["create", "get", "patch", "delete"]
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["create", "list", "get", "delete"]
-  - apiGroups: [""]
-    resources: ["pods/log"]
-    verbs: ["get"]
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["create", "delete"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["list"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: omnigent-sandbox-manager
-  namespace: omnigent-sandboxes
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: omnigent-sandbox-manager
-subjects:
-  - kind: ServiceAccount
-    name: omnigent
-    namespace: omnigent
-```
+The runners get the credentials of the LLM providers and git hosts the agents use from an optional secret in the runner namespace,
+referenced by `config.sandbox.kubernetes.secret_name`. Create it before the first session: a runner whose secret is missing doesn't start.
+The host passes these variables on to the agents:
 
-Store the credentials of the LLM providers and git hosts the agents use in a secret in the runner namespace:
+| Variable                                                     | Used for                                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL` | Claude via the Anthropic API or a gateway                                   |
+| `CLAUDE_CODE_OAUTH_TOKEN`                                    | Claude subscriptions, created via `claude setup-token`                         |
+| `CLAUDE_CODE_USE_BEDROCK`, `AWS_BEARER_TOKEN_BEDROCK`        | Claude via Amazon Bedrock                                                      |
+| `OPENAI_API_KEY`, `OPENAI_BASE_URL`                          | OpenAI models, e.g. Codex, or an OpenAI-compatible gateway                     |
+| `GEMINI_API_KEY`, `GOOGLE_GEMINI_BASE_URL`                   | Gemini                                                                         |
+| `GIT_TOKEN`, `GIT_USERNAME`                                  | HTTPS access to private repositories. GitLab requires `GIT_USERNAME=oauth2`    |
+| `OMNIGENT_RUNNER_ENV_PASSTHROUGH`                            | comma-separated names of additional variables of the secret to pass on         |
+
+All sessions share these credentials.
 
 ```sh
+kubectl create namespace omnigent-sandboxes  # unless sandbox.namespace.create=true
 kubectl create secret generic omnigent-creds -n omnigent-sandboxes \
   --from-literal=ANTHROPIC_API_KEY=<key> \
   --from-literal=GIT_TOKEN=<token>
@@ -268,24 +232,27 @@ kubectl create secret generic omnigent-creds -n omnigent-sandboxes \
 and configure the chart:
 
 ```yaml
-serviceAccount:
-  automountServiceAccountToken: true
+sandbox:
+  rbac:
+    create: true
 config:
   sandbox:
     provider: agent_sandbox
-    # http://<fullname>.<namespace>.svc:<service.port>
-    server_url: http://omnigent.omnigent.svc:8000
     keep_warm_s: 300
     kubernetes:
+      # the defaults for namespace and service_account
       namespace: omnigent-sandboxes
-      secret_name: omnigent-creds
       service_account: omnigent-runner
+      secret_name: omnigent-creds
       # defaults to the `latest` tag
       image: ghcr.io/omnigent-ai/omnigent-host:v0.19.1
       # the host image is several GB, so the first pull on a node takes longer than the default of 90s
       pod_ready_timeout_s: 300
 # plus the OIDC configuration, see above
 ```
+
+The runner namespace can also be the release namespace. The server's Role then applies to its own namespace, so it could delete
+the server's and the database's pods and, by creating pods, read all secrets in that namespace.
 
 New sessions then offer a managed host in the web UI. Deleting a session deletes its sandbox.
 If `networkPolicy.enabled=true`, allow ingress from the runner namespace via `networkPolicy.ingressNSMatchLabels`

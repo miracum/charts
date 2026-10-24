@@ -46,7 +46,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "omnigent.serviceAccountName" . }}
-      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken (eq (include "omnigent.sandbox.rbacEnabled" .) "true") }}
       initContainers:
         - name: wait-for-db
           image: "{{ .Values.waitForDatabaseInitContainer.image.registry }}/{{ .Values.waitForDatabaseInitContainer.image.repository }}:{{ .Values.waitForDatabaseInitContainer.image.tag }}"

@@ -87,3 +87,41 @@ which avoids having to URL-encode it.
 {{- end -}}
 {{- $url -}}
 {{- end -}}
+
+{{/*
+The namespace of the managed sandbox runner pods. Same default as the server.
+*/}}
+{{- define "omnigent.sandbox.namespace" -}}
+{{- dig "sandbox" "kubernetes" "namespace" "omnigent-sandboxes" .Values.config -}}
+{{- end -}}
+
+{{/*
+The service account of the managed sandbox runner pods. Same default as the server.
+*/}}
+{{- define "omnigent.sandbox.serviceAccountName" -}}
+{{- dig "sandbox" "kubernetes" "service_account" "omnigent-runner" .Values.config -}}
+{{- end -}}
+
+{{/*
+Whether to create the RBAC for managed sandboxes. Only the `kubernetes` and `agent_sandbox` providers use the Kubernetes API.
+*/}}
+{{- define "omnigent.sandbox.rbacEnabled" -}}
+{{- if .Values.sandbox.rbac.create -}}
+{{- $provider := dig "sandbox" "provider" "" .Values.config -}}
+{{- if not (has $provider (list "kubernetes" "agent_sandbox")) -}}
+{{- fail (printf "sandbox.rbac.create requires config.sandbox.provider to be `kubernetes` or `agent_sandbox`, got %q" $provider) -}}
+{{- end -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{/*
+The server config. Defaults `sandbox.server_url` to the in-cluster URL of this release's service.
+*/}}
+{{- define "omnigent.config" -}}
+{{- $config := deepCopy .Values.config -}}
+{{- if and (hasKey $config "sandbox") (kindIs "map" $config.sandbox) (not (hasKey $config.sandbox "server_url")) -}}
+{{- $_ := set $config.sandbox "server_url" (printf "http://%s.%s.svc:%v" (include "common.names.fullname" .) .Release.Namespace .Values.service.port) -}}
+{{- end -}}
+{{- toYaml $config -}}
+{{- end -}}
