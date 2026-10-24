@@ -4,8 +4,8 @@ replicaCount: 1
 # @ignored
 image:
   registry: ghcr.io
-  repository: omnigent-ai/omnigent-server
-  tag: v0.19.1@sha256:b211b81fb739a7be9b326603d54511cc1f1e2f91f311b85ac2ea144c85129d56
+  repository: miracum/util-images/omnigent-server
+  tag: v1.1.1@sha256:7f0d5c8d4789f876de645288f539996b855121333cbb5ce5666baaf5ffb31862
   pullPolicy: IfNotPresent
 
 # -- image pull secrets used by the server pod
@@ -39,7 +39,7 @@ podAnnotations: {}
 # -- extra labels to set on the server pod
 podLabels: {}
 
-# -- the pod security context. The upstream image runs as root by default, so the chart picks an unprivileged UID/GID.
+# -- the pod security context. Matches the user of the default image. The official upstream image runs as root by default.
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 65532
@@ -100,7 +100,7 @@ usageAnalytics:
 # Keep secrets out of here and set them via `extraEnv` or `extraEnvFrom` instead.
 # See <https://github.com/omnigent-ai/omnigent/blob/main/deploy/docker/config.yaml.example>.
 # The `sandbox` section enables managed sandboxes: the server launches a runner pod per session instead of relying on
-# hosts connected via `omnigent host`. Requires an image with the `kubernetes` extra (e.g. `ghcr.io/miracum/util-images/omnigent-server`), `serviceAccount.automountServiceAccountToken=true`,
+# hosts connected via `omnigent host`. Requires an image with the `kubernetes` extra (included in the default image), `serviceAccount.automountServiceAccountToken=true`,
 # an auth provider other than `accounts`, and RBAC in the runner namespace. See the README's "Managed sandboxes" section.
 config: {}
 #   admins:
@@ -122,8 +122,8 @@ config: {}
 
 metrics:
   # -- export OpenTelemetry metrics, traces, and logs via OTLP. The server does not expose a Prometheus endpoint.
-  # ⚠️ the default `omnigent-server` image does not include the OpenTelemetry SDK, so export only works with an image containing the
-  # `tracing` extra, e.g. `ghcr.io/miracum/util-images/omnigent-server`. Otherwise the server logs an error at startup and keeps running without exporting.
+  # Requires the OpenTelemetry SDK, which is included in the default image but not in the official `ghcr.io/omnigent-ai/omnigent-server` image.
+  # Without it, the server logs an error at startup and keeps running without exporting.
   enabled: false
   otlp:
     # -- the OTLP collector endpoint, e.g. `http://otel-collector.monitoring.svc:4317`. Sets the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
@@ -239,7 +239,7 @@ artifactStore:
   s3:
     # -- store artifacts in an S3-compatible object store (AWS S3, MinIO, Ceph, Cloudflare R2, ...) instead of the data volume.
     # Format: `s3://<bucket>[/<prefix>]`. The bucket must already exist. Sets the `OMNIGENT_ARTIFACT_URI` environment variable.
-    # ⚠️ the default `omnigent-server` image does not include `boto3`, so this requires an image containing the `s3` extra, e.g. `ghcr.io/miracum/util-images/omnigent-server`.
+    # Requires `boto3`, which is included in the default image. The official `ghcr.io/omnigent-ai/omnigent-server` image fails to start if this is set.
     uri: ""
     # -- the S3 endpoint URL for non-AWS providers, e.g. `http://minio.minio.svc:9000`. Leave empty for AWS S3.
     # Sets the `AWS_ENDPOINT_URL_S3` environment variable.

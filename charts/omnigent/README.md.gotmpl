@@ -58,21 +58,24 @@ The server runs as an unprivileged user (UID `65532`) with a read-only root file
 and the `RuntimeDefault` seccomp profile, which is compatible with the `restricted` Pod Security Standard.
 Anonymous product usage analytics are disabled by default (`usageAnalytics.enabled=false`).
 
-### Images with extras
+### Image
 
-The official `ghcr.io/omnigent-ai/omnigent-server` image omits the optional dependencies required for [metrics](#metrics),
-an [S3 artifact store](#running-without-a-data-volume), and [managed sandboxes](#managed-sandboxes).
-[ghcr.io/miracum/util-images/omnigent-server](https://github.com/miracum/util-images/tree/master/images/omnigent-server) is built
-on top of it, adds the `s3`, `tracing`, and `kubernetes` extras, and runs as UID `65532` by default:
+The chart uses [ghcr.io/miracum/util-images/omnigent-server](https://github.com/miracum/util-images/tree/master/images/omnigent-server),
+which is built on top of the official `ghcr.io/omnigent-ai/omnigent-server` image. It adds the `s3`, `tracing`, `kubernetes`, and `openshell` extras,
+which are required for [metrics](#metrics), an [S3 artifact store](#running-without-a-data-volume), and [managed sandboxes](#managed-sandboxes),
+and runs as UID `65532` by default. Its version is independent of the Omnigent version: `v1.1.1` contains Omnigent `0.19.1`, which is also the `appVersion` of this chart.
+
+To use the official image instead, e.g. to run a newer Omnigent release before the image above is updated:
 
 ```yaml
 image:
   registry: ghcr.io
-  repository: miracum/util-images/omnigent-server
-  tag: v1.1.0@sha256:399ccf3ec20def58046340b5841d5b213231da3c6095f3abc7182ff410645a4b
+  repository: omnigent-ai/omnigent-server
+  tag: v0.19.1@sha256:b211b81fb739a7be9b326603d54511cc1f1e2f91f311b85ac2ea144c85129d56
 ```
 
-Its version is independent of the Omnigent version; `v1.1.0` contains Omnigent `0.19.1`.
+The official image lacks those extras: metrics aren't exported, the server fails to start if `artifactStore.s3.uri` is set,
+and managed sandboxes need the matching upstream variant, e.g. `ghcr.io/omnigent-ai/omnigent-server-kubernetes`.
 
 ### Metrics
 
@@ -85,9 +88,8 @@ metrics:
     endpoint: http://otel-collector.monitoring.svc:4317
 ```
 
-> [!WARNING]
-> The official `ghcr.io/omnigent-ai/omnigent-server` image does not include the OpenTelemetry SDK. Use an image containing the `tracing` extra
-> such as [ghcr.io/miracum/util-images/omnigent-server](#images-with-extras), otherwise the server only logs an error at startup and doesn't export anything.
+This requires the OpenTelemetry SDK included in the default [image](#image). With the official upstream image, the server only logs an error at startup
+and doesn't export anything.
 
 ### External database
 
@@ -132,11 +134,6 @@ kubectl create secret generic omnigent-cookie-secret -n omnigent \
 and install the chart with:
 
 ```yaml
-image:
-  # an image containing the `s3` extra
-  registry: ghcr.io
-  repository: miracum/util-images/omnigent-server
-  tag: v1.1.0@sha256:399ccf3ec20def58046340b5841d5b213231da3c6095f3abc7182ff410645a4b
 persistence:
   enabled: false
 artifactStore:
@@ -157,9 +154,8 @@ config:
     - alice
 ```
 
-> [!WARNING]
-> The official `ghcr.io/omnigent-ai/omnigent-server` image does not include `boto3`. With `artifactStore.s3.uri` set, it fails to start
-> with `ImportError: S3ArtifactStore requires 'boto3'`. Use an image containing the `s3` extra such as [ghcr.io/miracum/util-images/omnigent-server](#images-with-extras).
+The S3 artifact store requires `boto3`, which is included in the default [image](#image). The official upstream image fails to start
+with `ImportError: S3ArtifactStore requires 'boto3'`.
 
 Sharing settings changed in the web UI (Settings > Sharing) are still written to `/data`, which is now an `emptyDir`, so they're reset whenever the pod restarts.
 Set their defaults using the `OMNIGENT_SHARING_MODE`, `OMNIGENT_PUBLIC_SHARING`, and `OMNIGENT_DEFAULT_PUBLIC_SESSIONS` environment variables instead.
@@ -183,7 +179,7 @@ There are two providers:
 
 Requirements:
 
-- an image containing the `kubernetes` extra, e.g. [ghcr.io/miracum/util-images/omnigent-server](#images-with-extras) or `ghcr.io/omnigent-ai/omnigent-server-kubernetes`
+- an image containing the `kubernetes` extra, such as the default [image](#image)
 - an auth provider other than `accounts`, which rejects the runner's connection back to the server: `oidc`, `header`, or `auth.enabled=false`
 - `serviceAccount.automountServiceAccountToken=true`
 - for `agent_sandbox`: the agent-sandbox controller
@@ -272,10 +268,6 @@ kubectl create secret generic omnigent-creds -n omnigent-sandboxes \
 and configure the chart:
 
 ```yaml
-image:
-  registry: ghcr.io
-  repository: miracum/util-images/omnigent-server
-  tag: v1.1.0@sha256:399ccf3ec20def58046340b5841d5b213231da3c6095f3abc7182ff410645a4b
 serviceAccount:
   automountServiceAccountToken: true
 config:

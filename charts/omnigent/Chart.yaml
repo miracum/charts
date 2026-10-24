@@ -23,7 +23,8 @@ dependencies:
 deprecated: false
 kubeVersion: ">= 1.23.0-0"
 version: 0.1.0
-# renovate: datasource=docker depName=ghcr.io/omnigent-ai/omnigent-server extractVersion=^v(?<version>.+)$
+# the Omnigent version contained in the default image (ghcr.io/miracum/util-images/omnigent-server).
+# Update it together with `image.tag` in values.yaml.
 appVersion: "0.19.1"
 annotations:
   artifacthub.io/license: Apache-2.0
