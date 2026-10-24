@@ -1,0 +1,403 @@
+# -- number of replicas. ⚠️ the Omnigent server keeps its runner registry in memory and does not support running with multiple replicas.
+replicaCount: 1
+
+# @ignored
+image:
+  registry: ghcr.io
+  repository: omnigent-ai/omnigent-server
+  tag: v0.19.1@sha256:b211b81fb739a7be9b326603d54511cc1f1e2f91f311b85ac2ea144c85129d56
+  pullPolicy: IfNotPresent
+
+# -- image pull secrets used by the server pod
+imagePullSecrets: []
+
+# -- override the chart name
+nameOverride: ""
+
+# -- override the full release name
+fullnameOverride: ""
+
+# -- annotations to apply to all created resources. Evaluated as a template.
+commonAnnotations: {}
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # -- whether to automount the SA token. Only required for managed sandboxes (`config.sandbox`), where the server
+  # uses the Kubernetes API to launch runner pods. Also bind this service account to a Role in the runner namespace,
+  # see the README's "Managed sandboxes" section.
+  automountServiceAccountToken: false
+
+# -- annotations to set on the server pod
+podAnnotations: {}
+
+# -- extra labels to set on the server pod
+podLabels: {}
+
+# -- the pod security context. The upstream image runs as root by default, so the chart picks an unprivileged UID/GID.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  fsGroupChangePolicy: "OnRootMismatch"
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- the public URL users and hosts use to reach the server, e.g. `https://omnigent.example.com`.
+# Sets the `OMNIGENT_ACCOUNTS_BASE_URL` environment variable. Evaluated as a template.
+# If empty and `ingress.enabled=true`, it is derived from the first ingress host.
+baseUrl: ""
+
+auth:
+  # -- whether to require authentication. Sets the `OMNIGENT_AUTH_ENABLED` environment variable.
+  # Disabling it runs the server in single-user mode without a login - only do that on a trusted network.
+  enabled: true
+  # -- pin the authentication provider (`accounts`, `oidc`, or `header`). Sets the `OMNIGENT_AUTH_PROVIDER` environment variable.
+  # If empty, the server uses `oidc` when the `OMNIGENT_OIDC_*` variables are set and `accounts` otherwise.
+  # ⚠️ managed sandboxes (`config.sandbox`) don't work with `accounts`: use `oidc`, `header`, or `auth.enabled=false`.
+  # See <https://github.com/omnigent-ai/omnigent/blob/main/deploy/README.md#auth>.
+  provider: ""
+  accounts:
+    cookieSecret:
+      existingSecret:
+        # -- name of an existing secret containing the hex-encoded secret used to sign session cookies of the `accounts` provider
+        # (at least 64 hex characters, e.g. generated using `openssl rand -hex 32`). Sets the `OMNIGENT_ACCOUNTS_COOKIE_SECRET` environment variable.
+        # If empty, the server generates one and stores it on the data volume. Rotating it signs out all users.
+        name: ""
+        # -- name of the key in the existing secret containing the cookie secret
+        key: "cookie-secret"
+
+# -- comma-separated list of feature overrides. A name enables, `-name` disables a feature. Sets the `OMNIGENT_FEATURES` environment variable.
+features: ""
+
+usageAnalytics:
+  # -- whether to send anonymous product usage analytics to the Omnigent developers.
+  # Disabled by default by setting the `DO_NOT_TRACK` and `OMNIGENT_DISABLE_TELEMETRY` environment variables.
+  enabled: false
+
+# -- non-secret server settings (admins, allowed domains, routing, ...) rendered as the server's `config.yaml`.
+# Mounted into the container and referenced via the `OMNIGENT_CONFIG` environment variable.
+# Keep secrets out of here and set them via `extraEnv` or `extraEnvFrom` instead.
+# See <https://github.com/omnigent-ai/omnigent/blob/main/deploy/docker/config.yaml.example>.
+# The `sandbox` section enables managed sandboxes: the server launches a runner pod per session instead of relying on
+# hosts connected via `omnigent host`. Requires an image with the `kubernetes` extra (e.g. `ghcr.io/miracum/util-images/omnigent-server`), `serviceAccount.automountServiceAccountToken=true`,
+# an auth provider other than `accounts`, and RBAC in the runner namespace. See the README's "Managed sandboxes" section.
+config: {}
+#   admins:
+#     - admin@example.com
+#   sandbox:
+#     # `kubernetes` runs each sandbox as a Job, `agent_sandbox` as an agent-sandbox `Sandbox` that is suspended when idle
+#     provider: agent_sandbox
+#     # the URL runner pods use to connect back to the server: `http://<fullname>.<namespace>.svc:<service.port>`
+#     server_url: http://omnigent.omnigent.svc:8000
+#     # `agent_sandbox` only: seconds an idle sandbox stays warm after the last turn before it suspends
+#     keep_warm_s: 300
+#     kubernetes:
+#       namespace: omnigent-sandboxes
+#       # secret in the runner namespace with the LLM/git credentials (e.g. ANTHROPIC_API_KEY, GIT_TOKEN) for the runners
+#       secret_name: omnigent-creds
+#       service_account: omnigent-runner
+#       # defaults to the `latest` tag. Pin it to the server's version.
+#       image: ghcr.io/omnigent-ai/omnigent-host:v0.19.1
+
+metrics:
+  # -- export OpenTelemetry metrics, traces, and logs via OTLP. The server does not expose a Prometheus endpoint.
+  # ⚠️ the default `omnigent-server` image does not include the OpenTelemetry SDK, so export only works with an image containing the
+  # `tracing` extra, e.g. `ghcr.io/miracum/util-images/omnigent-server`. Otherwise the server logs an error at startup and keeps running without exporting.
+  enabled: false
+  otlp:
+    # -- the OTLP collector endpoint, e.g. `http://otel-collector.monitoring.svc:4317`. Sets the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
+    # Required if `metrics.enabled=true`.
+    endpoint: ""
+    # -- the OTLP transport protocol (`grpc` or `http/protobuf`). Sets the `OTEL_EXPORTER_OTLP_PROTOCOL` environment variable.
+    protocol: "grpc"
+  # -- the `service.name` resource attribute. Sets the `OTEL_SERVICE_NAME` environment variable.
+  serviceName: "omnigent"
+
+service:
+  # -- the type of service
+  type: ClusterIP
+  # -- the port for the main HTTP endpoint
+  port: 8000
+
+ingress:
+  # -- create an Ingress for the server
+  enabled: false
+  # -- ingressClassName to use
+  className: ""
+  # -- extra annotations to apply to the Ingress resource.
+  # Hosts connect via long-lived WebSockets, so raise the proxy read timeout of your ingress controller.
+  annotations: {}
+  #  nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+  #  nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  #  nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+  #  cert-manager.io/cluster-issuer: letsencrypt-prod
+  # -- list of ingress hosts
+  hosts:
+    - host: omnigent.127.0.0.1.nip.io
+      paths:
+        - path: /
+          pathType: Prefix
+          portName: http
+  # -- TLS configuration
+  tls: []
+  #  - secretName: omnigent-tls
+  #    hosts:
+  #      - omnigent.example.com
+
+# -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `resources` is set (`resources` is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "medium"
+
+# -- configure the resource requests and limits
+resources: {}
+# limits:
+#   cpu: 1000m
+#   memory: 1Gi
+# requests:
+#   cpu: 250m
+#   memory: 512Mi
+
+# -- pod node selector
+nodeSelector: {}
+
+# -- pod tolerations
+tolerations: []
+
+# -- pod affinity
+affinity: {}
+
+# -- pod topology spread configuration
+# see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+topologySpreadConstraints: []
+
+networkPolicy:
+  # -- Enable creation of NetworkPolicy resources
+  enabled: false
+  # -- When set to false, only pods with the `<fullname>-client: "true"` label will have network access to the server port.
+  # When true, the server will accept connections from any source (with the correct destination port).
+  allowExternal: true
+  # -- Allow the pod to access any range of port and all destinations. Required when using an external database, OIDC,
+  # or LLM providers unless matching rules are added via `networkPolicy.extraEgress`.
+  allowExternalEgress: false
+  # -- Labels to match to allow traffic from other namespaces
+  ingressNSMatchLabels: {}
+  # -- Pod labels to match to allow traffic from other namespaces
+  ingressNSPodMatchLabels: {}
+  # -- Add extra ingress rules to the NetworkPolicy. Evaluated as a template.
+  extraIngress: []
+  # -- Add extra egress rules to the NetworkPolicy. Evaluated as a template.
+  extraEgress: []
+  # e.g. to allow access to an external database:
+  #  - ports:
+  #      - port: 5432
+  #    to:
+  #      - ipBlock:
+  #          cidr: 10.0.0.0/8
+
+# -- extra environment variables to set on the server container. Evaluated as a template.
+# See <https://github.com/omnigent-ai/omnigent/blob/main/deploy/docker/docker-compose.yaml> for the available settings.
+extraEnv: []
+#  - name: OMNIGENT_OIDC_ISSUER
+#    value: https://accounts.google.com
+
+# -- extra environment variables to set on the server container in dictionary form
+envDict: {}
+
+# -- extra sources of environment variables, e.g. a secret containing the `OMNIGENT_OIDC_CLIENT_SECRET` and `OMNIGENT_OIDC_COOKIE_SECRET`.
+extraEnvFrom: []
+#  - secretRef:
+#      name: omnigent-oidc
+
+# -- extra volumes to add to the server pod
+extraVolumes: []
+
+# -- extra volume mounts to add to the server container
+extraVolumeMounts: []
+
+artifactStore:
+  s3:
+    # -- store artifacts in an S3-compatible object store (AWS S3, MinIO, Ceph, Cloudflare R2, ...) instead of the data volume.
+    # Format: `s3://<bucket>[/<prefix>]`. The bucket must already exist. Sets the `OMNIGENT_ARTIFACT_URI` environment variable.
+    # ⚠️ the default `omnigent-server` image does not include `boto3`, so this requires an image containing the `s3` extra, e.g. `ghcr.io/miracum/util-images/omnigent-server`.
+    uri: ""
+    # -- the S3 endpoint URL for non-AWS providers, e.g. `http://minio.minio.svc:9000`. Leave empty for AWS S3.
+    # Sets the `AWS_ENDPOINT_URL_S3` environment variable.
+    endpoint: ""
+    # -- the region of the bucket. Sets the `AWS_REGION` environment variable. The server defaults to `auto` if empty.
+    region: ""
+    existingSecret:
+      # -- name of an existing secret containing the S3 credentials. If empty, boto3's default credential chain is used.
+      name: ""
+      # -- name of the key in the existing secret containing the access key ID
+      accessKeyIdKey: "AWS_ACCESS_KEY_ID"
+      # -- name of the key in the existing secret containing the secret access key
+      secretAccessKeyKey: "AWS_SECRET_ACCESS_KEY"
+
+# -- configuration for the server persistence. Stores the artifacts (unless `artifactStore.s3.uri` is set), the generated cookie secret,
+# and settings changed via the web UI (e.g. sharing settings).
+persistence:
+  # -- enable data persistence using a PVC. If disabled, all data not stored in the database or the S3 artifact store is lost when the pod restarts.
+  enabled: true
+  # -- name of an existing PVC to use
+  existingClaim: ""
+  # -- PVC Storage Class for data volume
+  # If defined, storageClassName: <storageClass>
+  # If set to "-", storageClassName: "", which disables dynamic provisioning
+  # If undefined (the default) or set to null, no storageClassName spec is
+  #   set, choosing the default provisioner.
+  storageClass: ""
+  # -- PVC Access Mode for data volume
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC Storage Request for volume
+  size: 10Gi
+  # -- annotations for the PVC
+  annotations: {}
+  # -- labels for the PVC
+  labels: {}
+
+# @ignored
+startupProbe:
+  httpGet:
+    path: /health
+    port: http
+  # the first boot runs the database migrations before the server starts listening
+  failureThreshold: 30
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 5
+  initialDelaySeconds: 0
+  periodSeconds: 30
+  successThreshold: 1
+  timeoutSeconds: 5
+
+database:
+  # -- hostname of an external database. Only used if `postgres.enabled` is set to `false`.
+  host: "host.example.com"
+  # -- port used to connect to the external database. Only used if `postgres.enabled` is set to `false`.
+  port: 5432
+  # -- name of the database. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.database` is used
+  database: "omnigent"
+  # -- username used to connect to the DB. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.username` is used
+  username: "omnigent"
+  # -- the database password. Only used if `postgres.enabled` is `false`, otherwise the secret created by the postgres chart is used.
+  # Must be set when using an external database, unless `database.existingSecret.name` is set.
+  password: ""
+  existingSecret:
+    # -- name of an existing secret containing the password to the DB.
+    name: ""
+    # -- name of the key in the existing secret to use as the password to the DB.
+    key: "postgres-password"
+  # -- additional libpq connection parameters appended to the connection URL as a query string, e.g. `sslmode=require`.
+  options: ""
+
+postgres:
+  # -- enable the included Postgres DB.
+  # See <https://github.com/CloudPirates-io/helm-charts/tree/main/charts/postgres> for configuration options
+  enabled: true
+  auth:
+    # -- name of the database to create
+    database: "omnigent"
+    # -- username for the database user
+    username: "omnigent"
+  # @ignored
+  containerSecurityContext:
+    # required to run in namespaces enforcing the `restricted` Pod Security Standard
+    seccompProfile:
+      type: RuntimeDefault
+  # @ignored
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+      ephemeral-storage: 50Mi
+    limits:
+      memory: 512Mi
+      cpu: 500m
+      ephemeral-storage: 2Gi
+
+initContainers:
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `initContainers.resources` is set (`initContainers.resources` is recommended for production).
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the init containers' resource requests and limits manually
+  resources: {}
+
+# @ignored
+waitForDatabaseInitContainer:
+  image:
+    registry: docker.io
+    repository: library/postgres
+    tag: 18.6@sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32
+    pullPolicy: IfNotPresent
+
+# -- container security context applied to init containers and the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+curl:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.23.0@sha256:11e64e28c5f58c8d93ee95fcf22ac055f48b0bc440e0ce7d8013bbb5ad6aa8ac
+
+tests:
+  # -- whether to automount the SA token in the test pods
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `tests.resources` is set.
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the test pods resource requests and limits
+  resources: {}

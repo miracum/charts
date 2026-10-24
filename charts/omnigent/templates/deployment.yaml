@@ -1,0 +1,256 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  # the data volume is ReadWriteOnce and the server doesn't support more than one replica,
+  # so the old pod has to be gone before the new one starts.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: server
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.config }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
+        {{- end }}
+        {{- if and (not .Values.postgres.enabled) (not .Values.database.existingSecret.name) }}
+        checksum/db-password: {{ include (print $.Template.BasePath "/db-password-secret.yaml") . | sha256sum | quote }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
+        app.kubernetes.io/component: server
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "omnigent.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      initContainers:
+        - name: wait-for-db
+          image: "{{ .Values.waitForDatabaseInitContainer.image.registry }}/{{ .Values.waitForDatabaseInitContainer.image.repository }}:{{ .Values.waitForDatabaseInitContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.waitForDatabaseInitContainer.image.pullPolicy }}
+          {{- with .Values.restrictedContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.initContainers.resources }}
+          resources: {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          {{- else if ne .Values.initContainers.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.initContainers.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: PGHOST
+              value: {{ include "omnigent.database.host" . | quote }}
+            - name: PGPORT
+              value: {{ include "omnigent.database.port" . | quote }}
+            - name: PGUSER
+              value: {{ include "omnigent.database.user" . | quote }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              until pg_isready; do
+                echo "Waiting for DB ${PGUSER}@${PGHOST}:${PGPORT} to be up";
+                sleep 5;
+              done;
+      containers:
+        - name: omnigent
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.resources }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          {{- else if ne .Values.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "8000"
+            # the image runs as root by default, so there's no home directory for the unprivileged user
+            - name: HOME
+              value: /home/omnigent
+            - name: ARTIFACT_DIR
+              value: /data/artifacts
+            # anchors the server's data directory (admin list, allowed domains, default config.yaml) at /data.
+            # No credentials file is actually written there.
+            - name: OMNIGENT_ADMIN_CREDENTIALS_PATH
+              value: /data/admin-credentials
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "omnigent.database.secretName" . }}
+                  key: {{ include "omnigent.database.secretKey" . }}
+            - name: DATABASE_URL
+              value: {{ include "omnigent.database.url" . | quote }}
+            - name: OMNIGENT_AUTH_ENABLED
+              value: {{ ternary "1" "0" .Values.auth.enabled | quote }}
+            {{- with .Values.auth.provider }}
+            - name: OMNIGENT_AUTH_PROVIDER
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.auth.accounts.cookieSecret.existingSecret.name }}
+            - name: OMNIGENT_ACCOUNTS_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ . }}
+                  key: {{ $.Values.auth.accounts.cookieSecret.existingSecret.key }}
+            {{- end }}
+            {{- with (include "omnigent.baseUrl" .) }}
+            - name: OMNIGENT_ACCOUNTS_BASE_URL
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.artifactStore.s3 }}
+            {{- if .uri }}
+            - name: OMNIGENT_ARTIFACT_URI
+              value: {{ .uri | quote }}
+            {{- with .endpoint }}
+            - name: AWS_ENDPOINT_URL_S3
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .region }}
+            - name: AWS_REGION
+              value: {{ . | quote }}
+            {{- end }}
+            {{- if .existingSecret.name }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.accessKeyIdKey }}
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.secretAccessKeyKey }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            - name: OMNIGENT_FEATURES
+              value: {{ .Values.features | quote }}
+            {{- if .Values.config }}
+            - name: OMNIGENT_CONFIG
+              value: /etc/omnigent/config.yaml
+            {{- end }}
+            {{- if not .Values.usageAnalytics.enabled }}
+            - name: DO_NOT_TRACK
+              value: "1"
+            - name: OMNIGENT_DISABLE_TELEMETRY
+              value: "true"
+            {{- end }}
+            {{- if .Values.metrics.enabled }}
+            - name: OMNIGENT_TELEMETRY_ENABLED
+              value: "1"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ required "metrics.otlp.endpoint must be set when metrics.enabled=true" .Values.metrics.otlp.endpoint | quote }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.metrics.otlp.protocol | quote }}
+            - name: OTEL_METRICS_EXPORTER
+              value: "otlp"
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.metrics.serviceName | quote }}
+            {{- end }}
+            {{- if .Values.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
+            {{- range $key, $value := .Values.envDict }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- with .Values.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+            - name: home
+              mountPath: /home/omnigent
+            {{- if .Values.config }}
+            - name: config
+              mountPath: /etc/omnigent/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ default (include "common.names.fullname" .) (tpl .Values.persistence.existingClaim $) }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: tmp
+          emptyDir: {}
+        - name: home
+          emptyDir: {}
+        {{- if .Values.config }}
+        - name: config
+          configMap:
+            name: {{ include "common.names.fullname" . }}-config
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
