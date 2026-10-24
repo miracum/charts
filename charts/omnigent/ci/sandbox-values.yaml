@@ -1,0 +1,16 @@
+# managed sandboxes need an auth provider other than `accounts`
+auth:
+  enabled: false
+
+sandbox:
+  rbac:
+    create: true
+  namespace:
+    create: true
+
+config:
+  sandbox:
+    provider: kubernetes
+    kubernetes:
+      namespace: omnigent-ci-sandboxes
+      image: ghcr.io/omnigent-ai/omnigent-host:v0.19.1

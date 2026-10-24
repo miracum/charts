@@ -29,8 +29,7 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
   # -- whether to automount the SA token. Only required for managed sandboxes (`config.sandbox`), where the server
-  # uses the Kubernetes API to launch runner pods. Also bind this service account to a Role in the runner namespace,
-  # see the README's "Managed sandboxes" section.
+  # uses the Kubernetes API to launch runner pods. Always enabled if `sandbox.rbac.create=true`.
   automountServiceAccountToken: false
 
 # -- annotations to set on the server pod
@@ -100,25 +99,39 @@ usageAnalytics:
 # Keep secrets out of here and set them via `extraEnv` or `extraEnvFrom` instead.
 # See <https://github.com/omnigent-ai/omnigent/blob/main/deploy/docker/config.yaml.example>.
 # The `sandbox` section enables managed sandboxes: the server launches a runner pod per session instead of relying on
-# hosts connected via `omnigent host`. Requires an image with the `kubernetes` extra (included in the default image), `serviceAccount.automountServiceAccountToken=true`,
-# an auth provider other than `accounts`, and RBAC in the runner namespace. See the README's "Managed sandboxes" section.
+# hosts connected via `omnigent host`. Requires an auth provider other than `accounts` and RBAC in the runner namespace,
+# which the chart creates if `sandbox.rbac.create=true`. See the README's "Managed sandboxes" section.
 config: {}
 #   admins:
 #     - admin@example.com
 #   sandbox:
 #     # `kubernetes` runs each sandbox as a Job, `agent_sandbox` as an agent-sandbox `Sandbox` that is suspended when idle
 #     provider: agent_sandbox
-#     # the URL runner pods use to connect back to the server: `http://<fullname>.<namespace>.svc:<service.port>`
+#     # the URL runner pods use to connect back to the server. Defaults to `http://<fullname>.<namespace>.svc:<service.port>`.
 #     server_url: http://omnigent.omnigent.svc:8000
 #     # `agent_sandbox` only: seconds an idle sandbox stays warm after the last turn before it suspends
 #     keep_warm_s: 300
 #     kubernetes:
+#       # the namespace of the runner pods. Defaults to `omnigent-sandboxes`.
 #       namespace: omnigent-sandboxes
-#       # secret in the runner namespace with the LLM/git credentials (e.g. ANTHROPIC_API_KEY, GIT_TOKEN) for the runners
+#       # secret in the runner namespace with the LLM/git credentials for the runners, see the README. Optional.
 #       secret_name: omnigent-creds
+#       # the service account of the runner pods. Defaults to `omnigent-runner`.
 #       service_account: omnigent-runner
 #       # defaults to the `latest` tag. Pin it to the server's version.
 #       image: ghcr.io/omnigent-ai/omnigent-host:v0.19.1
+
+sandbox:
+  rbac:
+    # -- create the RBAC required by managed sandboxes with the `kubernetes` or `agent_sandbox` provider (`config.sandbox.provider`):
+    # the runner service account (`config.sandbox.kubernetes.service_account`) and a Role + RoleBinding in the runner namespace
+    # (`config.sandbox.kubernetes.namespace`) allowing the server's service account to manage runners there. Also enables mounting the
+    # server's service account token.
+    create: false
+  namespace:
+    # -- create the runner namespace (`config.sandbox.kubernetes.namespace`), labeled to enforce the `restricted` Pod Security Standard.
+    # Ignored if it is the release namespace. ⚠️ deleting the release deletes the namespace and all running sandboxes.
+    create: false
 
 metrics:
   # -- export OpenTelemetry metrics, traces, and logs via OTLP. The server does not expose a Prometheus endpoint.
