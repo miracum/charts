@@ -28275,6 +28275,49 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/hive-metastore-0.1.0/hive-metastore-0.1.0.tgz
     version: 0.1.0
+  omnigent:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: "Initial release of the Omnigent server chart"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 0.19.1
+    created: "2026-10-24T01:25:31.788908449Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Omnigent server, the control plane
+      that coordinates AI coding agents running on connected hosts.
+    digest: 9c6e03602d33c91a07c632b5c56c86a5edd73483908fe82b5117cab7980cc32c
+    home: https://github.com/omnigent-ai/omnigent
+    keywords:
+    - AI
+    - agents
+    - LLM
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: omnigent
+    sources:
+    - https://github.com/omnigent-ai/omnigent
+    - https://github.com/miracum/charts/tree/master/charts/omnigent
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/omnigent-0.1.0/omnigent-0.1.0.tgz
+    version: 0.1.0
   opal:
   - annotations:
       artifacthub.io/changes: |-
@@ -42357,4 +42400,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-23T21:34:45.538538751Z"
+generated: "2026-10-24T01:25:31.790512005Z"
