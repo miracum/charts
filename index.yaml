@@ -28281,6 +28281,52 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: added
+          description: "`sandbox.rbac.create` to create the runner service account and the Role + RoleBinding required by managed sandboxes"
+        - kind: added
+          description: "`sandbox.namespace.create` to create the runner namespace enforcing the restricted Pod Security Standard"
+        - kind: changed
+          description: "`config.sandbox.server_url` defaults to the URL of the release's service"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 0.19.1
+    created: "2026-10-24T15:53:04.917716431Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Omnigent server, the control plane
+      that coordinates AI coding agents running on connected hosts.
+    digest: 3ee0e0ddececd666355630e8d4eb8cb3f9790e35cb7068aff3291da7389def65
+    home: https://github.com/omnigent-ai/omnigent
+    keywords:
+    - AI
+    - agents
+    - LLM
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: omnigent
+    sources:
+    - https://github.com/omnigent-ai/omnigent
+    - https://github.com/miracum/charts/tree/master/charts/omnigent
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/omnigent-0.2.0/omnigent-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: added
           description: "Initial release of the Omnigent server chart"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -42400,4 +42446,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-24T01:25:31.790512005Z"
+generated: "2026-10-24T15:53:04.919414984Z"
