@@ -14,13 +14,13 @@ dependencies:
     condition: postgres.enabled
   - name: fhir-pseudonymizer
     condition: fhir-pseudonymizer.enabled
-    version: 0.10.27
+    version: 1.0.1
     repository: oci://ghcr.io/miracum/charts
   - name: common
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 12.0.51
+version: 12.0.52
 # renovate: datasource=docker depName=ghcr.io/miracum/fhir-gateway extractVersion=^v(?<version>.+)$
 appVersion: "6.1.9"
 annotations:
@@ -34,4 +34,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/curlimages/curl to sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93"
+      description: "Updated fhir-pseudonymizer to 1.0.1"
