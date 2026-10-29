@@ -14,7 +14,7 @@ permissions:
 jobs:
   release:
     name: Release Charts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ghcr.io/chgl/kube-powertools:v2.6.13@sha256:5e6cab6409850248d60d3686f02bf903f5f25aa8aa72058031aa5427d7f1c5cf
     permissions:
       contents: write
@@ -95,7 +95,7 @@ jobs:
 
   update-kubescape-reports:
     name: Update Kubescape Reports
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ghcr.io/chgl/kube-powertools:v2.6.13@sha256:5e6cab6409850248d60d3686f02bf903f5f25aa8aa72058031aa5427d7f1c5cf
     permissions:
       contents: write
@@ -118,7 +118,7 @@ jobs:
           name: kubescape-reports
           path: "kubescape-reports/"
 
-      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0 # zizmor: ignore[superfluous-actions,ref-version-mismatch] upload release assets directly
+      - uses: EndBug/add-and-commit@cc9c08ba6c8df3b93a8f2db63e89b98368ae2ae8 # v11.1.1 # zizmor: ignore[superfluous-actions,ref-version-mismatch] upload release assets directly
         with:
           add: "kubescape-reports/"
           message: "docs: updated kubescape reports"
