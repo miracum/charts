@@ -26226,6 +26226,41 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/library/busybox to sha256:ddb91a9b37968119844068ea623ee9603f34ad384e2bd9739b9cf573d513c691"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    created: "2026-10-29T01:53:37.137293105Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Hive Metastore
+    digest: bfba374a9f59025dcd697d1737309a1c9132d52e45cc3cffc118502c7ecfbf09
+    home: https://hive.apache.org/
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: hive-metastore
+    sources:
+    - https://github.com/apache/hive
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/hive-metastore-0.6.4/hive-metastore-0.6.4.tgz
+    version: 0.6.4
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/library/busybox to sha256:2931107fe4c9a8fae3f3fc5ee7052943c1df7282e83cd001d82bb15313ee8a98"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -28688,6 +28723,49 @@ entries:
     - https://github.com/miracum/charts/releases/download/omnigent-0.1.0/omnigent-0.1.0.tgz
     version: 0.1.0
   opal:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
+          description: "Updated docker.io/library/busybox to sha256:ddb91a9b37968119844068ea623ee9603f34ad384e2bd9739b9cf573d513c691"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 5.7.6
+    created: "2026-10-29T01:53:37.297556397Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: 2d1147ce5fcc8e57e272c281a3f61eb9be78a2680893c830a56fe6b6a2690bb3
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.3.100/opal-0.3.100.tgz
+    version: 0.3.100
   - annotations:
       artifacthub.io/changes: |-
         # When using the list of objects option the valid supported kinds are
@@ -42898,4 +42976,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-28T22:09:04.587972808Z"
+generated: "2026-10-29T01:53:37.300692741Z"
