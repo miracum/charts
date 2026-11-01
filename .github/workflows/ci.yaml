@@ -19,7 +19,7 @@ jobs:
     container: ghcr.io/chgl/kube-powertools:v2.6.13@sha256:5e6cab6409850248d60d3686f02bf903f5f25aa8aa72058031aa5427d7f1c5cf
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
@@ -93,7 +93,7 @@ jobs:
         k8s-version: [1.34.8, 1.35.5, 1.36.1]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
           disable-sudo: true
@@ -196,7 +196,7 @@ jobs:
           exit 1
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@d9d87af182ffe0ef4958e61dd1e697c7fd83c52f # v1.31.2
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@cca0bcc51093bb9292344cdefd5eeff9cf41c973 # v1.32.1
     permissions:
       contents: read
       pull-requests: write
