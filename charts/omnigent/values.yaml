@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/util-images/omnigent-server
-  tag: v1.1.1@sha256:7f0d5c8d4789f876de645288f539996b855121333cbb5ce5666baaf5ffb31862
+  tag: v1.1.2@sha256:1dfec7b0d77ef5ce2782d998c4ad7f70e93c1d5c06826c79e4e1b24737818f44
   pullPolicy: IfNotPresent
 
 # -- image pull secrets used by the server pod
