@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: miracum/util-images/hive-metastore
-  tag: v1.4.3@sha256:91f6a16a2d80911f5cf1e411bb36590df763269f3ff1efbff4f811eb63d56483
+  tag: v1.4.4@sha256:e14b29f04e19e4f4f71ef704066d7e3110095c89cea70108a92a78b121aa708f
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
 
