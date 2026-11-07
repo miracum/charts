@@ -212,7 +212,7 @@ initJob:
     image:
       registry: ghcr.io
       repository: miracum/ig-build-tools
-      tag: v2.6.0@sha256:757c62da7fdee861a0cfe39e138f1f1dce8b359c31fd1906697369db1bb9d3f6
+      tag: v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
   # @ignored
   curl:
     image:
