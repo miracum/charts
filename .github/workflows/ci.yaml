@@ -16,7 +16,7 @@ jobs:
   chart-lint:
     name: Lint Charts
     runs-on: ubuntu-24.04
-    container: ghcr.io/chgl/kube-powertools:v2.6.13@sha256:5e6cab6409850248d60d3686f02bf903f5f25aa8aa72058031aa5427d7f1c5cf
+    container: ghcr.io/chgl/kube-powertools:v2.6.18@sha256:81ef9a6b211cef5dca667c8e34619b1dc0eedf6b4dc7ec9d519a116583ea0787
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
