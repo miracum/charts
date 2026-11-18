@@ -15,7 +15,7 @@ concurrency:
 jobs:
   chart-lint:
     name: Lint Charts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ghcr.io/chgl/kube-powertools:v2.7.0@sha256:f38618437b798353959fc502695dd1ef7ee3d508df34a1c1791bbdeface60ef6
     steps:
       - name: Harden Runner
@@ -85,7 +85,7 @@ jobs:
 
   test:
     name: Test Charts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs:
       - chart-lint
     strategy:
@@ -226,7 +226,7 @@ jobs:
       - chart-lint
       - test
       - lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Fail if any required job failed or was cancelled
         env:
