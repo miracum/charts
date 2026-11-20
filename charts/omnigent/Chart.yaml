@@ -22,7 +22,7 @@ dependencies:
     version: 0.2.0
 deprecated: false
 kubeVersion: ">= 1.23.0-0"
-version: 0.2.2
+version: 0.2.3
 # the Omnigent version contained in the default image (ghcr.io/miracum/util-images/omnigent-server).
 # Update it together with `image.tag` in values.yaml.
 appVersion: "0.19.1"
@@ -39,4 +39,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/miracum/util-images/omnigent-server to v1.1.2"
+      description: "Updated ghcr.io/miracum/util-images/omnigent-server to v1.1.3"
