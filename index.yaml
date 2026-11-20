@@ -29133,6 +29133,48 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated ghcr.io/miracum/util-images/omnigent-server to v1.1.3"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 0.19.1
+    created: "2026-11-20T12:49:05.481613206Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Omnigent server, the control plane
+      that coordinates AI coding agents running on connected hosts.
+    digest: 70809eb1d95b1971223e6edee932eb9556e10d0a4d5acd8e1dde3823696391c1
+    home: https://github.com/omnigent-ai/omnigent
+    keywords:
+    - AI
+    - agents
+    - LLM
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: omnigent
+    sources:
+    - https://github.com/omnigent-ai/omnigent
+    - https://github.com/miracum/charts/tree/master/charts/omnigent
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/omnigent-0.2.3/omnigent-0.2.3.tgz
+    version: 0.2.3
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated ghcr.io/miracum/util-images/omnigent-server to v1.1.2"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -43640,4 +43682,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-10T23:09:23.472352957Z"
+generated: "2026-11-20T12:49:05.483003874Z"
