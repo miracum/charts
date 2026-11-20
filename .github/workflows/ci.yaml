@@ -135,8 +135,15 @@ jobs:
           # version changes; "update" re-resolves against the "*" constraint
           # and refreshes the lock instead.
           helm dependency update hack/test-fixtures/
+          # "helm template | kubectl apply" (rather than "helm install") because
+          # the rendered fixtures (mostly the prometheus-operator CRDs) exceed
+          # the 1MiB size limit of the Secret helm stores its release in.
+          # --no-hooks: kubectl would otherwise apply helm hooks as regular
+          # resources, e.g. kyverno's pre-delete "scale-to-zero" Job, which
+          # since chart 3.10.0 scales all Kyverno controllers down to 0.
           helm template \
             --namespace=fixtures \
+            --no-hooks \
             test-fixtures hack/test-fixtures/ > /tmp/test-fixtures.yaml
 
           # kubectl resolves the available API types once at the start of an
