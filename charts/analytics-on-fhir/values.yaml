@@ -224,7 +224,7 @@ initJob:
     image:
       registry: docker.io
       repository: amazon/aws-cli
-      tag: 2.40.0@sha256:0da258e32b17cc468b2e8812c8d93f5732561b901357c43a207baae0567b195a
+      tag: 2.41.2@sha256:7a77ccb39e3272191adbf905c50db8c127db88fd79454911a41a6b1c0e419e9b
   # @ignored
   wait4x:
     image:
