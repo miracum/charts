@@ -22,9 +22,9 @@ dependencies:
     repository: oci://ghcr.io/miracum/charts
     version: 0.2.0
 kubeVersion: ">= 1.23.0-0"
-version: 0.3.103
+version: 0.4.0
 # renovate: datasource=docker depName=docker.io/obiba/opal
-appVersion: "5.7.6"
+appVersion: "6.2.2"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -38,4 +38,46 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated docker.io/datashield/rock-base to sha256:eb8833ee050baa995b100b68d9aa358de9c38cfda9c1d1616e0e8884a08fd2bc"
+      description: "Updated docker.io/obiba/opal to 6.2.2"
+    - kind: changed
+      description: "BREAKING: Opal's configuration is now stored in a dedicated `opal_config` schema of the PostgreSQL database instead of the embedded H2 database. Existing H2 configurations are not migrated."
+    - kind: changed
+      description: "BREAKING: all chart-managed passwords are stored in a single `<fullname>-credentials` Secret. The default `existingSecret.key` values match its keys."
+    - kind: removed
+      description: "BREAKING: removed `rock.persistence`. The rock pods are stateless and use the R packages from the container image."
+    - kind: changed
+      description: "the rock containers use the image entrypoint instead of a custom init script"
+    - kind: changed
+      description: "the Opal administrator password is applied on every start, so changing it takes effect"
+    - kind: fixed
+      description: "`opal.ingress.className` was ignored"
+    - kind: fixed
+      description: "the Secret for external database passwords was created with a different name than the one referenced"
+    - kind: fixed
+      description: "`opal.database.<data|ids>.port` was ignored"
+    - kind: fixed
+      description: "`rock.javaOpts` and `<opal|rock>.podAnnotations` were ignored"
+    - kind: fixed
+      description: "pods are restarted when a chart-managed password changes"
+    - kind: added
+      description: "set Opal's public URL from the first Ingress host"
+    - kind: changed
+      description: "removed the redundant `-XX:+UseContainerSupport` JVM option, it is enabled by default"
+    - kind: removed
+      description: "BREAKING: removed the unused SSH port (`opal.service.sshPort`). Opal 6 no longer provides SSH access"
+    - kind: removed
+      description: "BREAKING: removed the incomplete and untested `opal.pod.specs` setting for the Kubernetes pod spawner"
+    - kind: fixed
+      description: "the opal and rock ServiceAccounts got the same name when both were created"
+    - kind: fixed
+      description: "the log collector sidecars had an empty `imagePullPolicy`"
+    - kind: fixed
+      description: "wrong Service and pod names in the NOTES"
+    - kind: fixed
+      description: "the Helm test pod is now deleted before the next test run"
+    - kind: fixed
+      description: "the wait-for-db init container now waits for the data and the ids database"
+    - kind: added
+      description: "`rock.imagePullSecrets` and `rock.podAnnotations` values"
+    - kind: fixed
+      description: "Opal could not reconnect to the rock servers after a restart of only Opal: Opal stops the R servers when it shuts down, which made the rock pods not ready and their DNS names unresolvable. Opal now connects via a headless Service including not-ready pods, and the rock readiness probe checks the Rock application instead of its R server"
