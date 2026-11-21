@@ -79,3 +79,5 @@ annotations:
       description: "the wait-for-db init container now waits for the data and the ids database"
     - kind: added
       description: "`rock.imagePullSecrets` and `rock.podAnnotations` values"
+    - kind: fixed
+      description: "Opal could not reconnect to the rock servers after a restart of only Opal: Opal stops the R servers when it shuts down, which made the rock pods not ready and their DNS names unresolvable. Opal now connects via a headless Service including not-ready pods, and the rock readiness probe checks the Rock application instead of its R server"

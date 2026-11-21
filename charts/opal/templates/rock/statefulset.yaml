@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: rock
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ include "common.names.fullname" $ }}-rock
+  serviceName: {{ include "common.names.fullname" $ }}-rock-headless
   selector:
     matchLabels:
       {{- include "common.labels.matchLabels" $ | nindent 6 }}

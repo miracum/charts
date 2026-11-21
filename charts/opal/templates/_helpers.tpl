@@ -112,10 +112,10 @@ Checksum over the chart-managed credentials, used to restart the pods when a pas
 {{- end -}}
 
 {{- define "opal.rock-hosts" -}}
-{{- $rockServiceName := printf "%s-rock" (include "common.names.fullname" .) -}}
+{{- $rockName := printf "%s-rock" (include "common.names.fullname" .) -}}
 {{- $rock := list -}}
 {{- range int .Values.rock.replicaCount | until -}}
-{{- $rock = printf "%s-%d.%s:%d" $rockServiceName . $rockServiceName (int $.Values.rock.service.port) | append $rock -}}
+{{- $rock = printf "%s-%d.%s-headless:%d" $rockName . $rockName (int $.Values.rock.service.port) | append $rock -}}
 {{- end -}}
 {{- join "," $rock -}}
 {{- end -}}

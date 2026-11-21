@@ -90,14 +90,17 @@ spec:
           resources: {{- include "common.resources.preset" (dict "type" $.Values.initContainers.resourcesPreset) | nindent 12 }}
           {{- end }}
           env:
-            - name: ROCK_URL
-              value: "http://{{ include "common.names.fullname" $ }}-rock:{{ $.Values.rock.service.port }}/_check"
+            - name: ROCK_HOSTS
+              value: {{ include "opal.rock-hosts" $ | quote }}
           command: ["/bin/sh", "-c"]
+          # waits for the Rock application on every host. Its R server may be stopped, Opal starts it when needed.
           args:
             - |
-              until [ "$(curl -s -o /dev/null -L -w '%{http_code}' "$ROCK_URL")" == "204" ]; do
-                echo "$(date): Waiting for rock cluster @ $ROCK_URL to be up";
-                sleep 15;
+              for host in $(echo "${ROCK_HOSTS}" | tr ',' ' '); do
+                until curl -fsS -o /dev/null "http://${host}/_info"; do
+                  echo "$(date): Waiting for rock @ ${host} to be up";
+                  sleep 15;
+                done;
               done;
       containers:
         - name: opal-log-collector

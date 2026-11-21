@@ -16,7 +16,7 @@ spec:
   containers:
     {{- $probes := list
       (dict "name" "probe-opal-endpoint" "url" (printf "http://%s-opal:%v/" (include "common.names.fullname" .) .Values.opal.service.port))
-      (dict "name" "probe-rock-endpoint" "url" (printf "http://%s-rock:%v/_check" (include "common.names.fullname" .) .Values.rock.service.port))
+      (dict "name" "probe-rock-endpoint" "url" (printf "http://%s-rock:%v/_info" (include "common.names.fullname" .) .Values.rock.service.port))
     }}
     {{- range $probes }}
     - name: {{ .name }}

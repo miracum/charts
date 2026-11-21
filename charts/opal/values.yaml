@@ -379,9 +379,11 @@ rock:
 
   # -- readiness probe
   # @ignored
+  # checks the Rock application, not its R server (`/_check`): Opal stops and starts the R server, e.g. it stops it
+  # when Opal shuts down.
   readinessProbe:
     httpGet:
-      path: /_check
+      path: /_info
       port: http
     failureThreshold: 5
     initialDelaySeconds: 30
