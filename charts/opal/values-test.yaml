@@ -9,4 +9,4 @@ opal:
         paths:
           - path: /
             pathType: ImplementationSpecific
-            portName: https
+            portName: http

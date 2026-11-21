@@ -18,145 +18,97 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Add environment variables to configure database values
+Connection details of a database. Call with (dict "db" .Values.opal.database.<data|ids> "context" $).
+When the bundled postgres is enabled, its connection details are used for all databases.
 */}}
 {{- define "opal.database.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.data.host .Values.postgres.enabled -}}
+{{- ternary (include "opal.postgresql.fullname" .context) .db.host .context.Values.postgres.enabled -}}
 {{- end -}}
 
-{{/*
-Add environment variables to configure database values
-*/}}
 {{- define "opal.database.port" -}}
-{{- ternary "5432" .Values.opal.database.data.port .Values.postgres.enabled -}}
+{{- ternary 5432 .db.port .context.Values.postgres.enabled -}}
 {{- end -}}
 
-{{/*
-Add environment variables to configure database values
-*/}}
 {{- define "opal.database.user" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.username -}}
-        {{ .Values.postgres.auth.username | quote }}
-    {{- else -}}
-        {{ "postgres" }}
-    {{- end -}}
+{{- if .context.Values.postgres.enabled -}}
+{{- default "postgres" .context.Values.postgres.auth.username -}}
 {{- else -}}
-    {{ .Values.opal.database.data.username}}
+{{- .db.username -}}
 {{- end -}}
 {{- end -}}
 
-{{/*
-Add environment variables to configure database values
-*/}}
 {{- define "opal.database.name" -}}
-{{- ternary .Values.postgres.auth.database .Values.opal.database.data.database .Values.postgres.enabled -}}
+{{- ternary .context.Values.postgres.auth.database .db.database .context.Values.postgres.enabled -}}
 {{- end -}}
 
 {{/*
-Get the name of the secret containing the DB password
+secretKeyRef (name + key) of a database password.
+Call with (dict "db" .Values.opal.database.<data|ids> "key" "<key in the credentials secret>" "context" $).
 */}}
-{{- define "opal.database.db-secret-name" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.existingSecret -}}
-        {{ .Values.postgres.auth.existingSecret | quote }}
-    {{- else -}}
-        {{ ( include "opal.postgresql.fullname" . ) }}
-    {{- end -}}
-{{- else if .Values.opal.database.data.existingSecret.name -}}
-    {{ .Values.opal.database.data.existingSecret.name | quote }}
+{{- define "opal.database.secretKeyRef" -}}
+{{- $pg := .context.Values.postgres -}}
+{{- if $pg.enabled -}}
+name: {{ default (include "opal.postgresql.fullname" .context) (tpl $pg.auth.existingSecret .context) }}
+key: {{ ternary (default "postgres-password" $pg.auth.secretKeys.adminPasswordKey) "postgres-password" (not (empty $pg.auth.existingSecret)) }}
 {{- else -}}
-    {{- $fullname := ( include "common.names.fullname" . ) -}}
-    {{ printf "%s-%s" $fullname "db-secret" }}
+{{- include "opal.credentials.secretKeyRef" (dict "existingSecret" .db.existingSecret "key" .key "context" .context) }}
 {{- end -}}
 {{- end -}}
 
 {{/*
-Get the key inside the secret containing the DB user's password
+Name of the Secret holding all passwords managed by the chart
 */}}
-{{- define "opal.database.db-secret-key" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.existingSecret -}}
-        {{ default "postgres-password" .Values.postgres.auth.secretKeys.passwordKey }}
-    {{- else -}}
-        {{ "postgres-password" }}
-    {{- end -}}
-{{- else if .Values.opal.database.data.existingSecret.name -}}
-    {{ .Values.opal.database.data.existingSecret.key | quote }}
+{{- define "opal.credentials.secretName" -}}
+{{- printf "%s-credentials" (include "common.names.fullname" .) -}}
+{{- end -}}
+
+{{/*
+secretKeyRef (name + key) for a password which is either read from a user-provided existing secret or from the
+chart-managed credentials secret. Call with (dict "existingSecret" <existingSecret values> "key" "<key>" "context" $).
+*/}}
+{{- define "opal.credentials.secretKeyRef" -}}
+{{- if .existingSecret.name -}}
+name: {{ tpl .existingSecret.name .context }}
+key: {{ .existingSecret.key }}
 {{- else -}}
-    {{ "data-db-password" }}
+name: {{ include "opal.credentials.secretName" .context }}
+key: {{ .key }}
 {{- end -}}
 {{- end -}}
 
 {{/*
-Add environment variables to configure database values
+YAML list of the entries of the chart-managed credentials secret. Each entry has a `key` and either a `value`,
+a `required` error message, or neither, in which case a random password is generated.
 */}}
-{{- define "opal.database.ids.host" -}}
-{{- ternary (include "opal.postgresql.fullname" .) .Values.opal.database.ids.host .Values.postgres.enabled -}}
+{{- define "opal.credentials.entries" -}}
+{{- $entries := list -}}
+{{- with .Values.opal.auth.administrator -}}
+{{- if not .existingSecret.name -}}
+{{- $entries = append $entries (dict "key" "opal-administrator-password" "value" .password) -}}
+{{- end -}}
+{{- end -}}
+{{- range $user := list "administrator" "manager" "user" -}}
+{{- $auth := get $.Values.rock.auth $user -}}
+{{- if not $auth.existingSecret.name -}}
+{{- $entries = append $entries (dict "key" (printf "rock-%s-password" $user) "value" $auth.password) -}}
+{{- end -}}
+{{- end -}}
+{{- if not .Values.postgres.enabled -}}
+{{- range $db := list "data" "ids" -}}
+{{- $cfg := get $.Values.opal.database $db -}}
+{{- if not $cfg.existingSecret.name -}}
+{{- $entries = append $entries (dict "key" (printf "%s-db-password" $db) "value" $cfg.password "required" (printf "opal.database.%s.password or opal.database.%s.existingSecret.name must be set when postgres.enabled=false" $db $db)) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- toYaml $entries -}}
 {{- end -}}
 
 {{/*
-Add environment variables to configure database values
+Checksum over the chart-managed credentials, used to restart the pods when a password changes
 */}}
-{{- define "opal.database.ids.port" -}}
-{{- ternary "5432" .Values.opal.database.ids.port .Values.postgres.enabled -}}
-{{- end -}}
-
-{{/*
-Add environment variables to configure database values
-*/}}
-{{- define "opal.database.ids.user" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.username -}}
-        {{ .Values.postgres.auth.username | quote }}
-    {{- else -}}
-        {{ "postgres" }}
-    {{- end -}}
-{{- else -}}
-    {{ .Values.opal.database.ids.username }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Add environment variables to configure database values
-*/}}
-{{- define "opal.database.ids.name" -}}
-{{- ternary .Values.postgres.auth.database .Values.opal.database.ids.database .Values.postgres.enabled -}}
-{{- end -}}
-
-{{/*
-Get the name of the secret containing the DB password
-*/}}
-{{- define "opal.database.ids.db-secret-name" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.existingSecret -}}
-        {{ .Values.postgres.auth.existingSecret | quote }}
-    {{- else -}}
-        {{ ( include "opal.postgresql.fullname" . ) }}
-    {{- end -}}
-{{- else if .Values.opal.database.ids.existingSecret.name -}}
-    {{ .Values.opal.database.ids.existingSecret.name | quote }}
-{{- else -}}
-    {{- $fullname := ( include "common.names.fullname" . ) -}}
-    {{ printf "%s-%s" $fullname "db-secret" }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the key inside the secret containing the DB user's password
-*/}}
-{{- define "opal.database.ids.db-secret-key" -}}
-{{- if .Values.postgres.enabled -}}
-    {{- if .Values.postgres.auth.existingSecret -}}
-        {{ default "postgres-password" .Values.postgres.auth.secretKeys.passwordKey }}
-    {{- else -}}
-        {{ "postgres-password" }}
-    {{- end -}}
-{{- else if .Values.opal.database.ids.existingSecret.name -}}
-    {{ .Values.opal.database.ids.existingSecret.key | quote }}
-{{- else -}}
-    {{ "ids-db-password" }}
-{{- end -}}
+{{- define "opal.credentials.checksum" -}}
+{{- include (print .Template.BasePath "/credentials-secret.yaml") . | sha256sum -}}
 {{- end -}}
 
 {{- define "opal.rock-hosts" -}}
@@ -168,98 +120,6 @@ Get the key inside the secret containing the DB user's password
 {{- join "," $rock -}}
 {{- end -}}
 
-{{/*
-Get the name of the secret containing the admin password
-*/}}
-{{- define "opal.auth.admin-secret-name" -}}
-{{- if empty .Values.opal.auth.administrator.existingSecret.name -}}
-    {{- $secretName := printf "%s-opal-administrator" (include "common.names.fullname" .) -}}
-    {{ $secretName }}
-{{- else -}}
-    {{ .Values.opal.auth.administrator.existingSecret.name }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the key inside the secret containing the admin password
-*/}}
-{{- define "opal.auth.admin-secret-key" -}}
-{{- if empty .Values.opal.auth.administrator.existingSecret.name -}}
-    {{ "administrator-password" }}
-{{- else -}}
-    {{ .Values.opal.auth.administrator.existingSecret.key }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the name of the secret containing the rock admin password
-*/}}
-{{- define "opal.rock.auth.admin-secret-name" -}}
-{{- if empty .Values.rock.auth.administrator.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
-    {{ $secretName }}
-{{- else -}}
-    {{ .Values.rock.auth.administrator.existingSecret.name }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the key inside the secret containing the rock admin password
-*/}}
-{{- define "opal.rock.auth.admin-secret-key" -}}
-{{- if empty .Values.rock.auth.administrator.existingSecret.name -}}
-    {{ "administrator-password" }}
-{{- else -}}
-    {{ .Values.rock.auth.administrator.existingSecret.key }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the name of the secret containing the rock manager password
-*/}}
-{{- define "opal.rock.auth.manager-secret-name" -}}
-{{- if empty .Values.rock.auth.manager.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
-    {{ $secretName }}
-{{- else -}}
-    {{ .Values.rock.auth.manager.existingSecret.name }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the key inside the secret containing the rock manager password
-*/}}
-{{- define "opal.rock.auth.manager-secret-key" -}}
-{{- if empty .Values.rock.auth.manager.existingSecret.name -}}
-    {{ "manager-password" }}
-{{- else -}}
-    {{ .Values.rock.auth.manager.existingSecret.key }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the name of the secret containing the rock user password
-*/}}
-{{- define "opal.rock.auth.user-secret-name" -}}
-{{- if empty .Values.rock.auth.user.existingSecret.name -}}
-    {{- $secretName := printf "%s-rock-users" (include "common.names.fullname" .) -}}
-    {{ $secretName }}
-{{- else -}}
-    {{ .Values.rock.auth.user.existingSecret.name }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the key inside the secret containing the rock user password
-*/}}
-{{- define "opal.rock.auth.user-secret-key" -}}
-{{- if empty .Values.rock.auth.user.existingSecret.name -}}
-    {{ "user-password" }}
-{{- else -}}
-    {{ .Values.rock.auth.user.existingSecret.key }}
-{{- end -}}
-{{- end -}}
-
 {{- define "opal.opal.ingress-hosts" -}}
 {{- $hosts := list -}}
 {{- range .Values.opal.ingress.hosts -}}
@@ -269,11 +129,25 @@ Get the key inside the secret containing the rock user password
 {{- end -}}
 
 {{/*
+Public URL of Opal derived from the first Ingress host. Uses https if that host is listed in the Ingress TLS config.
+*/}}
+{{- define "opal.opal.public-url" -}}
+{{- $host := (first .Values.opal.ingress.hosts).host -}}
+{{- $scheme := "http" -}}
+{{- range .Values.opal.ingress.tls -}}
+{{- if has $host .hosts -}}
+{{- $scheme = "https" -}}
+{{- end -}}
+{{- end -}}
+{{- printf "%s://%s" $scheme $host -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "opal.opal.serviceAccountName" -}}
 {{- if .Values.opal.serviceAccount.create }}
-{{- default (include "common.names.fullname" .) .Values.opal.serviceAccount.name }}
+{{- default (printf "%s-opal" (include "common.names.fullname" .)) .Values.opal.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.opal.serviceAccount.name }}
 {{- end }}
@@ -284,15 +158,8 @@ Create the name of the service account to use
 */}}
 {{- define "opal.rock.serviceAccountName" -}}
 {{- if .Values.rock.serviceAccount.create }}
-{{- default (include "common.names.fullname" .) .Values.rock.serviceAccount.name }}
+{{- default (printf "%s-rock" (include "common.names.fullname" .)) .Values.rock.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.rock.serviceAccount.name }}
 {{- end }}
-{{- end }}
-
-{{/*
-The JSON-encoded pod spec for the rock pods when using the Kubernetes pod spawner
-*/}}
-{{- define "opal.opal.rock-pod-specs" -}}
-{{- (include "common.tplvalues.render" (dict "value" .Values.opal.pod.specs "context" $)) | fromYamlArray | toJson | toString | quote }}
 {{- end }}

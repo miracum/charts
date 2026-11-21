@@ -18,6 +18,7 @@ opal:
   auth:
     administrator:
       # -- the password for the administrator user. If unset and no existing secret is specified, a random one is generated. It is kept across `helm upgrade` by looking up the existing Secret, but `lookup` returns nothing under `helm template` and GitOps tools that render with it (e.g. Argo CD), so a new password is generated on every sync. In that case set this value or use an existing secret.
+      # The password is applied on every start of Opal, so changing it changes the actual administrator password.
       password: ""
       existingSecret:
         # -- name of an existing secret that contains the administrator password.
@@ -26,7 +27,8 @@ opal:
         key: "opal-administrator-password"
 
   ingress:
-    # -- create an Ingress for the application
+    # -- create an Ingress for the application. If `opal.networkPolicy.enabled` is set, the ingress controller must also
+    # be allowed via `opal.networkPolicy.extraIngress`.
     enabled: false
     # -- ingressClassName to use
     className: ""
@@ -46,7 +48,7 @@ opal:
     #      - chart-example.local
 
   # -- sets the value for the `JAVA_OPTS` environment variable
-  javaOpts: "-XX:+UseG1GC -XX:+UseContainerSupport"
+  javaOpts: "-XX:+UseG1GC"
 
   # -- configuration for the server persistence
   persistence:
@@ -92,10 +94,10 @@ opal:
         # -- name of an existing secret containing the password to the DB.
         name: ""
         # -- name of the key in `database.data.existingSecret.name` to use as the password to the DB.
-        key: "password"
+        key: "data-db-password"
     ids:
       # -- database hostname of an external database used to store ids. Only used if `postgres.enabled` is set to `false`.
-      host: "data.host.example.com"
+      host: "ids.host.example.com"
       # -- port used to connect to the postgres DB
       port: 5432
       # -- name of the database inside. Only used if `postgres.enabled` is `false`, otherwise `postgres.auth.database` is used
@@ -109,39 +111,15 @@ opal:
         # -- name of an existing secret containing the password to the DB.
         name: ""
         # -- name of the key in `database.ids.existingSecret.name` to use as the password to the DB.
-        key: "password"
+        key: "ids-db-password"
+    config:
+      # -- name of the schema in the data database used to store Opal's own configuration (projects, users, permissions,
+      # registered databases, ...). Created if it doesn't exist, so the database user needs the `CREATE` privilege
+      # on the database. Uses the connection details of `postgres` if enabled, otherwise of `opal.database.data`.
+      schema: "opal_config"
 
   # -- extra environment variables to set on the opal api container
   extraEnv: []
-
-  pod:
-    # -- YAML pod specs for the rock pods when using the Kubernetes pod spawner. This value is evaluated as a template.
-    # set to `[]` to disable. ⚠️: Full support for using the K8s pod spawner is not yet implemented and tested, e.g.
-    # the necessary RBAC permissions for the service account are not yet created by this chart.
-    specs: []
-      # untested sample:
-      # - apiVersion: v1
-      #   kind: Pod
-      #   metadata:
-      #     name: rock
-      #     namespace: default
-      #   spec:
-      #     containers:
-      #       - name: rock
-      #         image: docker.io/datashield/rock-base:6.3.4@sha256:a827541597d9d4653c9f5590cf529c73adcbdd8f1a25c9bc9fb7b8811e03b2e9
-      #         ports:
-      #           - name: http
-      #             containerPort: 8085
-      #             protocol: TCP
-      #         resources:
-      #           limits:
-      #             cpu: 150m
-      #             ephemeral-storage: 2Gi
-      #             memory: 192Mi
-      #           requests:
-      #             cpu: 100m
-      #             ephemeral-storage: 50Mi
-      #             memory: 128Mi
 
   # -- image pull secrets used by the opal container
   imagePullSecrets: []
@@ -174,8 +152,6 @@ opal:
     port: 8080
     # -- the port for the TLS-secured interface
     httpsPort: 8443
-    # -- the port for SSH access
-    sshPort: 8022
 
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
@@ -235,9 +211,12 @@ opal:
     automountServiceAccountToken: false
 
   networkPolicy:
-    # -- whether to create a NetworkPolicy for the rock pods
+    # -- whether to create a NetworkPolicy for the opal pods
     enabled: true
-    # -- add extra ingress rules to the NetworkPolicy. Necessary for e.g. ingress controllers.
+    # -- add extra ingress rules to the NetworkPolicy. By default, only the Helm test pod may connect to Opal, so when
+    # `opal.ingress.enabled` is set, traffic from the ingress controller must be allowed here. Otherwise requests through
+    # the Ingress time out. E.g. for ingress-nginx:
+    # `[{from: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ingress-nginx}}}], ports: [{port: http}]}]`
     extraIngress: []
     # -- add extra egress rules to the NetworkPolicy
     extraEgress: []
@@ -298,6 +277,16 @@ rock:
     tag: 6.3.5@sha256:eb8833ee050baa995b100b68d9aa358de9c38cfda9c1d1616e0e8884a08fd2bc
     pullPolicy: IfNotPresent
 
+  # Note: the rock pods are stateless. R packages come from the container image and the root filesystem is read-only,
+  # so installing additional R packages at runtime (e.g. via the Opal UI) is not possible. To use additional packages,
+  # build a custom image based on `datashield/rock-base` and set it via `rock.image`.
+
+  # -- image pull secrets used by the rock pods
+  imagePullSecrets: []
+
+  # -- annotations to set on the rock pods
+  podAnnotations: {}
+
   # -- rock cluster name. Evaluated as a template
   clusterName: "default"
 
@@ -354,33 +343,6 @@ rock:
     # -- whether to automount the SA token.
     automountServiceAccountToken: false
 
-  # -- configuration for the server persistence
-  persistence:
-    # -- enable data persistence using PVC
-    enabled: true
-    # -- name of an existing PVC to use
-    existingClaim: ""
-    # -- PVC Storage Class for data volume
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default provisioner.
-    storageClass: ""
-    # -- PVC Access Mode for data volume
-    accessModes:
-      - ReadWriteOnce
-    # -- PVC Storage Request for volume
-    size: 8Gi
-    # -- annotations for the PVC
-    annotations: {}
-    # -- labels for the PVC
-    labels: {}
-    # -- selector to match an existing Persistent Volume (this value is evaluated as a template)
-    # selector:
-    #   matchLabels:
-    #     app: my-app
-    selector: {}
-
   service:
     # -- the type of service
     type: ClusterIP
@@ -405,7 +367,6 @@ rock:
   podSecurityContext:
     runAsNonRoot: true
     fsGroup: 10041
-    fsGroupChangePolicy: "OnRootMismatch"
 
   # -- pod node selector
   nodeSelector: {}
@@ -477,6 +438,7 @@ logCollectorSidecar:
     registry: docker.io
     repository: library/busybox
     tag: 1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b
+    pullPolicy: IfNotPresent
   # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if primary.resources is set (primary.resources is recommended for production).
   # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
   resourcesPreset: "nano"

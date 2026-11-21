@@ -14,12 +14,53 @@ helm repo update
 
 ## Development
 
-1. (Optional) Setup a KinD cluster with Nginx ingress support
+1. (Optional) Setup a KinD cluster with Ingress support
+
+   Since v0.9.0, [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind) natively implements
+   `Service`s of type `LoadBalancer`, `Ingress` (IngressClass `cloud-provider-kind`, set as the cluster default) and the Gateway API
+   (GatewayClass `cloud-provider-kind`). No separate ingress controller or special cluster config is required.
+   See <https://kind.sigs.k8s.io/docs/user/ingress/>.
 
    ```sh
-   kind create cluster --config=hack/kind-config.yaml
-   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
+   kind create cluster
+   # cloud-provider-kind runs outside the cluster and watches all kind clusters. Keep it running.
+   docker run -d --name cloud-provider-kind --restart unless-stopped --network kind \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     registry.k8s.io/cloud-provider-kind/cloud-controller-manager:v0.12.0@sha256:1b97632e5dfec8f83c7e970cf18cedb9e6b707e272011d712cabf6ab59d323c9
+   kubectl get ingressclass
    ```
+
+   Alternatively, install the binary (`go install sigs.k8s.io/cloud-provider-kind@latest`) and run `cloud-provider-kind`
+   (with `sudo` on macOS and Docker Desktop/WSL2).
+
+   Each Ingress gets an IP address from the kind docker network (`kubectl get ingress -A`). On Linux, it is reachable directly.
+   The chart defaults use `<name>.127.0.0.1.nip.io` hostnames, so either override the host (e.g. `opal.172.19.0.4.nip.io`)
+   or set the `Host` header:
+
+   ```sh
+   INGRESS_IP=$(kubectl get ingress opal-opal -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+   curl -H "Host: opal.127.0.0.1.nip.io" "http://${INGRESS_IP}/"
+   ```
+
+   On macOS and Docker Desktop, node IPs aren't reachable from the host. cloud-provider-kind instead maps the
+   load balancer port to a random `localhost` port (see `docker ps --filter name=kindccm`).
+
+   > [!IMPORTANT]
+   > kind's default CNI (kindnet) enforces NetworkPolicies. The ingress proxy (Envoy) runs as a container on the `kind`
+   > docker network, not as a pod. Traffic from it is therefore blocked by charts that create NetworkPolicies, which shows as
+   > `503 upstream connect error ... connection timeout`. Allow it via the chart's `networkPolicy.extraIngress`, e.g. for opal:
+   >
+   > ```yaml
+   > opal:
+   >   networkPolicy:
+   >     extraIngress:
+   >       - from:
+   >           - ipBlock:
+   >               cidr: 172.16.0.0/12 # docker network inspect kind
+   >         ports:
+   >           - port: http
+   >             protocol: TCP
+   > ```
 
 1. (Optional) With Calico as a CNI to test NetworkPolicy resources
 

@@ -11,7 +11,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.opal.ingress.ingressClassName }}
+  {{- with .Values.opal.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
 {{- if .Values.opal.ingress.tls }}
