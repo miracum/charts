@@ -248,7 +248,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">Applications credentials in configuration files</td>
           <td class="controlRiskCell numericCell">1</td>
-          <td class="controlRiskCell numericCell">35</td>
+          <td class="controlRiskCell numericCell">34</td>
           <td class="controlRiskCell numericCell">3</td>
         </tr>
       
@@ -456,7 +456,7 @@
           <td class="controlSeverityCell">High</td>
           <td class="controlNameCell">Workload with secret access</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">33</td>
+          <td class="controlRiskCell numericCell">32</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       
@@ -584,7 +584,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Dangling Gateway API backend</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">21</td>
+          <td class="controlRiskCell numericCell">22</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       
@@ -600,7 +600,7 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Dangling Ingress backend</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">21</td>
+          <td class="controlRiskCell numericCell">22</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       
@@ -928,8 +928,8 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Missing network policy</td>
           <td class="controlRiskCell numericCell">23</td>
-          <td class="controlRiskCell numericCell">37</td>
-          <td class="controlRiskCell numericCell">62</td>
+          <td class="controlRiskCell numericCell">36</td>
+          <td class="controlRiskCell numericCell">64</td>
         </tr>
       
         <tr>
@@ -1032,15 +1032,15 @@
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Workload with ConfigMap access</td>
           <td class="controlRiskCell numericCell">8</td>
-          <td class="controlRiskCell numericCell">35</td>
-          <td class="controlRiskCell numericCell">23</td>
+          <td class="controlRiskCell numericCell">34</td>
+          <td class="controlRiskCell numericCell">24</td>
         </tr>
       
         <tr>
           <td class="controlSeverityCell">Medium</td>
           <td class="controlNameCell">Workload with PVC access</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">35</td>
+          <td class="controlRiskCell numericCell">34</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       
@@ -1224,7 +1224,7 @@
           <td class="controlSeverityCell">Low</td>
           <td class="controlNameCell">Service with no workload</td>
           <td class="controlRiskCell numericCell">0</td>
-          <td class="controlRiskCell numericCell">46</td>
+          <td class="controlRiskCell numericCell">47</td>
           <td class="controlRiskCell numericCell">0</td>
         </tr>
       
@@ -2695,7 +2695,7 @@
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Prefer using secrets as files over secrets as environment variables</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0207">C-0207</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].env[12].name (opal)</p>  <p>spec.template.spec.containers[2].env[16].name (opal)</p>  <p>spec.template.spec.containers[2].env[1].name (opal)</p>  <p>spec.template.spec.containers[2].env[4].name (opal)</p>  <p>spec.template.spec.containers[2].env[6].name (opal)</p>  <p>spec.template.spec.containers[2].env[8].name (opal)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].env[13].name (opal)</p>  <p>spec.template.spec.containers[2].env[18].name (opal)</p>  <p>spec.template.spec.containers[2].env[1].name (opal)</p>  <p>spec.template.spec.containers[2].env[23].name (opal)</p>  <p>spec.template.spec.containers[2].env[4].name (opal)</p>  <p>spec.template.spec.containers[2].env[6].name (opal)</p>  <p>spec.template.spec.containers[2].env[8].name (opal)</p>  <p>spec.template.spec.initContainers[0].env[5].name (wait-for-db)</p> </td>
         </tr>
         
         <tr>
@@ -2709,14 +2709,14 @@
           <td class="resourceSeverityCell">High</td>
           <td class="resourceNameCell">Verify image signature</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0236">C-0236</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.initContainers[1].image (current: docker.io/curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93) (wait-for-rock)</p>  <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (opal-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rest-log-collector)</p>  <p>spec.template.spec.initContainers[0].image (current: docker.io/library/postgres:18.6@sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32) (wait-for-db)</p>  <p>spec.template.spec.containers[2].image (current: docker.io/obiba/opal:5.7.6@sha256:0483560a3084d43a687037b84f5c72249bf337a4bcb69b6ae50eac2fb4afd18f) (opal)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.initContainers[1].image (current: docker.io/curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93) (wait-for-rock)</p>  <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (opal-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rest-log-collector)</p>  <p>spec.template.spec.initContainers[0].image (current: docker.io/library/postgres:18.6@sha256:1267c7e692de235fda2a50dbcdbcbca4672ea6a0298576a6bd9d07cafc319b32) (wait-for-db)</p>  <p>spec.template.spec.containers[2].image (current: docker.io/obiba/opal:6.2.2@sha256:e8b57dbf3f7182b53ae8ea9913314089bbf5f0a35505fc006b3d7123d34c020f) (opal)</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">High</td>
           <td class="resourceNameCell">Check if signature exists</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0237">C-0237</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (opal-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rest-log-collector)</p>  <p>spec.template.spec.containers[2].image (current: docker.io/obiba/opal:5.7.6@sha256:0483560a3084d43a687037b84f5c72249bf337a4bcb69b6ae50eac2fb4afd18f) (opal)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (opal-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rest-log-collector)</p>  <p>spec.template.spec.containers[2].image (current: docker.io/obiba/opal:6.2.2@sha256:e8b57dbf3f7182b53ae8ea9913314089bbf5f0a35505fc006b3d7123d34c020f) (opal)</p> </td>
         </tr>
         
         </tbody>
@@ -2756,21 +2756,21 @@
           <td class="resourceSeverityCell">Medium</td>
           <td class="resourceNameCell">Prefer using secrets as files over secrets as environment variables</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0207">C-0207</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].env[4].name (rock)</p>  <p>spec.template.spec.containers[2].env[6].name (rock)</p>  <p>spec.template.spec.containers[2].env[8].name (rock)</p>  <p>spec.template.spec.initContainers[0].env[3].name (first-run)</p>  <p>spec.template.spec.initContainers[0].env[5].name (first-run)</p>  <p>spec.template.spec.initContainers[0].env[7].name (first-run)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].env[4].name (rock)</p>  <p>spec.template.spec.containers[2].env[6].name (rock)</p>  <p>spec.template.spec.containers[2].env[8].name (rock)</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">High</td>
           <td class="resourceNameCell">Apply Security Context to Your Pods and Containers</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0211">C-0211</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.seLinuxOptions=YOUR_VALUE (rock-log-collector)</p>  <p>spec.template.spec.containers[1].securityContext.seLinuxOptions=YOUR_VALUE (rserve-log-collector)</p>  <p>spec.template.spec.containers[2].securityContext.seLinuxOptions=YOUR_VALUE (rock)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[0].securityContext.seLinuxOptions=YOUR_VALUE (rock-log-collector)</p>  <p>spec.template.spec.containers[1].securityContext.seLinuxOptions=YOUR_VALUE (rserve-log-collector)</p>  <p>spec.template.spec.containers[2].securityContext.seLinuxOptions=YOUR_VALUE (rock)</p>  <p>spec.template.spec.securityContext.fsGroupChangePolicy=Always</p> </td>
         </tr>
         
         <tr>
           <td class="resourceSeverityCell">High</td>
           <td class="resourceNameCell">Verify image signature</td>
           <td class="resourceURLCell"><a href="https://hub.armosec.io/docs/c-0236">C-0236</a></td>
-          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].image (current: docker.io/datashield/rock-base:6.3.5@sha256:eb8833ee050baa995b100b68d9aa358de9c38cfda9c1d1616e0e8884a08fd2bc) (rock)</p>  <p>spec.template.spec.initContainers[0].image (current: docker.io/datashield/rock-base:6.3.5@sha256:eb8833ee050baa995b100b68d9aa358de9c38cfda9c1d1616e0e8884a08fd2bc) (first-run)</p>  <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rock-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rserve-log-collector)</p> </td>
+          <td class="resourceRemediationCell"> <p>spec.template.spec.containers[2].image (current: docker.io/datashield/rock-base:6.3.5@sha256:eb8833ee050baa995b100b68d9aa358de9c38cfda9c1d1616e0e8884a08fd2bc) (rock)</p>  <p>spec.template.spec.containers[0].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rock-log-collector)</p>  <p>spec.template.spec.containers[1].image (current: docker.io/library/busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b) (rserve-log-collector)</p> </td>
         </tr>
         
         <tr>
