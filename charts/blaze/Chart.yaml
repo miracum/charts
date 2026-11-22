@@ -16,9 +16,9 @@ dependencies:
     version: 0.2.0
 deprecated: false
 kubeVersion: ">= 1.23.0-0"
-version: 0.8.5
+version: 0.8.6
 # renovate: datasource=docker depName=ghcr.io/samply/blaze
-appVersion: "1.13.0"
+appVersion: "1.14.0"
 annotations:
   artifacthub.io/license: Apache-2.0
   artifacthub.io/containsSecurityUpdates: "false"
@@ -32,4 +32,4 @@ annotations:
     # When using the list of objects option the valid supported kinds are
     # added, changed, deprecated, removed, fixed and security.
     - kind: changed
-      description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.13.0"
+      description: "Updated ghcr.io/samply/blaze ghcr.io/samply/blaze-frontend to 1.14.0"
