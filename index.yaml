@@ -29598,6 +29598,49 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated docker.io/datashield/rock-base to sha256:f95ee8498bc4a991f378210193eeab18e87eb73eb5acd71e11934ee986171130"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudpirates-postgres/postgres
+    apiVersion: v2
+    appVersion: 6.2.2
+    created: "2026-11-22T14:26:11.458875585Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.21.2
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying the Opal server and a DataShield rock
+      cluster.
+    digest: bb24bcae5a8fc3c039a8fa644db6b0fec2a4d48f7b2da75bfabef67087997ada
+    home: https://opaldoc.obiba.org/en/latest/index.html
+    keywords:
+    - DataShield
+    - opal
+    - obiba
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: opal
+    sources:
+    - https://github.com/obiba/opal
+    - https://github.com/datashield/docker-rock
+    - https://github.com/obiba/docker-opal
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/opal-0.4.1/opal-0.4.1.tgz
+    version: 0.4.1
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/obiba/opal to 6.2.2"
         - kind: changed
           description: "BREAKING: Opal's configuration is now stored in a dedicated `opal_config` schema of the PostgreSQL database instead of the embedded H2 database. Existing H2 configurations are not migrated."
@@ -44060,4 +44103,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-22T14:24:40.305201721Z"
+generated: "2026-11-22T14:26:11.461135416Z"
