@@ -1,0 +1,76 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.typeBadge" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+## Installation
+
+```sh
+helm install s3manager oci://ghcr.io/miracum/charts/s3manager -n s3manager --create-namespace -f values.yaml
+```
+
+At least one S3 instance has to be configured, e.g. a MinIO instance using credentials from an existing secret:
+
+```yaml
+instances:
+  - name: minio
+    endpoint: minio.minio.svc:9000
+    useSSL: false
+    existingSecret:
+      name: minio-s3manager-credentials
+      accessKeyIdKey: ACCESS_KEY_ID
+      secretAccessKeyKey: SECRET_ACCESS_KEY
+```
+
+### Buckets created via an ObjectBucketClaim (Rook Ceph)
+
+Buckets provisioned via an [ObjectBucketClaim](https://rook.io/docs/rook/latest/Storage-Configuration/Object-Storage-RGW/ceph-object-bucket-claim/)
+come with a ConfigMap (`BUCKET_HOST`, `BUCKET_PORT`, `BUCKET_NAME`, `BUCKET_REGION`) and a Secret (`AWS_ACCESS_KEY_ID`,
+`AWS_SECRET_ACCESS_KEY`) named after the claim. Reference the claim and the chart reads the endpoint, bucket, region and
+credentials from them:
+
+```yaml
+instances:
+  - objectBucketClaim:
+      name: my-bucket
+  - name: other-bucket # defaults to the claim's name
+    objectBucketClaim:
+      name: other-bucket-claim
+```
+
+The claims have to be in the release namespace. The endpoint is assumed to serve plain HTTP, as the in-cluster Rook
+RGW service does. Set `useSSL: true` on the instance otherwise.
+
+If the NetworkPolicy is enabled, allow egress to the RGW pods. Note that NetworkPolicies match the pod's port, not the
+Service's (Rook's default RGW pod port is `8080`):
+
+```yaml
+networkPolicy:
+  enabled: true
+  extraEgress:
+    - ports:
+        - port: 8080
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: rook-ceph
+          podSelector:
+            matchLabels:
+              app: rook-ceph-rgw
+```
+
+> [!WARNING]
+> S3 Manager has no built-in authentication: everyone who can reach it can use all configured S3 instances.
+> Restrict access, e.g. by putting an authenticating reverse proxy (OAuth2 Proxy, basic auth, ...) in front of the Ingress,
+> or by enabling the NetworkPolicy (`networkPolicy.enabled=true`, `networkPolicy.allowExternal=false`).
+> To give different teams access to different S3 accounts, install one release per team.
+
+When `networkPolicy.enabled=true`, egress is limited to DNS by default. Allow access to the S3 endpoints via
+`networkPolicy.extraEgress` or set `networkPolicy.allowExternalEgress=true`.
+
+{{ template "chart.valuesSection" . }}

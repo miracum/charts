@@ -1,0 +1,6 @@
+instances:
+  - name: minio
+    endpoint: minio.example.com:9000
+    useSSL: false
+    accessKeyId: s3manager
+    secretAccessKey: s3manager-secret

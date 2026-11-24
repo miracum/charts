@@ -1,0 +1,58 @@
+replicaCount: 2
+
+instances:
+  - name: minio
+    endpoint: minio.example.com:9000
+    region: eu-central-1
+    useSSL: false
+    bucketLookup: Path
+    presignUrl: https://minio.example.com
+    accessKeyId: s3manager
+    secretAccessKey: s3manager-secret
+  - name: aws
+    useIam: true
+    publicUrl: "https://files.example.com/{bucket}/{key}"
+  - name: open-data
+    signatureType: Anonymous
+    region: us-east-1
+    buckets:
+      - noaa-ghcn-pds
+
+allowDelete: false
+showVersions: true
+timezone: Europe/Berlin
+bucketNames:
+  - first
+  - second
+rootUrl: ""
+tmpVolumeSizeLimit: 1Gi
+
+serverSideEncryption:
+  type: SSE
+
+ingress:
+  enabled: true
+
+podDisruptionBudget:
+  enabled: true
+
+networkPolicy:
+  enabled: true
+  allowExternal: false
+  extraEgress:
+    - ports:
+        - port: 443
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/component: server
+
+podAnnotations:
+  example.com/annotation: "true"
+
+envDict:
+  LIST_RECURSIVE: "false"
