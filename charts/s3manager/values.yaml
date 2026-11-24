@@ -1,0 +1,324 @@
+# -- number of replicas. S3 Manager is stateless, so it can run with multiple replicas.
+replicaCount: 1
+
+# @ignored
+image:
+  registry: docker.io
+  repository: cloudlena/s3manager
+  tag: v0.13.0@sha256:30d9900ccf305895f3ae7d954bc64e4d7b7e287fe4ba5a04c8b546e12dff3ff9
+  pullPolicy: IfNotPresent
+
+# -- image pull secrets used by the pod
+imagePullSecrets: []
+
+# -- override the chart name
+nameOverride: ""
+
+# -- override the full release name
+fullnameOverride: ""
+
+# -- annotations to apply to all created resources. Evaluated as a template.
+commonAnnotations: {}
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: true
+  # -- Annotations to add to the service account, e.g. to use IAM roles for service accounts (IRSA) together with `instances[].useIam`.
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # -- whether to automount the SA token.
+  automountServiceAccountToken: false
+
+# -- annotations to set on the pod
+podAnnotations: {}
+
+# -- extra labels to set on the pod
+podLabels: {}
+
+# -- the pod security context. The image's own `s3manager` user doesn't have a fixed UID, so the chart runs it as an arbitrary unprivileged user instead.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  fsGroupChangePolicy: "OnRootMismatch"
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- the S3 instances (accounts) to manage. At least one is required. Each is shown under its `name` and reachable under `/<name>/buckets`,
+# so pick names that work in a URL. Rendered as the numbered `S3_<n>_*` environment variables.
+# See <https://github.com/cloudlena/s3manager#s3-instances> for details on each setting.
+# @default -- `[]`
+instances: []
+#  - # -- the name the instance is shown and addressed under. Required unless `objectBucketClaim.name` is set.
+#    name: minio
+#    # -- the endpoint of the S3 server, without the scheme. Defaults to `s3.amazonaws.com`.
+#    endpoint: minio.minio.svc:9000
+#    # -- the region of the S3 server
+#    region: ""
+#    # -- whether the S3 server uses SSL. Defaults to `true`.
+#    useSSL: false
+#    # -- whether to skip SSL certificate verification. Defaults to `false`.
+#    skipSSLVerification: false
+#    # -- the signature type to use: `V2`, `V4`, `V4Streaming`, or `Anonymous`. Defaults to `V4`.
+#    signatureType: ""
+#    # -- how buckets are addressed: `Auto`, `DNS`, or `Path`. Defaults to `Auto`.
+#    bucketLookup: ""
+#    # -- use an IAM role instead of a key pair
+#    useIam: false
+#    # -- the endpoint used to retrieve the IAM role credentials. Works for AWS if unset.
+#    iamEndpoint: ""
+#    # -- a template for public object links, e.g. `https://files.example.com/{bucket}/{key}`
+#    publicUrl: ""
+#    # -- the address presigned download links are signed for, e.g. `https://s3.example.com`. Requires `region`.
+#    presignUrl: ""
+#    # -- additional bucket names to show, e.g. public buckets owned by someone else
+#    buckets: []
+#    # -- the access key ID. Stored in a Secret created by this chart. Prefer `existingSecret` instead.
+#    accessKeyId: ""
+#    # -- the secret access key. Stored in a Secret created by this chart. Prefer `existingSecret` instead.
+#    secretAccessKey: ""
+#    existingSecret:
+#      # -- name of an existing secret containing the key pair. Takes precedence over `accessKeyId`, `secretAccessKey`, and `objectBucketClaim`.
+#      name: minio-credentials
+#      # -- key inside the secret containing the access key ID
+#      accessKeyIdKey: "ACCESS_KEY_ID"
+#      # -- key inside the secret containing the secret access key
+#      secretAccessKeyKey: "SECRET_ACCESS_KEY"
+#
+#  # an instance configured from a bucket created via an ObjectBucketClaim (e.g. by Rook Ceph), which must be in the release namespace.
+#  # The endpoint (`BUCKET_HOST`:`BUCKET_PORT`), bucket (`BUCKET_NAME`), and region (`BUCKET_REGION`) are read from the claim's ConfigMap,
+#  # the key pair (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) from its Secret. `useSSL` defaults to `false`, since in-cluster
+#  # endpoints usually serve plain HTTP. `endpoint` can't be set; `name`, `region`, `useSSL`, `buckets`, ... still can.
+#  - objectBucketClaim:
+#      # -- name of the ObjectBucketClaim. Also the default for `name`.
+#      name: my-bucket
+#      # -- name of the ConfigMap created for the claim. Defaults to the claim's name.
+#      configMapName: ""
+#      # -- name of the Secret created for the claim. Defaults to the claim's name.
+#      secretName: ""
+
+# -- enable deleting objects, folders and empty buckets. Sets the `ALLOW_DELETE` environment variable.
+allowDelete: true
+
+# -- list all objects in buckets recursively. Sets the `LIST_RECURSIVE` environment variable.
+listRecursive: false
+
+# -- show all object versions in the bucket view (the bucket must have versioning enabled). Sets the `SHOW_VERSIONS` environment variable.
+showVersions: false
+
+# -- show the object metadata action. Sets the `SHOW_METADATA` environment variable.
+showMetadata: true
+
+# -- IANA timezone used to display the object Last Modified times, e.g. `Europe/Berlin`. Sets the `TZ` environment variable. Defaults to UTC.
+timezone: ""
+
+# -- only show these buckets in the bucket list of every instance. This only filters the list and is not an access restriction.
+# Sets the `BUCKET_NAME` environment variable.
+bucketNames: []
+
+# -- the read and write timeout in seconds. Sets the `TIMEOUT` environment variable.
+timeout: 600
+
+# -- a root URL path prefix when served behind a reverse proxy under a sub-path that strips the prefix, e.g. `teamx`.
+# Sets the `ROOT_URL` environment variable.
+rootUrl: ""
+
+serverSideEncryption:
+  # -- the server side encryption applied to uploaded objects: `SSE`, `KMS`, or `SSE-C`. Sets the `SSE_TYPE` environment variable. Disabled if empty.
+  type: ""
+  existingSecret:
+    # -- name of an existing secret containing the key for `KMS` (a key ID) or `SSE-C` (exactly 32 bytes). Sets the `SSE_KEY` environment variable.
+    name: ""
+    # -- key inside the secret containing the encryption key
+    key: "SSE_KEY"
+
+service:
+  # -- the type of service
+  type: ClusterIP
+  # -- the port for the main HTTP endpoint
+  port: 8080
+
+ingress:
+  # -- create an Ingress for the web UI.
+  # ⚠️ S3 Manager has no authentication: everyone who can reach it can use all configured S3 instances.
+  # Protect it at the ingress controller, e.g. via an OAuth2 proxy or basic auth.
+  enabled: false
+  # -- ingressClassName to use
+  className: ""
+  # -- extra annotations to apply to the Ingress resource
+  annotations: {}
+  #  nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  #  nginx.ingress.kubernetes.io/auth-url: "https://oauth2.example.com/oauth2/auth"
+  #  nginx.ingress.kubernetes.io/auth-signin: "https://oauth2.example.com/oauth2/start?rd=$escaped_request_uri"
+  # -- list of ingress hosts
+  hosts:
+    - host: s3manager.127.0.0.1.nip.io
+      paths:
+        - path: /
+          pathType: Prefix
+          portName: http
+  # -- TLS configuration
+  tls: []
+  #  - secretName: s3manager-tls
+  #    hosts:
+  #      - s3manager.example.com
+
+# -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `resources` is set (`resources` is recommended for production).
+# More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+resourcesPreset: "small"
+
+# -- configure the resource requests and limits
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+# -- the size limit of the `/tmp` volume. Large uploads are buffered there before being sent to S3.
+tmpVolumeSizeLimit: ""
+
+# -- pod node selector
+nodeSelector: {}
+
+# -- pod tolerations
+tolerations: []
+
+# -- pod affinity
+affinity: {}
+
+# -- pod topology spread configuration
+# see: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#api>
+topologySpreadConstraints: []
+
+podDisruptionBudget:
+  # -- create a PodDisruptionBudget. Only useful when running more than one replica.
+  enabled: false
+  # -- minimum number of pods that must remain available. Takes precedence over `maxUnavailable` if set.
+  minAvailable: ""
+  # -- maximum number of pods that can be unavailable
+  maxUnavailable: 1
+
+networkPolicy:
+  # -- Enable creation of NetworkPolicy resources
+  enabled: false
+  # -- When set to false, only pods with the `<fullname>-client: "true"` label will have network access to the web UI port.
+  # When true, the web UI will accept connections from any source (with the correct destination port).
+  allowExternal: true
+  # -- Allow the pod to access any range of port and all destinations.
+  # If false, add rules allowing access to the configured S3 endpoints via `networkPolicy.extraEgress`.
+  allowExternalEgress: false
+  # -- Labels to match to allow traffic from other namespaces
+  ingressNSMatchLabels: {}
+  # -- Pod labels to match to allow traffic from other namespaces
+  ingressNSPodMatchLabels: {}
+  # -- Add extra ingress rules to the NetworkPolicy. Evaluated as a template.
+  extraIngress: []
+  # -- Add extra egress rules to the NetworkPolicy. Evaluated as a template.
+  extraEgress: []
+  # e.g. to allow access to a MinIO instance in the `minio` namespace:
+  #  - ports:
+  #      - port: 9000
+  #    to:
+  #      - namespaceSelector:
+  #          matchLabels:
+  #            kubernetes.io/metadata.name: minio
+
+# -- extra environment variables to set on the container. Evaluated as a template.
+extraEnv: []
+
+# -- extra environment variables to set on the container in dictionary form
+envDict: {}
+
+# -- extra sources of environment variables, e.g. a secret containing additional `S3_<n>_*` settings.
+extraEnvFrom: []
+
+# -- extra volumes to add to the pod
+extraVolumes: []
+
+# -- extra volume mounts to add to the container
+extraVolumeMounts: []
+
+# S3 Manager doesn't have a dedicated health endpoint and `/` redirects to the bucket list, which queries S3.
+# The probes request a static asset instead, so an unreachable S3 endpoint doesn't restart the pod.
+# @ignored
+startupProbe:
+  httpGet:
+    path: /static/css/beer.min.css
+    port: http
+  failureThreshold: 10
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+readinessProbe:
+  httpGet:
+    path: /static/css/beer.min.css
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# @ignored
+livenessProbe:
+  httpGet:
+    path: /static/css/beer.min.css
+    port: http
+  failureThreshold: 5
+  initialDelaySeconds: 0
+  periodSeconds: 30
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# -- container security context applied to the Helm test pods
+# @ignored
+restrictedContainerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+curl:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: 8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
+
+tests:
+  # -- whether to automount the SA token in the test pods
+  automountServiceAccountToken: false
+  # -- set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if `tests.resources` is set.
+  # More information: <https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15>
+  resourcesPreset: "nano"
+  # -- configure the test pods resource requests and limits
+  resources: {}
