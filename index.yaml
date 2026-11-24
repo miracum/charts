@@ -36651,6 +36651,42 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/recruit-9.0.0/recruit-9.0.0.tgz
     version: 9.0.0
+  s3manager:
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: added
+          description: "Initial release of the S3 Manager chart"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: v0.13.0
+    created: "2026-11-24T18:07:57.035894635Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    description: A Helm chart for deploying S3 Manager, a web GUI to manage S3 buckets
+      from any provider.
+    digest: adcb52fe41f7075d702282a63d65b1f00eac3e0860cd28cfafcb93e0f88dc8bf
+    home: https://github.com/cloudlena/s3manager
+    keywords:
+    - S3
+    - object storage
+    - web ui
+    kubeVersion: '>= 1.23.0-0'
+    maintainers:
+    - name: miracum
+    name: s3manager
+    sources:
+    - https://github.com/cloudlena/s3manager
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/s3manager-0.1.0/s3manager-0.1.0.tgz
+    version: 0.1.0
   stream-processors:
   - annotations:
       artifacthub.io/changes: |
@@ -44224,4 +44260,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-24T14:48:36.365719478Z"
+generated: "2026-11-24T18:07:57.037082198Z"
