@@ -6,6 +6,49 @@ entries:
         # When using the list of objects option the valid supported kinds are
         # added, changed, deprecated, removed, fixed and security.
         - kind: changed
+          description: "Updated hive-metastore to 0.6.7"
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    created: "2026-11-25T22:40:30.112797304Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.2.0
+    - name: pathling-server
+      repository: oci://ghcr.io/chgl/charts
+      version: 0.10.18
+    - name: hive-metastore
+      repository: oci://ghcr.io/miracum/charts
+      version: 0.6.7
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: 1.45.0
+    description: A Helm chart for deploying a fully-integrated FHIR-based analytics
+      solution.
+    digest: 04dae6436687663746bbf66cca0d3019649c3f42b7e6f87941e80b2da1ab5e2b
+    home: https://github.com/miracum/charts
+    keywords:
+    - research
+    - FHIR
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - name: miracum
+    name: analytics-on-fhir
+    sources:
+    - https://github.com/miracum/charts
+    type: application
+    urls:
+    - https://github.com/miracum/charts/releases/download/analytics-on-fhir-0.2.31/analytics-on-fhir-0.2.31.tgz
+    version: 0.2.31
+  - annotations:
+      artifacthub.io/changes: |-
+        # When using the list of objects option the valid supported kinds are
+        # added, changed, deprecated, removed, fixed and security.
+        - kind: changed
           description: "Updated docker.io/amazon/aws-cli to 2.42.4"
       artifacthub.io/containsSecurityUpdates: "false"
       artifacthub.io/license: Apache-2.0
@@ -44346,4 +44389,4 @@ entries:
     urls:
     - https://github.com/miracum/charts/releases/download/vfps-1.0.0/vfps-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-25T21:23:34.931851425Z"
+generated: "2026-11-25T22:40:30.114663559Z"
